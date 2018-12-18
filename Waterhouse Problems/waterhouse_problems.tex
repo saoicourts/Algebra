@@ -1,0 +1,262 @@
+\documentclass[12pt]{article}
+
+\usepackage{setspace}
+
+\usepackage{xcolor, amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem}
+\usepackage[amsthm]{ntheorem}
+\usepackage[mathscr]{euscript}
+%set margins
+\usepackage[
+top    = 1.0in,
+bottom = 1.0in,
+left   = 1.0in,
+right  = 1.0in]{geometry}
+
+%header stuff
+\setlength{\headsep}{24pt}  % space between header and text
+\pagestyle{fancy}     % set pagestyle for document
+\lhead{ {William Waterhouse's \it Introduction to Affine Group Schemes} } % put text in header (left side)
+\rhead{Nico Courts} % put text in header (right side)
+\cfoot{\it p. \thepage}
+\setlength{\headheight}{15pt}
+\allowdisplaybreaks
+
+%Set of Integers
+\newcommand*{\Z}{
+\mathbb{Z}
+}
+%Set of Natural Numbers
+\newcommand*{\N}{
+\mathbb{N}
+}
+%Set of Real Numbers
+\newcommand*{\R}{
+\mathbb{R}
+}
+%Set of Complex Numbers
+\newcommand*{\C}{
+\mathbb{C}
+}
+%Field
+\newcommand*{\F}{
+\mathbb{F}
+}
+%Rationals
+\newcommand*{\Q}{
+\mathbb{Q}
+}
+
+%Section break
+\newcommand*{\brk}{
+\rule{2in}{.1pt}
+}
+
+\DeclareMathOperator{\Aut}{Aut}
+
+%raise that Chi!
+\DeclareRobustCommand{\Chi}{{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
+
+%Image
+\DeclareMathOperator{\im}{Im}
+
+%Hom
+\DeclareMathOperator{\Hom}{Hom}
+
+%Coker
+\DeclareMathOperator{\coker}{coker}
+
+%characteristic
+\DeclareMathOperator{\ch}{char}
+
+%restriction
+\DeclareMathOperator{\Res}{Res_H}
+
+%socle
+%restriction
+\DeclareMathOperator{\Soc}{Soc}
+
+%induction
+\DeclareMathOperator{\Ind}{Ind_H^G}
+
+%fix tilde
+\let\tilde\relax
+\newcommand*{\tilde}[1]{\widetilde{#1}}
+
+\newtheorem{lem}{Lemma}
+\newtheorem{thm}{Theorem}
+
+\setenumerate[0]{label=(\alph*)}
+
+%New environments for problem solving
+\newenvironment{prob}[1]{\par\smallskip
+	\noindent\begin{mdframed}\small \textbf{Problem~\thesection.#1} \rmfamily\quad}{\end{mdframed}\medskip}
+\newenvironment{sol}{\noindent \textbf{Solution.} \,}{\\\hspace*{\fill}$\square$\medskip}
+
+%\onehalfspacing
+\begin{document}
+%make the title page
+\title{ Problems from William Waterhouse's\\ \textit{Introduction to Affine Group Schemes}\vspace{-1ex}}
+\author{Nico Courts}
+\date{}
+\maketitle
+
+%begin problems
+
+\section{Affine Group Schemes}
+\begin{prob}{1}
+	\begin{enumerate}
+		\item If $R$ and $S$ are two $k$ algebras and $F$ is a representable functor, show $F(R\times S)\cong F(R)\times F(S)$.
+		\item Show there is no representable functor $R$ such that every $F(R)$ has exactly two elements.
+		\item Let $F$ be the functor represented by $k\times k$. Show that $F(R)$ has two elements exactly when $R$ has no idempotents besides 0 and 1.
+	\end{enumerate}
+\end{prob}
+
+\begin{sol}
+	\subsubsection*{(a)}
+	Let $A$ be the $k$-algebra representing $F$. Thus $F(R)$ is naturally isomorphic to
+	$\Hom_k(A,R)$ and $F(S)\simeq\Hom(A,S)$. Then define the map $\Phi:\Hom(A,R\times S)\to\Hom(A,R)\times\Hom(A,S)$
+	via
+	\[\Phi(\varphi)=(\pi_R\circ\varphi,\pi_S\circ\varphi)\]
+	where $\pi_X$ is the canonical projection onto $X$.
+
+	This is surjective since (by the universal property of products) any pair of maps
+	$\varphi_R:A\to R$ and $\varphi_S:A\to S$ factors through the product $R\times S$
+	and furthermore it does so \textit{uniquely}, giving us injectivity. Thus this map
+	(which is clearly a homomorphism since $\pi_X$ is) is a bijection.
+	\subsubsection*{(b)}
+	By the last problem this is impossible since there are more than 2 $k$-algebras for any $k$.
+	\subsubsection*{(c)}
+	Let $F$ be such a functor. Consider any $\varphi\in\Hom(k\times k, R)\simeq F(R)$.
+	Assume first that $F(R)\cong \Z/2$ and let $r$ be an idempotent in $R$. 
+\end{sol}
+
+\begin{prob}{2}
+	Let $E$ be a functor represented by $A$ and let $F$ be any functor. Show that the natural
+	maps $\eta:E\to F$ correspond to elements in $F(A)$.
+\end{prob}
+\begin{sol}
+	Consider the map $\Phi$ from natural maps $E\to F$ to elements in $F(A)$ defined by
+	(again leveraging the representability of $E$)
+	\[\eta\mapsto \eta(\operatorname{id}_A)\in F(A).\]
+	Conversely, consider the map $\Psi$ from $F(A)$ to the natural maps $E\to F$ via
+	\[x\mapsto \xi_x\]
+	where $\xi_x$ where for any $Y$ and $y\in E(Y)\cong \Hom(A,Y)$ we define the $Y^{th}$ component of $\xi_x$
+	as 
+	\[\xi_x(y)=F(y)(x)\in F(Y)\]
+	where (for clarity while I get a grasp here) $F(y):F(A)\to F(Y)$.
+
+	Since we are only looking for a bijection, we only need that these maps are inverses.
+	Consider that for all $Y$ and $y\in E(Y)$,
+	\begin{align*}
+		\Psi\circ\Phi(\eta)(y)&=\Psi\left(\eta(\operatorname{id}_A)\right)(y)\\
+		&= \xi_{\eta(\operatorname{id}_A)}(y)\\
+		&= F(y)\circ \eta (\operatorname{id}_A)\\
+		&= \eta\circ E(y) (\operatorname{id}_A)\\
+		&= \eta(y\circ\operatorname{id}_A)=\eta(y)
+	\end{align*}
+	where above we used the naturality of $\eta$ along with the fact that $E(y)$ is just
+	precomposition with $y$. Thus $\Psi\circ\Phi(\eta)=\eta.$
+
+	But then for any $x\in F(A)$,
+	\begin{align*}
+		\Phi\circ\Psi(x)&=\Phi\circ\xi_x\\
+		&=\xi_x(\operatorname{id}_A)\\
+		&=F(\operatorname{id}_A)(x)\\
+		&=\operatorname{id}_{F(A)}(x)=x
+	\end{align*}
+	completing the proof.
+\end{sol}
+
+\begin{prob}{3}
+	Let $E$ be a functor represented by $A$, and let $F$ be any functor. Let $\Psi:F\to E$
+	be a natural map with surjective component maps. Show there is a natural map $\Phi:E\to F$
+	with $\Psi\circ\Phi=\operatorname{id}_E$.
+\end{prob}
+\begin{sol}
+	Since in particular $\Psi_A$ is surjective, there is an $x\in F(A)$ such that $\Psi(x)=\operatorname{id}_A$.
+	Then using the map from the last problem, let $\Phi=\xi_x$. Then we can compute for any $R$ and $g\in E(R)$
+	\begin{align*}
+		\Psi\circ\Phi (g) &= \Psi\circ F(g) (x)\\
+		&=E(g)\circ \Psi(x)\\
+		&=E(g)(\operatorname{id}_A)\\
+		&=g\circ \operatorname{id}_A=g
+	\end{align*}
+	since $g:A\to R$, so $E(g):E(A)\to E(R)$, which is just composition with $g$.
+\end{sol}
+
+\begin{prob}{5}
+	Write out $\Delta,\varepsilon,$ and $S$ for the Hopf algebras representing $SL_2, \mu_n,$ and $\alpha_p$.
+\end{prob}
+\begin{sol}
+	\subsubsection*{$SL_2$:}
+	Notice $SL_2$ is represented by $A=k[X_1,X_2,X_3,X_4]/(X_1X_4-X_3X_2-1)$ so take two elements
+	$f,g\in\Hom(A,R)$ where $f(X_i)=a_i\in R$ and $g(X_i)=b_i\in R$ and notice that we want
+	\[(f,g)\Delta=h\]
+	where since
+	\[\begin{pmatrix}
+		a_1 & a_2\\ a_3 & a_4
+	\end{pmatrix}\begin{pmatrix}
+		b_1 & b_2\\ b_3 & b_4
+	\end{pmatrix}=\begin{pmatrix}
+		a_1b_1+a_2b_3 & a_1b_2+a_2b_4\\ a_3b_1+a_4b_3 & a_3b_2+a_4b_4
+	\end{pmatrix}=\begin{pmatrix}
+		c_1 & c_2\\ c_3 & c_4
+	\end{pmatrix}\]
+	we want to have that $h(X_i)=c_i.$
+
+	So then if $\Delta:A\to A\otimes A$ is defined as follows:
+	\begin{align*}
+		X_1&\mapsto X_1\otimes X_1+X_2\otimes X_3
+	\end{align*}
+\end{sol}
+
+\begin{prob}{6}
+	In $A=k[X_{11},\dots,X_{nn},1/\operatorname{det}]$ representing $GL_n$, show that $\Delta(X_{ij})=\sum X_{ik}\otimes X_{kj}$.
+	What is $\varepsilon(X_{ij})$?
+\end{prob}
+\begin{sol}
+	Due to the uniqueness of $\Delta,\varepsilon,$ and $S$, we need only find maps satisfying 
+	the diagrams. I claim that $\varepsilon(X_{ij})=\delta_{ij}$. In this case, notice
+	\[(\varepsilon\otimes\operatorname{id})\circ\Delta(X_{ij})=\varepsilon\otimes\operatorname{id}\left( \sum X_{ik}\otimes X_{kj} \right)=\sum \delta_{ik}\otimes X_{kj}=1\otimes X_{ij}\]
+	exactly as we want.
+
+	For associativity, notice
+	\[(\Delta\otimes \operatorname{id})\circ \Delta (X_{ij})=\Delta\otimes\operatorname{id}\left( \sum_k X_{ik}\otimes X_{kj} \right)=\sum_k\left(\sum_l X_{il}\otimes X_{lk}\right)\otimes X_{kj}\]
+	and then the associativity of $\Delta$ follows simply from the associativity of the tensor product.
+
+	For the last axiom, we compute $S$ such that $(S,\operatorname{id})\circ\Delta=\iota\circ\varepsilon$ where $\iota:K\to A$ is the map sending $k\mapsto k\cdot 1_A$.
+	That is, we define $S:A\to A$ so that
+	\[\sum_k S(X_{ik})X_{kj}=\delta_{ij}.\]
+
+	We want to leverage the fact that for a fixed $i$ and $j$, the determinant is
+	\begin{align*}
+		\operatorname{det} &= \sum_{\sigma\in S_n}\operatorname{sgn}(\sigma)\prod_l X_{\sigma(l)l}\\
+		&=\sum_\sigma \operatorname{sgn}(\sigma)X_{\sigma{j}j}\prod_{l\ne j} X_{\sigma(l)l}\\
+		&=\sum_i X_{ij}\left(\sum_{\sigma(j)=i}\operatorname{sgn}(\sigma)\prod_{l\ne j}X_{\sigma(l)l}\right)
+	\end{align*}
+	and so we want that 
+	\[S(X_{ik})=\frac{1}{\operatorname{det}}\sum_{\sigma(i)=k}\operatorname{sgn}(\sigma)\prod_{l\ne k}X_{\sigma(l)l}\]
+	so that when $i=j$,
+	\[\sum_k S(X_{ik})X_{kj}=\frac{1}{\operatorname{det}}\sum_k X_{kj}\sum_{\sigma(j)=k}\operatorname{sgn}(\sigma)\prod_{l\ne k}X_{\sigma(l)l}=1=\delta_{ij}\]
+	whenever $i\ne j$, however, this equation is the determinant of the matrix where we have replaced
+	the $j^{th}$ column with a copy of the $i^{th}$ column. This is linearly dependent, so 
+	\[\frac{1}{\operatorname{det}}\sum_k S(X_{ik})S_{kj}=0=\delta_{ij}.\]
+	Thus these are precisely the maps we desire.
+\end{sol}
+
+\begin{prob}{}
+
+\end{prob}
+\begin{sol}
+	a
+\end{sol}
+
+\begin{prob}{}
+
+\end{prob}
+\begin{sol}
+	a
+\end{sol}
+
+\end{document}

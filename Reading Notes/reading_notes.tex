@@ -1,0 +1,157 @@
+\documentclass[12pt]{article}
+
+\usepackage{setspace}
+
+\usepackage{xcolor, amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem}
+\usepackage[amsthm]{ntheorem}
+\usepackage[mathscr]{euscript}
+%set margins
+\usepackage[
+top    = 1.0in,
+bottom = 1.0in,
+left   = 1.0in,
+right  = 1.0in]{geometry}
+
+%header stuff
+\setlength{\headsep}{24pt}  % space between header and text
+\pagestyle{fancy}     % set pagestyle for document
+\lhead{ Problems from our reading course } % put text in header (left side)
+\rhead{Nico Courts} % put text in header (right side)
+\cfoot{\it p. \thepage}
+\setlength{\headheight}{15pt}
+\allowdisplaybreaks
+
+%Set of Integers
+\newcommand*{\Z}{
+\mathbb{Z}
+}
+%Set of Natural Numbers
+\newcommand*{\N}{
+\mathbb{N}
+}
+%Set of Real Numbers
+\newcommand*{\R}{
+\mathbb{R}
+}
+%Set of Complex Numbers
+\newcommand*{\C}{
+\mathbb{C}
+}
+%Field
+\newcommand*{\F}{
+\mathbb{F}
+}
+%Rationals
+\newcommand*{\Q}{
+\mathbb{Q}
+}
+
+%Section break
+\newcommand*{\brk}{
+\rule{2in}{.1pt}
+}
+
+\DeclareMathOperator{\Aut}{Aut}
+
+%raise that Chi!
+\DeclareRobustCommand{\Chi}{{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
+
+%Image
+\DeclareMathOperator{\im}{Im}
+
+%Hom
+\DeclareMathOperator{\Hom}{Hom}
+
+%Ext
+\DeclareMathOperator{\Ext}{Ext}
+
+%Coker
+\DeclareMathOperator{\coker}{coker}
+
+%characteristic
+\DeclareMathOperator{\ch}{char}
+
+%restriction
+\DeclareMathOperator{\Res}{Res_H}
+
+%socle
+%restriction
+\DeclareMathOperator{\Soc}{Soc}
+
+%induction
+\DeclareMathOperator{\Ind}{Ind_H^G}
+
+%fix tilde
+\let\tilde\relax
+\newcommand*{\tilde}[1]{\widetilde{#1}}
+
+\newtheorem{lem}{Lemma}[subsection]
+\newtheorem{thm}[lem]{Theorem}
+\newtheorem{pro}[lem]{Problem}
+
+\setenumerate[0]{label=(\alph*)}
+
+%New environments for problem solving
+\newenvironment{prob}{\par\smallskip
+	\noindent\begin{mdframed}\small \begin{pro}}{\end{pro}\end{mdframed}\medskip}
+\newenvironment{sol}{\noindent \textbf{Solution.} \,}{\\\hspace*{\fill}$\square$\medskip}
+
+%\onehalfspacing
+\begin{document}
+%make the title page
+\title{ Notes and Problems from My Research\vspace{-1ex}}
+\author{Nico Courts}
+\date{}
+\maketitle
+
+%begin problems
+
+\section{Autumn 2018}
+\subsection{Problems}
+\begin{prob}
+	Assume that $k$ is a field and let $K=k(t)$ (notice $K$ is a transcendental extension). Prove that $\Hom_k(K,k)\not\cong K$.
+\end{prob}
+
+\begin{sol}
+	This is basically just a cardinality argument. I don't think it's particularly worth doing at this juncture.
+\end{sol}
+
+\begin{prob}
+	Let $G$ be a finite group scheme (actually we need only assume that $G$ is a Frobenius algebra so that a module
+	is injective if and only if it is projective). Prove that unless $M$ is projective, its projective dimension is 
+	infinite. Conclude that $H^n(G,M)=0$ for $n>N$ implies that $M$ is projective.
+\end{prob}
+\begin{sol}
+	Assume $M$ itself is not projective so that its minimal projective resolution is nontrivial and furthermore
+	that it is finite. That is, let $P_i$ be projective modules such that
+	\[0\to P_n\xrightarrow{f_n} P_{n-1}\to\cdots \xrightarrow{f_{1}}P_0\xrightarrow{f_0} M\to 0\]
+	is a minimal length projective resolution of $M$ (notice here that $n\ge 1$). 
+	
+	Next consider the short exact sequence
+	\[0\to P_n\xrightarrow{f_n}P_{n-1}\to \coker f_n\to 0\]
+	since $P_n$ is projective (and thus injective!) this sequence splits and therefore $P_{n-1}\cong P_n\oplus\coker f_n.$
+	But then consider the sequence
+	\[0\to P_n\xrightarrow{g} P_{n-2}\to\cdots\xrightarrow{f_0}M\to 0\]
+	where above we are using $P_{n-1}\supseteq P_n\cong f_n(P_n)$  and that
+	$g=f_{n-1}|_{f_n(P_n)}$. This map is injective since $\ker f_{n-1}=\coker f_n$, which is disjoint
+	from $f_n(P_n)\cong P_n$. Exactness everywhere else is evident since the maps are not effectively changed.
+
+	But then the existence of this sequence contradicts the minimality of the original sequence, so
+	no finite sequence can exist.
+\end{sol}
+
+\begin{prob}
+	Establish the five-term exact sequence for spectral sequences.
+\end{prob}
+\begin{sol}
+	I plan to return to this problem in the future. I have other priorities at the moment,
+	but I will eventually return to cohomology and spectral sequences and this will be a good
+	exercise at that point.
+\end{sol}
+
+\section{Winter 2019}
+\subsection{Preparation: Waterhouse and G\"ortz \& Weddhorn}
+Problems I worked from Waterhouse can be found in the appropriate file.
+
+\end{document}

@@ -1,0 +1,372 @@
+\documentclass[12pt]{article}
+
+\usepackage{setspace}
+
+\usepackage{xcolor, amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed}
+\usepackage[amsthm]{ntheorem}
+\usepackage[mathscr]{euscript}
+%set margins
+\usepackage[
+top    = 1.0in,
+bottom = 1.0in,
+left   = 1.0in,
+right  = 1.0in]{geometry}
+
+%header stuff
+\setlength{\headsep}{24pt}  % space between header and text
+\pagestyle{fancy}     % set pagestyle for document
+\lhead{ {Peter Webb's \it A Course in Finite Group Representation Theory} } % put text in header (left side)
+\rhead{Nico Courts} % put text in header (right side)
+\cfoot{\it p. \thepage}
+\setlength{\headheight}{15pt}
+\allowdisplaybreaks
+
+%Set of Integers
+\newcommand*{\Z}{
+\mathbb{Z}
+}
+%Set of Natural Numbers
+\newcommand*{\N}{
+\mathbb{N}
+}
+%Set of Real Numbers
+\newcommand*{\R}{
+\mathbb{R}
+}
+%Set of Complex Numbers
+\newcommand*{\C}{
+\mathbb{C}
+}
+%Field
+\newcommand*{\F}{
+\mathbb{F}
+}
+%Rationals
+\newcommand*{\Q}{
+\mathbb{Q}
+}
+
+%Section break
+\newcommand*{\brk}{
+\rule{2in}{.1pt}
+}
+
+\DeclareMathOperator{\Aut}{Aut}
+
+%raise that Chi!
+\DeclareRobustCommand{\Chi}{{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
+
+%Image
+\DeclareMathOperator{\im}{Im}
+
+%Hom
+\DeclareMathOperator{\Hom}{Hom}
+
+%Coker
+\DeclareMathOperator{\coker}{coker}
+
+%characteristic
+\DeclareMathOperator{\ch}{char}
+
+%restriction
+\DeclareMathOperator{\Res}{Res_H}
+
+%socle
+%restriction
+\DeclareMathOperator{\Soc}{Soc}
+
+%induction
+\DeclareMathOperator{\Ind}{Ind_H^G}
+
+%fix tilde
+\let\tilde\relax
+\newcommand*{\tilde}[1]{\widetilde{#1}}
+
+\newtheorem{lem}{Lemma}
+\newtheorem{thm}{Theorem}
+
+%New environments for problem solving
+\newenvironment{prob}[1]{\par\smallskip
+	\noindent\begin{mdframed}\small \textbf{Problem~\thesection.#1} \rmfamily\quad}{\end{mdframed}\medskip}
+\newenvironment{sol}{\noindent \textbf{Solution.} \,}{\\\hspace*{\fill}$\square$\medskip}
+
+%\onehalfspacing
+\begin{document}
+%make the title page
+\title{ Problems from Peter Webb's\\ \textit{A Course in Finite Group Representation Theory}\vspace{-1ex}}
+\author{Nico Courts}
+\date{}
+\maketitle
+
+%begin problems
+
+\section{Representations, Maschke's Theorem, and Semisimplicity}
+\begin{prob}{1}
+	In Example 1.1.6, prove that there are no invariant subspaces other than the ones listed.
+\end{prob}
+
+\begin{sol}
+	Recall that in this example we are considering the representation of $C_2=\Z_2$ given by $\rho:C_2\to GL(\R^2)$ via
+	\[\rho(1)=\begin{pmatrix}
+	1 & 0\\ 0 & 1
+	\end{pmatrix},\qquad \rho(-1)=\begin{pmatrix}
+	1 & 0\\ 0 & -1
+	\end{pmatrix}\tag{1}\label{eq:1.1.1}.\]
+	In the example we noted that $\{0\}$, $\langle\binom{1}{0}\rangle$, $\langle\binom{0}{1}\rangle$ and $\R^2$ are all invariant subspaces.
+	
+	Assume that $V$ is any $\R$-subspace of $\R^2$ not listed above. Then necessarily it has $\R$-dimension one, so is spanned by an element $\binom{a}{b}\in\R^2.$ If $V$ is stable under the $C_2$ action, it must be that (in particular) the image of $\binom{a}{b}$ under nontrivial matrix in (\ref{eq:1.1.1}) above lands back in $V$. But then for some $\alpha\in\R$,
+	\[\alpha\binom{a}{b}=\binom{a}{-b}\]
+	whence either $a\ne 0$ and so $\alpha=1$ and $b=0$ or else $a=0$ and (since $V$ is nontrivial) $b\ne 0$ whence $\alpha=-1$ and $a=0$. But these two case describe precisely the two one dimensional subspaces given above so this must in fact be a complete list.
+\end{sol}
+
+\begin{prob}{2}
+	(\textit{The Modular Law}) -- Let $A$ be a ring and $U=V\oplus W$ an $A$-module that is a direct sum of $A$-modules $V$ and $W$. Show by example that if $X$ is any submodule of $U$ then it need not be the case that $X=(V\cap X)\oplus(W\cap X)$. Show that if we make the assumption that $V\subseteq X$ then it is true that $X=(V\cap X)\oplus (W\cap X).$
+\end{prob}
+\begin{sol}
+	Consider $A=\R$ and let $U=\langle e_1,e_2\rangle$ be $\R^2$ spanned by the standard basis vectors. Now define $V=\langle e_1+e_2\rangle$ and $W=\langle e_1\rangle$. $V\cap W=\{0\}$ and $V+W=U$, so the hypotheses are satisfied. Now let $X=\{e_2\}$ and notice
+	\[(X\cap A)\oplus (X\cap B)=\{0\}\oplus\{0\}=\{0\}\ne X.\]
+	
+	Now assume that $V\subseteq X$, so that $V\cap X=V.$ Now we want to prove that $X=V\oplus(W\cap X).$ Clearly since $V$ and $W\cap X$ are in $X$, their sum is as well. Therefore $V\oplus (W\cap X)\subseteq X.$ 
+	
+	Assume now that $x\in X$. But then $x\in U$ so $x=v+w$ for $v\in V$ and $w\in W$. Since $V\subseteq X$, $v\in X$ and the same goes for $x-v=w$. But then $x=(v)+(x-v)$ where the former part is in $V$ and the latter is in $X\cap W$. This gives us the reverse inclusion and thus equality.
+\end{sol}
+
+\begin{prob}{3}
+	Suppose that $\rho$ is a finite-dimensional representation of a finite group $G$ over $\C$. Show that for each $g\in G$, the matrix $\rho(g)$ is diagonalizable.
+\end{prob}
+\begin{sol}
+	Let $|G|=n$ and $\rho:G\to GL(\C)$ be a degree $k<\infty$ representation. Since $G$ has finite order, $\rho(g)^n=I_k$ so $\rho(g)$ satisfies the polynomial $x^n-1$. Since $\C$ is algebraically closed, $\rho(g)$ has $k$ eigenvalues, each of which must be an $n^{th}$ root of unity. Furthermore $x^n-1$ has no repeated roots (separable) so the minimal polynomial of $\rho(g)$ has distinct roots.
+	
+	Therefore $\rho(g)$ has $k$ distinct eigenvalues in $\C$ which is sufficient to show that it is diagonalizable.
+\end{sol}
+
+\begin{prob}{4}
+	Let $\phi:U\to V$ be an $A$-module homomorphism. Show that $\phi(\Soc U)\subseteq \Soc V$ and that if $\phi$ is an isomorphism then it restricts to an isomorphism $\Soc U$ to $\Soc V$.
+\end{prob}
+\begin{sol}
+	Recall that the image of a simple module is itself simple. To see this, assume that $S$ is simple and $0\ne X\subseteq \phi(S)$ is a submodule. Then $\phi^{-1}(X)$ is a submodule of $U$ intersecting $S$ nontrivially and by simplicity $\phi^{-1}(X)\cap S=S$. But then $\phi(S)\subseteq X$, so they are equal. Thus the only nonzero submodule of $\phi(S)$ is itself.
+	
+	Thus since $\Soc U$ is a sum of simple modules of $U$, $\varphi(\Soc U)$ is a sum of simple modules of $V$. So $\phi(\Soc U)\subseteq \Soc V$, the sum of \textit{all} simple modules of $V$.
+	
+	Assume now that $\phi$ is an isomorphism. Then by the same argument as above $\phi^{-1}(\Soc V)\subseteq \Soc U$ and so
+	\[\phi\circ\phi^{-1}(\Soc V)\subseteq \phi(\Soc U)\quad\Rightarrow\quad \Soc V\subseteq \phi(\Soc U)\]
+	so they are equal.
+	
+	Finally that $\Soc V=\phi(\Soc U)$ and $\phi^{-1}(\Soc V)=\Soc U$ and the injectivity of $\phi$ and its inverse gives us that $\phi$ restricts to an isomorphism $\Soc U\to\Soc V$.
+\end{sol}
+
+\begin{prob}{5}
+	Let $U=S_1\oplus\cdots \oplus S_r$ be an $A$-module that is the direct sum of finitely many simple $S_i$. Show that if $T$ is any simple submodule of $U$ then $T\cong S_i$ for some $i$.
+\end{prob}
+\begin{sol}
+	Since $T\subseteq U$, $T\cap S_i$ is nontrivial for some $i$. But then $T\cap S_i=S_i$ by the simplicity of $S_i$ and so $S_i\subseteq T$. By problem 1.2, since we have
+	\[T\subset S_i\oplus\left(S_1\oplus\cdots\oplus\hat S_i\oplus\cdots\oplus S_r\right)=S_i+S\]
+	we have that
+	\[T=(T\cap S_i)\oplus (T\cap S)=S_i\oplus (T\cap S)\]
+	and by the simplicity of $T$, $T\cap S=0$ and $T\cong S_i$.
+\end{sol}
+
+\begin{prob}{6}
+	Let $V$ be an $A$-module for some ring $A$ and suppose that $V$ is a sum $V=V_1+\cdots+V_n$ of simple submodules. Assume further that the $V_i$ are pairwise nonisomorphic. Show that the $V_i$ are the only simple submodules of $V$ and that $V=V_1\oplus\cdots\oplus V_n$ is their direct sum.
+\end{prob}
+\begin{sol}
+	Let $W$ be any simple submodule of $V$. By Lemma 1.2.3 in the book $V=V_{i_1}\oplus\cdots\oplus V_{i_k}$ for some subset of the $V_i$. By problem 1.5 above, this gives us $W\cong V_j$ for some $j$. But the $V_i$ are pairwise nonisomorphic so $W=V_j$ so the $V_i$ are the only simple submodules of $V$.
+	
+	That all $V_i$ occur in the direct sum holds by again applying the last problem and noticing that each $V_i$ must be isomorphic to some $V_j$ in the direct sum, whence $V_i$ itself must appear.
+\end{sol}
+
+\begin{prob}{7}
+	Let $G=\langle x,y| x^2=y^2=1=[x,y]\rangle$ be the Klein 4-group, $R=\F_2$, and consider the two representations $\rho_1$ and $\rho_2$ given by
+	\[\rho_1(x)=\begin{pmatrix}
+		1&1&0\\0&1&0\\0&0&1
+	\end{pmatrix},\qquad \rho_1(y)=\begin{pmatrix}
+	1&0&1\\0&1&1\\0&0&1
+	\end{pmatrix}\]
+	and
+	\[\rho_2(x)=\begin{pmatrix}
+	1&0&0\\0&1&1\\0&0&1
+	\end{pmatrix},\qquad \rho_2(y)=\begin{pmatrix}
+	1&0&1\\0&1&0\\0&0&1
+	\end{pmatrix}.\]
+	Compute the socles of these representations. Show that neither representation is semisimple.
+\end{prob}
+\begin{sol}
+	Notice that every subrepresentation is automatically a vector subspace of $\F_2^3$, so begin by considering the one dimensional subspaces. If $\langle (a,b,c)^T\rangle$ is invariant under $\rho_1$, consider the images:
+	\[\rho_1(x)(a,b,c)^T=(a+b,b,c)^T,\quad\rho_1(y)(a,b,c)^T=(a+c,b,c)^T\]
+	each of which are either $(a,b,c)^T$ or $\mathbf{0}$. In either case we are forced to have $b=c=0$, so the only invariant one dimensional subspace is the one spanned by $(1,0,0)^T$.
+	
+	In the two dimensional case, consider any subspace spanned by $\mathbf{v}=(a,b,c)^T$ and $\mathbf{w}=(d,e,f)^T$. If $b\ne e$ or $c\ne f$, we must have that $\rho_1$ fixes each of these vectors, so the resulting module must not be simple. Therefore we can assume that $b=e$ and $c=f.$ But then since it must be two dimensional, $a=d+1\pmod{2}$. But then
+	\[\mathbf{v}+\mathbf{w}=(1,0,0)^T\]
+	which spans an invariant subspace under $\rho_1$ so this is also not simple.
+	
+	So there are no simple degree two subrepresentations of $\rho_1$ so the socle of $\rho_1$ is the one dimensional space spanned by $(1,0,0)^T$. Thus $\rho_1$ is clearly not semisimple.
+	
+	\brk
+	
+	Let $\mathbf{v}=(a,b,c)^T$ be any vector spanning a degree one subrepresentation of $\rho_2$. Then 
+	\[\rho_2(x)\mathbf{v}=(a,b+c,c)^T,\qquad \rho_2(y)\mathbf{v}=(a+c,b,c)^T.\]
+	Neither can be $\mathbf{0}$ since otherwise $\mathbf{v}=\mathbf{0}$. But this implies $c=0$. Therefore there are three one-dimensional invariant subspaces spanned by $(1,0,0)^T$, $(0,1,0)^T$ and $(1,1,0)^T$.
+	
+	Now given vectors $\mathbf{v}=(a,b,c)^T$ and $\mathbf{w}=(d,e,f)^T$ spanning a degree 2 subrepresentation, notice that if $c=f$ then $\mathbf{v}+\mathbf{w}$ is either $\mathbf{0}$ (whence $\mathbf{v}=\mathbf{w}$) or else this sum is one of the vectors from the previous paragraph. In either case $\mathbf{v}$ and $\mathbf{w}$ don't span a simple degree two representation space, so we have $c\ne f.$
+	
+	But then without loss of generality if $c=0$, $\mathbf{v}$ spans an invariant subspace so we can conclude that there are \textit{no} degree two simple subrepresentations of $\rho_2$. Thus the socle is computed as the sum of the spaces spanned by the three vectors from the first paragraph:
+	\[\langle(1,0,0)^T,(0,1,0)^T,(1,1,0)^T\rangle=\{(a,b,0)^T\in\F_2^3\}\subsetneq\F_2^3\]
+	so this representation is not semisimple either.
+\end{sol}
+
+\begin{prob}{8}
+	Let $G=C_p=\langle x\rangle$ and $R=\F_p$ for some prime $p\ge 3.$ Consider the two representations $\rho_1$ and $\rho_2$ specified by
+	\[\rho_1(x)=\begin{pmatrix}
+		1&1&0\\0&1&1\\0&0&1
+	\end{pmatrix}\quad\text{and}\quad \rho_1(x)=\begin{pmatrix}
+	1&1&1\\0&1&0\\0&0&1
+	\end{pmatrix}.\]
+	Calculate the socles of these two representations and show that neither representation is semisimple. Show that the second representation is nevertheless the direct sum of two nonzero subrepresentations.
+\end{prob}
+\begin{sol}
+	Consider first $\rho_1$. If $\mathbf{v}=(a,b,c)$ (lazily eschewing the transpose in this problem for notational simplicity) spans a one dimensional invariant subspace, then for some $\alpha\in\Z_p$ we have
+	\[\rho_1(x)\mathbf{v}=\alpha\begin{pmatrix}
+		a+b\\b+c\\c
+	\end{pmatrix}\]
+	Assume by contradiction that $c\ne 0$. Then $\alpha=1$ and $b=b+c\Rightarrow c=0$, a contradiction. Thus $c=0$. Similarly if $b\ne 0$, $a+b=a$, and we get another contradiction. Thus $b=c=0$. Any vector $(a,0,0)\in\F_p^3$ spans an invariant subspace with the trivial action by $\rho_1$ so these are all the degree one subrepresentations.
+	
+	Notice that if $V$ is the representation space of a degree two subrepresentation of $\rho_1$ and if $\mathbf{v}\in V$ where the third component of $\mathbf{v}$ is zero, we have that $\mathbf{v}=0$. This can be seen by considering 
+	\[\left(\rho_1(x^2)-\rho_1(x)\right)\begin{pmatrix}v_1\\v_2\\0\end{pmatrix}=\begin{pmatrix}v_1+2v_2\\v_2\\0\end{pmatrix}-\begin{pmatrix}v_1+v_2\\v_2\\0\end{pmatrix}=\begin{pmatrix}v_2\\0\\0\end{pmatrix}\]
+	and if $v_2\ne 0$, $V$ contains one of the one-dimensional subspaces from above and is therefore not simple. Otherwise $v_2=0$ and $\mathbf{v}$ spans a degree 1 invariant subspace, so again $V$ is not simple.
+	
+	\textbf{Not finished.}
+\end{sol}
+
+\begin{prob}{9}
+	Let $k$ be an infinite field of characteristic 2, and $G=\langle x,y\rangle\cong C_2\times C_2$ be the noncyclic group of order 4. For each $\lambda\in k$, let $\rho_\lambda(x),\rho_\lambda(y)$ be
+	\[\rho_\lambda(x)=\begin{pmatrix}1&0\\1&1\end{pmatrix},\quad\rho_\lambda(y)=\begin{pmatrix}1&0\\\lambda & 1\end{pmatrix},\]
+	regarded as linear maps $U_\lambda\to U_\lambda$ where $U_\lambda$ is a $k$-vector space of dimension 2 with basis $\{e_1,e_2\}.$
+	\begin{itemize}
+		\item[(a)] Show that $\rho_\lambda$ defines a representation of $G$ with representation space $U_\lambda$.
+		\item[(b)] Find a basis for $\Soc U_\lambda$.
+		\item[(c)] By considering the effect on $\Soc U_\lambda$, show that any $kG$-module homomorphism $\alpha:U_\lambda\to U_\mu$ has a triangular matrix $\alpha=(\begin{smallmatrix}a&0\\b&c\end{smallmatrix})$ with respect to the given bases.
+		\item[(d)] Show that if $U_\lambda\cong U_\mu$ as $kG$-modules then $\lambda=\mu$. Deduce that $kG$ has infinitely many nonisomorphic 2-dimensional representations.
+	\end{itemize}
+\end{prob}
+\begin{sol}
+	Let $k,G,$ and $\rho_\lambda$ be defined as above.
+	\subsubsection*{(a)}
+	Some routine computations gives us
+	\[\rho_\lambda(x)\rho_\lambda(y)=\begin{pmatrix}1&0\\\lambda+1& 1\end{pmatrix}=\rho_\lambda(y)\rho_\lambda(x)\]
+	and
+	\[(\rho_\lambda(x))^2=(\rho_\lambda(y))^2=I_2\]
+	proving $\rho_\lambda$ is a group homomorphism into $GL_2(k)$, whence is a representation (which acts on $U_\lambda$ by definition).
+	\subsubsection*{(b)}
+	Any one dimensional subspace spanned by $(a,b)$ must have $a=0$ in order to be fixed by $x$ (referring for simplicity to the element and its action on $U_\lambda$ rather than its image under the map). But then the only proper subspace is the one spanned by $e_2.$
+	\subsubsection*{(c)}
+	Leveraging the result from problem 1.4, if $\alpha:U_\lambda\to U_\mu$ is a $kG$-module homomorphism, then 
+	\[\alpha(\Soc U_\lambda)=\alpha(\langle e_2\rangle)\subseteq \langle e_2\rangle=\Soc U_\mu.\]
+	That is, $\alpha(e_1)=ce_1$ for some $c\in k$, giving us that $\alpha$ has the form
+	\[\begin{pmatrix}
+		a & 0\\
+		b & c
+	\end{pmatrix}\]
+	for some $a,b\in k$ in the standard basis.
+	\subsubsection*{(d)}
+	Assume that $U_\lambda\cong U_\mu$ via $\alpha$. By the fact that the $G$ action pulls through $\alpha$, we get that
+	\[\begin{pmatrix}1&0\\1&1\end{pmatrix}
+	\begin{pmatrix}a&0\\b&c\end{pmatrix}
+	=\begin{pmatrix}a&0\\a+b&c\end{pmatrix}
+	=\begin{pmatrix}a&0\\b+c&c\end{pmatrix}
+	=\begin{pmatrix}a&0\\b&c\end{pmatrix}
+	\begin{pmatrix}1&0\\1&1\end{pmatrix}\]
+	and so $a+b=b+c$ whence $a=c=k$. That this matrix is invertible means $k\ne 0.$
+	
+	Using a similar computation, we know
+	\[\begin{pmatrix}1&0\\\lambda&1\end{pmatrix}
+	\begin{pmatrix}a&0\\b&c\end{pmatrix}
+	=\begin{pmatrix}a&0\\\lambda a+b&c\end{pmatrix}
+	=\begin{pmatrix}a&0\\b+\mu c&c\end{pmatrix}
+	=\begin{pmatrix}a&0\\b&c\end{pmatrix}
+	\begin{pmatrix}1&0\\\mu&1\end{pmatrix}\]
+	so $\lambda a=\mu c$ or $\lambda k=\mu k$ and since $k\ne 0$, $\lambda=\mu.$
+	
+	Thus since $\rho_\lambda$ can be defined for any $\lambda\in k$, this gives us the existence of infinitely many non-isomorphic two dimensional representations, as desired.
+\end{sol}
+
+\begin{prob}{10}
+	Let
+	\[\rho_1:G\to GL(V),\qquad\rho_2:G\to GL(V)\]
+	be two representations of $G$ on the same $R$-module $V$ that are injective as homomorphisms. (We say that such a representation is \textit{faithful}.) Consider the three properties that
+	\begin{itemize}
+		\item[(1)] the $RG$-modules given by $\rho_1$ and $\rho_2$ are isomorphic,
+		\item[(2)] the subgroups $\rho_1(G)$ and $\rho_2(G)$ are conjugate in $GL(V)$,
+		\item[(3)] for some automorphism $\alpha\in\Aut(G)$, the  representations $\rho_1$ and $\rho_2\alpha$ are isomorphic.
+	\end{itemize}
+	Show that (1)$\Rightarrow$(2) and that (2)$\Rightarrow$(3). Show also that if $\alpha\in\Aut(G)$ is an inner automorphism then $\rho_1$ and $\rho_1\alpha$ are isomorphic.
+\end{prob}
+\begin{sol}
+	Let $\rho_i:G\to GL(V)$ be faithful representations acting on $_RV$.
+	\subsubsection*{(1)$\Rightarrow$(2)}
+	Let $V_1$ and $V_2$ be $V$ with the $RG$-module structure defined by $\rho_1$ and $\rho_2$, respectively and assume that $V_1\cong V_2$, say via a map $\alpha$. Let $v\in V$ be arbitrary and notice that by virtue of being a $RG$-module homomorphism,
+	\[\alpha(\rho_1(g)(v))=\rho_2(g)\alpha(v),\quad\forall g\in G.\]
+	That is, $\alpha\circ \rho_1(g)=\rho_2(g)\circ\alpha$ as maps in $GL(V)$ (since $\alpha$ is invertible and $R$-linear) and furthermore
+	\[\rho_1(g)=\alpha^{-1}\circ\rho_2(g)\circ\alpha\]
+	for each $g\in G$ whence $\rho_1(G)$ is conjugate to $\rho_2(G)$ in $GL(V)$.
+	\subsubsection*{(2)$\Rightarrow$(3)}
+	Now assume that $T^{-1}\rho_1(G)T=\rho_2(G)$ for some $T\in GL(V)$. Now since $\rho_1$ and $\rho_2$ are faithful, $\exists! h_g\in G$ for each $g\in G$ such that
+	\[T^{-1}\rho_1(g)T=\rho_2(h).\]
+	Define $\alpha\in\Aut(G)$ by $\alpha(g)=h_g$. This is a homomorphism since $\rho_2$ is injective and
+	\[\rho_2(\alpha(gg'))=T^{-1}\rho_1(gg')T=T^{-1}\rho_1(g)TT^{-1}\rho_1(g')T=\rho_2(\alpha(g))\rho_2(\alpha(g'))=\rho_2(\alpha(g)\alpha(g'))\]
+	and an automorphism since it is both surjective and injective.
+	
+	Now define the map $\varphi=T^{-1}\in GL(V)$. This map is bijective and $R$ linear, so we need only show it is $G$-linear to prove it is a module isomorphism. But consider
+	\[\rho_2(\alpha^{-1}g)(\varphi(v))=T^{-1}\rho_1(g)T(T^{-1}v)=T^{-1}(\rho_1(g)(v))=\varphi(\rho_1(g)(v)).\]
+	which proves $G$-linearity and we can conclude that $\rho_1\cong \rho_2\alpha^{-1}$.
+	\subsubsection*{Finally,}
+	Let $\alpha\in \Aut(G)$ be an inner automorphism corresponding to conjugation by $h\in G$. But then 
+	\[\rho_1(\alpha(g))=\rho_1(h^{-1}gh)=\rho_1(h^{-1})\rho_1(g)\rho_1(h)=H^{-1}\rho_1(g)H\]
+	for each $g\in G$, so $\rho_1(\alpha(G))=H^{-1}\rho_1(G)H$, so (2) applies and the result follows from the argument above.
+\end{sol}
+
+\begin{prob}{11}
+	One version of the Jordan-Zassenhaus Theorem asserts that for each $n$, $GL(n,\Z)=\Aut(\Z^n)$ has only finitely many conjugacy classes of subgroups of finite order. Assuming this, show that for each finite group $G$ and each integer $n$, there are only finitely many isomorphism classes of representations of $G$ on $\Z^n$.
+\end{prob}
+\begin{sol}
+	Fix a finite $G$ and $n\in\N$. Assume by contradiction that there were infinitely many pairwise nonisomophic representations $\rho_i:G\to\Z^n$. Now consider the subgroups $H_i=\rho_i(G)\le Z^n$.
+	
+	Now if $H_i=k^{-1}H_jk$ then $H_i=H_j$ since $\Z^n$ is abelian. But since $G$ is finite, so are the $H_i$, so there are only finitely many maps $\rho_i$ that can map onto each finite $H_i\le \Z^n$. Furthermore by Jordan-Zassenhaus, there exist only finitely many conjugacy classes among the $H_i$, giving that there must be, in fact, only finitely many $H_i$. This contradicts that there be infinitely many $\rho_i$ and proves the statement. 
+\end{sol}
+
+\begin{prob}{12}
+	Write out a proof of Maschke's theorem in the case of representations over $\C$ along the following lines.
+	\begin{itemize}
+		\item[(a)] Given a representation $\rho:G\to GL(V)$ where $V$ is a vector space over $\C$, let $(-,-)$ be a positive definite Hermitian form on $V$. Define a new form $(-,-)_1$ on $V$ by
+		\[(v,w)_1=\frac{1}{|G|}\sum_{g\in G}(gv,gw).\]
+		Show that $(-,-)_1$ is a positive definite Hermitian form, preserved by the action by $G$; that is $(v,w)_1=(gv,gw)_1$ always. If $W$ is a subrepresentation of $V$ then show that $V=W\oplus W^\perp$, as representations.
+		\item[(b)] Show that any finite subgroup of $GL(n,\C)$ is conjugate to a subgroup of $U(n,\C)$ (the unitary group with matrices satisfying $A\bar A^T=I$). Show that any finite subgroup of $GL(n,\R)$ is conjugate to a subgroup of $O(n,\R)$, the orthogonal group of matrices satisfying $AA^T=I$.
+	\end{itemize}
+	
+\end{prob}
+\begin{sol}
+	\textbf{(a)}\hspace{1ex} Define $(-,-)_1$ as above and we can see that this is a bilinear form since
+	\[(a\alpha+b\beta,\gamma)_1=\frac{1}{|G|}\sum_g (ag\alpha+bg\beta,g\gamma)=\frac{1}{|G|}\sum_g\left(a(g\alpha,g\gamma)+b(g\beta,g\gamma)\right)
+	= a(\alpha,\gamma)_1+b(\beta,\gamma)_1\]
+	and linearity in the second coordinate is proved via an identical argument. It is positive definite since $(-,-)$ is positive definite and the image of $(-,-)_1$ is simply the average of images of $(-,-).$
+	
+	Finally this form is Hermitian since 
+	\[(v,w)_1=\frac{1}{|G|}\sum (gv,gw)=\frac{1}{|G|}\sum\overline{(gw,gv)}=\overline{\frac{1}{|G|}\sum(gw,gv)}=\overline{(w,v)_1}.\]
+	That this form is preserved by action by $G$ is evident since multiplying $u$ and $v$ by $g$ is the same as simply permuting the summands in the definition.
+	
+	Now let $_{\C G}W\le V$. $W^\perp$ is a vector space in $V$, but we must show it is stable under the $G$-action. Assume that for $g\in G$ and $0\ne w\in W^\perp$, $gw\in W.$ But then since $W$ is a subrepresentation, $g^{-1}(gw)=w\in W$, a contradiction. Thus $W$ and $W^\perp$ are disjoint (from the definition/linear algebra) subrepresentations of $V$ and it suffices to show $V=W+W^\perp$.
+	
+	To see this,
+\end{sol}
+
+\begin{prob}{13}
+	\begin{itemize}
+		\item[(a)] Using proposition 1.2.4, show that if $A$ is a ring such that the regular representation $_AA$ is semisimple, then every finitely generated $A$-module is semisimple.
+		\item[(b)] Extend the result of part (a) using Zorn's lemma, to show that if $A$ is a ring for which $_AA$ is semisimple then every $A$-module is semisimple.
+	\end{itemize}
+\end{prob}
+\begin{sol}
+	\textbf{(a)}\hspace{1ex} Let $A$ be a ring with semisimple regular representation.
+\end{sol}
+
+\end{document}
