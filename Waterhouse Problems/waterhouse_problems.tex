@@ -83,8 +83,9 @@ right  = 1.0in]{geometry}
 \let\tilde\relax
 \newcommand*{\tilde}[1]{\widetilde{#1}}
 
-\newtheorem{lem}{Lemma}
-\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{thm}[lem]{Theorem}
+\newtheorem{defn}[lem]{Definition}
 
 \setenumerate[0]{label=(\alph*)}
 
@@ -245,18 +246,13 @@ right  = 1.0in]{geometry}
 	Thus these are precisely the maps we desire.
 \end{sol}
 
-\begin{prob}{}
+\section{Examples}
+\begin{defn}[Closed Embedding]
+	If $G$ and $H$ are affine group schemes represented by $A$ and $B$, respectively and
+	if $\psi:H\to G$ is a homomorphism of affine group schemes (locally a group homomorphism)
+	then if the corresponding algebra map $A\to B$ is surjective, then $\psi$ is called
+	a \textbf{closed embedding.}
+\end{defn}
 
-\end{prob}
-\begin{sol}
-	a
-\end{sol}
-
-\begin{prob}{}
-
-\end{prob}
-\begin{sol}
-	a
-\end{sol}
 
 \end{document}

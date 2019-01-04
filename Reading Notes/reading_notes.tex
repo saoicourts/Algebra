@@ -2,22 +2,79 @@
 
 \usepackage{setspace}
 
-\usepackage{xcolor, amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem}
-\usepackage[amsthm]{ntheorem}
+\usepackage{xcolor, amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox}
+\usepackage[framed,thmmarks]{ntheorem}
 \usepackage[mathscr]{euscript}
+
+%set up theorem/definition/etc envs
+%Problems will be created using their own counter and style
+\theoreminframepreskip{0pt}
+\theoreminframepostskip{0pt}
+\newframedtheorem{prob}{Problem}[section]
+
+%solution template
+\theoremstyle{nonumberbreak}
+\theoremindent0.5cm
+\theorembodyfont{\upshape}
+\theoremseparator{:}
+\theoremsymbol{\ensuremath\spadesuit}
+\newtheorem{sol}{Solution}
+
+%Theorems, Lemmas, and Corollaries
+\theoremstyle{changebreak}
+\theoremseparator{}
+\theoremsymbol{}
+\theoremindent0.5cm
+\theoremheaderfont{\bfseries} 
+\newtheorem{thm}{Theorem}[subsection]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+
+%Create a new env that references a theorem and creates a 'primed' version
+%Note this can be used recursively to get double, triple, etc primes
+\newenvironment{thm-prime}[1]
+  {\renewcommand{\thethm}{\ref{#1}$'$}%
+   \addtocounter{thm}{-1}%
+   \begin{thm}}
+  {\end{thm}}
+
+\setlength\fboxsep{15pt}
+
+%Shade definitions
+\theoremindent0cm
+\theoremheaderfont{\normalfont\bfseries} 
+\def\theoremframecommand{\colorbox[rgb]{.9,.9,1}}
+\newshadedtheorem{defn}[thm]{Definition}
+
+%Man, that's really good! Let's use the same thing for definitons.
+\newenvironment{def-prime}[1]
+  {\renewcommand{\thethm}{\ref{#1}$'$}%
+   \addtocounter{thm}{-1}%
+   \begin{def}}
+  {\end{def}}
+
+%proofs
+\theoremstyle{nonumberbreak}
+\theoremindent1cm
+\theoremheaderfont{\sc}
+\theoremseparator{}
+\theoremsymbol{\ensuremath\spadesuit}
+\newtheorem{prf}{Proof}
+
+\usepackage{fullpage}
 %set margins
-\usepackage[
-top    = 1.0in,
-bottom = 1.0in,
-left   = 1.0in,
-right  = 1.0in]{geometry}
+%\usepackage[
+%top    = 1.0in,
+%bottom = 1.0in,
+%left   = 1.0in,
+%right  = 1.0in]{geometry}
 
 %header stuff
 \setlength{\headsep}{24pt}  % space between header and text
 \pagestyle{fancy}     % set pagestyle for document
-\lhead{ Problems from our reading course } % put text in header (left side)
+\lhead{Notes on Affine Group Schemes and Their Representations} % put text in header (left side)
 \rhead{Nico Courts} % put text in header (right side)
-\cfoot{\it p. \thepage}
+\cfoot{\itshape p. \thepage}
 \setlength{\headheight}{15pt}
 \allowdisplaybreaks
 
@@ -76,8 +133,10 @@ right  = 1.0in]{geometry}
 \DeclareMathOperator{\Res}{Res_H}
 
 %socle
-%restriction
 \DeclareMathOperator{\Soc}{Soc}
+
+%rank
+\DeclareMathOperator{\rank}{rank}
 
 %induction
 \DeclareMathOperator{\Ind}{Ind_H^G}
@@ -86,21 +145,12 @@ right  = 1.0in]{geometry}
 \let\tilde\relax
 \newcommand*{\tilde}[1]{\widetilde{#1}}
 
-\newtheorem{lem}{Lemma}[subsection]
-\newtheorem{thm}[lem]{Theorem}
-\newtheorem{pro}[lem]{Problem}
-
+% Enumerate will automatically use letters (e.g. part a,b,c,...)
 \setenumerate[0]{label=(\alph*)}
 
-%New environments for problem solving
-\newenvironment{prob}{\par\smallskip
-	\noindent\begin{mdframed}\small \begin{pro}}{\end{pro}\end{mdframed}\medskip}
-\newenvironment{sol}{\noindent \textbf{Solution.} \,}{\\\hspace*{\fill}$\square$\medskip}
-
-%\onehalfspacing
 \begin{document}
 %make the title page
-\title{ Notes and Problems from My Research\vspace{-1ex}}
+\title{Notes and Problems from My Research\vspace{-1ex}}
 \author{Nico Courts}
 \date{}
 \maketitle
@@ -151,7 +201,47 @@ right  = 1.0in]{geometry}
 \end{sol}
 
 \section{Winter 2019}
-\subsection{Preparation: Waterhouse and G\"ortz \& Weddhorn}
-Problems I worked from Waterhouse can be found in the appropriate file. 
+This is my first official quarter as Julia's student!! 
+\subsection{Preparation, Waterhouse, and G\"ortz \& Weddhorn}
+To give a sense of direction, Julia recommended that I take a look at the following regularity theorem:
+\begin{thm}[Smoothness Theorem]\label{smooth}
+	Let $G$ be an algebraic affine group scheme over a field $k$. Then $k[G]\otimes \bar k$ is reduced if and
+	only if $\dim G = \rank \Omega_{k[G]}$.
+\end{thm}
+I have quite a bit of information to process before this, so I will get started!
+\begin{defn}[Closed Embedding]
+	If $G$ and $H$ are affine group schemes represented by $A$ and $B$, respectively and
+	if $\psi:H\to G$ is a homomorphism of affine group schemes (locally a group homomorphism)
+	then if the corresponding algebra map $A\to B$ is surjective, then $\psi$ is called
+	a \textbf{closed embedding.}
+\end{defn}
+
+As its name suggests, this means that $\psi$ is an isomorphism onto a \textbf{closed subgroup}
+$H'$ of $G$. This is, in fact, a definition of this property. One can also think about 
+it in the following ways: a group scheme $H$ is closed in $G$ if
+\begin{itemize}
+	\item $H$ is defined by the relations imposed by $G$ plus some additional ones.
+	\item $H=V(I)$ for some ideal $I\subset k[G]$. 
+\end{itemize}
+Thinking back to our algebraic geometry, these are not too hard to see as equivalent. 
+For instance, there is a closed embedding of $\mu_n$ in $G_m$ (simply adding in $x^n-1$)
+and of $SL_n$ in $GL_n$ (adding $\det = 1$).
+
+\subsubsection{Hopf Ideals}
+One problem with the above characterization that one cannot choose $I$ arbitrarily and end
+up with a group scheme. This is equivalent to arbitrarily adding relations to a group, which is
+not always guaranteed to work out well (think adding $\det = 2$ to $GL_n$).
+
+Actually, we can exactly categorize the closed embeddings of subgroups in $G$ by considering certain
+ideals of the algebra $A$ which represents it. 
+\begin{defn}
+	Let $A$ be an algebra and $I\lhd A$. Then if 
+	\begin{itemize}
+		\item $\Delta(I)$ goes to zero under the map $A\otimes A\to A/I\otimes A/I$,
+		\item $S(I)\subseteq I$
+		\item $\epsilon(I)=0$
+	\end{itemize}
+	then $I$ is called a \textbf{Hopf Ideal of $A$.}
+\end{defn}
 
 \end{document}
