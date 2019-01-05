@@ -10,7 +10,8 @@
 %Problems will be created using their own counter and style
 \theoreminframepreskip{0pt}
 \theoreminframepostskip{0pt}
-\newframedtheorem{prob}{Problem}[section]
+\newframedtheorem{prob}{Problem}[part]
+\renewcommand\theprob{\arabic{part}.\arabic{prob}}
 
 %solution template
 \theoremstyle{nonumberbreak}
@@ -55,19 +56,34 @@
 
 %proofs
 \theoremstyle{nonumberbreak}
-\theoremindent1cm
+\theoremindent0.5cm
 \theoremheaderfont{\sc}
 \theoremseparator{}
 \theoremsymbol{\ensuremath\spadesuit}
 \newtheorem{prf}{Proof}
 
+%remarks
+\theoremstyle{change}
+\theoremindent0.5cm
+\theoremheaderfont{\sc}
+\theoremseparator{:}
+\theoremsymbol{}
+\newtheorem{rmk}[thm]{Remark}
+
+%waterhouse problem
+\newenvironment{wprob}[1]{\begin{prob}{\normalfont\bfseries (Waterhouse #1) }\itshape}{\end{prob}}
+
+%Replacement for the old geometry package
 \usepackage{fullpage}
-%set margins
-%\usepackage[
-%top    = 1.0in,
-%bottom = 1.0in,
-%left   = 1.0in,
-%right  = 1.0in]{geometry}
+
+%Put page breaks before each part
+\let\oldpart\part%
+\renewcommand{\part}{\clearpage\oldpart}%
+
+%Center each figure by default
+\makeatletter
+\g@addto@macro\@floatboxreset{\centering}
+\makeatother
 
 %header stuff
 \setlength{\headsep}{24pt}  % space between header and text
@@ -141,6 +157,17 @@
 %induction
 \DeclareMathOperator{\Ind}{Ind_H^G}
 
+%identity map
+\DeclareMathOperator{\id}{id}
+
+%schemes
+\DeclareMathOperator{\Ga}{\ensuremath\mathbf{G_a}}
+\DeclareMathOperator{\Gm}{\ensuremath\mathbf{G_m}}
+\newcommand*{\GL}[1]{\ensuremath\mathbf{GL_#1}}
+\newcommand*{\SL}[1]{\ensuremath\mathbf{SL_#1}}
+\newcommand*{\mun}[1]{\ensuremath\mathbf{\mu_#1}}
+\newcommand*{\alp}[1]{\ensuremath\mathbf{\alpha_#1}}
+
 %fix tilde
 \let\tilde\relax
 \newcommand*{\tilde}[1]{\widetilde{#1}}
@@ -157,8 +184,8 @@
 
 %begin problems
 
-\section{Autumn 2018}
-\subsection{Problems}
+\part{Autumn 2018}
+\section{Problems}
 \begin{prob}
 	Assume that $k$ is a field and let $K=k(t)$ (notice $K$ is a transcendental extension). Prove that $\Hom_k(K,k)\not\cong K$.
 \end{prob}
@@ -189,6 +216,8 @@
 
 	But then the existence of this sequence contradicts the minimality of the original sequence, so
 	no finite sequence can exist.
+
+	The last statement (as discussed with Julia) is actually false. 
 \end{sol}
 
 \begin{prob}
@@ -200,9 +229,239 @@
 	exercise at that point.
 \end{sol}
 
-\section{Winter 2019}
-This is my first official quarter as Julia's student!! 
-\subsection{Preparation, Waterhouse, and G\"ortz \& Weddhorn}
+\begin{wprob}{1.1}
+	\begin{enumerate}
+		\item If $R$ and $S$ are two $k$ algebras and $F$ is a representable functor, show $F(R\times S)\cong F(R)\times F(S)$.
+		\item Show there is no representable functor $R$ such that every $F(R)$ has exactly two elements.
+		\item Let $F$ be the functor represented by $k\times k$. Show that $F(R)$ has two elements exactly when $R$ has no idempotents besides 0 and 1.
+	\end{enumerate}
+\end{wprob}
+
+\begin{sol}
+	\subsubsection*{(a)}
+	Let $A$ be the $k$-algebra representing $F$. Thus $F(R)$ is naturally isomorphic to
+	$\Hom_k(A,R)$ and $F(S)\simeq\Hom(A,S)$. Then define the map $\Phi:\Hom(A,R\times S)\to\Hom(A,R)\times\Hom(A,S)$
+	via
+	\[\Phi(\varphi)=(\pi_R\circ\varphi,\pi_S\circ\varphi)\]
+	where $\pi_X$ is the canonical projection onto $X$.
+
+	This is surjective since (by the universal property of products) any pair of maps
+	$\varphi_R:A\to R$ and $\varphi_S:A\to S$ factors through the product $R\times S$
+	and furthermore it does so \textit{uniquely}, giving us injectivity. Thus this map
+	(which is clearly a homomorphism since $\pi_X$ is) is a bijection.
+	\subsubsection*{(b)}
+	By the last problem this is impossible since if $|F(k)|=2$ then 
+	\[|F(k\times k)|=|F(k)\times F(k)|=4.\]
+	\subsubsection*{(c)}
+	Let $F$ be such a functor. Consider any $\varphi\in\Hom(k\times k, R)\simeq F(R)$.
+	Assume first that $F(R)\cong \Z/2$ and let $r$ be an idempotent in $R$. 
+\end{sol}
+
+\begin{wprob}{1.2}
+	Let $E$ be a functor represented by $A$ and let $F$ be any functor. Show that the natural
+	maps $\eta:E\to F$ correspond to elements in $F(A)$.
+\end{wprob}
+\begin{sol}
+	Consider the map $\Phi$ from natural maps $E\to F$ to elements in $F(A)$ defined by
+	(again leveraging the representability of $E$)
+	\[\eta\mapsto \eta(\operatorname{id}_A)\in F(A).\]
+	Conversely, consider the map $\Psi$ from $F(A)$ to the natural maps $E\to F$ via
+	\[x\mapsto \xi_x\]
+	where $\xi_x$ where for any $Y$ and $y\in E(Y)\cong \Hom(A,Y)$ we define the $Y^{th}$ component of $\xi_x$
+	as 
+	\[\xi_x(y)=F(y)(x)\in F(Y)\]
+	where (for clarity while I get a grasp here) $F(y):F(A)\to F(Y)$.
+
+	Since we are only looking for a bijection, we only need that these maps are inverses.
+	Consider that for all $Y$ and $y\in E(Y)$,
+	\begin{align*}
+		\Psi\circ\Phi(\eta)(y)&=\Psi\left(\eta(\operatorname{id}_A)\right)(y)\\
+		&= \xi_{\eta(\operatorname{id}_A)}(y)\\
+		&= F(y)\circ \eta (\operatorname{id}_A)\\
+		&= \eta\circ E(y) (\operatorname{id}_A)\\
+		&= \eta(y\circ\operatorname{id}_A)=\eta(y)
+	\end{align*}
+	where above we used the naturality of $\eta$ along with the fact that $E(y)$ is just
+	precomposition with $y$. Thus $\Psi\circ\Phi(\eta)=\eta.$
+
+	But then for any $x\in F(A)$,
+	\begin{align*}
+		\Phi\circ\Psi(x)&=\Phi\circ\xi_x\\
+		&=\xi_x(\operatorname{id}_A)\\
+		&=F(\operatorname{id}_A)(x)\\
+		&=\operatorname{id}_{F(A)}(x)=x
+	\end{align*}
+	completing the proof.
+\end{sol}
+
+\begin{wprob}{1.3}
+	Let $E$ be a functor represented by $A$, and let $F$ be any functor. Let $\Psi:F\to E$
+	be a natural map with surjective component maps. Show there is a natural map $\Phi:E\to F$
+	with $\Psi\circ\Phi=\operatorname{id}_E$.
+\end{wprob}
+\begin{sol}
+	Since in particular $\Psi_A$ is surjective, there is an $x\in F(A)$ such that $\Psi(x)=\operatorname{id}_A$.
+	Then using the map from the last problem, let $\Phi=\xi_x$. Then we can compute for any $R$ and $g\in E(R)$
+	\begin{align*}
+		\Psi\circ\Phi (g) &= \Psi\circ F(g) (x)\\
+		&=E(g)\circ \Psi(x)\\
+		&=E(g)(\operatorname{id}_A)\\
+		&=g\circ \operatorname{id}_A=g
+	\end{align*}
+	since $g:A\to R$, so $E(g):E(A)\to E(R)$, which is just composition with $g$.
+\end{sol}
+
+\begin{wprob}{1.5}
+	Write out $\Delta,\varepsilon,$ and $S$ for the Hopf algebras representing $\SL{2}, \mun{n},$ and $\alp{p}$.
+\end{wprob}
+\begin{sol}
+	\subsubsection*{$\SL{2}$:}
+	Notice $SL_2$ is represented by $A=k[X_1,X_2,X_3,X_4]/(X_1X_4-X_3X_2-1)$ so take two elements
+	$f,g\in\Hom(A,R)$ where $f(X_i)=a_i\in R$ and $g(X_i)=b_i\in R$ and notice that we want
+	\[(f,g)\Delta=h\]
+	where since
+	\[\begin{pmatrix}
+		a_1 & a_2\\ a_3 & a_4
+	\end{pmatrix}\begin{pmatrix}
+		b_1 & b_2\\ b_3 & b_4
+	\end{pmatrix}=\begin{pmatrix}
+		a_1b_1+a_2b_3 & a_1b_2+a_2b_4\\ a_3b_1+a_4b_3 & a_3b_2+a_4b_4
+	\end{pmatrix}=\begin{pmatrix}
+		c_1 & c_2\\ c_3 & c_4
+	\end{pmatrix}\]
+	we want to have that $h(X_i)=c_i.$
+
+	So then if $\Delta:A\to A\otimes A$ is defined as follows:
+	\begin{align*}
+		X_1&\mapsto X_1\otimes X_1+X_2\otimes X_3\\
+		X_2&\mapsto X_1\otimes X_2 +X_2\otimes X_4\\
+		X_3&\mapsto X_3\otimes X_1+X_4\otimes X_3\\
+		X_4&\mapsto X_3\otimes X_2+X_4\otimes X_4
+	\end{align*}
+	Where one can compute
+	\begin{align*}
+		\id\otimes\Delta\circ \Delta (X_1)&= (\id\otimes\Delta)(X_1\otimes X_1+X_2\otimes X_3)\\
+		&= X_1\otimes X_1\otimes X_1 + X_1\otimes X_2\otimes X_3 + X_2\otimes X_3\otimes X_1 + X_2\otimes X_4\otimes X_3\\
+		&= (\Delta\otimes\id)(X_1\otimes X_1+X_2\otimes X_3)=\Delta\otimes\id\circ \Delta (X_1)
+	\end{align*}
+	and similar equality holds for the other $X_i$, so this is $\Delta$. 
+
+	Using that we want $\varepsilon\otimes\id\circ \Delta(X_i)=1\otimes X_i$, we see that the map
+	$\varepsilon$ sending $X_1$ and $X_4$ to 1 and $X_2$ and $X_3$ to zero is the map we want.
+
+	Notice that as a sanity check we get that 
+	\[\begin{pmatrix}
+		\varepsilon(X_1) & \varepsilon(X_2)\\
+		\varepsilon(X_3) & \varepsilon(X_4)
+	\end{pmatrix}=\begin{pmatrix}
+		1 & 0\\
+		0 & 1
+	\end{pmatrix}=I_2\]
+
+	Finally using that $(S,\id)\circ\Delta(X_i)=\varepsilon(X_i)$ and the fact that in $A$,
+	$\det=X_1X_4-X_3X_2=1$, we can define $S$ such that
+	\[\begin{pmatrix}
+		S(X_1) & S(X_2)\\
+		S(X_3) & S(X_4)
+	\end{pmatrix}=\begin{pmatrix}
+		X_4 & -X_2\\
+		-X_3 & X_1
+	\end{pmatrix}=\begin{pmatrix}
+		X_1 & X_2\\
+		X_3 & X_4
+	\end{pmatrix}^{-1}\]
+	and one can verify that this satisfies the relation above.
+	\subsubsection*{$\mun{n}:$}
+	For this scheme, $A=k[X]/(X^n-1)$ is the representing algebra. If $f,g\in\Hom(A,k)$ with
+	$f(X)=r$ and $g(X)=s$, then we want $(f,g)\Delta(X)=\sum f(X_{(1)})g(X_{(2)})=m(r,s)=rs$ where 
+	$\Delta(X)=\sum X_{(1)}\otimes X_{(2)}$. An obvious choice is the diagonal map.
+
+	Then choosing $\varepsilon(X)=1$ satisfies the diagrams (as before in $G_m$) and using our
+	intuition, $S(X)=X^5$ which also works.
+	\subsubsection*{$\alp{p}$:}
+	This time we are working with $A=\Z/p[X]/(X^p)$. This time (since the group is additive) we want
+	$\Delta(X)=X\otimes 1+1\otimes X$, which we can see works with associativity immediately.
+
+	Following suit with the other additive group scheme $G$, setting $\varepsilon(X)=0$ and $S(X)=-X$
+	we can quickly check these still satisfy the given axioms.
+\end{sol}
+
+\begin{wprob}{1.6}
+	In $A=k[X_{11},\dots,X_{nn},1/\operatorname{det}]$ representing $GL_n$, show that $\Delta(X_{ij})=\sum X_{ik}\otimes X_{kj}$.
+	What is $\varepsilon(X_{ij})$?
+\end{wprob}
+\begin{sol}
+	Due to the uniqueness of $\Delta,\varepsilon,$ and $S$, we need only find maps satisfying 
+	the diagrams. I claim that $\varepsilon(X_{ij})=\delta_{ij}$. In this case, notice
+	\[(\varepsilon\otimes\operatorname{id})\circ\Delta(X_{ij})=\varepsilon\otimes\operatorname{id}\left( \sum X_{ik}\otimes X_{kj} \right)=\sum \delta_{ik}\otimes X_{kj}=1\otimes X_{ij}\]
+	exactly as we want.
+
+	For associativity, notice
+	\[(\Delta\otimes \operatorname{id})\circ \Delta (X_{ij})=\Delta\otimes\operatorname{id}\left( \sum_k X_{ik}\otimes X_{kj} \right)=\sum_k\left(\sum_l X_{il}\otimes X_{lk}\right)\otimes X_{kj}\]
+	and then the associativity of $\Delta$ follows simply from the associativity of the tensor product.
+
+	For the last axiom, we compute $S$ such that $(S,\operatorname{id})\circ\Delta=\iota\circ\varepsilon$ where $\iota:K\to A$ is the map sending $k\mapsto k\cdot 1_A$.
+	That is, we define $S:A\to A$ so that
+	\[\sum_k S(X_{ik})X_{kj}=\delta_{ij}.\]
+
+	We want to leverage the fact that for a fixed $i$ and $j$, the determinant is
+	\begin{align*}
+		\operatorname{det} &= \sum_{\sigma\in S_n}\operatorname{sgn}(\sigma)\prod_l X_{\sigma(l)l}\\
+		&=\sum_\sigma \operatorname{sgn}(\sigma)X_{\sigma{j}j}\prod_{l\ne j} X_{\sigma(l)l}\\
+		&=\sum_i X_{ij}\left(\sum_{\sigma(j)=i}\operatorname{sgn}(\sigma)\prod_{l\ne j}X_{\sigma(l)l}\right)
+	\end{align*}
+	and so we want that 
+	\[S(X_{ik})=\frac{1}{\operatorname{det}}\sum_{\sigma(i)=k}\operatorname{sgn}(\sigma)\prod_{l\ne k}X_{\sigma(l)l}\]
+	so that when $i=j$,
+	\[\sum_k S(X_{ik})X_{kj}=\frac{1}{\operatorname{det}}\sum_k X_{kj}\sum_{\sigma(j)=k}\operatorname{sgn}(\sigma)\prod_{l\ne k}X_{\sigma(l)l}=1=\delta_{ij}\]
+	whenever $i\ne j$, however, this equation is the determinant of the matrix where we have replaced
+	the $j^{th}$ column with a copy of the $i^{th}$ column. This is linearly dependent, so 
+	\[\frac{1}{\operatorname{det}}\sum_k S(X_{ik})S_{kj}=0=\delta_{ij}.\]
+	Thus these are precisely the maps we desire.
+\end{sol}
+
+\begin{wprob}{1.10}
+	Prove the following Hopf algebra facts by interpreting them as statements about group functors:
+	\begin{enumerate}
+		\item $S\circ S=\id$
+		\item $\Delta\circ S=(\operatorname{twist})\circ(S\otimes S)\Delta$
+		\item $\varepsilon\circ S=\varepsilon$
+		\item The map $A\otimes A\to A\otimes A$ sending $a\otimes b$ to $(a\otimes 1)\Delta(b)$
+		is an algebra isomorphism.
+	\end{enumerate}
+\end{wprob}
+\begin{sol}
+	\subsubsection*{(a)}
+	Dualizing, we get
+	\begin{figure}[h]
+		\begin{tikzcd}[column sep=small]
+			A\ar[rr,equal]\ar[rd,"S",swap] & & A\\
+			& A\ar[ru,"S",swap] &
+		\end{tikzcd}
+		\begin{tikzcd}[column sep=small]
+			A\ar[rr,equal] & & A\ar[ld,"inv"]\\
+			& A\ar[lu,"inv"] &
+		\end{tikzcd}
+	\end{figure}
+
+	\noindent so this statement is equivalent to the group (scheme) fact that $(g^{-1})^{-1}=g$.
+	\subsubsection*{(b)}
+	Using a similar duality argument, this is equivalent to saying 
+	\[\operatorname{inv}\circ m = m\circ(\operatorname{inv}\times\operatorname{inv})\circ(\operatorname{twist})\]
+	but if we consider arbitrary elements $g,h\in G(R)$, this means
+	\[(gh)^{-1}=m\circ(\operatorname{inv}\times\operatorname{inv})(h,g)=m(h^{-1},g^{-1})=h^{-1}g^{-1}\]
+	which is clearly true.
+	\subsubsection*{(c)}
+	This one is equivalent to $(\operatorname{inv})\circ i=i$ where if $g\in G(R)$, 
+	\[(\operatorname{inv})\circ i(g)=(\operatorname{inv})(e)=e=i(g)\]
+	or in other words $e^{-1}=e.$
+	\subsubsection*{(d)}
+\end{sol}
+
+\part{Winter 2019}
+This is my first official quarter as Julia's student! My plan for now is to continue working on Waterhouse as well
+as learn about algebraic geometry (alongside my usual classes, of course).
+\section{Preparation, Waterhouse, and G\"ortz \& Weddhorn}
 To give a sense of direction, Julia recommended that I take a look at the following regularity theorem:
 \begin{thm}[Smoothness Theorem]\label{smooth}
 	Let $G$ be an algebraic affine group scheme over a field $k$. Then $k[G]\otimes \bar k$ is reduced if and
@@ -224,13 +483,13 @@ it in the following ways: a group scheme $H$ is closed in $G$ if
 	\item $H=V(I)$ for some ideal $I\subset k[G]$. 
 \end{itemize}
 Thinking back to our algebraic geometry, these are not too hard to see as equivalent. 
-For instance, there is a closed embedding of $\mu_n$ in $G_m$ (simply adding in $x^n-1$)
-and of $SL_n$ in $GL_n$ (adding $\det = 1$).
+For instance, there is a closed embedding of $\mun n$ in $\Gm$ (simply adding in $x^n-1$)
+and of $\SL{n}$ in $\GL{n}$ (adding $\det = 1$).
 
-\subsubsection{Hopf Ideals}
+\subsection{Hopf Ideals}
 One problem with the above characterization that one cannot choose $I$ arbitrarily and end
 up with a group scheme. This is equivalent to arbitrarily adding relations to a group, which is
-not always guaranteed to work out well (think adding $\det = 2$ to $GL_n$).
+not always guaranteed to work out well (think adding $\det = 2$ to $\GL n$).
 
 Actually, we can exactly categorize the closed embeddings of subgroups in $G$ by considering certain
 ideals of the algebra $A$ which represents it. 
@@ -239,9 +498,81 @@ ideals of the algebra $A$ which represents it.
 	\begin{itemize}
 		\item $\Delta(I)$ goes to zero under the map $A\otimes A\to A/I\otimes A/I$,
 		\item $S(I)\subseteq I$
-		\item $\epsilon(I)=0$
+		\item $\varepsilon(I)=0$
 	\end{itemize}
 	then $I$ is called a \textbf{Hopf Ideal of $A$.}
 \end{defn}
+
+\begin{rmk}
+	That these ideals exactly characterize closed subgroups follows since any group (scheme) represented
+	by $A'$ has the property that $\Delta'(A')\subseteq A'\otimes A'$. Since the new comultiplication map
+	$\Delta'$ is derived from the old one $\Delta$, we have the diagram
+	\begin{figure}[h]
+		\begin{tikzcd}
+			A \ar[r,"\Delta"]\ar[d] & A\otimes A\ar[d]\\
+			A/I\ar[r,"\Delta'"] & A/I\otimes A/I
+		\end{tikzcd}
+	\end{figure}
+	
+	\noindent from which we see that $\Delta(I)$ must go to zero in the map on the right.
+	Similarly, we want that $S$ and $\varepsilon$ satisfy similar diagrams.
+
+	Note that an example of such an ideal is $I=\ker(\varepsilon)$.
+\end{rmk}
+
+\begin{defn}
+	A \textbf{character} is a scheme morphism $G\to \Gm$.
+\end{defn}
+
+Let $\Phi$ be a character of $G$ and notice that the corresponding hopf algebra map 
+$\varphi:k[X,1/X]\to A$ is defined by $\varphi(X)=b$, which
+is automatically invertible in $A$. Furthermore since for any $a,b\in G(R)$ we have
+\[\Phi\circ m(a,b)=\Phi(ab)=\Phi(a)\Phi(b)=m\circ(\Phi,\Phi)(a,b)\]
+we get the diagram
+\begin{figure}[h]
+	\begin{tikzcd}
+		G\times G\ar[r,"\Phi\times\Phi"]\ar[d,"m"] & \Gm\times \Gm\ar[d,"m"]\\
+		G\ar[r,"\Phi"] & \Gm
+	\end{tikzcd}
+\end{figure}
+
+\noindent and then by dualizing we get that
+\newpage
+\begin{figure}[h]
+	\begin{tikzcd}
+		A\otimes A & k[X,X^{-1}]\otimes k[X,X^{-1}]\ar[l,"\varphi\otimes\varphi",swap]\\
+		A\ar[u,"\Delta"] & k[X,X^{-1}]\ar[u,swap,"\Delta"]\ar[l,"\varphi"]
+	\end{tikzcd}
+\end{figure}
+
+\noindent where in both diagrams we are abusing notation by using the same symbols for 
+(co)multiplication in the different schemes. So we conclude that 
+\[\Delta(b)=\Delta\circ\varphi(X)=(\varphi\otimes\varphi)\circ \Delta(X)=(\varphi\otimes\varphi)(X\otimes X)=b\otimes b.\]
+
+Then we can easily compute that $\varepsilon(b)=1$ and $S(b)=b^{-1}$. This is precisely:
+\begin{defn}
+	Let $A$ be a Hopf algebra and $a\in A$ such that
+	\begin{itemize}
+		\item $a$ is invertible
+		\item $\Delta(a)=a\otimes a$
+		\item $\varepsilon(a)=1$
+		\item $S(a)=a^{-1}$
+	\end{itemize}
+	then $a$ is called a \textbf{group-like} element of $A$.
+\end{defn}
+\begin{rmk}
+	As we saw above, every character of an affine group scheme $G$ corresponds to a 
+	group-like element of its representing algebra.
+\end{rmk}
+\begin{rmk}
+	Using a parallel construction with any morphism $\Phi:G\to\Ga$, we get an element $b\in A$
+	such that $\Delta(b)=b\otimes 1+1\otimes b$, $\varepsilon(b)=0$ and $S(b)=-b$. These elements
+	are called \textbf{primitive}
+\end{rmk}
+
+\section{Problems}
+\subsection{Week 1}
+
+\subsection{Waterhouse}
 
 \end{document}
