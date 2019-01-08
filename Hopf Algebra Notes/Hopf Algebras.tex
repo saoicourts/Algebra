@@ -1,0 +1,322 @@
+\documentclass[12pt]{article}
+
+\usepackage{setspace}
+
+\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, x	color}
+\usepackage[framed,thmmarks]{ntheorem}
+\usepackage[mathscr]{euscript}
+
+%set up theorem/definition/etc envs
+%Problems will be created using their own counter and style
+\theoreminframepreskip{0pt}
+\theoreminframepostskip{0pt}
+\newframedtheorem{prob}{Problem}[section]
+
+%solution template
+\theoremstyle{nonumberbreak}
+\theoremindent0.5cm
+\theorembodyfont{\upshape}
+\theoremseparator{:}
+\theoremsymbol{\ensuremath\spadesuit}
+\newtheorem{sol}{Solution}
+
+%Theorems
+\definecolor{thmcol}{RGB}{0,102,34}
+\theoremstyle{changebreak}
+\theoremseparator{}
+\theoremsymbol{}
+\theoremindent0.5cm
+\theoremheaderfont{\color{thmcol}\bfseries} 
+\newtheorem{thm}{Theorem}[subsection]
+
+%Lemmas and Corollaries
+\theoremheaderfont{\bfseries}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+
+%Create a new env that references a theorem and creates a 'primed' version
+%Note this can be used recursively to get double, triple, etc primes
+\newenvironment{thm-prime}[1]
+  {\renewcommand{\thethm}{\ref{#1}$'$}%
+   \addtocounter{thm}{-1}%
+   \begin{thm}}
+  {\end{thm}}
+
+\setlength\fboxsep{15pt}
+
+%Shade definitions
+\theoremindent0cm
+\theoremheaderfont{\normalfont\bfseries} 
+\def\theoremframecommand{\colorbox[rgb]{.85,1,.85}}
+\newshadedtheorem{defn}[thm]{Definition}
+
+%Example
+\theoremstyle{break}
+\def\theoremframecommand{\colorbox[rgb]{0.9,0.9,0.9}}
+\newshadedtheorem{ex}{Example}[section]
+
+%Man, that's really good! Let's use the same thing for definitons.
+\newenvironment{def-prime}[1]
+  {\renewcommand{\thethm}{\ref{#1}$'$}%
+   \addtocounter{thm}{-1}%
+   \begin{def}}
+  {\end{def}}
+
+%proofs
+\theoremstyle{nonumberbreak}
+\theoremindent0.5cm
+\theoremheaderfont{\sc}
+\theoremseparator{}
+\theoremsymbol{\ensuremath\spadesuit}
+\newtheorem{prf}{Proof}
+
+\theoremstyle{nonumberplain}
+\theoremseparator{:}
+\theoremsymbol{}
+\newtheorem{conj}{Conjecture}
+
+%remarks
+\theoremstyle{change}
+\theoremindent0.5cm
+\theoremheaderfont{\sc}
+\theoremseparator{:}
+\theoremsymbol{}
+\newtheorem{rmk}[thm]{Remark}
+
+%Replacement for the old geometry package
+\usepackage{fullpage}
+
+%Put page breaks before each part
+\let\oldpart\part%
+\renewcommand{\part}{\clearpage\oldpart}%
+
+%Center each figure by default
+\makeatletter
+\g@addto@macro\@floatboxreset{\centering}
+\makeatother
+
+%header stuff
+\setlength{\headsep}{24pt}  % space between header and text
+\pagestyle{fancy}     % set pagestyle for document
+\lhead{Notes on Hopf Algebras} % put text in header (left side)
+\rhead{Nico Courts} % put text in header (right side)
+\cfoot{\itshape p. \thepage}
+\setlength{\headheight}{15pt}
+\allowdisplaybreaks
+
+%Set of Integers
+\newcommand*{\Z}{
+\mathbb{Z}
+}
+%Set of Natural Numbers
+\newcommand*{\N}{
+\mathbb{N}
+}
+%Set of Real Numbers
+\newcommand*{\R}{
+\mathbb{R}
+}
+%Set of Complex Numbers
+\newcommand*{\C}{
+\mathbb{C}
+}
+%Rationals
+\newcommand*{\Q}{
+\mathbb{Q}
+}
+
+%Section break
+\newcommand*{\brk}{
+\rule{2in}{.1pt}
+}
+
+\DeclareMathOperator{\Aut}{Aut}
+
+%raise that Chi!
+\DeclareRobustCommand{\Chi}{{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
+
+%Image
+\DeclareMathOperator{\im}{Im}
+
+\DeclareMathOperator{\Ext}{Ext}
+
+%Coker
+\DeclareMathOperator{\coker}{coker}
+
+%characteristic
+\DeclareMathOperator{\ch}{char}
+
+%rank
+\DeclareMathOperator{\rank}{rank}
+
+%identity map
+\DeclareMathOperator{\id}{id}
+
+%Hopf algebra stuff
+\newcommand*{\Vectk}{\operatorname{Vect}_k}
+\newcommand*{\Algk}{\operatorname{Alg}_k}
+\newcommand*{\Coalgk}{\operatorname{Coalg}_k}
+
+%fix tilde
+\let\tilde\relax
+\newcommand*{\tilde}[1]{\widetilde{#1}}
+
+% Enumerate will automatically use letters (e.g. part a,b,c,...)
+\setenumerate[0]{label=(\alph*)}
+
+\begin{document}
+%make the title page
+\title{Hopf Algebras\vspace{-1ex}}
+\author{A course by: Prof. James Zhang\\
+Notes by: Nico Courts}
+\date{Winter 2019}
+\maketitle
+
+\renewcommand{\abstractname}{Introduction}
+\begin{abstract}
+	These are the notes I took in class during the Winter 2019 topics course
+	\textit{Math 582H - Hopf Algebras} at University of Washington, Seattle. 
+	
+	The course description follows:
+
+	\brk
+
+	This course is an introduction to Hopf algebras. In addition to basic material in 
+	Hopf algebra, we will present some latest developments in quantum groups and tensor 
+	and fusion categories. One of the newer topics is homological properties of 
+	Noetherian Hopf algebras of low Gelfand-Kirillov dimension. A good reference for 
+	the first two topics in the book \textit{Hopf Algebras and Their Action Rings} by 
+	Susan Montgomery. Here is a list of possible topics:
+
+\begin{itemize}
+	\item Classical theorems concerning finite dimensional Hopf algebras.
+	\item Infinite dimensional Hopf algebras and quantum groups.
+	\item Duality and Calabi-Yau property.
+	\item Actions of Hopf algebras and invariant theory.
+	\item Representations of Hopf algebras, tensor and fusion categories.
+\end{itemize}
+\end{abstract}
+
+\section{January 7, 2019}
+If you don't know what a symmetric tensor category is, today is going to be a three 
+star day. Max is 5.
+
+\subsection{Overview}
+We are shooting to understand two conjectures:
+
+\begin{conj}[Etingof-Ostrik `04]
+	If $A$ is a finite dimentional Hopf algebra, then 
+	\[\bigoplus_{i\ge 0}\Ext_A^i(k,k)\]
+	is Noetherian.
+\end{conj}
+
+\begin{conj}[Brown-Goodearl `98]
+	If $A$ is a Noetherian Hopf algebra, then the injective dimension of $A_A$ is finite.
+\end{conj}
+
+These are both still open! In fact there is a meeting at Oberwolfach this March concerning
+exactly these conjectures.
+
+\subsection{Symmetric Tensor Categories}
+We are going to be using the following notation throughout:
+\begin{itemize}
+	\item $k$ is a field
+	\item $\Vectk$ is the category of $k$-vector spaces
+	\begin{itemize}
+		\item $\Vectk$ is closed under tensor products
+		\item There is an element $k\in\Vectk$ such that
+		\[k\otimes_k V\cong V\cong V\otimes_k k\]
+		where the above isomorphisms are natural.
+		\item $V\otimes_k W\cong W\otimes_k V$
+	\end{itemize}
+	\item An algebra is an object in $\Vectk$.
+\end{itemize}
+
+\begin{defn}\label{def-alg}
+	$V\in\Vectk$ is called an \textbf{algebra object} if there are two morphisms
+	\begin{enumerate}
+		\item $m:V\otimes V\to V$
+		\item $u:k\to V$
+	\end{enumerate}
+	such that the diagrams in figure \ref{fig-alg} commute.
+	
+\end{defn}
+\begin{figure}\label{fig-alg}
+	\begin{tikzcd}
+		V\otimes V\otimes V\ar[r,"\id_V\otimes m"]\ar[d,"m\otimes \id_V"] & V\otimes V\ar[d,"m"]\\
+		V\otimes V \ar[r,"m"] & V
+	\end{tikzcd}
+	\begin{tikzcd}
+		k\otimes V\ar[r,"\sim"]\ar[rd,swap,"u\otimes\id_V"] & V & V\otimes k\ar[l,"\sim",swap]\ar[dl, "\id_V\otimes u"]\\
+		& V\otimes V \ar[u,"m"] &
+	\end{tikzcd}
+	\caption{Diagrams for definition \ref{def-alg}.}
+\end{figure}
+
+\begin{lem}
+	$V\in\Vectk$ is an algebra object iff $V$ is an algebra over $k$.
+\end{lem}
+
+\begin{lem}
+	If $C$ is a symmetric tensor category, so is $C^{op}$.
+\end{lem}
+
+Then the natural thing to ask is: what is an algebra object in this opposite category?
+\begin{defn}
+	A \textbf{coalgebra object} in $C$ is an algebra object in $C^{op}$. Here we have 
+	comultiplication $\Delta$ and counit $\varepsilon$.
+\end{defn}
+\begin{rmk}
+	Naturally you could go about defining this from first principles and drawing the diagrams
+	in figure \ref{fig-alg} with the arrows reversed, but we are probably mature enough
+	to do without that (saving my fingers from repetitive strain injury in the process.)
+\end{rmk}
+
+\begin{lem}
+	$\Algk$, defined as the category of algebra objects in $\Vectk$, is a symmetric tensor category. Furthermore
+	$\Coalgk$, the category of coalgebra objects in $\Vectk$, is a symmetric tensor category.
+\end{lem}
+
+\begin{lem}
+	The following are equivalent:
+	\begin{enumerate}
+		\item $V$ is an algebra object in $\Coalgk$
+		\item $V$ is a coalgebra object in $\Algk$
+		\item There are morphisms $m,u,\Delta,\varepsilon$ such that
+		\begin{itemize}
+			\item $(V,m,u)$ is an algebra
+			\item $(V,\Delta,\varepsilon)$ is a coalgebra
+			\item Equivalently:
+			\begin{itemize}
+				\item $m$ and $u$ are coalgebra morphisms
+				\item $\Delta$ and $\varepsilon$ are algebra morphisms.
+			\end{itemize}
+		\end{itemize}
+	\end{enumerate}
+\end{lem}
+\begin{prf}
+	The nice thing here is that the $(a)\Leftrightarrow (c)$ without the last condition. A similar fact holds
+	for $(b)$ except the second-to-last. The last thing to do is to prove the last two conditions are equivalent.
+\end{prf}
+\begin{prob}
+	Fill in the details for the proof above.
+\end{prob}
+
+\begin{defn}
+	$V$ is called a \textbf{bialgebra object} if $V$ is an algebra object in $\Coalgk$.
+\end{defn}
+
+\begin{prob}
+	\begin{enumerate}
+		\item Suppose that $\ch k\ne 2$. Classify all bialgebras of $\dim 2.$
+		\item Do the same for $\ch k = 2.$
+	\end{enumerate}
+\end{prob}
+\begin{sol}
+	\subsubsection*{Part (a)}
+	Consider $\varepsilon:V\to k$ and consider $\ker\varepsilon\lhd V$. Since $\varepsilon$ cannot be the zero map,
+	$\ker\varepsilon=kx$ for some $x\in V\setminus 0$. 
+\end{sol}
+
+\end{document}

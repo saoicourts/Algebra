@@ -1,0 +1,311 @@
+\documentclass[12pt]{article}
+
+\usepackage{setspace}
+
+\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, x	color}
+\usepackage[framed,thmmarks]{ntheorem}
+\usepackage[mathscr]{euscript}
+
+%set up theorem/definition/etc envs
+%Problems will be created using their own counter and style
+\theoreminframepreskip{0pt}
+\theoreminframepostskip{0pt}
+\newframedtheorem{prob}{Problem}[part]
+\renewcommand\theprob{\arabic{part}.\arabic{prob}}
+
+%solution template
+\theoremstyle{nonumberbreak}
+\theoremindent0.5cm
+\theorembodyfont{\upshape}
+\theoremseparator{:}
+\theoremsymbol{\ensuremath\spadesuit}
+\newtheorem{sol}{Solution}
+
+%Theorems, Lemmas, and Corollaries
+\theoremstyle{changebreak}
+\theoremseparator{}
+\theoremsymbol{}
+\theoremindent0.5cm
+\theoremheaderfont{\color{violet}\bfseries} 
+
+\newtheorem{thm}{Theorem}[subsection]
+\theoremheaderfont{\bfseries}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+
+%Create a new env that references a theorem and creates a 'primed' version
+%Note this can be used recursively to get double, triple, etc primes
+\newenvironment{thm-prime}[1]
+  {\renewcommand{\thethm}{\ref{#1}$'$}%
+   \addtocounter{thm}{-1}%
+   \begin{thm}}
+  {\end{thm}}
+
+\setlength\fboxsep{15pt}
+
+%Shade definitions
+\theoremindent0cm
+\theoremheaderfont{\normalfont\bfseries} 
+\def\theoremframecommand{\colorbox[rgb]{.9,.8,1}}
+\newshadedtheorem{defn}[thm]{Definition}
+
+%Man, that's really good! Let's use the same thing for definitons.
+\newenvironment{def-prime}[1]
+  {\renewcommand{\thethm}{\ref{#1}$'$}%
+   \addtocounter{thm}{-1}%
+   \begin{def}}
+  {\end{def}}
+
+%proofs
+\theoremstyle{nonumberbreak}
+\theoremindent0.5cm
+\theoremheaderfont{\sc}
+\theoremseparator{}
+\theoremsymbol{\ensuremath\spadesuit}
+\newtheorem{prf}{Proof}
+
+%remarks
+\theoremstyle{change}
+\theoremindent0.5cm
+\theoremheaderfont{\sc}
+\theoremseparator{:}
+\theoremsymbol{}
+\newtheorem{rmk}[thm]{Remark}
+
+%Replacement for the old geometry package
+\usepackage{fullpage}
+
+%Put page breaks before each part
+\let\oldpart\part%
+\renewcommand{\part}{\clearpage\oldpart}%
+
+%Center each figure by default
+\makeatletter
+\g@addto@macro\@floatboxreset{\centering}
+\makeatother
+
+%header stuff
+\setlength{\headsep}{24pt}  % space between header and text
+\pagestyle{fancy}     % set pagestyle for document
+\lhead{Notes on Lie Algebras} % put text in header (left side)
+\rhead{Nico Courts} % put text in header (right side)
+\cfoot{\itshape p. \thepage}
+\setlength{\headheight}{15pt}
+\allowdisplaybreaks
+
+%Set of Integers
+\newcommand*{\Z}{
+\mathbb{Z}
+}
+%Set of Natural Numbers
+\newcommand*{\N}{
+\mathbb{N}
+}
+%Set of Real Numbers
+\newcommand*{\R}{
+\mathbb{R}
+}
+%Set of Complex Numbers
+\newcommand*{\C}{
+\mathbb{C}
+}
+%Rationals
+\newcommand*{\Q}{
+\mathbb{Q}
+}
+
+%Section break
+\newcommand*{\brk}{
+\rule{2in}{.1pt}
+}
+
+\DeclareMathOperator{\Aut}{Aut}
+
+%raise that Chi!
+\DeclareRobustCommand{\Chi}{{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
+
+%Image
+\DeclareMathOperator{\im}{Im}
+
+%Coker
+\DeclareMathOperator{\coker}{coker}
+
+%characteristic
+\DeclareMathOperator{\ch}{char}
+
+%rank
+\DeclareMathOperator{\rank}{rank}
+
+%identity map
+\DeclareMathOperator{\id}{id}
+
+%Lie algebra stuff
+\DeclareMathOperator{\gl}{\mathfrak{gl}}
+\let\sl\relax
+\DeclareMathOperator{\sl}{\mathfrak{sl}}
+\DeclareMathOperator{\tr}{tr}
+
+%fix tilde
+\let\tilde\relax
+\newcommand*{\tilde}[1]{\widetilde{#1}}
+
+% Enumerate will automatically use letters (e.g. part a,b,c,...)
+\setenumerate[0]{label=(\alph*)}
+
+\begin{document}
+%make the title page
+\title{Lie Algebras and Groups\vspace{-1ex}}
+\author{A course by: Monty McGovern\\
+Notes by: Nico Courts}
+\date{Winter 2019}
+\maketitle
+
+\renewcommand{\abstractname}{Introduction}
+\begin{abstract}
+	These notes are my best attempt at following along with our \textit{Math 508 --
+	Lie Algebras} course at UW. This is my first time trying to type my 
+	notes on-the-fly in class so we'll see how well this goes. The course reference
+	is Humphreys' \textit{Introduction to Lie Algebras and Representation Theory.}
+
+	The course description follows:
+	
+	\brk
+
+	This is the second course in the Algebraic Structures sequence. I will classify 
+	finite-dimensional complex semisimple Lie algebras, also proving some structural 
+	results on general Lie algebras along the way. Although one usually first 
+	encounters Lie algebras in a manifolds course, the treatment (following the text) 
+	will be entirely algebraic.
+\end{abstract}
+
+\section{January 7, 2019}
+The homework is posted on Monty's website. :) 
+\subsection{Lie algebras}
+
+This course will be studying Lie algebras, but as opposed to their treatment in manifolds, 
+we will be studying them from a purely algebraic point of view. The book (Humphreys)
+actually never defines a Lie group.
+
+\begin{defn}
+	A \textbf{Lie Algebra} $L$ or $\mathfrak{g}$ over a field $k$ is a $k$-vector space (usually f.d.)
+	along with a \textit{bracket operation} $[vw]:L\times L\to L$ such that $[\cdot\cdot]$ is 
+	\begin{itemize}
+		\item anticommutative,
+		\item bilinear,
+		\item $[x[yz]]=[[xy]z]+[y[xz]]$
+	\end{itemize}
+\end{defn}
+
+\begin{rmk}
+	The last principle above is actually equivalent to the \textit{Jacobi identity:}
+	\[[x[yz]]+[y[xz]]+[z[xy]].\]
+	This follows from bilinearity and anticommutativity of the bracket.
+\end{rmk}
+The most natural place for these to arise is as \textit{derivations} on an algebra!
+\begin{defn}
+	A \textbf{$k$-derivation} $d:A\to A$ on an algebra $A$ over $k$ is a $k$-linear map
+	satisfying the Leibniz rule.
+\end{defn}
+\begin{rmk}
+	Some key facts about derivations (for us):
+	\begin{itemize}
+		\item Given a fixed $a\in A$, the map $d_a$ sending $b\mapsto ab-ba$, the \textbf{commutator}
+		$[ab]$ is a derivation.
+		\item If $d,e$ are derivations, then so is $[de]=de-ed$, where $de$ is the \textit{composite}
+		of $d$ and $e$ as opposed to the product.
+	\end{itemize}
+\end{rmk}
+
+\subsection{Examples}
+
+A main source of Lie algebras is (associative) algebras! \textit{Any associative $k$-algebra $A$}
+becomes a Lie algebra over $k$, taking $[ab]=ab-ba.$ In particular, one obvious choice for $k$-algebra
+is $M_n(k)=\gl_n(k)$, the (Lie) algebra of $n\times n$ matrices over $k$.
+
+\textbf{Lie subalgebras} are what you'd expect (including closure under brackets). Notice
+that if $L'\le L$, then they \textbf{must both be over the same field.}
+
+If $L$ is a $k$-Lie algebra and $I\lhd L$ is an ideal of $L$, then the quotient space $L/I$ becomes a 
+Lie algebra with $[x+I,y+I]=[xy]+I$ as the bracket.
+
+A \textbf{Lie algebra homomorphism} is a map $\varphi:L\to L'$ such that $\varphi$ is $k$-linear
+and $\varphi([xy])=[\varphi(x)\varphi(y)].$
+
+We get the usual first isomorphism theorem $L/\ker\varphi\cong \varphi(L).$
+
+\brk
+
+Associative algebras are not the only source of Lie algebras, however! One example is 
+$\sl(n,k)=\{n\times n\text{ matrices over } k\text{ with trace zero}\}$
+
+Note that this is \textbf{not closed under product} since $\tr(AB)\ne\tr A\tr B$ but $\tr(AB)=\tr(BA)$
+so $\tr(AB-BA)=\tr(AB)-\tr(BA)=0$.
+\begin{defn}
+	We call this algebra (or, in fact any subalgebra of $\gl(n,k)$) \textbf{linear}. Think 
+	``Linear'' means ``of matrices.''
+\end{defn}
+
+We say that $\sl(n,k)$ has \textbf{type} $A_{n-1}$. Eventually we will see seven types
+$A-G$ of semisimple Lie algebras. The shift in index will emerge later.
+
+$\sl(n,k)$ is, in fact, a simple Lie algebra: for $k=\C$, $\sl(n,\C)$ has no ideals
+apart from the trivial ones. 
+
+\brk
+
+Other non-associative examples include $k^n$ with a bilinear form $(\cdot,\cdot)$ which
+is either symmetric or skew-symmetric and (in either case) is nondegenerate.
+\begin{defn}
+	$(\cdot,\cdot)$ is \textbf{nondegenerate} if the map $v\mapsto (v,\cdot)$ is injective. Equivalently
+	there is no $v\in V$ such that $(v,w)=0$ for all $w\in V$.
+\end{defn}
+
+Given $V=k^n$ and a bilinear form on $V$, we can look at all $X\in \gl(n,k)=\gl(V)$ such that 
+$(Xv,w)=(v,Xw)$. Then $X$ is \textbf{skew-adjoint} with respect to the form. One can check that 
+$[XY]$ is skew-adjoint whenever both $X$ and $Y$ are.
+
+\subsection{Generating (skew) symmetric forms}
+It ends up that the dot product (which a symmetric form) is misleadingly simple -- thus
+we will look elsewhere.
+
+If $M\in \gl(n,k)$ is symmetric, so that $M^t=M$, then $(v,w)=v^tMw$ is a symmetric. If 
+instead $M$ is skew-symmetric, then the same definition yields a skew-symmetric form. 
+This actually induces a one-to-one correspondence between matrices and forms.
+
+In both cases, if $M$ is invertible, then the form will be nondegenerate. As a consequence, 
+since skew-symmetric matrices are always singular in odd dimensions, we see that 
+nondegenerate skew-symmetric forms (over $\ch k\ne 2$ where the two families of forms
+coincide) exist only in even dimensions.
+
+\subsection{A peek at classifications}
+If we have a nondegenerate symmetric form where $n=2m$ is going to give us an algebra
+of type $D_m$. If $n=2m+1$, then it is of type $B_m$. Both of these cases are called
+\textbf{orthogonal.}
+
+If instead we have a skew-symmetric form and $n=2m$, then this is of type $C_m$, and we 
+call this algebra \textbf{symplectic.}
+
+\brk
+
+We will make a particular choice for our matrix $M$ and then study the resulting
+Lie algebras in much more detail next time. The choices will be: 
+\begin{itemize}
+	\item For type $D_m$:
+	\[\begin{pmatrix}
+		0 & I_m\\
+		I_m & 0
+	\end{pmatrix}\]
+	\item For type $C_m$:
+	\[\begin{pmatrix}
+		0 & -I_m\\
+		I_m & 0
+	\end{pmatrix}\]
+	\item For type $B_m$:
+	\[\begin{pmatrix}
+		1 & 0 & 0\\
+		0 & 0 & I_m\\
+		0 & I_m & 0
+	\end{pmatrix}\]
+\end{itemize}
+\end{document}
