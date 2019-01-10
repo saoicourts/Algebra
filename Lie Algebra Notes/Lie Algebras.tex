@@ -144,7 +144,11 @@
 \DeclareMathOperator{\gl}{\mathfrak{gl}}
 \let\sl\relax
 \DeclareMathOperator{\sl}{\mathfrak{sl}}
+\DeclareMathOperator{\so}{\mathfrak{so}}
+\let\sp\relax
+\DeclareMathOperator{\sp}{\mathfrak{sp}}
 \DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\ad}{ad}
 
 %fix tilde
 \let\tilde\relax
@@ -262,11 +266,12 @@ is either symmetric or skew-symmetric and (in either case) is nondegenerate.
 \end{defn}
 
 Given $V=k^n$ and a bilinear form on $V$, we can look at all $X\in \gl(n,k)=\gl(V)$ such that 
-$(Xv,w)=(v,Xw)$. Then $X$ is \textbf{skew-adjoint} with respect to the form. One can check that 
+$(Xv,w)=(v,Xw)$. Then $X$ is \textbf{adjoint} with respect to the form. There is a similar definition for when
+$X$ is \textbf{skew-adjoint.} One can check that 
 $[XY]$ is skew-adjoint whenever both $X$ and $Y$ are.
 
 \subsection{Generating (skew) symmetric forms}
-It ends up that the dot product (which a symmetric form) is misleadingly simple -- thus
+It ends up that the dot product (which is a symmetric form) is misleadingly simple -- thus
 we will look elsewhere.
 
 If $M\in \gl(n,k)$ is symmetric, so that $M^t=M$, then $(v,w)=v^tMw$ is a symmetric. If 
@@ -308,4 +313,105 @@ Lie algebras in much more detail next time. The choices will be:
 		0 & I_m & 0
 	\end{pmatrix}\]
 \end{itemize}
+
+\section{January 9, 2019}
+Today we will be looking deeply into the stucture of linear Lie algebras of types A-D.
+
+\subsection{Linear Lie Algebras Revisited}
+Recall that the \textbf{matrix unit} $e_{ij}$ is the matrix with 1 in the $(i,j)$ entry and 
+zero elsewhere. And then $e_{ij}e_{kl}=\delta_{jk}e_{il}$ and furthermore
+\[[e_{ij}e_{kl}]=\delta_{jk}e_{il}-\delta_{li}e_{kj}.\]
+This is especially nice when $j=i$, called the \textbf{diagonal matrix unit}.
+
+Then we look at type $A_{n-1}$ ($\sl(n,k)$). Let $D$ be the set of diagonal matrices in this algebra.
+Notice the dimension is $n-1$ since then $n^{th}$ term on the diagonal is determined as the
+negative of the sum of the other $n-1$ terms. Let $A=\operatorname{diag}(d_1,\dots,d_n)$. Then consider the eigenvalues
+associated with $e_{ij}$: 
+\[[Ae_{ij}]=(d_i-d_j)e_{ij}=(E_i-E_j)Ae_{ij}\]
+where $E_i$ is the linear functional selecting the $i^{th}$ entry in $A$. Moreover, $D$ is abelian as a Lie algebra, so $D$
+acts diagonally on $L=\sl(n,k)$ by commutation with eigenvalues $E_i-E_j$ and zero
+for $1\le i,j\le n$ and $i\ne j$.
+
+In the other classical cases B-D, there is always a matrix $M$ which defines the form $(v,w)=v^tMw$ 
+as we saw yesterday. In all three cases, the Lie algebra exists consists of all skew-adjoint matrices
+$X$ relative to the form. $B_m=\mathfrak{so}(2m+1,k)$ as well as $D_m=\mathfrak{so}(2m,k)$ and $C_m=\mathfrak{sp}(2m,k)$.
+
+This condition translates to the form of matrices in the above Lie groups and the condition is always $Mx=-x^tM$ in all cases.
+
+Type B:
+\[\begin{pmatrix}
+	0 & b_1 & b_2\\
+	c_1 & m & n\\
+	c_2 & p & q
+\end{pmatrix}\]
+where $c_1=-b_2^t$, $c_2=-b_1^t$, $q=-m^t$, $n^t=-n$ and $p^t=-p$.
+
+Type C:
+\[\begin{pmatrix}
+	m& n\\ p & q
+\end{pmatrix}\]
+where $n^t=n, p^t=p,$ and $m^t=-q$.
+
+Type D:
+\[\begin{pmatrix}
+	m& n\\ p & q
+\end{pmatrix}\]
+where $n^t=-n, p^t=-p,$ and $m^t=-q$.
+
+Looking at the eigenvalues of elements of $D$ associated to vectors $e_{ij}-e_{m+i,m+j}$. Look at photos
+
+Using a similar analysis, we can look at types $B$ and $D$. We define the functions $E_i$ similarly on the space of diagonalmatrices and gives a rise to the following collection of linear functions:
+in $B_m:$ $\pm E_i$ and $\pm(E_i\pm E_j)$ and $D_m$ gives us $\pm(E_i\pm E_j)$.
+
+This collection of functions in each case is called the \textbf{root system of the Lie algebra},
+Then any complex simple finite-dimensional Lie algebra is classified by its root system.
+The (perhaps surprising) fact is that this already encompasses all but finitely many of these
+things up to ismorphism: the classical Lie algebras. Eventually we will learn more about the
+\textbf{exceptional Lie groups.}
+
+This section was a little hard to follow and the handling in Humphreys is easier to follow, 
+but delays speaking about root systems and actually deriving the eigenfunctions (is that the right word?)
+until significantly later. Monty seemed to think it was acceptable to delay the understanding of this a bit.
+
+\subsection{Derivations and $\exp$}
+Look an an arbitrary Lie algebra over a field $k$ where $\ch k=0$ (which we will mostly be assuming from here on)
+. Let $\delta$ be a derivation of $L$, so that $[\delta x,y]+[x\delta y]=\delta[x,y]$. Assume that $\delta$ is nilpotent.
+
+Then the ``power series'' (polynomial) is
+\[\exp\delta=\sum_{i>0}\frac{\delta^i}{i!}\]
+\begin{prob}
+	This is a good exercise to go through: Check that
+	\[[(\exp\delta)x,(\exp \delta)y)=[xy]\]
+	for each $x,y\in L$
+\end{prob}
+
+\begin{rmk}
+	This actually shows that $\exp\delta$ is an automorphism of $L$. Furthermore you'd find that
+	\[(\exp\delta)(\exp(-\delta))=1.\]
+\end{rmk}
+
+What if $k=\R$ or $\C$? Then the power series (even when $\delta$ is not nilpotent!) always converges
+and defines an automorphism as before.
+
+\begin{lem}
+	For all \textbf{complex} semisimple Lie algebras $L$ it turns out that the group
+	generated by $\exp\ad x$ ($\ad x(y)=[xy]$) coincides with the group generated by all 
+	nilpotent $\ad x$.
+\end{lem}
+\subsection{Adjoint group}
+The last thing for today is to define the adjoint group:
+\begin{defn}
+	Let $L$ be a Lie algebra, then 
+	\[\operatorname{Int}(L)=\exp\ad L\]
+	is the \textbf{Adjoint group} of $L$. It is a subgroup (so we believe) of the Lie
+	Group associated to $L$.
+\end{defn}
+
+Some examples of adjoint groups:
+\begin{itemize}
+	\item If $L=\sl(n,\C)$, then $\operatorname{Int}(L)=PSL(n,\C)=SL(n,\C)/\text{center}$
+	\item If $L=\so(n,\C)$, then $\operatorname{Int}(L)=PSO(n,\C)$
+	\item If $L=\sp(2n,\C)$ then $\operatorname{Int}(L)=PSp(2n,\C)$.
+\end{itemize}
+
 \end{document}

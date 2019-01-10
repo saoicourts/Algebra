@@ -461,14 +461,15 @@
 \end{sol}
 
 \part{Winter 2019}
+\section{Preparation for the Quarter}
 This is my first official quarter as Julia's student! My plan for now is to continue working on Waterhouse as well
 as learn about algebraic geometry (alongside my usual classes, of course).
-\section{Affine Group Schemes (Waterhouse)	}
 To give a sense of direction, Julia recommended that I take a look at the following regularity theorem:
 \begin{thm}[Smoothness Theorem]\label{smooth}
 	Let $G$ be an algebraic affine group scheme over a field $k$. Then $k[G]\otimes \bar k$ is reduced if and
 	only if $\dim G = \rank \Omega_{k[G]}$.
 \end{thm}
+\section{Affine Group Schemes (Waterhouse and Jantzen)	}
 I have quite a bit of information to process before this, so I will get started!
 \begin{defn}[Closed Embedding]
 	If $G$ and $H$ are affine group schemes represented by $A$ and $B$, respectively and
@@ -599,8 +600,28 @@ is finitely generated, we get the following:
 	a finitely generated abelian group, so we can split up the algebra into a tensor product
 	of $k[\Z]$ and $k[\Z/n\Z]$.
 
-	When $M=\Z$, 
+	When $M=\Z$, $k[M]\cong k[X,X^{-1}]$, so $G= \Gm$\footnote{Notice that here Waterhouse also
+	uses that the basis elements $e_i$ are group-like and so $\Delta(e_i)=e_i\otimes e_i$. I am not
+	quite sure why this is necessary.} Similarly if $M=\Z/n$ then $G\cong \mun{n}$
 \end{prf}
+
+Looking at my progress over the last several days, I am thinking that I am getting
+too much in the weeds writing out all the lemmas and proofs. Perhaps it is better to read more quickly
+and only take note of theorems as I need/use them.
+
+\subsection{Cartier Duals}
+The gist here is that if $G$ is represented by $A$, then we can define the dual 
+$A^D=\Hom(A,k)$ and then $A^D$ represents a new scheme $G^D$ called the \textbf{Cartier Dual.}
+
+We do some work to show that, in fact, elements of $G^D$ are in correspondence with the 
+group-like elements of $A$, or equivalently the character group of $G$, $X_G$.
+
+It is easy enough to evaluate $G^D(k)\cong\Hom(A^D,k)$, but luckily one shows that
+``dualizing'' commutes with tensor products (and thus with extension of scalars) and $\Hom$. Thus
+if $G_R$ is the scheme represented by $A\otimes_k R$, then using that $\Hom_k(A^D,R)\cong\Hom_R(A^D\otimes R,R)$,
+\[G^D(R)=(G^D)_R(R)\]
+which is represented by $(A\otimes R)^D=A^D\otimes R$, so finally 
+\[G^D(R)=(G_R)^D(R)=\{\text{group-like elements in }A\otimes_k R\}\cong \Hom(G_R,(\Gm)_R)\]
 
 \section{Algebraic Geometry}
 
@@ -608,5 +629,25 @@ is finitely generated, we get the following:
 \subsection{Week 1}
 
 \subsection{Waterhouse}
+\begin{wprob}{2.1}
+	\begin{enumerate}
+		\item Show that there are no nontrivial homomorphisms from $\Gm$ to $\Ga$.
+		\item If $k$ is reduced, show that there are no nontrivial homomorphisms from $\Ga$ to $\Gm$.
+		\item For each nonzero $b\in k$ with $b^2=0$, find a nontrivial homomorphism $\Ga\to\Gm$.
+	\end{enumerate}
+\end{wprob}
+Hmm, there must be a small bug in my macro but I can't find it. I get an error about \texttt{missing `\textbackslash item'}
+in the definition below. It seems to only occur when I use \texttt{\textbackslash subsubsection*} and the like.
+
+\begin{sol}
+	\subsubsection*{(a)}
+	Let $\Phi:\Gm\to\Ga$ and let $\varphi:k[X]\to k[X,X^{-1}]$ be the corresponding Hopf
+	algebra map. But then we have that 
+	\[\varphi\otimes\varphi \circ \Delta_a(X)=\Delta_m\circ\varphi(X)\]
+	and so using that $\Delta_m(a)=a\otimes a$ and $\Delta_a(b)=b\otimes1+1\otimes b$, we get
+	\[\varphi(X)\otimes\varphi(1)+\varphi(1)\otimes\varphi(X)=\varphi(X)\otimes\varphi(X)\]
+	
+\end{sol}
+
 
 \end{document}

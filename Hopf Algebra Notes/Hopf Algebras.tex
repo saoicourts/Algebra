@@ -8,6 +8,7 @@
 
 %set up theorem/definition/etc envs
 %Problems will be created using their own counter and style
+\theoremstyle{break}
 \theoreminframepreskip{0pt}
 \theoreminframepostskip{0pt}
 \newframedtheorem{prob}{Problem}[section]
@@ -207,7 +208,7 @@ We are shooting to understand two conjectures:
 
 \begin{conj}[Etingof-Ostrik `04]
 	If $A$ is a finite dimentional Hopf algebra, then 
-	\[\bigoplus_{i\ge 0}\Ext_A^i(k,k)\]
+	\[\bigoplus_{i\ge 0}\Ext_A^i(_Ak, _Ak)\]
 	is Noetherian.
 \end{conj}
 
@@ -302,6 +303,43 @@ Then the natural thing to ask is: what is an algebra object in this opposite cat
 \begin{prob}
 	Fill in the details for the proof above.
 \end{prob}
+\begin{sol}
+	Assume that $(V,m,u,\Delta,\varepsilon)$ is an algebra and coalgebra and further that
+	$m$ and $u$ are coalgebra morphisms. That means in particular that the diagrams in figure \ref{fig-coalg-mor} commute.
+	\begin{figure}[h]\label{fig-coalg-mor}
+		\centering
+		\begin{tikzcd}
+			V\otimes V \ar[d,swap,"\Delta\otimes\Delta"]\ar[r,"m"] & V\ar[r,"\Delta"] & V\otimes V\\
+			V^{\otimes 4}\ar[rr,"T_{2,3}"] & & V^{\otimes 4}\ar[u,swap,"m\otimes m"]
+		\end{tikzcd}
+		\begin{tikzcd}
+			k\ar[r,"\Delta"]\ar[d,"u"] & k\otimes k\ar[d,"u\otimes u"]\\
+			V\ar[r,"\Delta"] & V\otimes V
+		\end{tikzcd}
+		\label{fig-coalg-mor}
+		\caption{$m$ and $u$ are coalgebra morphisms.}
+	\end{figure}
+
+	We are looking to prove that $\Delta$ and $\varepsilon$ are algebra morphisms, or that 
+	the diagrams in figure \ref{fig-coalg-mor}  commute.
+	\begin{figure}[h]
+		\centering
+		\begin{tikzcd}
+			V\otimes V\ar[r,"m"]\ar[d,"\Delta\otimes \Delta"] & V\ar[d,"\Delta"]\\
+			V^{\otimes 4}\ar[r,"m"] & V\otimes V
+		\end{tikzcd}
+		\begin{tikzcd}
+			V\otimes V\ar[r,"\varepsilon\otimes\varepsilon"]\ar[d,"m"] & k\otimes k\ar[d,"m"]\\
+			V\ar[r,"\varepsilon"] & k
+		\end{tikzcd}
+		\label{fig-alg-mor}
+		\caption{$\Delta$ and $\varepsilon$ are algebra morphisms.}
+	\end{figure}
+
+	From here it's actually a bit boring because it's kinda just a definition/notation game.
+	It boils down to the fact that the (co)multiplication on $V\otimes V$ has a twist that 
+	exactly lines up so that each square is saying the same thing.
+\end{sol}
 
 \begin{defn}
 	$V$ is called a \textbf{bialgebra object} if $V$ is an algebra object in $\Coalgk$.
@@ -315,8 +353,108 @@ Then the natural thing to ask is: what is an algebra object in this opposite cat
 \end{prob}
 \begin{sol}
 	\subsubsection*{Part (a)}
-	Consider $\varepsilon:V\to k$ and consider $\ker\varepsilon\lhd V$. Since $\varepsilon$ cannot be the zero map,
-	$\ker\varepsilon=kx$ for some $x\in V\setminus 0$. 
-\end{sol}
+	Consider $\varepsilon:V\to k$ and consider $\ker\varepsilon\lhd V$. By rank-nullity, $\dim\ker\varepsilon= 1$, so
+	$\ker\varepsilon=kx$ for some $x\in V$. Therefore $x^2=cx$ for some $c$, and if $c=0$, then (as an algebra) $V\cong k[x]/(x^2)$.
+	Otherwise consider $y=\frac{x}{c}$. In this case $y^2=\frac{x^2}{c^2}=\frac{x}{c}=y$, and $V\cong k[x]/(x^2-x)$.
+
+	Notice that in either case $\varepsilon(x)=0$, so let
+	\[\Delta(x)=a(1\otimes 1)+b(1\otimes x)+c(x\otimes 1) + d(x\otimes x)\]
+	and using that $\varepsilon\otimes \id\circ\Delta=\id\otimes\varepsilon\circ\Delta$
+	and that each should be (essentially) the identity (this is just the diagram we saw before),
+	we get $a=0$ and $b=c=1$. Thus the coalgebra structure of any Hopf algebra is given by 
+	\[\varepsilon(x)=0,\quad \Delta(x)=1\otimes x+x\otimes 1+d(x\otimes x).\]
+
+	Consider first the case when $x^2=0$. Then since comultiplication will be an algebra morphism,
+	\[0=\Delta(x^2)=\Delta(x)^2=1\otimes x^2+x^2\otimes 1+d^2(x^2\otimes x^2)+2(x\otimes x)+2d(x\otimes x^2)+2d(x^2\otimes x)\]
+	and since $x^2=0$, 
+	\[0=2(x\otimes x).\]
+	But $x\otimes x$ is a basis element of $V\otimes V$, so $V$ can only have this algebra structure
+	when $\ch k=2$. We will return to this in the next part.
+
+	So then $x^2=x$ and using the computation above,
+	\[1\otimes x+x\otimes 1+d(x\otimes x)=\Delta(x)=\Delta(x^2)=1\otimes x+x\otimes 1+(d^2+4d+2)(x\otimes x)\]
+	so
+	\[(d^2+3d+2)(x\otimes x)=0\quad\Rightarrow\quad d^2+3d+2=(d+2)(d+1)=0\]
+	and so either $d=-1$ or $d=-2$.
+
+	One can verify that $\Delta$ is coassociative, so we can conclude that when $\ch k\ne 2$, 
+	there are precisely two Hopf algebra structures with algebra structure $k[x]/(x^2-x)$ and
+	comultiplication either
+	\[\Delta(x)=1\otimes x+x\otimes 1-x\otimes x\quad\text{or}\quad \Delta(x)=1\otimes x+x\otimes 1-2(x\otimes x)\]
+
+	\subsection*{(b)}
+	Now assume that $\ch k=2$ and that $V\cong k[x]/(x^2-x)$ as an algebra. Then using the analysis above, 
+	we see that we can choose comultiplication either
+	\[\Delta(x)=x\otimes 1+1\otimes x\quad\text{or}\quad \Delta(x)=1\otimes x+x\otimes 1+x\otimes x.\]
+
+	If instead $V\cong k[x]/(x^2)$, then \textit{any} value of $d$ will suffice, so there are a full $k$'s worth
+	of Hopf algebra structures that can appear.
+\end{sol} 
+
+\section{January 9, 2019}
+Today we are going to rely heavily on Sweedler notation. :) Notice that if we are looking at actual objects in the 
+diagram for coassociativity, we get
+\begin{figure}[h]
+	\centering
+	\begin{tikzcd}
+		v\ar[r]\ar[d] & \sum v_{(1)}\otimes v_{(2)}\ar[d]\\
+		\sum v_{(1)}\otimes v_{(2)}\ar[r] & \sum (v_{(1)})_{(1)}\otimes (v_{(1)})_{(2)}\otimes v_{(2)}=\sum v_{(1)}\otimes (v_{(2)})_{(1)}\otimes (v_{(2)})_{(2)}
+	\end{tikzcd}
+	\caption{Coassociativity on elements in Sweedler notation}
+\end{figure}
+
+\begin{ex}
+	Let $G$ be a group and $kG$ be the group algebra. The algebra structure arises as normal
+	where $g\cdot h$ comes from the structure on $G$. Then $\Delta(g)=g\otimes g$ and this extends linearly.
+
+	But then if you consider $\Delta(\sum c_gg)$, notice that by the nature of tensors this is not unique!
+	So we will just write
+	\[\Delta\left(\sum c_gg\right)=\sum_Gc_g(g\otimes g)=\sum v_{(1)}\otimes v_{(2)}\]
+\end{ex}
+
+\subsection{Algebra structure on $V\otimes V$}
+We said earlier on that $\Algk$ is a symmetric \textit{tensor} category. But how do we
+define the multiplication on the tensor product?
+
+Well it all comes from the twist! We define
+\[m_{V\otimes W}=(m_V\otimes m_W)\circ(\id_V\otimes \tau_{2,3}\otimes \id_W)\]
+where $\tau_{2,3}$ is the twist morphism.
+
+More simply, $u_{V\otimes W}:k=k\otimes k\to V\otimes V$ simply defined by $u_V\otimes u_W$.
+
+So then when we say that $\Delta$ is an algebra morphism, we are saying that for all $v,w\in V$
+\[\Delta(vw)=\sum(vw)_{(1)}\otimes(vw)_{(2)}=(\sum v_{(1)}\otimes v_{(2)})(\sum w_{(1)}\otimes w_{(2)})=\sum v_{(1)}w_{(1)}\otimes v_{(2)}w_{(2)}\]
+
+\subsection{Hopf Algebras}
+Already to the good stuff!
+\begin{defn}
+	$V\in\Vectk$ is a \textbf{Hopf algebra} if $V$ is a bialgebra together with an \textbf{antipode}
+	$S:V\to V$ satisfying
+	\[(S,\id_V)\circ \Delta=\varepsilon=(\id_V,S)\circ\Delta\]
+\end{defn}
+\begin{conj}
+	If $V\in\Vectk$ is a Noetherian Hopf algebra, then $S$ is bijective.
+\end{conj}
+
+\subsection{History and Motivation}
+Hopf himself was a topologist, so this is the first context in which it arose. In the 1940's,
+he began studying Hopf algebras over $\Z_2$ graded $k$ vector spaces. For instance, the 
+cohomology ring of topological space $X$ with coefficients in $k$.
+
+Later, in combinatorics, they ended popping up. Looking at rings of symmetric functions and other places
+gave some interesting examples.
+
+Then in group theory you can define a functor from groups to Hopf algebras by $F(G)=kG$
+with the diagonal map. The antipode is just the inverse.
+
+Then with Lie algebras, you can look at $\mathcal{U}(L)$, the universal enveloping algebra is a Hopf algebra.
+
+Finally with algebraic groups (yay!) we take an algebraic group $G$ and consider the ring of functions on it, 
+which is again a Hopf algebra.
+
+\brk
+
+Some ``cousins'' of Hopf algebras: quasi, weak, multiplier, ribbon, quasi-triangular, etc Hopf algebras. 
+Each has slightly different base category or restrictions.
 
 \end{document}
