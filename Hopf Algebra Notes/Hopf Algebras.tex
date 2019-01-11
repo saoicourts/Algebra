@@ -154,10 +154,15 @@
 %identity map
 \DeclareMathOperator{\id}{id}
 
+\DeclareMathOperator{\Hom}{Hom}
+
 %Hopf algebra stuff
 \newcommand*{\Vectk}{\operatorname{Vect}_k}
 \newcommand*{\Algk}{\operatorname{Alg}_k}
 \newcommand*{\Coalgk}{\operatorname{Coalg}_k}
+\DeclareMathOperator{\Coalg}{Coalg}
+\DeclareMathOperator{\Alg}{Alg}
+\newcommand*{\scrT}{\ensuremath\mathscr{T}}
 
 %fix tilde
 \let\tilde\relax
@@ -456,5 +461,125 @@ which is again a Hopf algebra.
 
 Some ``cousins'' of Hopf algebras: quasi, weak, multiplier, ribbon, quasi-triangular, etc Hopf algebras. 
 Each has slightly different base category or restrictions.
+
+\section{January 11, 2019}
+The plan for today is to talk about:
+\begin{itemize}
+	\item Convolution Algebras
+	\item Antipodes
+	\item Duality
+	\item (Co-)Modules
+\end{itemize}
+
+\subsection{Convolution Algebras}
+ Let $\scrT$ be a symmetric tensor category. We can usually think of $\scrT=\Vectk$, but 
+ there is a problem since $\Vectk$ is equivalent to the category of Hopf algebras over $k$,
+ while this is not generally true.
+
+ We also need that $\scrT$ is $k$-linear (that is, enriched as a category over $k$). This
+ means that $\Hom_\scrT (A,B)\in\Vectk$.
+
+ \begin{thm}
+	Let $\scrT$ be as above. Then $\Hom_\scrT(C,A)$ is an algebra and $\Hom_\scrT(-,-):(\Coalg_\scrT)^{op}\times\Alg_\scrT\to\Alg_k$
+	is a functor.
+ \end{thm}
+ \begin{prf}
+	Let $A$ be an algebra object in $\scrT$ and $C$ be a coalgebra object in $\scrT$. Then $1_{\Hom} :=u_A\circ\varepsilon_C:C\to 1_\scrT$ and define
+	\[f\ast g := m_A(f\otimes g)\Delta_C:C\to A.\]
+
+	Then using Lemma \ref{lem-func} and the fact that $A$ and $C$ are (co)algebra objects,
+	we can see that the product $\ast$ satisfies the axioms required.
+ \end{prf}
+ \begin{lem}
+	\begin{enumerate}
+		\item $1_{\Hom}\ast f = m_A(u\otimes 1)(1\otimes f)(\varepsilon\otimes 1)\Delta.$
+		\item $f\ast 1_{\Hom}=m_A(1\otimes u)(f\otimes 1)(1\otimes \varepsilon)$
+		\item $(f\ast g)\ast h=m_A(m_A\otimes 1)((f\otimes g)\otimes h)(\Delta_C\otimes 1)\Delta_C$
+		\item $f\ast(g\ast h)=m_A(1\otimes m_A)(f\otimes(g\otimes h))(1\otimes \Delta)\Delta$
+	\end{enumerate}
+	\label{lem-func}
+ \end{lem}
+ 
+ \begin{prf}
+	\subsubsection*{(a)}
+	\begin{align*}
+		1_{\Hom}\ast f&= m_A(1_{\Hom}\otimes f)\Delta_C\\
+		&=m_A(u_A\circ\varepsilon\otimes f)\Delta_C\\
+		&=m_A(u\otimes 1)(\varepsilon\otimes 1)(1\otimes f)\Delta
+	\end{align*}
+	\subsubsection*{(b)}
+	Same as (a), essentially.
+	\subsubsection*{(c) and (d)}
+	\begin{align*}
+		(f\ast g)\ast h&= m_A((f\ast g)\otimes h)\Delta\\
+		&=m_A((m_A(f\otimes g)\Delta)\otimes h)\Delta\\
+		&=m_A(m_A\otimes 1)((f\otimes g)\otimes h)(\Delta\otimes 1)\Delta
+	\end{align*}
+	and the other is analogous.
+ \end{prf}
+
+ \begin{defn}
+	$V\in\scrT$ is a \textbf{Hopf algebra object} if:
+	\begin{itemize}
+		\item $V$ is a bialgebra object in $\scrT$ and
+		\item There is a map $S:V\to V$ that is $(\id_V)^{-1}$ with respect to $\ast$.
+	\end{itemize}
+ \end{defn}
+ \begin{rmk}
+	Notice here that $\id_V\in\Hom_\scrT(V,V)$, the identity map in $\scrT$. We are \textit{not}
+	taking about $1_{\Hom}=u\circ\varepsilon$.
+
+	Also, we call $S$ an \textbf{antipode.}
+ \end{rmk}
+
+ \subsection{Duality}
+ Notice that when $C=1_\scrT$ (that is the tensor identity), $\Hom_\scrT(1_\scrT,-):\Alg_\scrT\to\Algk$
+ is a functor. Same for the dual from $\Coalg_\scrT$. This second one gives us a chance to talk about duality.
+
+ \begin{lem}
+	Let $\scrT$ be the category of finite dimensional vector spaces over $k$.
+	Then $(-)^*:\scrT\to\scrT^{op}$ is an equivalence.
+ \end{lem}
+ This uses $(V\otimes W)^*=W^*\otimes V^*$.
+ \begin{cor}
+	$V$ is an algebra over $k$ $\Leftrightarrow$ $V^*$ is a coalgebra over $k$.
+	And vice versa.
+ \end{cor}
+
+ Recall $S=(\id_V)^{-1}$. Thus
+ \[S\ast \id_V=1_{\Hom}=\id_V\ast S\]
+ The diagram we have here is
+ \begin{figure}[h]
+	 \centering
+	 \begin{tikzcd}
+		V\otimes V\ar[rr,"S\otimes \id_V"] & & V\otimes V\ar[d,"m_V"]\\
+		V\ar[u,"\Delta"]\ar[d,"\Delta"]\ar[r,"\varepsilon_V"] & k \ar[r,"u_V"] & V\\
+		V\otimes V\ar[rr,"\id_V\otimes S"] & & V\otimes V\ar[u,"m_V"]
+	 \end{tikzcd}
+ \end{figure}
+
+ \subsection*{Modules/Comodules}
+ \begin{defn}
+	Let $A$ be an algebra object in $\scrT$. A \textbf{left $A$ module} is $M\in\scrT$
+	with a morphism
+	\[m_M:A\otimes M\to M\]
+	such that the diagrams in Figure \ref{fig-mod} commute.
+\end{defn}
+\begin{figure}[h]\label{fig-mod}
+	\centering
+	\begin{tikzcd}
+		A\otimes A\otimes M\ar[r,"m_A\otimes 1"]\ar[d,"1\otimes m_M"] & A\otimes M\ar[d,"m_M"]\\
+		A\otimes M\ar[r,"m_M"] & M
+	\end{tikzcd}
+	\begin{tikzcd}
+		A\otimes M\ar[r,"m_M"] & M\\
+		1_\scrT\otimes M\ar[ur,"\sim"]\ar[u,"u_A\otimes 1"] &
+	\end{tikzcd}
+	\caption{Module diagrams}
+\end{figure}
+\begin{rmk}
+	Note that we don't necessarily need that $M$ lie in $\scrT$. We could instead just 
+	rely on an algebra homomorphism $\varphi:A\to \Hom_{\scrT}(M,M)$ and proceed as usual.
+\end{rmk}
 
 \end{document}
