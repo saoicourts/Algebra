@@ -457,14 +457,29 @@ Do problems 1.9, 2.1, 3.8. 3.9, and 4.3.
 	Prove that the set of all inner derivations $\ad x$ for $x\in L$ is an ideal of $\Der L$.
 \end{hwprob}
 \begin{sol}
+	Let $I=\ad L$. $I\subseteq \Der L$ since $\ad x$ is a derivation. This is a subspace since $\ad 0=0$ and since the bracket is bilinear
+	\[\ad x(ay+bz)=[x,ay+bz]=[x,ay]+[x,bz]=a[xy]+b[xz]=a\ad x(y)+b\ad x(z).\]
 
+	Take any $x\in I$ and let $f\in\Der L$ be arbitrary. But then for $y,z\in L$
+	\begin{align*}
+		[\ad x,f](yz)&=(\ad x f-f\ad x)(yz)\\
+		&=[x,f(yz)]-f[x,yz]\\
+		&=[x,f(y)z+yf(z)]-f([x,y]z+y[x,z])\\
+		&=[x,f(y)z]+[x,yf(z)]-f([x,y]z)-f(y[x,z])\\
+		&=[x,f(y)]z+f(y)[x,z]+[xy]f(z)+y[x,f(z)]-f([x,y])z\\
+		&\hspace{2in} -[x,y]f(z)-f(y)[x,z]-yf[x,z]\\
+		&=([x,f(y)]-f[x,y])z+y([x,f(z)]-f[x,z])\\
+		&=([\ad x, f](y))z+y([\ad x,f](z))
+	\end{align*}
+	so $[IL]\subseteq I$ whence $I$ is an ideal of $L$.
 \end{sol}
 
 \begin{hwprob}{3.8}
 	Let $L$ be nilpotent. Prove that $L$ has an ideal of codimension 1.
 \end{hwprob}
 \begin{sol}
-
+	Assume that $L$ is nilpotent. Then defining $L^0=L$, and by induction $L^i=[LL^{i-1}]$, this 
+	means that $L^n=0$.
 \end{sol}
 
 \begin{hwprob}{3.9}
@@ -480,7 +495,7 @@ Do problems 1.9, 2.1, 3.8. 3.9, and 4.3.
 \begin{hwprob}{4.3}
 	This exercise illustrates the failure of Lie's theorem when $F$ is allowed to have positive characteristic.
 	Consider the $p\times p$ matrices
-	\[x=\begin{pmatrix}
+	\[x=\begin{pmatrix} 
 		0 & 1 & 0 & \cdots & 0\\
 		0 & 0 & 1 & \cdots & 0\\
 		\vdots & \vdots & \vdots & \ddots & \vdots\\
@@ -586,7 +601,7 @@ For any Lie algebra, we can define
 \end{defn}
 
 \begin{defn}
-	If $L^{(n)}$ for some $n$, and thus for all sufficiently large $n$, we call $L$ \textbf{solvable.}
+	If $L^{(n)}=0$ for some $n$, and thus for all sufficiently large $n$, we call $L$ \textbf{solvable.}
 \end{defn}
 \begin{rmk}
 	Note that actually there is a cooresponding definition for groups using commutators $[G,G]$.
@@ -625,4 +640,97 @@ Using this definition, we are able to give two different characterizations:
 \end{defprime}
 This equivalence will not become clear until we learn about the Killing form, but at least it jives
 with our experience with representation theory and semisimple modules.
+
+\section{January 14, 2019}
+I missed this day for an event. I will try to catch up if I have time.
+
+\section{January 16, 2019}
+We are continuing from last time when we were showing that as solvable Lie subalgebra of $\gl(n,k)$
+(when $\ch k=0$ and $\bar k=k$) necessarily admits a vector $v\in k^n\setminus 0$ that is
+a common eigenvector:
+\[xv=\lambda(x)v\]
+for some \textbf{linear} function $\lambda:L\to k$.
+
+We argues (as in the parllel case of a Lie subalgebra of $\gl(n,k)$ consisting of nilpotent matrices
+by induction on dimension and found the same result (except it is zero). In this case when $\dim L=1$,
+since $k$ is algebraically closed, $L$ is spanned by asingle matrix $x$ and any eigenvector of $x$ does the trick.
+
+Now assume that the result holds for solvable Lie algebras of dimension $<d$. Then since $L$ is sovable, we know
+$[LL]\subsetneq L$. Let $I$ be any subspace containing $[LL]$ and properly contained in $L$ of codimension one.
+Then $I$ is an ideal since $[LI]\subseteq[LL]\subseteq I$, so by the inductive hypothesis $I$ has a common eigenvector, 
+so that there is a linear function $\lambda$ such that the \textbf{weight space}
+\[V_\lambda=\{v\in k^n:xv=\lambda(x)v,\,\forall x\in I\}\]
+is nonzero.
+
+We know that $L=I+kx$ for some $x\in L$, so we must show that $x$ preserves $V_\lambda$: then any eigenvector
+of $x$ on $V_\lambda$ will do the job. Given $v\in V_\lambda$, we must show that 
+\[yxv=xyv+[yx]v=\lambda(y)xv+\lambda([yx])v\]
+so we must show that $\lambda([xy])=0$.
+
+Given $v\in V_\lambda$, look at hte powers $v,xv, x^2v,\dots$. Let $m$ be the least power such that the
+$v,xv,\dots,x^mv$ are linearly independent and let $W_i$ be the span of the first $i$ of these.
+
+Then one checks by induction for an $y\in I$ that $yx^iv=\lambda(y)x^iv\pmod{v,xv,\dots,x^iv}$
+It follows that $y$ was in the subspace $W_m$ (oh no missed some stuff).
+
+So the trave of $y$ on $W_m$ is $m\lambda(y)$. Now for any $y\in I$, the matrix $[xy]$ acts on $W_m$ ascendingthe commutator of two matrices having trace zero, whence $m\lambda([xy])=0$,
+so since $\ch k=0$, $\lambda([xy])=0$, as desired.
+
+\brk
+
+As a consequence, given a solvable Lie subalgebra of $\gl(n,k)$ here is a chain of subspaces
+\[0=V_0\le V_1\le\cdots\le V_n=k^n\]
+or a \textbf{flag} such that $LV_i\subseteq V_i$ for all $i$: $L$ acts by upper triangular 
+matrices with respect to a suitable basis.
+
+Another way of putting this, using module language, is that given any \textbf{finite dimensional} module over
+a solvable Lie algebra (over an algebraically closed characteristic zero field) has a one-dimensional submodules $N$.
+
+Equivalently, the only finite-dimensional irreducible modules over a solvable Lie algebra are one-dimensional. We 
+will use this later in the context of semisimple Lie algebras with large solvable subalgebra.
+
+\begin{rmk}
+	For the record, Lie's theorem \textit{definitely fails} when $k$ has positive characteristic.
+	We see one in our homework, and another example comes from $\sl(2,k)$ where $\ch k=2.$
+
+	We know that $\sl(2,k)$ has a basis: $(\begin{smallmatrix}
+		1&0\\0&-1
+	\end{smallmatrix})=I_2$, $x=e_{12}$, $y=e_{21}$. Here $[hx]=0=[hy]$ and $[xy]=h$. It is shown in the book
+	and is easy to see that when $\ch k\ne 2$, $\sl(2,k)$ is simple, but here $\sl(2,k)$ is nilpotent and its
+	bracket relations become $[xy]=z$, $[xz]=[yz]=0$.
+
+	It ends up we can define (actually over any field) the \textbf{Heisenberg} Lie algebra, spanned
+	by $x=e_{12},y=e_{23},z=e_{13}$ or more simply the $3\times 3$ strictly-upper-triangular matrices.
+
+	The matrices in $\sl(2,k)$ for any $k$ have no common eigenvector, so our proof of Lie's theorem must
+	fail somewhere? We indeed have an ideal $I$ of coimension one spanned by $h$ and $x$ and there is acommon eigenvector for $I$, 
+	namely $e_1$. Then $I$ acts diagonally on $ke_1$ via the linear function sending $h$ to 1, $x$ to $1$. 
+	Here $y$ plays the role of $x$ in the proof, but is outside the ideal. That is,
+	\[\lambda[yx]=\lambda(h)\ne 0.\]
+\end{rmk}
+
+Returning to the good case of $k$, we can now apply our result on a linear solvable Lie algebras to arbitrary ones:
+uGIven any solvable Lie algebra $L$, there is a flag $0=L_0\le L_1\le\cdots\le L_n=L$ of ideas of $L$
+so that $[LL_i]\subseteq L_i$ Also $[LL]$ is nilpotent, since it acts on $L$ by strictly upper triangular matrices.
+
+Both results fail for general solvable Lie algebras when the basefield is not nice. If a solvable Lie algebra $L$ 
+\textbf{does} have a chain of ideals $0=L_0\le L_1\le\cdots\le L_n=L$ where $\dim L_i=i$, then we call $L$ \textbf{completely solvable.}
+
+\subsection{Returning to Linear Algebra}
+At this point we will take some time to return to an important idea from Linear algebra, namely the \textbf{Jordan canonical form}
+of a square matrix. Recall Jordan blocks and similarity when eigenvalues lie in the field.
+
+If $M$ is already in this form, then we can write $M=M_s+M_n$ where $M_s$ consists of the diagonal entries of each
+block (zeroes elsewhere) and $M_n$ the off-diagonal entries. Then $M_s$ is diagonal (or for general $M$
+diagonalizable), or \textbf{semisimple} and $M_n$ is nilpotent and $[M_sM_n]=0$ (they commute).
+
+\begin{defn}
+	$M=M_s+M_n$ is called the \textbf{Jordan decomposition of $M$.} We call $M_s$ and $M_n$ the \textbf{semisimple} 
+	and \textbf{nilpotent} parts of $M$.
+\end{defn}
+\begin{rmk}
+	Each are uniquely determined for $M$ and (and this is not generally proved in the first year 
+	algebra sequence) each are equal to polynomials in $M$ with no constant term.x`
+\end{rmk}
+
 \end{document}

@@ -154,7 +154,7 @@
 %identity map
 \DeclareMathOperator{\id}{id}
 
-\DeclareMathOperator{\Hom}{Hom}
+\newcommand*{\Hom}{\ensuremath\text{Hom}}
 
 %Hopf algebra stuff
 \newcommand*{\Vectk}{\operatorname{Vect}_k}
@@ -489,11 +489,13 @@ The plan for today is to talk about:
 
 	Then using Lemma \ref{lem-func} and the fact that $A$ and $C$ are (co)algebra objects,
 	we can see that the product $\ast$ satisfies the axioms required.
+
+	Note that actually
  \end{prf}
  \begin{lem}
 	\begin{enumerate}
 		\item $1_{\Hom}\ast f = m_A(u\otimes 1)(1\otimes f)(\varepsilon\otimes 1)\Delta.$
-		\item $f\ast 1_{\Hom}=m_A(1\otimes u)(f\otimes 1)(1\otimes \varepsilon)$
+		\item $f\ast 1_{\Hom}=m_A(1\otimes u)(f\otimes 1)(1\otimes \varepsilon)\Delta$
 		\item $(f\ast g)\ast h=m_A(m_A\otimes 1)((f\otimes g)\otimes h)(\Delta_C\otimes 1)\Delta_C$
 		\item $f\ast(g\ast h)=m_A(1\otimes m_A)(f\otimes(g\otimes h))(1\otimes \Delta)\Delta$
 	\end{enumerate}
@@ -582,4 +584,191 @@ The plan for today is to talk about:
 	rely on an algebra homomorphism $\varphi:A\to \Hom_{\scrT}(M,M)$ and proceed as usual.
 \end{rmk}
 
+\section{January 14, 2019}
+Today we are talking about Hopf modules and later in the week we will see the fundamental
+theorem of Hopf modules as well as a neat result.
+
+Here is the ``example of the day.''
+\begin{ex}
+	Consider $k[x]$ with maps $\Delta(x^n)=\sum_0^nx^i\otimes x^{n-i}$ and $\varepsilon(x^n)=\delta_{1,n}$. 
+	$S(x^n)=(-x)^n$. Then notice that $\Delta(x)=1\otimes x+x\otimes 1$, so $\delta(x^n)=(\delta x)^n$.
+
+	James doesn't want to do the rest of the computations, but they can be done. :)
+\end{ex}
+
+\begin{prob}\label{prob-4.1}
+	(**) Working with a Hopf algebra $V$, consider the convolution algebra $\Hom(V\otimes V,V)$
+	\begin{enumerate}
+		\item $(S\circ m)\ast m=1_{\Hom(V\otimes V,V)}=m\ast(m\circ s\otimes s\circ\tau)$ where $s$ is the antipode in $V$.
+		\item $(\Delta\circ S)\ast \Delta=1_{\Hom(V,V\otimes V)}=\Delta\ast((s\otimes s)\circ\tau\circ \Delta)$
+	\end{enumerate}
+\end{prob}
+\begin{sol}
+	\begin{align*}
+		(s\circ m)\ast m
+	\end{align*}
+\end{sol}
+\begin{prob}
+	Classify all Frobenius (to be defined) Hopf algebras of dimension 3.
+\end{prob}
+
+\subsection{Returning to (co)modules}\label{subsec-comod}
+\begin{lem}
+	Let $\scrT=\Vectk$, and $V$ and algebra over $k$. The following are equivalent:
+	\begin{enumerate}
+		\item $M$ is a left $V$-module (see last lecture).
+		\item There is an action of $A$ on $M$ such that $(ab)\cdot m=a\cdot (b\cdot m)$ and $1\cdot m=m$.
+		\item There is an algebra morphism $\varphi:V\to\Hom_k(M,M)$
+	\end{enumerate}
+\end{lem}
+
+\begin{defn}
+	Let $V$ be a coalgebra over $k$. We say $M$ is a left \textbf{comodule} if there is a map
+	\[\rho_M:M\to V\otimes M\]
+	such that the diagrams in figure \ref{fig-com} commute.
+\end{defn}
+\begin{figure}[h]\label{fig-com}
+	\begin{tikzcd}
+		M\ar[r,"\rho"]\ar[d,"\rho"] & V\otimes M\ar[d,"\id_V\otimes\rho"]\\
+		V\otimes M\ar[r,"\Delta_V\otimes\id_M"] &V\otimes V\otimes M
+	\end{tikzcd}
+	\begin{tikzcd}
+		M\ar[r,"\rho"]\ar[d,"\cong"] & V\otimes M\ar[dl, "\varepsilon\otimes\id_M"]\\
+		k\otimes M
+	\end{tikzcd}	
+	\caption{Diagrams for the definition of a comodule.}
+\end{figure}
+
+\begin{rmk}
+	Notationally speaking, we write $_V\mathcal{M}$ and $^V\mathcal{M}$ for the categories of 
+	left modules and comodules. Similar for right boyes.
+\end{rmk}
+
+\subsection{Tensors of $V$-modules}
+Say $V$ is a bialgebra (or Hopf if you prefer, but it's not necessary). Then we get the following:
+\begin{lem}
+	Let $M$ and $N$ be two right $V$-modules. Then
+	\begin{enumerate}
+		\item $M\otimes N$ is a right $V$-module.
+		\item If $V$ is cocommutative, then $M\otimes N\cong N\otimes M$ as right $V$-modules.
+		\item $\mathcal{M}_V$ is a tensor (monoidal) category.
+	\end{enumerate}
+\end{lem}
+\begin{prf}
+	For (a), use the fact that $V\otimes V$ acts on $M\otimes N$ in a natural way. Then you get
+	a map $V\otimes V\to \Hom_k(M\otimes N,M\otimes N)^{op}$ (why opposite?) and by precomposing
+	with $\Delta$ to show they are $V$-modules. This establishes (b).
+
+	Finally (c) follows because $\Vectk$ is a tensor category.
+\end{prf}
+
+\subsection{Hopf Modules}\label{subsec-hopfmod}
+\begin{defn}
+	Let $V$ be a bialgebra over $k$. We say that $M$ is a $\binom{r}{r}$ Hopf $V$-module if
+	\begin{enumerate}
+		\item $(M,m_M)$ is a right $V$-module
+		\item $(M,\rho_M)$ is a right $V$ comodule.
+		\item $\rho_M$ is a right $V$-module map.
+		\begin{itemize}
+			\item Equivalently, $m_M$ is a right $V$-comodule map.
+		\end{itemize}
+	\end{enumerate}
+\end{defn}
+\begin{rmk}
+	The fact that these two last conditions are equivalent are perhaps not immediately obvious but we
+	have been assured it is true. :)
+\end{rmk}
+
+\section{January 16, 2019}
+\begin{thm}[Larson-Sweedler `69]\label{thm-LS69}
+	Let $V$ be a Hopf algebra over $k$. Then the following categories are equivalent:
+	\[_V^V\mathcal{M}\cong \Vectk\cong \mathcal{M}_V^V\]
+\end{thm}
+
+\begin{rmk}
+	A natural question that one may ask is how to extend this theorem to the enriched setting.
+\end{rmk}
+
+\begin{lem}
+	$S$ is an anti-homomorphism of an algebra $V$ and an anti-homomorphism of the coalgebra $V$.
+\end{lem}
+\begin{prf}
+	Use the facts proved in problem~\ref{prob-4.1}.
+\end{prf}
+
+\begin{prob}
+	If $\ch k=0$ any Hopf quotient of $k[x]$ is either $k$ or $k[x]$ itself.
+\end{prob}
+
+\begin{prob}
+	Suppose $k$ has positive characteristic. Construct two different Hopf algebra quotients of $k[x]$ of dimension $p=\ch k$.
+\end{prob}
+
+\begin{ex}
+	$\ch k=p>0$. Let $V=k[x]/(x^p)$ as an algebra and define $\Delta(x)=x\otimes 1+1\otimes x$,
+	$\varepsilon(x)=0$ and $S(x)=x$. Then notice
+	\[\Delta(x^p)=\sum\binom{p}{i}x^i\otimes x^{p-i}=x^p\otimes 1+1\otimes x^p.\]
+\end{ex}
+
+\subsection{Hopf Modules Once More}
+Recall the definitions from section~\ref{subsec-comod} and section~\ref{subsec-hopfmod}.
+
+\begin{rmk}
+	An equivalent (more category-theoretical) definition of a Hopf module is a $V$-comodule object in 
+	the category of $V$-modules. Also can dualize everything.
+\end{rmk}
+
+\begin{ex}
+	Consider $V\in _V^V\mathcal{V}$. THen you can define $\rho=\Delta$ and check it satisfies all the requirements.
+\end{ex}
+\begin{defn}
+	An $\binom{l}{l}$ Hopf $V$-module $M$ is called \textbf{trivial} if $M\cong V\otimes M_0$ for some $M_0\in\Vectk.$
+\end{defn}
+\begin{rmk}
+	Basically you can think of this being trivial since we can \textit{always} define a module in this way
+	where the entire module structure is inherited from the structure of $V$ (that is, irrespective of $M_0$).
+\end{rmk}
+\begin{thm-prime}{thm-LS69}%[Fundamental Thm of Hopf Modules (L-S `69)]
+	Suppose that $V$ is a Hopf algebra. Then
+	\begin{enumerate}
+		\item Every $\binom{l}{l}$ Hopf $V$-module is trivial.
+		\item Let $M\in _V^V\mathcal{M}$. Then 
+		\[M\xrightarrow{\sim} V\otimes M^{Cov}\]
+		where
+		\[M^{Cov}:=\{m\in M|\rho(m)=1\otimes m\}.\]
+		\item $_V^V\mathcal{M}\cong \Vectk$.
+	\end{enumerate}
+\end{thm-prime}
+\begin{rmk}
+	This is actually just a reformulation of theorem~\ref{thm-LS69} in less compact (but ultimately more usable) notation.
+\end{rmk}
+\begin{prf}
+	Some identites that will be useful:
+	\begin{align*}
+		\Delta(v)=\sum v_1\otimes v_2\\
+		\sum S(v_1)\otimes v_2=\varepsilon(v)=\sum v_1S(v_2)\\
+		\rho(m)=\sum m_{-1}\otimes m_1\\
+		\sum v_1\otimes (v_2)_1\otimes (v_2)_2=\sum (v_1)_1\otimes (v_1)_2\otimes v_2=\sum v_1\otimes v_2\otimes v_3\\
+		\sum (m_{-1})_1\otimes (m_{-1})_2\otimes m_0=\sum m_{-1}\otimes (m_0)_{-1}\otimes (m_0)_0=\sum m_{-2}\otimes m_{-1}\otimes m_0
+	\end{align*}
+
+	Then we defin $\phi:M\to M^{Cov}$ by 
+	\[\phi(x)=\sum S(x_{-1})x_0\in M\]
+	We claim first that $\phi(x)\in M^{Cov}$ -- namely $\rho(\phi(x))=1\otimes\phi(x)$. To see this, compute
+	\begin{align*}
+		\rho(\phi(x)) &= \sum (\phi(x))_{-1}\otimes (\phi(x))_0\\
+		&= (S(x_{-1})x_0)_{-1}\otimes (S(x_{-1})x_0)\\
+		&= \sum\Delta(S(x_{-1}))\rho(x_0)\\
+		&= \sum (S\otimes S)\circ \tau(\Delta(x_{-2}))\cdot [x_{-1}\otimes x_0]\\
+		&=\sum[S(x_{-2})\otimes S(x_{-3})][x_{-1}\otimes x_0]\\
+		&= \text{my fingers are aching...}\\
+		&= 1\otimes\phi(x)
+	\end{align*}
+
+	Now define $F:M\to V\otimes M^{Cov}$ by $F=(\id\otimes\phi)\circ\rho$ and $G:V\otimes M^{Cov}$ 
+	to be the map taking $v\otimes m$ to $vm$. The next claim is that $GF$ and $FG$ are the identity.
+	You can see this by similarly pushing around notation.
+	
+	Finally the last claim will be seen on Friday.
+\end{prf}
 \end{document}
