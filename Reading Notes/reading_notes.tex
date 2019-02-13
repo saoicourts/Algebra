@@ -1,19 +1,21 @@
 \documentclass[12pt]{article}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Package Includes
 \usepackage{setspace}
-
-\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, x	color}
+\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, scalerel, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, xcolor}
 \usepackage[framed,thmmarks]{ntheorem}
 \usepackage[mathscr]{euscript}
 
-%set up theorem/definition/etc envs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Theorems, definitions, problems, solutions, etc
 %Problems will be created using their own counter and style
 \theoreminframepreskip{0pt}
 \theoreminframepostskip{0pt}
 \newframedtheorem{prob}{Problem}[part]
 \renewcommand\theprob{\arabic{part}.\arabic{prob}}
 
-%solution template
+%solution
 \theoremstyle{nonumberbreak}
 \theoremindent0.5cm
 \theorembodyfont{\upshape}
@@ -21,17 +23,17 @@
 \theoremsymbol{\ensuremath\spadesuit}
 \newtheorem{sol}{Solution}
 
-%Theorems, Lemmas, and Corollaries
+%Theorems, Lemmas, Corollaries, and Conjectures
 \theoremstyle{changebreak}
 \theoremseparator{}
 \theoremsymbol{}
 \theoremindent0.5cm
 \theoremheaderfont{\color{blue}\bfseries} 
-
 \newtheorem{thm}{Theorem}[subsection]
 \theoremheaderfont{\bfseries}
 \newtheorem{lem}[thm]{Lemma}
 \newtheorem{cor}[thm]{Corollary}
+\newtheorem{conj}[thm]{Conjecture}
 
 %Create a new env that references a theorem and creates a 'primed' version
 %Note this can be used recursively to get double, triple, etc primes
@@ -41,20 +43,18 @@
    \begin{thm}}
   {\end{thm}}
 
-\setlength\fboxsep{15pt}
+%Man, that's really good! Let's use the same thing for definitions.
+\newenvironment{def-prime}[1]
+  {\renewcommand{\thethm}{\ref{#1}$'$}%
+   \addtocounter{thm}{-1}%
+   \begin{def}}
+  {\end{def}}
 
 %Shade definitions
 \theoremindent0cm
 \theoremheaderfont{\normalfont\bfseries} 
 \def\theoremframecommand{\colorbox[rgb]{.7,.9,1}}
 \newshadedtheorem{defn}[thm]{Definition}
-
-%Man, that's really good! Let's use the same thing for definitons.
-\newenvironment{def-prime}[1]
-  {\renewcommand{\thethm}{\ref{#1}$'$}%
-   \addtocounter{thm}{-1}%
-   \begin{def}}
-  {\end{def}}
 
 %proofs
 \theoremstyle{nonumberplain}
@@ -75,6 +75,91 @@
 %waterhouse problem
 \newenvironment{wprob}[1]{\begin{prob}{\normalfont\bfseries (Waterhouse #1) }\itshape}{\end{prob}}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% MATH DEFINITIONS
+%Blackboard Sets
+\newcommand*{\bbZ}{\mathbb{Z}}
+\newcommand*{\bbN}{\mathbb{N}}
+\newcommand*{\bbR}{\mathbb{R}}
+\newcommand*{\bbC}{\mathbb{C}}
+\newcommand*{\bbF}{\mathbb{F}}
+\newcommand*{\bbQ}{\mathbb{Q}}
+
+%Homological Algebra homological 
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\HH}{HH}
+
+%Representations
+\DeclareMathOperator{\Res}{Res_H}
+\DeclareMathOperator{\Ind}{Ind_H^G}
+\DeclareMathOperator{\Soc}{Soc}
+
+%schemes
+\newcommand{\Ga}{\ensuremath\mathbf{G_a}}
+\newcommand{\Gm}{\ensuremath\mathbf{G_m}}
+\newcommand*{\GL}[1]{\ensuremath\mathbf{GL_#1}}
+\newcommand*{\SL}[1]{\ensuremath\mathbf{SL_#1}}
+\newcommand*{\mun}[1]{\ensuremath\mathbf{\bm\upmu_#1}}
+\newcommand*{\alp}[1]{\ensuremath\mathbf{\bm\upalpha_#1}}
+
+%Lie Algebras
+\newcommand*{\g}{\mathfrak{g}}
+\newcommand*{\n}{\mathfrak{n}}
+\newcommand*{\h}{\mathfrak{h}}
+\let\sl\relax
+\newcommand*{\sl}{\mathfrak{sl}}
+\newcommand*{\gl}{\mathfrak{gl}}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Int}{Int}
+\DeclareMathOperator{\Der}{Der}
+
+%categories
+\newcommand*{\Mod}{\text{\textbf{Mod}}}
+\newcommand*{\C}{\mathcal{C}}
+\newcommand*{\T}{\mathcal{T}}
+\let\O\relax
+\newcommand*{\O}{\mathcal{O}}
+\newcommand*{\Ass}{\text{\textbf{Ass}}}
+\newcommand*{\Vect}{\text{\textbf{Vect}}}
+\newcommand*{\Grp}{\text{\textbf{Grp}}}
+\newcommand*{\Ab}{\text{\textbf{Ab}}}
+\newcommand*{\Ring}{\text{\textbf{Ring}}}
+\newcommand*{\Lie}{\text{\textbf{Lie}}}
+
+%general commands
+\DeclareMathOperator{\ch}{char}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\coker}{coker}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Hacks, tweaks, and general helpful stuff
+%fix tilde
+\let\tilde\relax
+\newcommand*{\tilde}[1]{\widetilde{#1}}
+
+% Enumerate will automatically use letters (e.g. part a,b,c,...)
+\setenumerate[0]{label=(\alph*)}
+
+%Why is chi set so low?
+\DeclareRobustCommand{\Chi}{{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
+
+%Center each figure by default
+\makeatletter
+\g@addto@macro\@floatboxreset{\centering}
+\makeatother
+
+\setlength\fboxsep{15pt}
+
+%Section break
+\newcommand*{\brk}{
+\rule{2in}{.1pt}
+}
+
 %Replacement for the old geometry package
 \usepackage{fullpage}
 
@@ -82,12 +167,12 @@
 \let\oldpart\part%
 \renewcommand{\part}{\clearpage\oldpart}%
 
-%Center each figure by default
-\makeatletter
-\g@addto@macro\@floatboxreset{\centering}
-\makeatother
+%Get q-binomial coefficients
+\newcommand{\qbinom}{\genfrac{[}{]}{0pt}{}}
 
-%header stuff
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Header Stuff
 \setlength{\headsep}{24pt}  % space between header and text
 \pagestyle{fancy}     % set pagestyle for document
 \lhead{Notes on Affine Group Schemes and Their Representations} % put text in header (left side)
@@ -96,86 +181,8 @@
 \setlength{\headheight}{15pt}
 \allowdisplaybreaks
 
-%Set of Integers
-\newcommand*{\Z}{
-\mathbb{Z}
-}
-%Set of Natural Numbers
-\newcommand*{\N}{
-\mathbb{N}
-}
-%Set of Real Numbers
-\newcommand*{\R}{
-\mathbb{R}
-}
-%Set of Complex Numbers
-\newcommand*{\C}{
-\mathbb{C}
-}
-%Field
-\newcommand*{\F}{
-\mathbb{F}
-}
-%Rationals
-\newcommand*{\Q}{
-\mathbb{Q}
-}
-
-%Section break
-\newcommand*{\brk}{
-\rule{2in}{.1pt}
-}
-
-\DeclareMathOperator{\Aut}{Aut}
-
-%raise that Chi!
-\DeclareRobustCommand{\Chi}{{\mathpalette\irchi\relax}}
-\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
-
-%Image
-\DeclareMathOperator{\im}{Im}
-
-%Hom
-\DeclareMathOperator{\Hom}{Hom}
-
-%Ext
-\DeclareMathOperator{\Ext}{Ext}
-
-%Coker
-\DeclareMathOperator{\coker}{coker}
-
-%characteristic
-\DeclareMathOperator{\ch}{char}
-
-%restriction
-\DeclareMathOperator{\Res}{Res_H}
-
-%socle
-\DeclareMathOperator{\Soc}{Soc}
-
-%rank
-\DeclareMathOperator{\rank}{rank}
-
-%induction
-\DeclareMathOperator{\Ind}{Ind_H^G}
-
-%identity map
-\DeclareMathOperator{\id}{id}
-
-%schemes
-\DeclareMathOperator{\Ga}{\ensuremath\mathbf{G_a}}
-\DeclareMathOperator{\Gm}{\ensuremath\mathbf{G_m}}
-\newcommand*{\GL}[1]{\ensuremath\mathbf{GL_#1}}
-\newcommand*{\SL}[1]{\ensuremath\mathbf{SL_#1}}
-\newcommand*{\mun}[1]{\ensuremath\mathbf{\bm\upmu_#1}}
-\newcommand*{\alp}[1]{\ensuremath\mathbf{\bm\upalpha_#1}}
-
-%fix tilde
-\let\tilde\relax
-\newcommand*{\tilde}[1]{\widetilde{#1}}
-
-% Enumerate will automatically use letters (e.g. part a,b,c,...)
-\setenumerate[0]{label=(\alph*)}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 %make the title page
@@ -183,8 +190,6 @@
 \author{Nico Courts}
 \date{}
 \maketitle
-
-%begin problems
 
 \part{Autumn 2018}
 \section{Problems}
@@ -256,7 +261,7 @@
 	\[|F(k\times k)|=|F(k)\times F(k)|=4.\]
 	\subsubsection*{(c)}
 	Let $F$ be such a functor. Consider any $\varphi\in\Hom(k\times k, R)\simeq F(R)$.
-	Assume first that $F(R)\cong \Z/2$ and let $r$ be an idempotent in $R$. 
+	Assume first that $F(R)\cong \bbZ/2$ and let $r$ be an idempotent in $R$. 
 \end{sol}
 
 \begin{wprob}{1.2}
@@ -381,7 +386,7 @@
 	Then choosing $\varepsilon(X)=1$ satisfies the diagrams (as before in $G_m$) and using our
 	intuition, $S(X)=X^5$ which also works.
 	\subsubsection*{$\alp{p}$:}
-	This time we are working with $A=\Z/p[X]/(X^p)$. This time (since the group is additive) we want
+	This time we are working with $A=\bbZ/p[X]/(X^p)$. This time (since the group is additive) we want
 	$\Delta(X)=X\otimes 1+1\otimes X$, which we can see works with associativity immediately.
 
 	Following suit with the other additive group scheme $G$, setting $\varepsilon(X)=0$ and $S(X)=-X$
@@ -469,7 +474,315 @@ To give a sense of direction, Julia recommended that I take a look at the follow
 	Let $G$ be an algebraic affine group scheme over a field $k$. Then $k[G]\otimes \bar k$ is reduced if and
 	only if $\dim G = \rank \Omega_{k[G]}$.
 \end{thm}
-\section{Affine Group Schemes (Waterhouse and Jantzen)	}
+
+\section{Overarching Ideas and Notes}
+\subsection{Week 2}
+Consider the representations of A over a field $k$ (or more generally $A$ modules, which we can make into a tensor category).
+Recall that in this category we have enough projectives and (with finitely generated Hopf algebras) we get that all projectives are injective.
+
+The object of study here:
+\begin{defn}
+	The \textbf{Hochschild cohomology} of a Hopf algebra $A$ over the field $k$ is 
+	\[\Ext_A^*(k,k)=H^*_A(A,k)\].
+\end{defn}
+
+The conjecture here is
+\begin{conj}
+	when $A$ is a finite dimensional Hopf algebra, $H^*(A,k)$ (the Hochschild cohomology) 
+	is finitely generated as a $k$-algebra.
+\end{conj}
+This is known in some special cases:
+\begin{itemize}
+	\item Finite groups
+	\item Finite group schemes (in positive characteristic) due to Friedlander and Suslin.
+	\item In characteristic zero we have
+	\begin{itemize}
+		\item Quantum groups
+		\item Hopf algebras that come from Nichols algebras
+	\end{itemize}
+\end{itemize}
+
+Papers to look at: 
+\begin{itemize}
+	\item Ginzburg and Kumar '94 ``Cohomology of Quantum Groups at Roots of Unity''
+	\item Mastnak, Pevtsova, Shauenburg, and Witherspoon '09 ``Cohomology of Finite Dimensional Pointed Hopf Algebras''
+	\item Witherspoon '17 ``Varieties for Modules of Finite Dimensional Hopf Algebras''
+\end{itemize}. 
+
+Sarah Witherspoon has a book she is writing on Hochschild cohomology that could be very good. It's on her website (Texas A\& M). Check out chapter 9 and appendix A.
+
+\subsection{Week 3}
+We primarily discussed support varieties in the context of Sarah Witherspoon's \textit{Varieties for Modules of Finite Dimensional Hopf Algebras.}
+
+\subsubsection{Questions}
+\begin{enumerate}
+	\item On page 5, in the definition of the support variety of a Hopf module $M$ (see Definition~\ref{def-support-var}),
+	the construction seems to depend rather heavily on the choice (and existence!) of a graded subalgebra $H\le \HH^*(A)$
+	satisfying (fg1) and (fg2). But the notation seems to imply there is no dependence there. What's going on?
+	\item On page 9, why is $\mathcal{Z}(kG)=\HH^0(kG)$ a local ring (for $G$ a finite group)?
+	\item Directly after the last question, why would this ring being local imply that, on the variety level,
+	we can use $H^{ev}(G,k)$ instead of $H^{ev}(G,k)\cdot \HH^0(kG)$?
+\end{enumerate}
+
+\subsubsection{Answers/Hints}
+\begin{enumerate}
+	\item Actually the definition of support variety, when properly generalized to triangulated tensor categories,
+	doesn't rely on the choice of this algebra. But to see this, we need to dive deeper into that subject. Julia gave 
+	me a book by Dave Benson, Srikanth Iyengar, and Henning Krause on local cohomology and support. It was written
+	as a compendium from a course at Oberwolfach that they gave. It is available on the Arxiv.
+	\item Julia suggests that this is a ``standard'' result that one might find in Webb's book (or another book where the author has taken care to be thorough).
+	I couldn't locate it there immediately, but I found a page online that gave me the maximal ideal, so I am going to try to prove it as lemma~\ref{lem-local}.
+	\item The take-away here was that when computing the varieties the nilpotent elements are irrelevant. Since 
+	the only maximal ideal in $\HH^0(kG)$ is composed of nilpotents, it doesn't contribute to the support variety.
+\end{enumerate}
+
+\begin{defn}[Support Variety]\label{def-support-var}
+	Let $A$ be a finite dimensional algebra and assume $_AA$ is injective (notice that finite dimensional Hopf algebras are
+	Frobenius whence self-injective). Assume further that there is a graded subalgebra $H\le \HH^*(A)$ that satisfies the following 
+	finiteness conditions:
+	\begin{itemize}
+		\item \textbf{(fg1):} $H$ is finitely generated, commutative, and $H^0:=H\cap \HH^0(A)=\HH^0(A)$;
+		\item \textbf{(fg2):} for all finite dimensional $A$-modules $M$, $\Ext^*_A(M,M)$ is finitely generated as an $H$-module.
+	\end{itemize}
+
+	Then if $I_A(M)$ is the annihilator of $\Ext_A^*(M,M)$ in $H$, the \textbf{support variety} is
+	\[V_A(M)=\operatorname{MaxSpec(H/I_A(M))}\]
+\end{defn}
+\begin{rmk}
+	In taking with Julia about this definition she mentioned that the use of the max spectrum instead of the entire
+	spectrum is a bit watered-down and, while simpler, perhaps hearkens back to the beginnings of AG where that is what one considered.
+\end{rmk}
+
+\begin{lem}\label{lem-local}
+	If $G$ is a finite $p$-group and $k$ a field of characteristic $p$, $\mathcal{Z}(kG)$ is local.
+\end{lem}
+\begin{prf}
+	I claim that the maximal ideal is
+	\[I=\left\{\sum_{g\in G}a_gg:\sum_ga_g=0\right\}\]
+	To see this, let $A=\mathcal{Z}(kG)$, and notice that $A=\ker\varphi$ where $\varphi(\sum a_g g)=\sum a_i$.
+	Since $\varphi(kG)=k$, this gives us that $I$ is a maximal ideal in $A$.
+
+	Notice that if we prove that $I$ consists entirely of nilpotents, we will be done. This is because
+	the nilradical of $A$ is the intersection of its prime ideals. But if $I$ is contained in the nilradical, 
+	it must, in particular, be contained in every maximal ideal of $A$. Thus it must be the only maximal ideal.
+
+	To see this, we proceed by induction on $n$ where $|G|=p^n$. When $n=0$ this 
+	is obvious and when $n=1$, this means $G=\bbZ/p\bbZ=\langle\alpha\rangle$. In this case each element is nilpotent of 
+	degree $p$ due to the fact that (since in this case our ring is commutative):
+	\[\left(\sum_1^p a_i\alpha^i\right)^p=\sum_1^p a_i^p\alpha^{pi}=\sum_1^p a_i1_G=0.\]
+
+	Now assume that $I$ consists of nilpotents for all $n\le k$ and let $|G|=p^{k+1}$. Let $Z\le G$ be the
+	(necessarily nontrivial) center of $G$. Extend the canonical quotient map $q:G\to G/Z$ to a map 
+	between group rings $\tilde q:kG\to k(G/Z)$. Let $I_Z$ be the augmentation ideal of $k(Z)$. Then
+	$\tilde q$ is surjective with kernel $I_Z\cdot kG$. That this ideal is contained within the kernel is clear
+	since if $y$ is a $kG$-linear sum of elements of the form $\sum_Z a_zz$ where $\sum_Z a_z=0$, then
+	the image is just the sum of zeros.
+
+	To see that every element of the kernel is of this form, let $y=\sum k_i g_i$ and notice
+	\[\tilde q\left(\sum k_ig_i\right)=\sum k_i\tilde q(g_i)=\sum_j\left(\sum_{g_i-g_j\in Z}k_i\right)g_j\]
+	and this is zero precisely when all the sums are. But then the sum of the coefficients of $y$ restricted to any coset of $Z$
+	are zero. 
+
+	Thus in particular $kG/(I_Z)\cong k(G/Z)$.
+	
+	Then look at the augmentation ideal $I_{G/Z}\lhd k(G/Z)$ which, by the induction hypothesis, consists of nilpotents.
+	Pull this back through $\tilde q$ to the ideal $I=(I_{G/Z})+ (I_Z)$. Since some power of $p$ kills all elements of the two 
+	summands, this implies that some power of $p$ kills each element in $I$, completing the proof.
+\end{prf}
+
+\subsection{Week 4}
+Recall that $\mathcal{U}:\Lie\to \Ass$ is a functor that assigns to each 
+Lie algebra the universal enveloping algebra: the tensor algebra over $\g$ modulo the relations
+$x\otimes y-y\otimes x-[x,y]$.
+
+Then we have the PBW theorem:
+\begin{thm}[Poincar\'e-Birkhoff-Witt]
+	If $\g$ is a finite dimensional Lie algebra, with basis $x_1,\dots,x_n$, then $\mathcal{U}(\g)$ has a basis
+	in the form $\prod x_i^{a_i}$ for $a_i\in\bbZ_{\ge 0}$.
+\end{thm}
+\begin{rmk}
+	A fancier way of saying this is to say that $\mathcal{U}(\g)$ admits a filtration such 
+	that $\operatorname{gr}\mathcal{U}(\g)\cong S^*(\g)$.
+\end{rmk}
+
+Furthermore, there is a more general class of algebras called \textbf{PBW algebras} where you get commutation
+modulo lower-order terms. This idea is also what forms the basis of the proof for the above remark.
+
+The idea here, then, is to take the center and see how it acts on the universal enveloping algebra.
+
+\subsubsection{The BGG category $\mathcal{O}$}
+The representations of finite dimensional Lie algebras are in correspondence with the dominant integral weights. This
+will be worth looking into, perhaps.
+
+The general question we want to answer is what he structure of finite dimensional representations of $\g$. In the case
+when $\g=\sl_2$, we have the representation $V=ke_1\oplus ke_2$. 
+
+Here I need to work out some of the notation, but $k[x,y]$ is a representation and $S^d(V)=k_d[x,y]$ is as well. (F\&H lecture 11 for more details there).
+
+So we end up realizing that we can generate any such Lie algebra by taking a single highest-weight vector and 
+applying $\mathcal{U}(\mathfrak{n}^-)$ to get the whole thing. This help motivate:
+\begin{defn}[BGG Category $\mathcal{O}$]
+	$\mathcal{O}$ is the full subcategory of $\mathcal{U}(\g)$ modules such that
+	\begin{itemize}
+		\item $M$ is finitely generated over $\mathcal{U}(\g)$ -- this is necessary since we want free modules
+		and $\mathcal{U}(\g)$ itself to be representations under study and these are excluded from finite ($k$-) dimensional algebras.
+		\item $M$ is $\mathfrak{h}$ semisimple.
+		\item $M$ is $\n$-locally finite -- for all $v\in M$, $\mathcal{U}(\n)v$ is finite dimensional.
+	\end{itemize}
+\end{defn}
+
+Ideas for things to understand/cover for next week:
+\begin{itemize}
+	\item First things first, understand the representations of $\sl(2,k)$.
+	\item Then in Humphreys(I), read/do section \S 6.21 to understand the universal enveloping algebra.
+	\item Read Humphreys(II) chapter 1 as much as possible.
+\end{itemize}
+
+\subsection{Week 5}
+We spent most of the time deriving the fact that any simple $\sl_2$ module is isomorphic to one of the ``standard''
+highest weight modules.
+
+Our assignment for this upcoming week:
+Write down the Serre relations. Then do some computations and read section 21 in Humphreys. Read those lemmas and theorems and start to describe decomposition of general modules of Lie algebras.
+
+\newpage
+\section{Lie Algebras}
+We're planning on digging into the category $\O$, the category of (reasonably finite) $\mathcal{U}(\g)$ modules.
+To begin, however, we are going to make sure we have our fundamentals vis a vis (semi) simple representations of Lie algebras.
+
+\subsection{$\sl_2$}
+In the case when $L=\sl_2$, everything is relatively nice. We read (and discussed) the fact that any simple, finite-dimensional
+$\sl_2$-module is isomorphic to $V(\lambda)$ for some integer $\lambda$ (highest weight).
+
+The action of $L$ on these modules are precisely as one would hope: $x$ and $y$ (the off-diagonal generators) act by raising 
+and lowering the weight of a vector by 2 and the central generator fixes each eigenspace.
+
+\subsection{The Serre Relations}
+Let $L$ be a semisimple Lie algebra and $\h$ a Cartan subalgebra with corresponding roots $\Phi$ with simple root system $\Delta$.
+Recall that 
+\[\langle\alpha_i,\alpha_j\rangle=\frac{2(\alpha_i,\alpha_j)}{(\alpha_j,\alpha_j)}=\alpha_i(h_{\alpha_j})\]
+Fix generators $x_i$ and $y_i$ of $L_{\alpha_i}$ and $L_{-\alpha_i}$, respectively, so that $[x_i,y_i]=h_i=h_{\alpha_i}$
+Recall that the $x_i$ and $y_i$ generate $L$ (as a Lie algebra).
+
+Then in particular we have the relations:
+\begin{align*}
+	[h_i,h_j]&=0\tag{S1}\\
+	[x_i,y_j]&=\delta_{ij}h_i\tag{S2}\\
+	[h_i,x_j]=\langle\alpha_j,\alpha_i\rangle x_j\text{ and }& [h_i,y_j]=-\langle\alpha_j,\alpha_i\rangle y_j\tag{S3}
+\end{align*}
+\begin{defn}[Serre Relations]
+	With the notation above, the relations S1-3 above are called the \textbf{Serre relations}.
+\end{defn}	
+
+These relations end up being crucial in making the connection between root systems and semisimple Lie algebras concrete:
+taking the abstract free Lie algebra on generators satisfying these properties, we get a finite dimensional semisimple Lie algebra
+with roots corresponding exactly to the $\alpha_i$. This also gets us uniqueness of such a root system.
+
+\subsection{The more general case.}
+This primarily borrows from \S 21 in Humphreys (I) but also relies on some results from earlier that I will cite as 
+necessary. 
+
+Throughout this discussion, we rely on the theory developed in sections 15 and 16 regarding Cartan and Borel subalgebras:
+\begin{defn}[Cartan Subalgebra (CSA)]
+	If $L$ is a Lie algebra, then $C\subseteq L$ is called a \textbf{Cartan subalgebra} if $C$ is
+	\begin{enumerate}
+		\item Nilpotent; and
+		\item $N_L(C)=C$.
+	\end{enumerate}
+\end{defn}
+\begin{defn}[Borel Subalgebra]
+	If $L$ is a Lie algebra, $B\subseteq L$ is called a \textbf{Borel subalgebra} if $B$ is a
+	maximal solvable subalgebra.
+\end{defn}
+\begin{rmk}
+	Since every nilpotent Lie algebra is solvable, each CSA lies in some Borel subalgebra $B$ of $L$.
+	then by showing that any two Borel subalgebras are conjugate under $\mathscr{E}(L)$ (the subalgebra of $\Int L$ generated
+	by the strongly $\ad$-nilpotent elements of $L$), it suffices to 
+	show that two CSAs are $\mathscr{E}(L)$-conjugate in any \textit{semisimple} Lie algebra.
+\end{rmk}
+
+In all that follows, we've fixed a CSA $\h$ of $L$ and root system $\Phi$ with simple root system $\Delta=\alpha_1,\dots,\alpha_l$
+of positive roots with $\mathcal{W}$ the Weyl group.
+
+\subsection{Representations}
+Since $\h$ is semisimple (since $L$ is), it acts diagonally on any finite dimensional $L$-module. Thus we can always
+do the same trick of decomposing $V$ into eigenspaces $V=\sqcup_{\lambda\in \h^*}V_\lambda$ that we do for $\sl_2$.
+Slightly more generally (when $V$ is infinite-dimensional), we can consider the sum of weight spaces $V_\lambda$ of $V$, 
+which is necessarily  direct\footnote{Think: vectors can't have multiple eigenvalues.}, so there always
+exists a direct sum of simple modules contained in $V$. When $\dim V<\infty$, this is equal to $V$ itself.
+
+\subsubsection{Standard Cyclic Modules}
+Here
+
+\newpage
+\section{Quantum Groups}
+I am mostly working out of Jantzen's \textit{Lectures on Quantum Groups} with the goal of reading through Ginzburg \& Kumar's
+(apparently influential!) paper \textit{Cohomology of Quantum Groups at Roots of Unity.}
+
+\subsection{What they are}
+The core idea to keep in mind is that quantum groups (or quantum enveloping algebras) are ``deformations'' (or perhaps $q$-analogues) of
+regular enveloping algebras. Well, at least that is the kind we're mostly working with here. A general definition eludes me (and Jantzen).
+
+Mostly we will be interested in $U=\mathcal{U}_q(\sl_2)$. In this setting, we get the definition
+\begin{defn}[Quantum Enveloping Algebra of $\sl_2$]
+	$\mathscr{U}_q(\sl_2)$ is the associative algebra $k\langle E,F,K,K^{-1}\rangle$ under the following relations:
+	\begin{align*}
+		KK^{-1}&=K^{-1}K=1\tag{R1}\\
+		KEK^{-1} &= q^2 E\tag{R2}\\
+		KFK^{-1} &= q^{-2}F\tag{R3}\\
+		EF-FE &= \frac{K-K^{-1}}{q-q^{-1}}\tag{R4}
+	\end{align*}
+	where $q$ is some nonzero element of $k$ such that $q^2\ne 1$.
+\end{defn}
+
+Some notation that may be helpful in the future:
+\begin{itemize}
+	\item For $a\in\bbZ$, define $[a]=\frac{v^a-v^{-a}}{v-v^{-1}}\in\bbQ(v)$ -- the $v$ analogue of $a$. Equivalently, (and perhaps suggestively):
+	\[[a]=v^{a-1}+v^{a-3}+\cdots+v^{-a+3}+v^{-a+1}.\]
+	\item the $v$ analogue of the factorial is
+	\[[a]^!=[a][a-1]\cdots[1]\]
+	\item Then you get the binomial coefficients:
+	\[\qbinom{a}{n}=\frac{[a]^!}{[n]^![a-n]^!}\]
+	\item \[[K;a]=\frac{Kq^a-K^{-1}q^{-a}}{q-q^{-1}}\]
+\end{itemize}
+
+\subsection{Getting a basis}
+The first part of the first chapter focuses on getting a PBW-style basis for $U$, which comes in the form $F^s,K^n,E^r$ for $r,s\in\bbN$, $n\in\bbZ$.
+This is mostly standard but I thought this proof had a neat idea in it:
+
+\begin{prf}
+	Let $A=k[X,Y,Z]$ and define $f,e,h\in \Hom_k(A,A)$ such that 
+	\begin{align*}
+		f(Y^sZ^nX^r)&=Y^{s+1}Z^nX^r,\\
+		e(Y^sZ^nX^r)&=q^{-2n}Y^sZ^nX^{r+1}+[s]Y^{s-1}[Z;1-s]Z^n X^r,\\
+		h(Y^sZ^nX^r)&=q^{-2s}Y^sZ^{n+1}X^r
+	\end{align*}
+	One can check that these vector space homomorphisms exactly mirror multiplication of these monomials
+	by $F, E,$ and $H$, respectively, so we get a map $\varphi:U\to\Hom_k(A,A)$. Then take any linear combination of 
+	$F^sK^nE^r$, mapped though to $A$ via $\varphi$ and then evaluation at 1, gives us a linear combination of the $Y^sZ^nX^r$,
+	so it must be trivial. Sick.
+\end{prf}
+
+\brk
+
+After that, the book focuses on $U_0=k\langle Z,Z^{-1}\rangle$ as well as $U^+=k\langle E\rangle$ and $U^-=k\langle F\rangle$,
+the latter of two which are isomorphic to $k[x]$ by the linear independence above.
+
+\brk
+
+Here's another cool bit: By studying products of monomials (or just defining degree outright) we can impose a graded structure on $U$:
+let $\deg(E)=1$, $\deg(F)=-1$ and $\deg(K)=\deg(K^{-1})=0$ and notice (R1-4) are homogeneous according to this degree.
+Thus the quotient by this homogeneous ideal gives a graded structure to $U$.
+
+Furthermore if $u\in U$ is homogeneous of degree $i$, 
+\[KuK^{-1}=q^{2i}u\]
+so when the powers of $q$ are distinct ($|q|\ne 1$), the graded pieces are precisely the 
+ of $K$ under the adjoint action.
+
+\subsection{Representations of $U$}
+
+\newpage
+\section{Affine Group Schemes (Waterhouse and Jantzen)}
 I have quite a bit of information to process before this, so I will get started!
 \begin{defn}[Closed Embedding]
 	If $G$ and $H$ are affine group schemes represented by $A$ and $B$, respectively and
@@ -578,7 +891,7 @@ Then we can easily compute that $\varepsilon(b)=1$ and $S(b)=b^{-1}$. This is pr
 	called \textbf{diagonalizable.}
 \end{defn}
 \begin{rmk}\label{rmk-diag}
-	Notice that an alternative definition is to begin with an abelian group $M$ and to 
+	Notice that an alternative definition is to begin with an Abelian group $M$ and to 
 	define $S,\Delta,$ and $\varepsilon$ such that each element is group-like. The resulting
 	Hopf algebra represents a diagonalizable group scheme.
 \end{rmk}
@@ -598,11 +911,11 @@ is finitely generated, we get the following:
 	Let $M'$ be the abelian group generated by $U$ and notice that $k[M']$ is a subalgebra of
 	$k[M]$ containing $U$ so $k[M']=k[M]$ and therefore $M'=M$. This establishes that $M$ is 
 	a finitely generated abelian group, so we can split up the algebra into a tensor product
-	of $k[\Z]$ and $k[\Z/n\Z]$.
+	of $k[\bbZ]$ and $k[\bbZ/n\bbZ]$.
 
-	When $M=\Z$, $k[M]\cong k[X,X^{-1}]$, so $G= \Gm$\footnote{Notice that here Waterhouse also
+	When $M=\bbZ$, $k[M]\cong k[X,X^{-1}]$, so $G= \Gm$\footnote{Notice that here Waterhouse also
 	uses that the basis elements $e_i$ are group-like and so $\Delta(e_i)=e_i\otimes e_i$. I am not
-	quite sure why this is necessary.} Similarly if $M=\Z/n$ then $G\cong \mun{n}$
+	quite sure why this is necessary.} Similarly if $M=\bbZ/n$ then $G\cong \mun{n}$
 \end{prf}
 
 Looking at my progress over the last several days, I am thinking that I am getting
@@ -623,8 +936,11 @@ if $G_R$ is the scheme represented by $A\otimes_k R$, then using that $\Hom_k(A^
 which is represented by $(A\otimes R)^D=A^D\otimes R$, so finally 
 \[G^D(R)=(G_R)^D(R)=\{\text{group-like elements in }A\otimes_k R\}\cong \Hom(G_R,(\Gm)_R)\]
 
+\newpage
 \section{Algebraic Geometry}
 
+
+\newpage
 \section{Problems}
 \subsection{Week 1}
 
@@ -649,26 +965,8 @@ in the definition below. It seems to only occur when I use \texttt{\textbackslas
 	
 \end{sol}
 
-Consider the representations of A over a field $k$ (or more generally $A$ modules. W can make this a tensor catecory)
-Recall that in this category we have enough projectives and (with finitely generated hopf algebras) we get that all projectives are injective.
 
-Then we end up defining $\Ext_A^*(k,k)=H^*_A(A,k)$, the cohomology ring of $A$ over $k$.
 
-The conjecture here is that when $A$ is finite dimensional that $H^*(A,k)$ is finitely generated as a $k$-algebra.
-
-This is known in some special cases:
-\begin{itemize}
-	\item Finite groups
-	\item Finite group schemes (in positive characteristic) due to Friedlander and Suslin.
-	\item In characteristic zero we have
-	\begin{itemize}
-		\item Quantum groups
-		\item Hopf algebras that come from Nichols algebras
-	\end{itemize}
-\end{itemize}
-
-Papers to look at: Ginzburg and Kumar '94 Something like ``Cohomology of small quantum groups''. There is also a '10 paper on Julia's website with Sarah Witherspoon and two others on Nichols algebras.
-
-Sarah Witherspoon has a book she is writing on Hochschild cohomology that could be very good. It's on her website (Texas A\& M). Check out chapter 9 and appendix A.
+\section{To be filed:}
 
 \end{document}

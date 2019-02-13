@@ -141,6 +141,9 @@
 \DeclareMathOperator{\im}{Im}
 
 \DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\gldim}{gldim}
+\DeclareMathOperator{\projdim}{projdim}
+\DeclareMathOperator{\findim}{findim}
 
 %Coker
 \DeclareMathOperator{\coker}{coker}
@@ -160,9 +163,11 @@
 \newcommand*{\Vectk}{\operatorname{Vect}_k}
 \newcommand*{\Algk}{\operatorname{Alg}_k}
 \newcommand*{\Coalgk}{\operatorname{Coalg}_k}
+\newcommand*{\calM}{\mathcal{M}}
 \DeclareMathOperator{\Coalg}{Coalg}
 \DeclareMathOperator{\Alg}{Alg}
 \newcommand*{\scrT}{\ensuremath\mathscr{T}}
+\newcommand*{\Ch}{\mathbf{Ch}}
 
 %fix tilde
 \let\tilde\relax
@@ -719,7 +724,7 @@ Recall the definitions from section~\ref{subsec-comod} and section~\ref{subsec-h
 \end{rmk}
 
 \begin{ex}
-	Consider $V\in _V^V\mathcal{V}$. THen you can define $\rho=\Delta$ and check it satisfies all the requirements.
+	Consider $V\in _V^V\mathcal{M}$. THen you can define $\rho=\Delta$ and check it satisfies all the requirements.
 \end{ex}
 \begin{defn}
 	An $\binom{l}{l}$ Hopf $V$-module $M$ is called \textbf{trivial} if $M\cong V\otimes M_0$ for some $M_0\in\Vectk.$
@@ -771,4 +776,573 @@ Recall the definitions from section~\ref{subsec-comod} and section~\ref{subsec-h
 	
 	Finally the last claim will be seen on Friday.
 \end{prf}
+\section{January 18, 2019}
+Recall the Fundamental Theorem of Hopf Modules: $_V^V\mathcal{M}\simeq \Vectk$ or equivalently that
+every (not necessarily finite dimensional) Hopf module is trivial: $M\cong V\otimes M^{Cov}$.
+
+\section{Frobenius Algebras}
+Today we will discuss the result that
+\begin{thm}[Larson-Sweedler, `69]\label{LS-69-2}
+	Every finite dimensional Hopf algebra is Frobenius.
+\end{thm}
+
+There are some nice categorical equivalences: finite dimensional Frobenius algebras over $k$ is
+equivalent to 2-D quantum field theories, or equivalently the symmetric functor category from the 2-D cobordism category to $\Vectk$.
+
+Whoa.
+
+\begin{ex}
+	$V=(kG)^*=\oplus_{g\in G}k\delta g$ where $G$ is a finite group. Define the algebra structure with
+	\[1_V=\sum_{g\in G}\delta_g\]
+	and $\delta_g\delta_h=\delta_g$ when $g=h$ and 0 otherwise.
+
+	The coalgebra structure is $\varepsilon(\delta_g)=\delta_{g,1_G}$ where on the right it is the Kroneker delta.
+	Furthermore $\Delta(\delta_g)=\sum_{h\in G}\delta_h\otimes\delta_{h^{-1}g}$ and $S(\delta_g)=\delta_{g^{-1}}$.
+\end{ex}
+
+\begin{prob}
+	Prove that $kS_3\cong(kS_3)^*$.
+\end{prob}
+\begin{prob}
+	Prove that $k\Z_3\cong(k\Z_3)^*$ when $\ch k\ne 3$.
+\end{prob}
+
+\begin{lem}
+	Let $A$ and $B$ be algebras over $k$.
+	\begin{enumerate}
+		\item If $M\in_A\mathcal{M}_B$, $N\in \mathcal{M}_B$, then $\Hom_{\mathcal{M}_B}(_AM,N)\in\mathcal{M}_A$.
+		\item Take $B=k$, $M\in _A\mathcal{M}$. Then
+		\[M^*:=\Hom_k(M,k)\in\mathcal{M}_A.\]
+		\item $(-)^*:_A\mathcal{M}_{f.d.}\to (\mathcal{M}_A)_{f.d.}^{op}$ is an equivalence of categories. This is called the \textbf{reflection principle.}
+	\end{enumerate}
+\end{lem}
+\begin{prf}
+	This is a known fact. (b) follows quickly from (a) and (c) involves extending the dual map to maps of left $A$-modules.
+\end{prf}
+By the principle of duality, we have:
+\begin{lem}
+	If $C$ and $d$ are finite dimensional coalgebras over $k$, then
+	\begin{enumerate}
+		\item if $M\in ^C\mathcal{M}^D_{f.d.}$ and $N\in \mathcal{M}^D_{f.d.}$ then $\Hom_{\mathcal{M}^D}(M,N)\in\mathcal{M}^C_{f.d.}$.
+		\item If $M\in ^C\mathcal{M}_{f.d.}$ then $\Hom_k(M,k)\in\mathcal{M}^C$
+		\item $(-)^*:^C\mathcal{M}_{f.d.}\to(\mathcal{M}_{f.d.}^C)^{op}$ is an equivalence of categories.
+	\end{enumerate}
+\end{lem}
+
+\begin{defn}
+	A finite dimensional algebra $A$ is called \textbf{Frobenius} if one of the following (equivalent)
+	conditions hold:
+	\begin{enumerate}
+		\item $(A)^*_A\cong A_A$
+		\item $_A(A)^*\cong _AA$
+	\end{enumerate}
+\end{defn}
+\begin{rmk}
+	Note that the equivalence of these two things follow due to the equivalence of categories we get
+	from the two lemmas above.
+\end{rmk}
+We actually don't need the following lemma, but James is a fan so we're going to write it down.
+\begin{lem}\label{lem-not-needed}
+	Let $A$ be a finite dimensional algebra over $k$. Then $M$ is a finite dimensional left $A$-module if
+	and only if $M$ is a finite dimensional right $A^*$-comodule.
+\end{lem}
+\begin{rmk}
+	The reason we get the module to comodule switch is (partly?) due to the fact that in our
+	monoidal category $(V\otimes W)^*=W^*\otimes V^*.$
+\end{rmk}
+
+\begin{lem}
+	Let $V$ be a finite dimensional Hopf algebra and $M$ be a finite dimensional $\binom{l}{l}$ Hopf $V$-module.
+	Then $M^*$ is a finite dimensional $\binom{r}{r}$ Hopf $V$-module.
+\end{lem}
+\begin{prf}
+	$M\in {_V^V\mathcal{M}}$ if and only if $M\in_V\mathcal{M}\cap {^V\mathcal{M}}$ and the two structures are compatible.
+
+	The fact that $M^*\in \mathcal{M}_V\cap\mathcal{M}^V$ is straightforward and checking the compatibility is easy to check.
+\end{prf}
+
+Now we finally prove that theorem~\ref{LS-69-2}:
+\begin{prf}
+	First of all $V\in{^V_V\mathcal{M}}$ so by the lemma $V^*\in\mathcal{M}_V^V$. By the fundamental theorem of Hopf modules,
+	\[V^*\cong V\otimes(V^*)^{Cov}\cong V\]
+	as Hopf modules. Thus $V_V^*\cong V_V$ in particular.
+\end{prf}
+\begin{rmk}
+	The second isomorphism above comes from the fact that $(V^*)^{Cov}$ is one-dimensional, so is the trivial module. :)
+\end{rmk}
+\begin{cor}
+	If $A$ is \textit{not} a Forbenius algebra, then there is \textit{no} Hopf algebra structure on $A$.
+\end{cor}
+\begin{ex}
+	Some examples of algebras with(out) this property.
+	\begin{enumerate}
+		\item $\C[x]/(x^n)$ is finite dimensional and Frobenius, but if $n\ge 2$, there is \textbf{no Hopf structure.}
+		\item $\C[x,y]/(x^2,y^2,xy)=\C1+\C x+\C y$. This has the property that it is local (unique maximal submodule over itself)
+		but $A^*$ has two maximal submodules, so $A\not\cong A^*$, so not Frobenius.
+	\end{enumerate}
+\end{ex}
+Finally we conclude with a proof of lemma~\ref{lem-not-needed}:
+\begin{prf}
+	Say that $\{a_i\}$ is a basis for $A$ and $\{a_i^*\}$ is a basis for $A^*$ ($a_i^*(a_j)=\delta_{ij}$).
+
+	Define $\rho(m)=\sum(a_i\cdot m)\otimes a_i^*$. A lemma (use change of basis matrices) shows that
+	$\sum a_i\otimes a_i^*$ is independent of choice of basis. Another lemma says (scalar) multiplication is associative
+	if and only if $\rho$ is coassociative. This gets us the forward direction.
+
+	For the reverse direction, say $\rho(m)=\sum m_0\otimes m_{-1}.$ then define $a\cdot m=\sum m_1(a)m_0$.
+\end{prf}
+
+\section{January 23, 2019}
+Today we are interested in studying the representation category $_V\mathcal{M}$ for any Hopf algebra $V$. It will end up
+(and this is a bit cryptic for now) that $k$ controls everything here.
+\section{Represetnations and Modules}
+Notice that for any Hopf algebra $V$ we have the exact sequence:
+\[0\to \ker\varepsilon\to V\xrightarrow{\varepsilon} k\to 0\]
+\begin{defn}
+	The trivial $V$ modules is $V/\ker\varepsilon=k\in _V\mathcal{M}_V$.
+\end{defn}
+\begin{ex}
+	$V=kG$ where $G$ is a group, $\varepsilon(g)=1$ for all $g\in G$. Then $\ker\varepsilon=\oplus k(g-1)$ and so
+	\[k=V/\oplus k(g-1).\]
+\end{ex}
+\begin{ex}
+	$V=k[x]$ where $\Delta(x)=1\otimes x+x\otimes 1$ and $\varepsilon(x)=0$. Then $\ker\varepsilon=\oplus_{n\ge 1}kx^n$, whence
+	\[V/\ker\varepsilon=k[x]/(x).\]
+\end{ex}
+\begin{ex}
+	Let $V=(kG)^*=\oplus_G k\delta_g$ and $\varepsilon(\delta_g)=\delta_{1,1_G}$. THen $\ker\varepsilon=\oplus_{g\ne 1_G}k\delta_g$ and
+	\[V/\ker\varepsilon=k\delta_1\]
+\end{ex}
+The following uses $T_4$, the example of the day I missed due to my meeting.
+\begin{ex}
+	$T_4$: $\varepsilon(g)=1$, $\varepsilon(p)=0$. Then $\ker\varepsilon=k(g-1)\oplus kp\oplus kpg$ and
+	\[V/\ker\varepsilon=k.\]
+\end{ex}
+\begin{lem}
+	\begin{itemize}
+		\item For all $x \in V$ and $a\in k$ (the trivial module), $xa=\varepsilon(x)a$.
+		\item $k$ is the identity object in $_V\mathcal{M}$.
+		\item If $V$ is cocommutative, then $_V\mathcal{M}$ is a symmetric tensor category.
+	\end{itemize}
+\end{lem}
+\begin{prf}
+	\[x\cdot a=(x-\varepsilon(x))a+\varepsilon(x)a=\varepsilon(x)a\]
+	since $x-\varepsilon(x)\in\ker\varepsilon$.
+
+	For the next part, consider that for every $M\in _V\mathcal{M}$, we have 
+	\[M\otimes k\cong M\cong k\otimes M.\]
+	But then for all $x\in V$, we have
+	\begin{align*}
+		\varphi[x\dot(m\otimes 1)]&=\varphi(x_1\cdot m\otimes x_2\cdot 1)\\
+		&=\varphi(x_1\cdot m\otimes \varepsilon(x_2)\cdot 1)\\
+		&=\varphi((x_1\varepsilon(x_2))m\otimes 1)\\
+		&=\varphi(xm\otimes 1)=xm=x\varphi(m\otimes 1).
+	\end{align*}
+\end{prf}
+\subsection{Integrals}
+\begin{defn}
+	An element $x\in V$ is called a \textbf{left integral} if $vx=\varepsilon(v)x$ for all $v\in V$.
+	Similar for \textbf{right integral.}
+\end{defn}
+\begin{lem}
+	The following are equivalent:
+	\begin{itemize}
+		\item $x\in V$ is a left integral.
+		\item $kx\cong$ the trivial module.
+		\item $1\mapsto x$ defines a left $V$-module morphism $k\to kx$.
+	\end{itemize}
+\end{lem}
+\begin{lem}
+	Let $\int_V^l$ denote the set of left integrals in $V$.
+	\begin{itemize}
+		\item $\int_V^l$ forms a vector subspace of $V$.
+		\item $\int_V^l$ forms a left $V$ submodule of $V$. Thus it forms a left ideal of $V$.
+		\item $\int_V^l$ forms a right ideal of $V$.
+		\item $\int_V^l\cong\Hom_V(k,V)$ (left $V$-mods)
+	\end{itemize}
+\end{lem}
+\begin{prf}
+	The first three are relatively obvious. The last one comes from the map $\Phi:x\in\int_V^l\mapsto f_x:1\to x.$
+\end{prf}
+\begin{rmk}
+	Unfortunately it ends up that the collection above ends up usually being zero. 
+\end{rmk}
+\begin{thm}
+	Let $V$ be a finite dimensional Hopf algebra. Then $\dim\int_V^l=1$.
+\end{thm}
+\begin{prf}
+	\begin{align*}
+		\dim\int_V^l&= \dim\Hom_V(_Vk,_VV)\\
+		&=\dim\Hom_V((V^*)_V,k_V^*)\\
+		&=\dim\Hom_V(V_V,k)=\dim k=1
+	\end{align*}
+	Where we used above that $V$ was finite dimensional whence Frobenius to get $V^*\cong V$.
+\end{prf}
+\begin{ex}
+	$V=kG$ for $G$ a finite group. Then $\int_V^l=\sum_G g$ and
+	\[v\cdot(\sum_G g)=\varepsilon(v)(\sum_G g)=\int_V^r\]
+	and when $v=h\in G$, we can compute it.
+\end{ex}
+\begin{ex}
+	When $V=k[x]$, which is infinite dimensional, we get no integrals. This is because it is an 
+	integral domain, so if
+	\[x\cdot\int_V^l=\varepsilon(x)\int_V^l=0\cdot\int_V^l=0\]
+	then this forces $\int_V^l=0$.
+\end{ex}
+\begin{ex}
+	When $V=(kG)^*$ for $G$ a finite group, then 
+	\[\int_V^l=\int_V^r=\delta_{1_G}\]
+\end{ex}
+\begin{ex}
+	When $V=T_4=k1\oplus kg\oplus kp\oplus kgp$,
+	\[\int_V^l=(g+1)p\ne\int_V^r=p(1+g)=(1-g)p\]
+\end{ex}
+\begin{ex}
+	When $\ch k=p$ and $V=k[x]/(x^p)$, then 
+	\[\int_V^l=\int_V^r=x^{p-1}.\]
+\end{ex}
+
+\section{January 28, 2019}
+Today we will be mostly doing things in homological algebra. :)
+\begin{ex}
+	An example of an infinite dimension Hopf algebra is of the following: fix $q\in k^*$. Then 
+	\[T_\infty=k<g, g^{-1}, p>/\langle gg^{-1}=g^{-1}g=1, gp=qpg\rangle\]
+	and we can find $\{g^ip^j:i\in\Z, j\in\N\}$ is a $k$-linear basis.
+
+	For the coalgebra structure, define $\Delta(g)=g\otimes g$ and $\varepsilon(g)=1$ and 
+	$\Delta(p)=p\otimes 1+g\otimes p$ and $\varepsilon(p)=0$. Finally $S(g)=g^{-1}$ and $S(p)=q^{-1}pg^{-1}$.
+\end{ex}
+
+\subsection{Some nice results in Homological algebra}
+\begin{prob}
+	Prove that $\Q$ is an injective $\Z$-module.
+\end{prob}
+\begin{thm}[Auslander-Buchsbaum `59]
+	Every local commutative algebra with finite global dimension is a UFD.
+\end{thm}
+Another result is about algebraic groups:
+\begin{thm}
+	If $\ch k=0$, then every Noetherian commutative Hopf algebra has finite global dimension
+	and is a direct sum of integral domains, each of which is isomorphic.
+\end{thm}
+\begin{defn}[Semiprime]
+	An ideal $I\lhd R$ is called \textbf{semiprime} if it is the intersection of (possibly infinitely many) primes.
+\end{defn}
+\begin{conj}
+	Every Noetherian Hopf algebra of finite global dimension is semiprime (that is, 0 is semiprime in $V$).
+\end{conj}
+
+\begin{defn}[Connected Graded]
+	An algebra $A$ is called \textbf{connected graded} if 
+	\[A=k\oplus A_1\oplus A_2\oplus \cdots\]
+	and $1_A=1_k\in k$, $A_iA_j\subseteq A_{i+j}$. 
+
+	The new part (connected) refers to the fact that $k$ is a summand.
+\end{defn}
+\begin{thm}
+	Suppose that $\ch k=0$. Let $V$ be a Noetherian Hopf algebra that is connected graded as an algebra (says nothing about the coalgebra structure).
+	Then the following hold:
+	\begin{itemize}
+		\item $V$ has finite global dimension.
+		\item $V$ is a domain.
+		\item $V$ is Artin-Schelter regular.
+		\item $V$ is Auslander regular and Cohen-Macaulay.
+		\item $V$ is Calabi-Yau
+		\item $V$ is an iterated Ore extension.
+	\end{itemize}
+\end{thm}
+That's a lot of word salad.
+
+\subsection{Projective Modules}
+\begin{defn}[Module-Theoretic Definitions]
+	Let $M$ be a (left) $A$ module. 
+	\begin{enumerate}
+		\item $M$ is \textbf{free} if $M\cong \oplus_\mathcal{I} A$
+		\item $M$ is \textbf{projective} if it is a direct summand of a free module.
+	\end{enumerate}
+\end{defn}
+\begin{lem}
+	$p\in{_A\mathscr{M}}$ is projective if and only if the diagram in figure~\ref{fig-proj2} commutes.
+\end{lem}
+\begin{figure}[h]
+	\centering
+	\begin{tikzcd}
+		& P\ar[d,"f"]\ar[dl,dashed,"F",swap] &\\
+		M\ar[r,"\pi"] & N\ar[r] & 0
+	\end{tikzcd}
+	\caption{The definition of a projective object.}
+	\label{fig-proj2}
+\end{figure}
+\begin{rmk}
+	This actually is just the definition for any Abelian category. This may generalize even further, but this is enough for us. :)
+\end{rmk}
+
+\begin{defn}[Injective Module]
+	An \textbf{injective} $V$-module is a projective $V^{op}$ module.
+\end{defn}
+
+\section{January 30, 2019}
+Today we're talking more about homological algebra. In particular, we'll learn about (or see again)
+\begin{itemize}
+	\item Complexes
+	\item Projective resolutions and dimension
+\end{itemize}
+First the example of the day:
+\begin{ex}
+	Consider $GL_2(k)$, a group -- in fact, an algebraic group! Then 
+	\[\mathcal{O}(GL_2)=k[x_{11},x_{12},x_{21},x_{22},det^{-1}]/\langle det^{-1}(x_{11}x_{22}-x_{21}x_{12}-1\rangle\]
+	Let $X=(x_{ij})\in GL_2(k)$.
+
+	Define the coalgebra structure via $\Delta(X)=X\otimes X$ and $\Delta(x_{ij})=\sum_1^2 x_{is}\otimes x_{sj}$,
+	$\varepsilon(X)=I_2$, $\varepsilon(x_{ij})=\delta_{ij}$. Some computation (this is not trivial!) give us
+	\[\Delta(det)=det\otimes det\quad\Rightarrow\quad \Delta(det^{-1})=det^{-1}\otimes det^{-1}\]
+	Then we can find that $S(X)=X^{-1}$ and $S(det^{\pm})=det^{\mp}$.
+\end{ex}
+\begin{prob}
+	Construct $\mathcal{O}(GL_n)$.
+\end{prob}
+\begin{prob}
+	Construct $\mathcal{O}(G)$.
+\end{prob}
+\subsection{Homological stuff}
+\begin{defn}[Complex]
+	A \textbf{complex} of $A$-modules is a sequence of $A$-modules connected by homomorphisms
+	\[\cdots\to M_2\xrightarrow{d_2}M_1\xrightarrow{d_1} M_0\to \cdots\]
+	where $d_i\circ d_{i+1}=0$ for all $i$.
+\end{defn}
+Then we went over the standard definitions for:
+\begin{itemize}
+	\item Homology
+	\item (Short) Exact sequences
+	\item Projective resolutions
+	\item Projective dimension
+\end{itemize}
+\begin{defn}[Global (Homological) Dimension]
+	The (left) \textbf{global dimension} is
+	\[\gldim A=\max\{\projdim M| M\in {_A\mathcal{M}}\}\]
+\end{defn}
+\begin{thm}[Hilbert Syzygy Theorem]
+	\[\gldim k[x_1,\dots,x_n]=n\]
+\end{thm}
+\begin{cor}
+	\[\gldim k= 0\]
+\end{cor}
+\begin{defn}
+	The \textbf{finitistic global dimension} of $A$ is defined to be
+	\[\findim A=\max\{\projdim M| M\in{_A\mathcal{M}}, M\text{ is f.g.},\projdim M <\infty\}\]
+\end{defn}
+\begin{conj}[Finitistic Dimension Conjecture]
+	Let $A$ be a finitely generated algebra. Then $\findim A<\infty$.
+\end{conj}
+\section{February 1, 2019}
+A really cool theorem:
+\begin{thm}[Lorenz-Lorenz `95]
+	Let $V$ be a Hopf algebra. Then $\gldim V=\projdim {_Vk}$.
+\end{thm}
+\begin{prf}
+	It is enough to show that $\gldim V\le\projdim{_Vk}$. Or equivalently that
+	\[\projdim M\le \projdim k,\forall M\in{_V\calM}\]
+	but then
+	\[\projdim(M)=\projdim(k\otimes M)\le \projdim(k)\]
+	by lemma~\ref{lem-tensorproj}
+\end{prf}
+\begin{ex}
+	Today's example: Quantum group $V=\mathcal{O}_q(GL_2)$. Fix some $q\in k^*$. Then as an algebra, 
+	\[V=k\langle x_{11},x_{12},x_{21},x_{22},det_q^{-1}\rangle/(\text{relations})\]
+	where the relations are given by 
+	\begin{align*}
+		x_{ij}x_{kl}=(\delta_{ik}+\delta_{jl})x_{kl}x_{ij}\quad\text{except when } i=k \text{ and } j=l\\
+		x_{12}x_{21}=x_{21}x_{12}\\
+		x_{22}x_{11}-x_{11}x_{22}=(q-q^{-1})X_{12}x_{21}\\
+		det_q^{-1}det_q=det_q det_q^{-1}=1
+	\end{align*}
+	where $det_q=x_{22}x_{11}-q^{-1}x_{12}x_{21}x_{11}x_{22}-qx_{12}x_{21}$. One can show $det_q$ is central in $V$.
+
+	Now for the coalgebra: $\delta(X)=X\otimes X$, so $\Delta(x_{ij})=\sum_{s=1}^2 x_{is}\otimes x_{sj}$, $\varepsilon(X)=I_2$ and
+	\[S(X)=X^{-1}=\begin{pmatrix}
+		x_{22}det_q^{-1} & -qx_{12}det_q^{-1}\\
+		-q^{-1}x_{21}det_q^{-1} & x_{11}det_q^{-1}
+	\end{pmatrix}\]
+\end{ex}
+\begin{prob}
+	Show that $\gldim(\begin{smallmatrix}\Z & \Q\\0 & \Q\end{smallmatrix})=2$ while $\gldim(\begin{smallmatrix}\Z & \Q\\0 & \Q\end{smallmatrix})^{op}=1$
+\end{prob}
+
+\subsection{Returning to Homological Algebra}
+Let $A$ be an algebra, $M\in {_A\mathcal{M}}$. Recall the definitions of projective and global dimension.
+\begin{rmk}
+	The following are equivalent:
+	\begin{enumerate}
+		\item $\gldim A=0$
+		\item $\gldim A^{op}=0$
+		\item $A$ is semisimple Artininan
+		\item $A=\oplus_1^b M_{n_i}(D_i)$ by Artin-Wedderburn where $D_i$ is a division ring.
+	\end{enumerate}
+\end{rmk}
+\begin{rmk}
+	\begin{enumerate}
+		\item A PID has global dimension 1. 
+		\item The free algebra $k\langle x_1,\dots,x_n\rangle$ has global dimension 1.
+		\item The path algebra of a finite quiver has global dimension 1.
+		\item $\mathcal{O}_q(GL_2)$ has global dimension 4.
+	\end{enumerate}
+\end{rmk}
+
+From now on, let $V$ always stand for some Hopf algebra.
+\begin{lem}
+	${_V\mathcal{M}}$ is a tensor category. The action on $M\otimes N$ is the following:
+	\[v\cdot (m\otimes n)=\sum (v_{(1)}\cdot m)\otimes (v_{(2)}\cdot n)\]
+\end{lem}
+\begin{lem}
+	If $M\in {_V\mathcal{M}}$, then $V\otimes M\in {_V^V\mathcal{M}}$. As a corollary,
+	\[V\otimes M\cong V\otimes (V\otimes M)^{cov}\]
+	and as a consequence $V\otimes M$ is a free $V$-module.
+\end{lem}
+
+\begin{thm}
+	Let $P\in {_V\calM}$ be projective. Then $P\otimes N\in {_V\calM}$ is projective for all $M\in{_V\calM}$
+\end{thm}
+\begin{prf}
+	To see this, notice that $P$ is a summand of $V^{\oplus b}$. But then if $P\oplus Q\cong V^{b}$, then 
+	\[[P\otimes N]\oplus[Q\otimes N]=[P\oplus Q]\otimes N=(V^b)\otimes N=(V\otimes N)^b\]
+	and by the last lemma, this is free.
+\end{prf}
+
+\begin{lem}\label{lem-tensorproj}
+	\[\projdim(M\otimes N)\le \min\{\projdim M,\projdim N\}\]
+\end{lem}
+\begin{prf}
+	We only show that $\projdim M\otimes N\le \projdim M$. If $\projdim M=\infty$, we are done.
+	If it is finite, take any minimal projective resolution of $M$ and tensor with $N$. This is a projective 
+	resolution of $M\otimes N$ of length at most $\projdim M$. 
+\end{prf}
+\begin{rmk}
+	The fact it is still exact holds because we can appeal to the vector space structure.
+\end{rmk}
+
+\brk
+
+Some more results (mostly for finite dimensional algebras):
+\begin{thm}[Radford `75]
+	If $V$ is finite dimensional, then the antipode $S$ has finite order:
+	\[S^d=\id_V\]
+\end{thm}
+\begin{thm}[Larson-Radford `88]
+	Suppose $\ch k\ne 0$ (can be relaxed but gets more ugly). Then the following are equivalent:
+	\begin{enumerate}
+		\item $\gldim V=0$ ($V$ is semisimple Artinian)
+		\item $\gldim V^*=0$
+		\item $S^2=\id_V$
+	\end{enumerate}
+\end{thm}
+\begin{thm}[Nichols-Zoeller `89]
+	Let $V$ be finite dimensional. If $Q$ is a Hopf subalgebra of $V$, then $_WV$ and $V_W$ are free.
+\end{thm}
+
+\section{February 6, 2019}
+First some history: in 1899, Maschke proves the following:
+\begin{thm}
+	Let $G$ be a finite group. Then $kG$ is semisimple (Artinian) if and only if $\ch k\nmid |G|$.
+\end{thm}
+Today, we will see an analog of Maschke for Hopf algebras:
+\begin{thm}[``Maschke's Theorem'' (Larson-Sweedler `69)]
+	Let $V$ be a finite-dimensional Hopf algebra. Then the following are equivalent:
+	\begin{enumerate}
+		\item $\gldim V = 0$ ($V$ is semisimple Artinian)
+		\item $\varepsilon(\int^l)\ne 0$
+		\item $\varepsilon(\int^r)\ne 0$
+	\end{enumerate}
+\end{thm}
+
+Now say $V=kG$. Then $\int=\sum_{g\in G} g$ is both a left and right integral of $V$. This uses that $\varepsilon(g)=1$.
+
+But then if $\varepsilon(\int)=\sum_G \varepsilon(g)=\sum_G 1=|G|\ne 0\Leftrightarrow \ch k\nmid |G|$.
+
+\subsection{Example of the Day}
+\begin{ex}[Kac-Paljutkin Algebra]
+	$k=\C$ or any field with $\ch k\ne 2$. Then $V=k\langle x,y,z\rangle$ modulo the relations
+	\begin{align*}
+		x^2=y^2=1\\
+		xy=yx\\
+		xz=yz\\
+		xy=xz\\
+		x^2=\frac{1}{2}(1+x+y-xy)
+	\end{align*}
+	Then $V$ has a $k$-basis $\{1,x,y,z,xy,xz,yz,xyz\}$, so as an algebra $V\cong k^4\oplus M_2(k)$.
+
+	Then $\Delta(x)=x\otimes x$, $\Delta(y)=y\otimes y$, $\Delta(z)=(1\otimes 1+1\otimes x+y\otimes 1-y\otimes x)(z\otimes z)$.
+
+	And $\varepsilon(x)=\varepsilon(y)=\varepsilon(z)=1$ and $S(x)=x$, $S(y)=y$ and $S(z)=z$. Recall that although $S$ looks like the identity map, 
+	$S$ is an \textbf{antihomomophism}. So actually $S^2=\id_V$.
+
+	Claim:
+	\[\int=1+x+y+z+xy+xz+yz+xyz\]
+	then $\varepsilon(\int)=8\ne 0$, so $V$ is semisimple.
+
+	Some nice facts:
+	\begin{enumerate}
+		\item $V^*\cong V$
+		\item $V$ is the unique eight dimensional noncommutative, noncocommutative semisimple Hopf algebra.
+		\item Let $Q_8$ be the quaternion group. Then $kQ_8$ is eight dimensional. Therefore $V\cong kQ_8$ as algebras, but \textbf{not as coalgebras.}
+		The reason behind this is that $kG$ is \textit{always} cocommutative.
+	\end{enumerate}
+\end{ex}
+
+\subsection{HW of the day}
+\begin{prob}
+	If $V$ is eight dimensional and noncommutative, then $V\cong k^4\oplus M_2(k)$ as an algebra. Thus if $G$ is nonabelian group of order 8, then $\C G\cong \C^4\oplus M_2(\C)$.
+\end{prob}
+
+\subsection{Proof of ``Maschke's theorem''}
+Now we actually do the proof:
+\begin{prf}
+	(a) $\Rightarrow$ (b): Say the global dimension of $V$ is zero. Then $V$ is semisimple by Artin-Wedderburn and we have a decompositon
+	\[V\cong \oplus_1^s M_{n_i}(D_i)\]
+	and every minimal nonzero ideal has the form $M_{n_i}(D_i)$.
+
+	Consider the ideal $k\int^l=I$ which is an ideal since $v\int^l=\varepsilon(v)\int^l\in I$. But then consider that if $v'\int^l\in I$, 
+	\[v'\int^l v=\varepsilon(v')\int^l v\in k\int^l\]
+	so in fact it is a two-sided ideal. Thus $k\int^l\cong M_{n_i}(D_i)$, so 
+	\begin{align*}
+		(k\int^l)^2&=k\int^l
+		\varepsilon(\int^l)\int^l=(\int^l)^2&=a\int^l
+	\end{align*}
+	for some nonzero $a$. But then $\varepsilon(\int^l)\ne 0$.
+
+	(b) $\Rightarrow$ (a): Now let $e=\frac{1}{\varepsilon(\int^l)}\int^l$. Then $e^2=e$ and $ke=k\int^l$ is a left $V$-module.
+	But then $V=Ve\oplus V(1-e)$ so $ke=k\int^l$ is projective, so $\projdim_v k=0$.
+
+	The last part follows by Lorenz-Lorenz -- $\gldim V=\projdim_V k$.
+\end{prf}
+
+\subsection{$\Ext$ groups}
+We define these in the usual way through projective resolutions:
+
+Let $A$ be an algebra. Then $_A\calM$ is an abelian cateogry, so $\Hom_A(M,N)\in\Vectk$.
+\begin{defn}
+	A (covariant) functor $F:{_A\calM}\to{_B\calM}$ is called \textbf{left exact} if, for any short exact sequence
+	\[0\to L\to M\to N\to 0\]
+	we have the exact sequence
+	\[0\to F(L)\to F(M)\to F(N).\]
+
+	Similar for right exact. If both, it's just exact.
+\end{defn}
+\begin{lem}
+	For any $W\in{_A\calM}$, the functor $\Hom(W,-)$ is left exact.
+\end{lem}
+We also have that $\Hom_A(P,-)$ is exact iff $P$ is projective, so this gives us a nice characterization of projective objects in Abelian categories.
+Then the category $\Ch({_A\calM})$ is the category of chain complexes in $A$ modules with chain maps.
+\begin{lem}
+	$\Ch({_A\calM})$ is an Abelian category.
+\end{lem}
+\begin{lem}
+	A functor $F:{_A\calM}\to{_B\calM}$ can be extended to a functor between the appropriate chain complex categories.
+\end{lem}
+
+\subsection{Looking Forward}
+On Friday, we may see the following result:
+\begin{thm}
+	Under some mild hypothesis (including finite dimensionality),
+	\[\projdim_V k=\gldim V\]
+\end{thm}
 \end{document}
