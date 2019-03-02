@@ -3,7 +3,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Package Includes
 \usepackage{setspace}
-\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, scalerel, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, xcolor}
+\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, scalerel, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, xcolor, hyperref}
+\usepackage[style=alphabetic]{biblatex}
 \usepackage[framed,thmmarks]{ntheorem}
 \usepackage[mathscr]{euscript}
 
@@ -72,6 +73,11 @@
 \theoremsymbol{}
 \newtheorem{rmk}[thm]{Remark}
 
+%questions
+\theoremheaderfont{\sc}
+\newframedtheorem{qst}{Question}[subsection]
+%\newtheorem{qst}[thm]{Question}
+
 %waterhouse problem
 \newenvironment{wprob}[1]{\begin{prob}{\normalfont\bfseries (Waterhouse #1) }\itshape}{\end{prob}}
 
@@ -90,6 +96,7 @@
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\Ext}{Ext}
 \DeclareMathOperator{\HH}{HH}
+\DeclareMathOperator{\Gr}{Gr}
 
 %Representations
 \DeclareMathOperator{\Res}{Res_H}
@@ -134,6 +141,7 @@
 \DeclareMathOperator{\rank}{rank}
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\coker}{coker}
+\DeclareRobustCommand{\sqbinom}{\genfrac[]{0pt}{}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Hacks, tweaks, and general helpful stuff
@@ -170,6 +178,8 @@
 %Get q-binomial coefficients
 \newcommand{\qbinom}{\genfrac{[}{]}{0pt}{}}
 
+%Set the bibliography file
+\bibliography{sources}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Header Stuff
@@ -465,6 +475,10 @@
 	\subsubsection*{(d)}
 \end{sol}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \part{Winter 2019}
 \section{Preparation for the Quarter}
 This is my first official quarter as Julia's student! My plan for now is to continue working on Waterhouse as well
@@ -502,17 +516,17 @@ This is known in some special cases:
 	\end{itemize}
 \end{itemize}
 
-Papers to look at: 
+Papers to look at:
 \begin{itemize}
-	\item Ginzburg and Kumar '94 ``Cohomology of Quantum Groups at Roots of Unity''
-	\item Mastnak, Pevtsova, Shauenburg, and Witherspoon '09 ``Cohomology of Finite Dimensional Pointed Hopf Algebras''
-	\item Witherspoon '17 ``Varieties for Modules of Finite Dimensional Hopf Algebras''
+	\item Ginzburg and Kumar '94 ``Cohomology of Quantum Groups at Roots of Unity'' \cite{ginzburg-kumar}
+	\item Mastnak, Pevtsova, Shauenburg, and Witherspoon '09 ``Cohomology of Finite Dimensional Pointed Hopf Algebras''\cite{julia10-pointed}
+	\item Witherspoon '17 ``Varieties for Modules of Finite Dimensional Hopf Algebras''\cite{witherspoon-expository}
 \end{itemize}. 
 
 Sarah Witherspoon has a book she is writing on Hochschild cohomology that could be very good. It's on her website (Texas A\& M). Check out chapter 9 and appendix A.
 
 \subsection{Week 3}
-We primarily discussed support varieties in the context of Sarah Witherspoon's \textit{Varieties for Modules of Finite Dimensional Hopf Algebras.}
+We primarily discussed support varieties in the context of Sarah Witherspoon's \textit{Varieties for Modules of Finite Dimensional Hopf Algebras.}\cite{witherspoon-expository}
 
 \subsubsection{Questions}
 \begin{enumerate}
@@ -645,6 +659,38 @@ highest weight modules.
 Our assignment for this upcoming week:
 Write down the Serre relations. Then do some computations and read section 21 in Humphreys. Read those lemmas and theorems and start to describe decomposition of general modules of Lie algebras.
 
+\subsection{Week 6}
+We skipped Lie algebras this week because of snow (and then Ale couldn't make our meeting). So instead
+Julia just met up to talk about my reading.
+
+My primary question (regarding the Ginzburg and Kumar paper): why are we factoring out the toral elements in quantum groups? 
+The answer here is that these are called the ``small quantum groups''. So certainly having a finite-dimensional algebra makes certain things
+more tractable, although when computing cohomology that isn't always the case. Sometimes when you get smaller 
+objects you end up getting more nontrivial elements in the cohomology. There's a clear analog to topology here.
+
+So then maybe a refinement of the question is this: why is it necessary at all to have this larger object serving as the ambient 
+space for the object we truly want to study? Here the answer more-or-less boils down to the fact that it end up playing a central
+role in computations involving these objects.
+
+Having the big algebra $U$ over $u$ (modulo something central) gives you that thePBW basis for $U$ descends to 
+$u$. In general (e.g. Nichols algebras) you fail to have a PBW basis for the cover, but somehow (for a technical reason that 
+will become apparent as we read more) you still can use similar techniques to do the computations (the more general theory arises in the 2010 paper).
+
+Julia is going to sent me a paper that is a survey of finite dimensional algebras that will give some sense for how the small quantum groups fit in.
+
+\subsubsection{This week's assignment}
+Continue reading through GK until we get to the spectral sequence nonsense. Then this points to Jantzen (AG). Try to recreate the
+argument for constructing the first page of the spectral sequence, but for the GZ case (note, you'll use projectives instead of injectives)
+After that, go to Weibel and try to read the section of spectral sequences over filtered complexes \S 5.4 (what we are usually interested in).
+Don't worry too much about issues of convergence -- we are mostly interested in the ``first quadrant'' case.
+
+David Anick is the name of an algebraic topologist who started off created (free) resolutions that we will end up looking at. 
+His paper \cite{anick-resolution} will probably be useful at some point.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newpage
 \section{Lie Algebras}
 We're planning on digging into the category $\O$, the category of (reasonably finite) $\mathcal{U}(\g)$ modules.
@@ -679,7 +725,7 @@ taking the abstract free Lie algebra on generators satisfying these properties, 
 with roots corresponding exactly to the $\alpha_i$. This also gets us uniqueness of such a root system.
 
 \subsection{The more general case.}
-This primarily borrows from \S 21 in Humphreys (I) but also relies on some results from earlier that I will cite as 
+This primarily borrows from \S 21 in \cite{humphreys1} but also relies on some results from earlier that I will cite as 
 necessary. 
 
 Throughout this discussion, we rely on the theory developed in sections 15 and 16 regarding Cartan and Borel subalgebras:
@@ -714,10 +760,15 @@ exists a direct sum of simple modules contained in $V$. When $\dim V<\infty$, th
 \subsubsection{Standard Cyclic Modules}
 Here
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newpage
-\section{Quantum Groups}
-I am mostly working out of Jantzen's \textit{Lectures on Quantum Groups} with the goal of reading through Ginzburg \& Kumar's
-(apparently influential!) paper \textit{Cohomology of Quantum Groups at Roots of Unity.}
+\section{Quantum Groups}\label{sec-quantum}
+I am mostly working out of Jantzen's \textit{Lectures on Quantum Groups} (\cite{janzten-quantum}) with the goal of reading through Ginzburg \& Kumar's
+(apparently influential!) paper \textit{Cohomology of Quantum Groups at Roots of Unity} (\cite{ginzburg-kumar}).
 
 \subsection{What they are}
 The core idea to keep in mind is that quantum groups (or quantum enveloping algebras) are ``deformations'' (or perhaps $q$-analogues) of
@@ -780,6 +831,189 @@ so when the powers of $q$ are distinct ($|q|\ne 1$), the graded pieces are preci
  of $K$ under the adjoint action.
 
 \subsection{Representations of $U$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\section{Reading Ginzburg \& Kumar}
+This section contains my notes and thoughts about \cite{ginzburg-kumar}. As a high-level summary, this paper establishes
+methods for computing (Hochschild) cohomology of the small quantum groups. It begins by establishing how they are constructed
+as quotients or subalgebras of quantized universal enveloping algebras (see section~\ref{sec-quantum}), and then proceeds to compute
+the cohomology using a filtration (this is vital!) and spectral sequences.
+
+This paper is important because it ends up that this general formula is the same as is applied later in \cite{julia10-pointed} to prove
+a much more general result. This also extends a method originally created by \cite{FP} for computing the cohomology of Lie algebras and
+algebraic groups.
+
+\subsection{The Main Result}
+In this paper they prove the following (see \ref{sec-defs} for notation):
+\begin{thm}[GK '93]
+	If $k=\bbQ(\xi)$ for a primitive root of unity of odd order (not 1) and $u_\xi$ the restricted enveloping algebra of some $\g$. Then
+	\[H^{odd}(u_\xi,k)=0\]
+	and there is a natural graded algebra isomorphism
+	\[H^{ev}(u_\xi,k)\cong k^\bullet[\mathcal N].\]
+\end{thm}
+
+\subsection{The Objects in Question}
+We begin by considering the objects in question and how they are constructed. One thing we haven't seen (yet!) in Lie algebras
+but comes up in the structure theory is the 
+\begin{defn}[Kostant $\bbZ$-form]\label{def-kostant}
+	Let $U(\g)$ be the universal enveloping algebra of $\g$, spanned (over $k$) by the $x_\alpha,y\alpha,$ and $h_\alpha$ for all $\alpha\in\Phi$. 
+	Then the \textbf{Kostant $\bbZ$-form} is the $\bbZ$-span of the elements
+	\[X^{(r)}_\alpha=\frac{x_\alpha^r}{r!},\quad Y^{(r)}_\alpha=\frac{y_\alpha^r}{r!},\quad H^{(r)}_\alpha=\frac{h_\alpha^r}{r!},\quad \]
+	the so-called \textbf{divided powers} of $x_\alpha, y_\alpha,$ and $h_\alpha$. This ($\bbZ$-)algebra is denoted $U_\bbZ$.
+\end{defn}
+
+Before we use it, we had better write down the definiton (via \cite{janzten-quantum}) of a
+\begin{defn}[Quantized Enveloping Algebra]
+	Fix some odd root of unity $q$ in the field\footnote{Here Jantzen also requires that $\ch k\ne2$ and that $\ch k\ne3$ if $\Phi$ has an irreducible component of type $G_2$. These can be treated, but not in quite the same manner.} $k$. 
+	Let $\g$ be a Lie algebra over $k$ and let $U_q(\g)$ denote the $k$ algebra with generators $E_\alpha,F_\alpha, K_\alpha,$ and $K_\alpha^{-1}$
+	for all $\alpha$ in a basis $\Pi$ of $\Phi$, subject to the relations for all $\alpha,\beta\in\Pi$
+	\begin{align*}
+		K_\alpha K_\alpha^{-1}=&1=K^{-1}_\alpha K_\alpha\\
+		K_\alpha K_\beta &= K_\beta K_\alpha\\
+		K_\alpha E_\beta K_\alpha^{-1} &= q^{(\alpha,\beta)}E_\beta\\
+		K_\alpha F_\beta K_\alpha^{-1} &= q^{-(\alpha,\beta)}F_\beta\\
+		E_\alpha F_\beta - F_\beta E_\alpha &= \delta_{\alpha\beta}\frac{K_\alpha-K_\alpha^{-1}}{q_\alpha-q_\alpha^{-1}}\\
+		\sum_{s=0}^{1-a_{\alpha\beta}}(-1)^s\sqbinom{1-a_{\alpha\beta}}{s}_{q_\alpha} &E_\alpha^{1-a_{\alpha\beta}-s}E_\beta E_\alpha^s = 0\\
+		\sum_{s=0}^{1-a_{\alpha\beta}}(-1)^s\sqbinom{1-a_{\alpha\beta}}{s}_{q_\alpha} &F_\alpha^{1-a_{\alpha\beta}-s}F_\beta F_\alpha^s = 0
+	\end{align*}
+	where $q_\alpha=q^{d_\alpha}=q^{(\alpha,\alpha)/2}$ and $a_{\alpha,\beta}=\langle\alpha,\beta\rangle=2(\alpha,\beta)/(\alpha,\alpha)$.
+\end{defn}
+
+\begin{rmk}
+	In \cite{janzten-quantum}, he mentions that he will often work in the algebra that includes all the above relations
+	but \textbf{omitting the last two}. Apparently this will be done for computational simplicity and then studying $U_q(\g)$ 
+	itself will amount to taking a quotient. This may not be relevant to me, but it's good to keep in mind for this reference.
+\end{rmk}
+
+\brk
+
+For the case of quantum groups, we are extending all of our notions to quantized enveloping algebras in the case when our field $k$ is the rational function field
+$\bbQ(v)$.
+\begin{defn}[$q$-analog of the Kostant $\bbZ$-form]
+	Let $U=U_q(\g)$ be the (Hopf!) algebra described above. Then we define the $q$-analog of the Kostant $\bbZ$-form
+	to be the $\bbZ[v,v^{-1}]$-span of the $q$-divided powers the $E_\alpha,F_\alpha$ and $K_\alpha^{\pm 1}$, which are the same as
+	the divided powers in definiton~\ref{def-kostant} except the factorial is replaced by the $q$-analog thereof.
+\end{defn}
+
+\subsubsection{Notation and Related Algebras}\label{sec-defs}
+But this isn't what we're studying yet! (This are the so-called ``big'' quantum groups: what Drinfeld studies in \cite{drinfeld}). 
+We are interested in taking particular quotients and subalgebras. Here we define the notation used throughout and how they are related to $U=U_q(\g)$.
+
+We will be interested primarily in the case when $v=\xi$, that is, when $k$ is the cyclotomic field over $\bbQ$ found by adjoining
+an \textbf{odd} primitive $l^{th}$ root of unity ($l$ not 1). For the rest of this paper, fix such a $k$. Then define
+\[U_\varepsilon :=(k\otimes_{\bbZ[v,v^{-1}]}U_\bbZ)/(K_\alpha^l-1)=:U_k/(K_\alpha^l-1)\]
+where we defined $U_k$ by extension of scalars from $U_\bbZ$ and we are using here the fact that any $\bbZ[\xi]$-module 
+becomes a $\bbZ[v,v^{-1}]$-module by letting $v$ act by $\xi$.
+
+\brk
+
+Another construction is the so called \textbf{restricted enveloping algebra} $u_\xi$ of $U_\xi$ generated by the 
+degree one generators $F_\alpha, E_\alpha$, and $K^{\pm 1}_\alpha$. This is a finite-dimensional algebra of dimension $l^{\dim \g}$.
+This is actually the object that we are studying here. It amounts to restricting coefficients in $U_\xi$ to polynomials in $\xi$ with integer coefficients.
+
+\brk
+
+Define $\mathcal N$ to be the \textbf{nilpotent cone} of $\g$, consisting of all $\ad$-nilpotent elements in $\g$. This admits a 
+natural graded structure over the nonnegative integers by recognizing it as the ring of regular functions on a cone.
+
+\subsubsection{Another formulation}
+
+There is a parallel construction of $u_\xi$ that highlights a ``duality'' property of these objects. Set $\mathscr U_\bbQ$ to be the 
+$\bbQ[v,v^{-1}]$-span of $E_\alpha,F_\alpha,K^{\pm 1}_\alpha$ (notice we are not using divided powers here, but allowing coefficients in $\bbQ$) 
+and extend scalars again to $\mathscr U_k$. Again let $\mathscr U_\xi$ be the quotient
+where we identify $K_\alpha^l=1$. Define $\mathscr L$ to be the subalgebra of $\mathscr U_\xi$ generated by $E_\alpha^l$ and $F_\alpha^l$.
+
+Then it is a result of Lusztig that $\mathscr L$ and $u_\xi$ are normal (algebras) in $\mathscr U_\xi$ and $U_\xi$, respectively,
+and that 
+\[\mathscr U_\xi//\mathscr L\cong u_\xi\qquad\text{and}\qquad U_\xi//u_\xi\cong U(\g)\]
+where
+\begin{defn}
+	Given an augmented algebra $B$ with augmentation ideal $B_+$, a subalgebra $A\subseteq B$ is called \textbf{normal} in $B$ if 
+	\[B\cdot (A\cap B_+)=:B\cdot A_+=A_+\cdot B.\]
+\end{defn}
+
+(My) intuition for augmented algebras come from group algebras $kG$, where you have the augmentation map $\epsilon(\sum_G c_gg)=\sum_G c_g$.
+Here the augmentation ideal is $\ker\varphi$. In fact, any map $\epsilon:A\to k$ you have induces such a structure. Usually in the case of Hopf algebras
+we pick the counit (as we do in group algebras).
+
+\begin{defn}
+	If $A$ is normal in $B$, then we write 
+	\[B//A:=B/(B\cdot A_+)=B/(A_+\cdot B).\]
+\end{defn}
+
+The duality we mentioned earlier comes from the fact that $\mathscr L$ is a commutative Hopf algebra that is ``dual'' to (the cocommutative) $U(\g)$.
+
+\subsubsection{Triangular Decompositions}
+We use superscripts $+,-,$ and $0$ to denote the subalgebras generated, respectively, by the $E$'s, $F$'s, and $K$'s\footnote{with the exception of $U_0$ which has another set of generators due to the divided powers}.
+
+Then for $U_\xi$, $\mathscr U_\xi$, and $u_\xi$ we get the standard triangular decompositions; e.g.
+\[u_\xi = u_\xi^+\oplus u_\xi^0\oplus u_\xi^-.\]
+
+For each, define the \textbf{Borel part} to be (e.g.) $\mathscr B_\xi=\langle K_\alpha, E_\alpha\rangle$ (i.e. the nonnegative part).
+
+\subsection{The Argument}
+\subsubsection{Filtrations}
+The core idea (according to Julia) is the existence of certain filtrations such that the associated graded algebras have nice structure.
+
+In this paper, we are using an earlier result in \cite{de-concini} which tells us that $\mathscr B_\xi$ admits such a filtration:
+(Recall that we are using roots $\alpha$ in some basis $\Pi$ of $\Phi$)
+\begin{thm}[DK '90]
+	The algebra $\mathscr B_\xi$ has a multiplicative filtration such that $\Gr \mathscr B_\xi$ is generated by the homogeneous elements $\{E_\alpha,K_\beta\}_{\alpha\in \Delta_+,\beta\in \Pi}$
+	subject to the relations
+	\[K_iK_j=K_jK_i\quad K_i^l=1\quad K_iE_\alpha=\xi^{\langle \alpha,\alpha_i\rangle} E_\alpha K_i\]
+	and
+	\[E_\alpha E_\beta=\xi^{\langle\alpha,\beta\rangle}E_\beta E_\alpha\]
+	if $\alpha\succ\beta$.
+\end{thm}
+Then we can use this filtration to get filtrations on all quotients and subalgebras, most importantly
+$\mathscr B_\xi,\mathscr U_\xi^+, b_\xi,$ and $u_\xi^+$.
+\begin{qst}
+	What is the filtration here? 
+\end{qst}
+I ended up finding the book in which \cite{de-concini} is published (in the library) and the answer is that you look at 
+monomials 
+\[M_{k,r;u}=F^kuE^r\]
+where $F^k=\prod_\alpha F_\alpha^{k_{\alpha}}$ and similar for $E^r$ and $u\in\mathcal U^0$.
+
+Then you can define the \textbf{height:}
+\[\operatorname{ht}(M_{k,r;u})=\prod_\alpha (k_\alpha+r_\alpha)\operatorname{ht}\alpha\in\bbZ_+\]
+(What is $\operatorname{ht}(\alpha)?$) and then finally define \textbf{degree:}
+\[d(M_{k,r;u})=(k_N,k_{N-1},\dots,k_1,r_1,\dots,r_N,\operatorname{ht}(M_{k,r;u}))\in\bbZ_+^{2N+1}\]
+which is totally ordered via the lexicographic ordering and therefore gives us a $\bbZ^{2N+1}$ grading.
+
+\brk
+
+Then we proceed to prove that $H^\bullet(\Gr\mathcal U_\xi^+)\cong\Lambda_\xi$, which follows from some arguments that can be found 
+in \cite{priddy}.
+\begin{qst}
+	What role do augmented algebras play in this theory? I have noted on several occasions that augmentations
+	have been used to define normal subalgebras. It also popped up in the discussion of Koszul algebras in \cite{priddy}.
+\end{qst}
+
+The idea here is to give $k$ the structure of an $A$-module. This is non-trivial for the folloiwng reason:
+consider $A=k[x_i]$ and localize at a non-maximal prime $p$. Then the residue field will have positive transcendence degree
+over $k$, and since $p$ will now be the (only!) maximal ideal, this will be the smallest field to which there is such a map.
+
+\begin{qst}
+	In the computation of cohomology for $\mathcal L^+$, why do the terms in the Koszul complex
+	look like $\mathcal L^+\otimes_k \Lambda^i(\mathfrak N)$? Is this exploiting somehow that 
+	all Hopf modules are trivial (e.g. $\mathcal L^+$) determines the entire action by 
+\end{qst}
+
+Let's take a regular sequence $(x_1,\dots,x_n)$. Then $R\xrightarrow{x_1} R$ is $K(x_1)$, the 
+Koszul complex for this regular subsequence. If we have two elements, then $K(x_1)\otimes K(x_2)$
+is the complex $R\to R\oplus R\to R$. Corollary 4.5.5 in Weibel says that whenever the sequence is regular, if you 
+construct the entire Koszul complex to get a resolution of the quotient $R/(x_i)$.
+
+Note that this essentially boils down to the computation that $\Lambda^iS^n\cong \Lambda^i(k^n\otimes_k S)=(\lambda^i k^n)\otimes S$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
 \section{Affine Group Schemes (Waterhouse and Jantzen)}
@@ -936,13 +1170,17 @@ if $G_R$ is the scheme represented by $A\otimes_k R$, then using that $\Hom_k(A^
 which is represented by $(A\otimes R)^D=A^D\otimes R$, so finally 
 \[G^D(R)=(G_R)^D(R)=\{\text{group-like elements in }A\otimes_k R\}\cong \Hom(G_R,(\Gm)_R)\]
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newpage
 \section{Algebraic Geometry}
 
 
 \newpage
 \section{Problems}
-\subsection{Week 1}
 
 \subsection{Waterhouse}
 \begin{wprob}{2.1}
@@ -962,11 +1200,30 @@ in the definition below. It seems to only occur when I use \texttt{\textbackslas
 	\[\varphi\otimes\varphi \circ \Delta_a(X)=\Delta_m\circ\varphi(X)\]
 	and so using that $\Delta_m(a)=a\otimes a$ and $\Delta_a(b)=b\otimes1+1\otimes b$, we get
 	\[\varphi(X)\otimes\varphi(1)+\varphi(1)\otimes\varphi(X)=\varphi(X)\otimes\varphi(X)\]
-	
 \end{sol}
 
-
-
 \section{To be filed:}
+The last paper on Julia's page is a preprint with her and Dave Benson. There is a spectral sequence computation that might be illustrative.
+There is also an older paper...
+
+One of the things Julia is interested in at the moment is a super group scheme. These arise by having a $\bbZ_2$ grading on your Hopf algebra.
+For instance we can look at exterior algebra $\Lambda(x)$, which represents the super group scheme $G_a^-$. 
+
+The first non-elementary example is $G_a^-\times G_a^-$ with a $\bbZ_p$ action on it that ``folds'' the second factor
+onto the first. To write this out explicitly, we consider the group algebra $\Lambda(u,v)$ where $uv=-vu$ and the coordinate algebra of $\bbZ_p$
+is $k[t]/t^p$ where $t\cdot u=0$ and $t\cdot v=\alpha u$ for some $\alpha$. This is a $4p$ dimensional algebra.
+
+Then we want to compute coholomology. We know $H^{**}(k\bbZ/p,k)\cong k[x]\oplus\Lambda(y)$ for $|x|=2,0$.
+Note there is a notion of dimension that is an ordered pair $(a,b)$ of the graded degree and cohomology degree.
+THis give us new elements of degree $(1,1)$
+
+Look up Koszul duality! It is in the representations and local cohomology book! 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%  Bibliography %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\medskip
+
+\printbibliography
 
 \end{document}

@@ -1872,4 +1872,475 @@ We have a final remark on root systems before returning to the land of Lie algeb
 
 	What we get from this, in terms of Lie algebras, is that one generator from each of the positive root spaces generates all the positive root spaces.
 \end{rmk}
+
+\newpage
+\section*{Homework 3 -- Due Feb 15}
+%10.10,13; 11.2; 13.4, board problem: using large tensor powers of the adjoint representation and sl(2) theory, show that any semisimple Lie algebra L admits irreducible representaitons of arbitrarily large dimension
+\begin{hwprob}{10.10}
+	Given $\Delta=\{\alpha_1,\dots,\alpha_l\}$ in $\Phi$, let $\lambda=\sum_1^lk_i\alpha_i$ with all $k_i\in\Z$ and all nonpositive or all nonnegative. Prove that
+	either $\lambda$ is a multiple (possibly 0) of a root or else there exists $\sigma\in W$ such that $\sigma\lambda=\sum k_i'\alpha_i$ with 
+	some $k_i'>0$ and some $k_i'<0$. 
+	
+	[Sketch: if $\lambda$ is not a multiple of any root, then the hyperplane
+	$P_\lambda$ orthogonal to $\lambda$ is not included in $\cup_{\alpha\in\Phi}P_\alpha$. Take $\mu\in P_\lambda-\cup_\Phi P_\alpha$. Then find
+	$\sigma\in W$ for which all $(\alpha_i,\sigma\mu)>0$. It follows that $0=(\lambda,\mu)=(\sigma\lambda,\sigma\mu)=\sum k_i(\alpha_i,\sigma\mu).$]
+\end{hwprob}
+\begin{sol}
+	Assume that $\lambda$ is not a scalar multiple of any root in $\Phi$. As suggested above, this means that $P_\lambda$ 
+	is not coincident with any $P_\alpha$ for $\alpha\in\Phi$. Let $\mu\in P_\lambda-\cup_\Phi P_\alpha$.
+
+	Now by the theorem in section 10.3 (part a) gives us (since $\mu$ is regular) a $\sigma\in W$ such that $(\alpha_i,\sigma\mu)>0$ for all $i$.
+	Then since $\lambda\perp\mu,$ (if $\sigma\lambda=\sum_i c_i\alpha$ where $c_i\in\Z$ since the integer lattice is fixed by $W$):
+	\[0=(\lambda,\mu)=(\sigma\lambda,\sigma\mu)=\sum_i c_i(\alpha_i,\sigma\mu)\]
+	which (since all the inner products are strictly positive) forces some $c_i>0$ and $c_j<0$, as desired.
+\end{sol}
+
+\begin{hwprob}{10.13}
+	The only reflections in $W$ are those of the form $\sigma_\alpha$ $(\alpha\in\Phi)$.
+
+	[A vector in the reflecting hyperplane would, if othogonal to no root, be fixed only by the identity in $W$.]
+\end{hwprob}
+\begin{sol}
+	Let $\sigma\in W$ be an arbitrary reflection. Say that $\sigma$ is not a reflection through the hyperplane
+	with normal vector $\lambda$ and let $\mu$ be a vector fixed by $\sigma$. If $\mu$ is not orthogonal to any root,
+	it lies in the interior of one of the regions carved out by the hyperplanes $P_\alpha$ for $\alpha\in\Phi$. 
+	Then by Lemma B in \S10.3, since $\mathfrak{C}(\Delta)$ is a fundamental domain for the $W$ action, let $\mu'=\sigma'\mu$
+	be the (unique) representative of $\mu$ in $\mathfrak{C}(\Delta)$. 
+
+	But then $\sigma'\sigma(\sigma')^{-1}(\sigma'\mu)=\sigma'\mu$, so by the above lemma $\sigma'\sigma(\sigma')^{-1}$
+	is the identity map. But then 
+	\[\sigma'\sigma(\sigma')^{-1}=\id\quad\Rightarrow\quad \sigma'\sigma=\sigma'\quad\Rightarrow\quad \sigma=\id.\]
+\end{sol}
+
+\begin{hwprob}{11.2}
+	Calculate the determinants of the Cartan matrices (using induction on $l$ for types $A_l-D_l$).
+\end{hwprob}
+\begin{sol}
+	In the following, let the caligraphic letters $\mathcal{A,B,C,D,E,F,G}$ correspond to the Cartan matrix 
+	for type $A,B,$ etc.
+\subsection*{($A_l$)}
+	The claim is that $|\mathcal{A}_l|$ (determinant of the Cartan matrix) is $l+1$. For $A_1$ this is trivial.
+	Assume now that this holds up to $A_{k}$. But notice that $\mathcal A_k$ is a minor of $\mathcal A_{k+1}.$ In particular,
+	\[\begin{pmatrix}
+		2 & -1 & \mathbf{0}^T\\
+		-1 & \mathcal A_k &\\
+		\mathbf{0} & &
+	\end{pmatrix}\]
+	where $\mathbf{0}\in\R^{k-1}$ and so
+	\[|\mathcal A_{k+1}|=2\cdot |\mathcal A_k|+|\tilde{\mathcal A}_k|\]
+	where $\tilde{\mathcal A}_k$ is the same as $\mathcal A_k$ with thr first row replaced with $(-1,0,\dots,0)$.
+	But then subtracting the first row from the second (which leave the determinant unchanged):
+	\[\tilde{\mathcal A}_k=\begin{pmatrix}
+		-1 & \mathbf{0}^T\\
+		-1 & \mathcal A_{k-1}\\
+		\hat{\mathbf{0}} &
+	\end{pmatrix}\rightsquigarrow\begin{pmatrix}
+		-1 & \mathbf{0}^T\\
+		\mathbf{0} & \mathcal A_{k-1}
+	\end{pmatrix} \]
+	($\hat{\mathbf{0}}\in\R^{k-2}$) and so by the inductive hypothesis $|\tilde{\mathcal A}_k|=-|\mathcal A_{k-1}|=-k$.
+
+	But then we can conclude that
+	\[|\mathcal A_{k+1}|=2\cdot |\mathcal A_k|+|\tilde{\mathcal A}_k|=2(k+1)-k=k+2\]
+	as desired.
+
+	\brk
+	\subsection*{($B_l$)}
+	Here the claim is $|\mathcal B_l|=2$. This can be seen directly (without induction) by using that 
+	$\mathcal B_l$ differs in only one spot from $\mathcal A_l$: expanding the determinant from the 
+	bottom right along the last column, we get 
+	\[|\mathcal B_l|=2|\mathcal A_{l-1}|+2|\hat{\mathcal A}_{l-2}\]
+	where $\hat{\mathcal A_{l-2}}$ is $\mathcal A_{l-2}$ with the last column replaced by $(0,\dots, 0,-1)$.
+	Luckily, it can be seen by expanding upon the last column that
+	\[|\hat{\mathcal A}_{l-1}|=|\tilde{\mathcal A}_{l-1}|=-(l-1)\]
+
+	So finally:
+	\[|\mathcal B_l|=2|\mathcal A_{l-1}|+2|\hat{\mathcal A}_{l-2}|=2(l)-2(l-1)=2.\]
+
+	\brk
+	\subsection*{($C_l$)}
+	This isn't bad at all since $|\mathcal C_l|=|\mathcal B_l^T|=|\mathcal B_l|=2$.
+
+	\brk
+	\subsection*{($D_l$)}
+	Here the claim is that $|\mathcal D_l|=4$ (for $l\ge 4$). Here we can again compute the determinant from the 
+	bottom right, to see that 
+	\[|\mathcal D_l|=2|\mathcal A_{l-1}|+|H|\]
+	where $H$ is $\mathcal A_{l-1}$ with the second-to-last row replaced by $(0,\dots,0,-1,0)$.
+	Doing row reductions, we can compute $|H|=-2|\mathcal A_{l-3}|$, and sol
+	\[|\mathcal D_l|=2l-2(l-2)=4.\]
+
+	\brk
+
+	The matrices for the exceptional Lie algebras are just regular matrices and their determinants can 
+	be computed (either by hand or your favorite CAS) :).
+\end{sol}
+
+\begin{hwprob}{13.4}
+	Prove that the Weyl group of a root system $\Phi$ is isomorphic to the direct product of the
+	respective Weyl groups of its irreducible components.
+\end{hwprob}
+\begin{sol}
+
+\end{sol}
+
+\begin{hwprob}{(Board)}
+	Using large tensor powers of the adjoint representation and $\sl_2$ theory, show that any semisimple Lie algebra $L$ admits irreducible representaitons of arbitrarily large dimension.
+\end{hwprob}
+\begin{sol}
+
+\end{sol}
+\newpage
+
+\section{February 15, 2019}
+One last fact about root systems for now:  if we let $\Phi$ be a root system and $g$ an automorphism of $\Phi$
+(orthogonal transformation of $\R^n$ permuting $\Phi$). If $\Phi^+$ is a positive system for $\Phi$, so is $g\Phi^+$ 
+and we can find $w\in W$ sending $g\Phi^+$ to $\Phi^+$. Then $wg$ is an automorphism of $\Phi$ preserving $\Phi^+$,
+thus also the corresponding simple subsystem $\Delta$, thus acting on the dynking diagram by an automorphism.
+
+If $\Phi$ is such that this diagram is connected, then running through all the possibilities, there are just 3 of them 
+where nondrivial diagram automorphisms occur: types $A_n, D_n,$ and $E_6.$
+
+$A_n, E_6,$ and $D_n$ for $n>4$ all admit two automorphisms while $D_4$, most interestingly, admits a group $S_3$ of automorphisms.
+The study of these kinds of things is called triality. It turns up that $S_3$ also acts by automorphisms on $\mathfrak{so}(8)$, the Lie algebra
+of type $D_4$. If you compute the fixed point subalgebra of $D_4$, you end up finding out that it is, in fact, $G_2$. This can be seen in 
+the diagram by ``folding''.
+
+\subsection{(Officially) Returning to Lie Algebras}
+FOr now, let $L$ be any Lie algebra over a field $k$ of characteristic zero admitting a vector space decomposition
+$L=H\oplus_{\alpha\in\Phi\subseteq H^*}L_\alpha$
+such that
+\begin{enumerate}
+	\item $H$ is abelian
+	\item $L_\alpha=\{x\in L:[hx]=\alpha(h)x\}$
+	\item $\Phi$ is a root system
+	\item $\dim L_\alpha=1$; and
+	\item $[L_\alpha,L_\beta]=L_{\alpha+\beta}$ when this makes sense
+\end{enumerate}
+Then $L$ is simple if the Dynkin diagram is connected and semisimple in general.
+
+\begin{rmk}
+	Monty mentioned today that he will not be following the approach in Humphreys -- showing that 
+	any two Cartan subalgebras are conjugate. Instead, he will show this using an algebro-geometric 
+	argument. This means we can skip reading chapters 15 and 16 of Humphreys.
+\end{rmk}
+
+\subsection{Uniqueness of Root Systems}
+Now we want to see that any two semisimple Lie algebras with the same roots systems are isomorphic,
+
+We have the following: let $L,L'$ be two semisimple Lie algebras with roots systems $\Phi, \Phi'$ and suppose that $\pi$ is an isomorphism from 
+$\Phi$ to $\Phi'$ (thus an orthogonal isomorphism from a maximal toral subalgebra $H$ of $L$ to its
+counterpart $H'$ in $L'$). Fix simple subsystems $\Delta$ and $\Delta'$ that correspond under $\pi$
+and choose nonzero $x_\alpha\in L_alpha$ and $x'_{\alpha'}\in L_{\alpha'}'$ where $\alpha'=\pi(\alpha).$
+
+There is a unique isomorphism from $L$ to $L'$ extending $\pi$ and sending $x_\alpha$ to $x_{\alpha'}'$. To
+see this, assume first that $L,L'$ are simple. We know that there are $y_\alpha\in L_{-\alpha}$ and 
+$y_{\alpha'}'\in L_{-\alpha'}'$ such that the $x_\alpha,y_\alpha,h_\alpha$ and the primed 
+versions each span subalgebras $S_\alpha$ and $S_{\alpha'}$ isomoprhic to $\sl_2$.
+
+Then you have this nice trick where you look at $L\oplus L'$ and end up proving they are, in fact, isomorphic. :)
+
+\brk
+
+\begin{thm}
+	Let $g$ be any automorphism of the root system $\Phi$ of a semisiple Lie algebra $L$.
+	Then there is a unique automorphism of $L$ extending $g$.
+\end{thm}
+\begin{rmk}
+	To see this, we notice that $g$ is an automorphism of a maximal toral subalgebra 
+	$H$ of $L$ sending roots to roots. So then we can pick a simple subsystem $\Delta$
+	nonzero $x_\alpha\in L_\alpha$ and $x_{g\alpha}$ in $L_{g\alpha}$ and the above automorphism
+	sends $x_\alpha\mapsto x_{g\alpha}$.
+\end{rmk}
+
+\section{February 20, 2019}
+I missed the first section here but the definition of a Chevalley automorphism was discussed.
+
+In the special case when our automorphism $\pi$ lies in $W$ (where $\pi$ is our simple system automorphism), 
+there is a direct comstruction of $g_\pi$, which we have seen: since $W$ is generated by simple reflections,
+it is enough to do this for $w=s_\alpha$, and then
+\[g_{s_\alpha}=(\exp\ad x_\alpha)(\exp\ad -y_\alpha)(\exp\ad x_\alpha)\]
+
+\subsection{The next logical quesetion}
+Given a semisimple Lie algebra $L$ over an \textbf{algebraically closed} field $k$ of characteristic zero,
+does its root system $\Phi$ depend on the choice of maximal toral subalgebra $H$?
+\begin{thm}
+	No.
+\end{thm}
+\begin{prf}
+	We will prove this using some (very basic) algebraic geometry. There is an elementary (but much more ridiculous)
+	argument in the text. Notice that in either case, the result \textbf{is not true} if $k$ is not algebraically closed.
+
+	We will prove this for a general Lie algebra (not necessarily semisimple). First we will recall some facts from
+	algebraic geometry: in particular the Zariski topology -- recall that here any two nonempty open sets intersect nontrivially.
+	FUrthermore, we have a theory of morphisms from $k^n\to k^m$: in particular given a map $f:k^n\to k^m$ and a point $x\in k^n$,
+	we get the differential $df_x:T_xk^n\to T_{f(x)}k^m$. Finally recall that if such an $f$ is surjective, then it maps
+	an open subset containing $f(x)$.
+
+	Let $L$ be any Lie algebra over $k$, and let $H$ be a maximal toral subalgebra. We have a root space decomposition
+	\[L=L_0\bigoplus_{\alpha\in \Phi} L_\alpha\]
+	and $H\subseteq L_0$. Fix a vector space complement $H'$ to $H$ in $L_0$ and look at the Zariski open subset $H''=\{h\in H':\alpha(h)\ne 0, \alpha\in\Phi\}$.
+	Set $\mathcal H=H''+H_i$, which is Zariski open in $L_0$.
+
+	Now let $b_1,\dots,b_m$ be a basis for $\oplus_\alpha L\alpha$ and we obtained by combining bases of each $L_\alpha$ 
+	separately, and consider the map from $k^m\times L_0$  to $L$ sending
+	\[(k_1,\dots,k_m,h)\mapsto (\exp\ad k b_1)\cdots(\exp\ad k_m b_m)(h)\]
+	this map has a surjective differential at any $h\in\mathcal H$, by dimension counding, so it follows that given two maximal toral subalgebras
+	$H_1,H_2$ of $L$, some automorphism of this type sends a regular element of $H_1$ to a regular element of $H_2$
+	(for which no nonzero --- takes the value zer). But eh centralizer of the centralizer of such an element of $H_1$, if semisimple,
+	lies in $H_2$, and similarly for $H_2$, so $H_1$ is sent to $H_2$.
+\end{prf}
+
+\subsection{Cartan Subalgebras}
+Monty (and Humphreys) have actually be decieving us this whole time: in the literature what we really care about, 
+instead of maximal toral subalgebras, are \textbf{Cartan subalgebras}, which are defined as a nilpotent subalgebra
+which is normal in $L$: $N_L(H)=H$. This definition is actually equivalent to what we've been using
+whenever $L$ is semisimple and in general over any algebraically closed field. FUrthermore any two Cartan subalgebras are
+conjugate y $\Int L$.
+
+\subsection{Classification continued}
+We still must show that given any root system there is a semisimple Lie algebra (over $k=\bar k$)
+which has $\Phi$ as its root system. We will only sketch the proof here -- see section 10 of Humphreys for more
+information. We will instead give a defining set of relations for such a Lie algebra using only $\Phi$.
+
+Notice that if we had $L$ with a root system $\Phi$ then we would have the basis $x_\alpha,y_\alpha,h_\alpha$ for $\alpha\in\Delta$.
+Wow rough morning, huh?
+
+\section{February 22, 2019}
+Last time we learned that any two maximal toral (Cartan) subalgebras  of a semisimple Lie algebra over an algebraically closed field $k$ 
+of characteristic 0 are conjugate under $\Int L$. In particular, $\dim H_1=\dim H_2=l$, which is called the \textbf{rank of $L$.}
+
+We have anothe conjugacy result:
+\begin{lem}
+	Given a Cartan subalgebra $H$ with root space decomposition
+	\[L=H\oplus\bigoplus_\alpha L_\alpha\]
+	and a choice $\Phi^+$ of positive roots in $\Phi$, the subalgebra $B=H\oplus\bigoplus_{\alpha\in\Phi^+}L_\alpha$
+	has a derived subalgebra $\oplus_{\alpha\in \Phi^+}L_\alpha$, which is nilpotent, so $B$ is solvable. In fact
+	$B$ is maximal among solvable subalgebras of $L$.
+\end{lem}
+
+\begin{defn}
+	We call any maximal solvable subalgebra of $L$ a \textbf{Borel subalgebra}.
+\end{defn}
+\begin{rmk}
+	Any two Borel subalgebras are conjugate under $\Int L$. The quotient of $\Int L$ by the normalizer of such a subalgebra $B$ is called the \textbf{flag variety of $L$.}
+\end{rmk}
+
+\subsection{Today}
+We are focusing today on how to construct a semisimple Lie algebra $L$ from aroot system $\Phi$, together with a basefield $k$ of characteristic zero via generators and relations. We need some definitions:
+\begin{defn}
+	The \textbf{free Lie algebra} on a set $x_1,\dots,x_n$ over $k$ is a subalgebra of the associative free tensor $k$-algebra
+	generated by the $x_i$. In particular, it is the Lie subalgebra of this algebra generated by the $x_i$ -- spanned by all the $m$-fold brackets
+	with the only dependence relations among the brackets following from the axioms of a Lie algebra (anticommutativity and the Jacobi 
+	identity).
+\end{defn}
+
+We will follow this approach starting from $\Phi$: fix a simple subsystem $\Delta=(\alpha_i)_1^n$, a basis of $\Phi\subseteq\R^n$.
+Then we take the 3n generators $x_\alpha,y_\alpha,h_\alpha$ of $L$ given the relations
+\begin{align*}
+	[h_i,h_j]&=0\\
+	[h_i,x_j]&=\langle \alpha_i,\alpha_j\rangle x_j\\
+	[h_i,y_j]&=-\langle\alpha_i,\alpha,j\rangle y_j\\
+	[x_i,y_j]&=\delta_{ij}h_i
+\end{align*}
+with more relations to follow later.
+
+\brk
+
+First look at hte Lie algebra $L_0$ defined by these relations alone. THis is infinite-dimensional, but still has nice enough structure to lead to what we want.
+The structure of $L_0$ is (as a cector space) $L_0=Y+H+X$, where $Y$ is genreated by the $y_i$, etc. Moreover, the $h_i,x_i,y_i$ are independent in $L_0$,
+which follows from an explicit representation of $L_0$ on page 97 of Humphreys.
+
+$H$ is easy: generators $h)i$ commute, so $H$ is jsut the polynomial ring over $k$ of the $h_i$, regarded as independent variables.
+
+$Y$ and $X$ are harder, but it is easy enough to observe that these are both graded: an $m$-fold bracket of various
+$x_i$ has weight the sum of the corresponding $\alpha_i$, which is an element of $H^*$. Similar for the $y_i$'s.
+
+So we can write $X=\oplus X_\lambda$ where $X_\lambda=\{x\in X:[hx]=\lambda(h)x\}$ and similar for $Y$. Now each nonzero $X_\lambda$ corresponds to a $\lambda$ 
+that is a nonnegative linear combination of $\alpha_i$ and the $Y_\eta$ correspond to $\eta$ which are 
+nonpositive linear combinations. This gets us that
+\begin{lem}
+	\[\dim X_{\alpha_i}=1=\dim Y_{\alpha_i}\]
+	and furthermore if $c\notin\{0,\pm 1\}$,
+	\[\dim X_{c\alpha_i}=0=\dim Y_{c\alpha_i}.\]
+\end{lem}
+
+\brk
+
+So how can we cut down $L_0$ to the size we want? We know that for all $i\ne j$ that $\alpha_i-\alpha_j$ is not a root,
+whence $S_{\alpha_j}(\alpha_i-\alpha_j)=\alpha_i-(\langle\alpha_i,\alpha_j\rangle+1)\alpha j$
+is also not a root. Call it $\alpha_i+k_{ij}\alpha_j$. We know the bracket of $x_i$ with $x_j$ $k_{ij}$ times has to be zero in our quotient, so
+we must impose the further relations
+\[(\ad x_j)^{k_{ij}}x_i=0.\]
+
+If these relations are imposed (along with the correspinding ones for the $y_i$), then the ideal $I$ of $X$ generated by the $x_i$ relations are, in
+fact, an ideal of $L_0$ (Humphreys p. 99) (same for $Y$). These ideals are generated by graded elements, so
+\[(X+H+Y)/(I+J)\]
+retains a graded structure for which the root spaces are still dimension one.
+
+\brk
+
+\begin{defn}
+	An element $x$ where for each element $l\in L$ there exists a positive integer $a_l$ such that
+	\[(\ad x)^{a_l}l=0\]
+	is said to act \textbf{locally $\ad$-nilpotently} on $L$.
+\end{defn}
+So we have seen that $x_i$ and $y_i$ act locally $\ad$-nilpotently, so we get an automorephism of the quotient
+\[(\exp\ad x_i)(\exp \ad -y_i)(\exp\ad x_i)\]
+acts as the reflection $s_{\alpha_i}$ on the root spaces, preserving their dimensions.
+
+It follows that the Weyl group $W$ acts on the root spaces of our quotient, preserving their dimensions.
+Let $L$ be this quotient. We know that $\dim L_\beta=1$ for any $\beta\in\Phi$, since any such $\beta$ is 
+conjugate to a simple root (where the root space has dimension 1).
+
+Finall, if $\lambda\in H^*$, then some $W$ conjugate of $\beta$ is a linear combination of simple roots
+with some positive and some negative coefficients. This doesn't occur in $L_0$.
+
+The upshot here is that $L$ consists of $H$ plus a one-dimensional $L_\beta$ for all $\beta\in\Phi$ and 
+nothing else. By $\sl_2$ theory, we get the bracket relations among root spaces. By a previous result, any Lie algebra with a root 
+system is semisimple, so $L$ is semisimple with root system $\Phi$. This gives us our conclusion:
+\begin{thm}
+	A semisimple Lie algebra $L$ exists with \textbf{any} specified root system $\Phi$ and base
+	field $k$.
+\end{thm}
+
+\subsection{Extending this construction}
+This begs to be embedded in a larger construction: Give $k$ and our generators $x_i$, and an ideal $I$ 
+of $F$ (the free $k$ Lie algebra on the $x_i$), we can form $T/\langle I\rangle$ ($T$ the free tensor algebra), the quotient of $T$ by the 
+\textbf{ordinary two-sided} generated by $I$ in $T$. This will be a larger associative algebra containing $F/I$ such that
+$[x,y]=xy-yx$.
+
+More generally, let $L$ be a finite dimensional Lie algebra with basi $x_i$. Then we have 
+\[[x_ix_j]=\sum m_{ijk}x_k\]
+and imposing the relations on the tensor algebra, and this is called the universal enveloping algebra of $L$.
+
+Sick.
+
+\section{February 25, 2019}
+Notice that (having classified all complex semisimple Lie algebras) we have thus far used lots of linear algebra
+but relatively little abstract algebra. But now the theory of associative algebras is going to come into the fold
+as we proceed to classify the finite dimensional $L$ modules.
+
+By Weyl's theorem, it is enough to classify the finite-dimensional \textit{irreducible} $L$-modules $M$.
+For this we need an asoociaitive algebra containing $L$ as a Lie algera , and then we use the method of associative algebras:
+\begin{ex}
+	If $A$ is such an algebra, then a typical irreducible left $A$-module takes the form $A/M$
+	for some maximal left ideal $M$ of $A$.
+\end{ex}
+
+\subsection{Universal Enveloping Algebras}
+But we need to choose $A$ in such a way that all irreducible finite-dimensional $L$-modules are captured
+in this way (as $A$-modules). For this purpose,
+\begin{defn}
+	Let $\mathcal U:=\mathcal U(L)$ be the associative algebra generated by $L$ (or any basis) with relations exactly tose of $L$,
+	that is $xy-yx=[xy]$.
+
+	There are only finite many relations since it is enough to take $x$ and $y$ above to be elements of a basis of $L$.
+\end{defn}
+
+How big is $\mathcal U$? What is a basis? To this we answer
+\begin{thm}[Poincar\'e-Birkhoff-Witt (PBW)]\label{thm-pbw}
+	If $x_1,\dots,x_n$ is an ordered basis for $L$, then a basis of $U$ (over $k$) is given by 
+	monomials in the $x_i$: 
+	\[x_1^{m_1}\cdots x_n^{m_n},\quad m_i\ge 0\].
+\end{thm}
+\begin{rmk}
+	The proof of this can be found in the book (p.93-94) (or other places). The idea is that, to show span,
+	using that whenever $j>i$, $x_jx_i=x_ix_j+[x_jx_i]$, converting an element in ``wrong'' order into the
+	``right'' order.
+\end{rmk}
+A more sophistochated statement of PBW: Let $\mathcal U_m=\mathcal U_m(L)$ be the span of all products of at most $m$ geneartors $x_i$ (allowing
+repetitions) so that 
+\[0=\mathcal U_{-1}\subseteq\mathcal U_{0}\subseteq\mathcal U_{1}\subseteq\cdots\]
+where $\cup \mathcal U_i=\mathcal U$.
+
+Then $\mathcal U_m\mathcal U_n\subseteq \mathcal U_{m+n}$, so we can form the associated graded algebra
+$G=\oplus_0^\infty \mathcal U_m/\mathcal U_{m-1}$.
+
+In particular, we have $x_1,\dots,x_n$ as a basis for $L$ representa by elements labelled in the same way in $\mathcal U_1/\mathcal U_0$.
+Then $x_ix_j=x_jx_i$ for all $i,j$, regarding the $x_i$ as lying in $G$. Moreover, the images in $G$ generate $G$, so 
+we have a map $\varphi$ from $S$, the polynomial ring in the $x_i$ to $G$, sending each $x_i$ to its image in $G$.
+\begin{thmprime}{thm-pbw}[PBW']
+	In the above construction, the map $\varphi$ is an isomorphism.
+\end{thmprime}
+\begin{rmk}
+	An interesting consequence of this is that $\mathcal U$ has no zero divisors. For if $x,y$ are nonzero elements just choose $m,n$ minimal so that 
+	$x\in\mathcal U_m$ and $y\in\mathcal U_n$. Then the product is nonzero in $\mathcal U_{m+n}/\mathcal U_{m+n-1}$!
+\end{rmk}
+
+It is clear from the construction of $|mathcal U$ that any left $L$ module may be regarded as a left $\mathcal U$-module. Thus we can construct an irreducible such module
+as $\mathcal U/M$ for a maximal (left) module $M$. Now let $N$ be an irreducible $L$-module,
+so that $N$ is an irreducible $\mathcal U$-module. 
+
+If $L$ is semisimple, it has root space decomposition $L=\h\oplus_{\alpha\in\Phi}L_\alpha$. Choose a positive root system
+and we ahve seen that the Borel subalgebra $B$ is a (maximal) solvable subalgebra for $L$. Thus by Lie's theorem, there is a 
+one-dimensional submodule $K_v$ of $L$, acted on semisimple (thus diagonally) by $\h$,
+while $x_\alpha v=0$ for all $\alpha\in\Phi^+$, since $L_\alpha\in [BB]$.
+
+Accordingly, $v$ is a weight vector in $N$ (simultaneous eigenvector for $\h$) and so now we bring in PBW:
+we know by irreducibility that $\mathcal U v=N$. Now fix a basis of $L$ consisting of root vectors, together 
+with a basis for $\h$, in which all negative root spaces come first, then the basis for $\h$, then the basis for $[BB]=\oplus_{\alpha\in\Phi^+}L_\alpha.$
+
+We have observed that $N$ (since it is irreducible) is a quotient of $\mathcal U$ by a maximal left ideal. We 
+know this ideal contains all $x_\alpha$ for $\alpha\in\Phi^+$. It follows that if $N'=\oplus_{\alpha\in\Phi^-}$,
+then $\mathcal Uv=\mathcal U(N')v$, so all vectors in $N$ are obtained from $v$ by applying suitable products of 
+negative roots vectors and taking the span.
+
+It follows that our module $N$, the sum of its weight spaces, is such that any of its weights $\mu\in\h^*$
+is such that $\mu$ is obtained from $\lambda$ (where $hv=\lambda(h) v$ for all $h\in\h$) by subtracting anonnegative integer combination
+of simple roots. This says that the weight $\lambda$ of $v$ occurs with multiplicity one (the only product $P$ of negative root vectors such that
+$Pv$ has weight $\lambda$ is the empty product) and all other weights occurring (whoops, it got erased.)
+
+\section{February 27, 2019}
+Last time we saw that, given any semisimple Lie algebra, we can identify a \textbf{highest weight vector} of any $L$-module $V$
+which is killed by the action of any positive root. We also saw (via $\sl_2$ theory) that this highest weight $\lambda$ satisfies
+$\langle\lambda, \alpha_i\rangle\in\N$ for all $i$.
+
+We also saw the enveloping algebra $\mathcal U$ of $L$ and that $V=\mathcal Uv$ and $\h v=kv$. Let $I$ be the ideal of $\mathcal U$ gnerated by $N^+$,
+the sum of the positive weight spaces, and all $h-\lambda(h)$. Notce $I\subseteq M=\operatorname{Ann}(V).$
+Notice that any proper ideal of $\mathcal U$ cannot contain a vector of weight zero (since the only one is 1)
+and thus the sum of every ideal containing $I$ is proper, whence there is a unique maximal $M$ over $A$.
+
+Hence immediately if $V$ and $W$ are irreducible modules generated by vectors of the same highest weight $\lambda\in\h^*$,
+then $V\cong W\cong \mathcal U/M$. 
+
+\subsection{Integral Weights}
+It remains to show the following:
+\begin{lem}
+	If (conversely) $\lambda$ is such that $\langle\lambda,\alpha_i\rangle\in\N$ for all $i$, 
+	then there is a unique irreducible highest weight module $V$ with highest weight $\lambda$ 
+	that, furthermore, is finite dimensional!
+\end{lem}
+\begin{rmk}
+	Such a $\lambda$ (regardless of the context in which we see it) is called a \textbf{dominant (integral) weight.}
+\end{rmk}
+\begin{prf}
+	We will construct $M$ explicitly and show $\mathcal U/M$ is finite dimensional. Set
+	\[m_i=\langle\lambda,\alpha_i\rangle\]
+	and let $J$ be the ideal generated by the $y_i^{m+i+1}$ where $y_i\in L_{-\alpha_i}$. We claim that $M=I+J$. To see this, note first that
+	$I+J$ is generated as a left $\mathcal U$=module by $I$  and $\mathcal U(N^+)J$ since $x_jy_j^{m+j+1}=y_j^{m_j+1}$ if $i\ne j$ where $x_j\in L_{\alpha_j}$
+	and $x_jy_j^{m_j+1}\in I+J$ by a $\sl_2$ calculation. 
+
+	Thus $I+J$ is proper and $U/(I+J)$ has a finite-dimensional $S_{\alpha_i}$-module spanned by $v, y_iv,\dots, y_i^{m_i}v$
+	where each $S_{\alpha_i}$ is spanned by the $x_i,y_i,h_i$. Eventually we can prove that $U/(I+J)$ is stable under 
+	the Weyl group, having the same dimenion of its weight space.
+
+	Then given any weight $\eta$ smaller than $\lambda$ in the partial order, recall that, if the dot product with any simple root 
+	is negative, one can apply a reflection to "bump up" $\eta$ in the partial order. But of course you can only do this so many times!
+
+	Thus any dominant weight $\mu$ of $V'=\mathcal U/(I+J)$ has length at most that of $\lambda$ and it lies on the integer lattice,
+	so as a discrete subset of a compact space there are only finitely many.
+
+	Thus any weight occuring in $V'$ is $W$-conjugate to some dominant weight, so only finite many weights occur in $V'$ 
+	and therefore $V$ is finite-dimensional. Furthermore, we see that $V$ has only one highest weight vector (if it is irreducible and finite-dimensional). 
+\end{prf}
+
+Next time we will try to explain the structure of $V$ as it decomposes into $V_\lambda$ which is analgous to, but not
+exactly the same as what we see in the adjoint representation: in this case, we will see that one can get higher multiplicities
+occuring for certain weights, but the pattern will be that the highest weights will occur with multiplicity one and the rest 
+will lie in the convex hull of these vectors, with multiplicity increasing as you go further inside the hull.
+
+\section{February 28, 2019}
+
+
 \end{document}

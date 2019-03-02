@@ -143,6 +143,7 @@
 \DeclareMathOperator{\Ext}{Ext}
 \DeclareMathOperator{\gldim}{gldim}
 \DeclareMathOperator{\projdim}{projdim}
+\DeclareMathOperator{\injdim}{injdim}
 \DeclareMathOperator{\findim}{findim}
 
 %Coker
@@ -157,6 +158,8 @@
 %identity map
 \DeclareMathOperator{\id}{id}
 
+\DeclareMathOperator{\End}{End}
+
 \newcommand*{\Hom}{\ensuremath\text{Hom}}
 
 %Hopf algebra stuff
@@ -168,6 +171,8 @@
 \DeclareMathOperator{\Alg}{Alg}
 \newcommand*{\scrT}{\ensuremath\mathscr{T}}
 \newcommand*{\Ch}{\mathbf{Ch}}
+\newcommand*{\g}{\mathfrak{g}}
+\DeclareMathOperator{\Der}{Der}
 
 %fix tilde
 \let\tilde\relax
@@ -1227,7 +1232,7 @@ Some more results (mostly for finite dimensional algebras):
 	If $V$ is finite dimensional, then the antipode $S$ has finite order:
 	\[S^d=\id_V\]
 \end{thm}
-\begin{thm}[Larson-Radford `88]
+\begin{thm}[Larson-Radford `88]\label{thm-LR88}
 	Suppose $\ch k\ne 0$ (can be relaxed but gets more ugly). Then the following are equivalent:
 	\begin{enumerate}
 		\item $\gldim V=0$ ($V$ is semisimple Artinian)
@@ -1345,4 +1350,538 @@ On Friday, we may see the following result:
 	Under some mild hypothesis (including finite dimensionality),
 	\[\projdim_V k=\gldim V\]
 \end{thm}
+
+\section{February 13, 2019}
+Here's the theorem for today (with the hypotheses in place):
+\begin{thm}\label{thm-213}
+	Assume $\ch k=0$ and $S^2=\id_V$. Then 
+	\[\gldim V=\projdim{_VM}\]
+	for all finite dimensional $V$ modules $M$.
+\end{thm}
+Another result is the theorem~\ref{thm-LR88}:
+\begin{prf}
+	Assuming theorem~\ref{thm-213}, (c)$\Rightarrow$(a) is obvious. That's only part of it, 
+	obviously. :)
+\end{prf}
+\subsection{Example of the Day}
+\begin{ex}
+	$\mathcal{U}(\g)$, the universal enveloping algebra which (as an algebra) is isomorphic to
+	$k\langle \g\rangle/(xy-yx-[xy])$. As a coalgebra, we define $\Delta(x)=x\otimes 1+1\otimes x$,
+	$\varepsilon=0$ and $S(x)=-x$.
+
+	This is a nice example for today, because notice that $S^2(x)=x$ and in fact $S^2=\id_{\mathcal{U}(\g)}$,
+	so we get that $\gldim\mathcal{U}(\g)=\projdim_{\mathcal{U}(\g)}M$ for any finite dimensional $M$ (by 
+	the theorem).
+\end{ex}
+\subsection{Today's Content}
+\begin{lem}[Reflection Principle]\label{lem-ref]}
+	Let $A$ be an algebra. Then
+	\begin{enumerate}
+		\item $(-)^*=\Hom)k(-,k):({_A\calM})_{fd}\to(\calM_A)_{fd}$ is a contravariant equivalence.
+		\item $(M^*)^*\cong M$ for each $M\in{_AM}_{fd}$. In linear algebra, this says that we have a perfect pairing $M\otimes M^*\to k$.
+	\end{enumerate}
+\end{lem}
+\begin{lem}[Restriction of Scalars]\label{lem-res1]}
+	Let $f:A\to B$ be a map of algebras. Then
+	\begin{enumerate}
+		\item There is a functor $f^*:{_B\calM}\to{_A\calM}$; also 
+		\item $f^*:\calM_B\to\calM_A$.
+	\end{enumerate}
+\end{lem}
+\begin{lem}[Restriction of Scalars]\label{lem-res2}
+	Let $f:A\to B$ be an antihomomophism of algebras. Then
+	\begin{enumerate}
+		\item There is a functor $f^*:{_B\calM}\to{\calM_A}$; also 
+		\item $f^*:\calM_B\to{_A\calM}$.
+	\end{enumerate}
+\end{lem}
+\begin{lem}
+	Let $V$ be a Hopf algebra with antipode $S$. Then 
+	\[\tilde S\circ (-)^*:{_V\calM}\to \calM_V\to {_V\calM}\]
+	is a contravariant functor.
+\end{lem}
+\begin{cor}
+	If $V$ is finite dimensional, then $\tilde S\circ(-)^*$ is a duality of $(_V\calM)_{fd}$.
+\end{cor}
+For the future we will use the notation $M^{*S}=\tilde S(M^*)$. Notice that for all $M\in{_V\calM},$ $M^{*S}\in{_V\calM}$.
+
+This leads us to our proposition:
+\begin{thm}
+	$V$ is a Hopf algebra.
+	\begin{enumerate}
+		\item If $M\in{_V\calM}$ then there is a natural morphism
+		\[ev_M:M^{*S}\otimes M\to {_Vk}\]
+		\item if $M\in{_V\calM_{fd}}$, then there is a natural map
+		\[coev_M:{_Vk}\to M\otimes M^{*S}\]
+	\end{enumerate}
+\end{thm}
+\begin{prf}
+	$ev_M(f\otimes m)=f(m)\in k$ is the map we're talking about. For all $v\in V$, 
+	\begin{align*}
+		ev_M(v\cdot(f\otimes m))&=ev_M(v_1f\otimes v_2 m)\\
+		&=ev_M(fS(v_1)\otimes v_2m)\\
+		fS(v_1)(v_2 m)\\
+		&= f(S(v_1)v_2m)\\
+		&= f(\varepsilon(v) m)=\varepsilon(v)f(m)=v\cdot ev_M(f\otimes m).
+	\end{align*}
+
+	If instead $M$ is finite dimensional, pick a $k$ basis $m_1,\dots,m_d$ for $M$ and let 
+	$m_i^*$ be the dual basis. Set $coev_M(1)=\sum m_i\otimes m_i^*=\Phi$. Then use the fact that (under the identification of 
+	$M\otimes M^*$ with $\Hom_k(M,M)$) we get $\Phi=\id_M$. Then prove 
+	\[coev_M(v\cdot 1)=v\cdot coev_M(1).\]
+\end{prf}
+\begin{defn}
+	The map $ev_M$ above is called the \textbf{evaluation map} and $coev_M$ is called the 
+	\textbf{coevaluation map.}
+\end{defn}
+
+\begin{lem}
+	\begin{enumerate}
+		\item $(M^{*S})^{*S}\cong \tilde S^2(M)$ for all finite dimensional $M\in{_V\calM}$.
+		\item If $S^2=\id$ then $(M^{*S})^{*S}\cong M$.
+	\end{enumerate}
+\end{lem}
+\begin{lem}
+	Let $M\in {_VM}_{fd}$ and suppose $S^2=1$. Then 
+	\[ev_{M^{*S}}\circ coev_M=(\dim M)\id_k\]
+\end{lem}
+
+\section{February 15, 2019}
+
+Here we use the (slightly extended) lemma:
+\begin{lem}
+	\begin{enumerate}
+		\item $ev_M\circ coev_{M^{*S}}=(\dim M)\id_k$
+		\item $\frac{1}{\dim M}ev_M\circ coev_{M^{*S}}=\id$
+		\item (since the identity factors through $M^{*S}\otimes M$) $M^{*S}\otimes M\cong {_Vk}\oplus N$ as $V$-modules.
+		\item $\projdim k\le \projdim M^{*S}\otimes M$.
+	\end{enumerate}
+\end{lem}
+Then using this lemma, we can prove the theorem~\ref{thm-213}:
+\begin{prf}
+	Basically use this, Lorenz-Lorenz, and the result bounding $\projdim$ of a tensor module by its factors.
+\end{prf}
+
+Notice that if we change things up slightly we get a new theorem:
+\begin{thm-prime}{thm-213}
+	Let $V$ be aHopf algebra. Suppose that $S^2=\id$. Then 
+	\[\projdim_V M=\gldim V\]
+	for all $M\in {_VM}_{fd}$ such that $\dim M\ne 0$ in $k$.
+\end{thm-prime}
+
+\begin{conj}
+	Let $V$ be a Noetherian Hopf algebra over a field $k$ of characteristic zero and $S^2=\id$.
+	Then
+	\[\gldim V <\infty\]
+\end{conj}
+
+\begin{cor}
+	If $V$ is a finite module over $\mathcal Z(V)$, its center, then the above conjecture holds.
+\end{cor}
+
+\subsection{Today's example}
+He did the quantized enveloping algebra of $\sl_2$! Might be worth looking up.
+
+An interesting part of this example is that $S^2$ is \textbf{not} the identity! In fact, 
+this example is important in constructing Joon (sp?) polynomials in knot theory.
+
+\subsection{Today's Homework}
+\begin{prob}
+	Prove the following ``dimensional shift'' lemma: Let
+	\[0\to X\to P\to Y\to 0\]
+	be a SES of $A$ modules, where $P$ is projective. If $M$ is an $A$ module, then for all $n\ge 1$:
+	\[\Ext_A^{n+1}(Y,M)\cong\Ext^{n}_A(X,M).\]
+\end{prob}
+\begin{sol}
+	Take a projective resolution for $X$ and try to attach it to the SES.
+\end{sol}
+\subsection{Classifying Algebras}
+We have the (descending) chain of classes of algebras:
+\begin{itemize}
+	\item Algebras
+	\item Noetherian Algebras
+	\item Cohen-Macaulay Algebras
+	\item Gorenstein Algebras
+	\item Complete Intersections
+	\item Hypersurface Rings
+	\item Regular Algebras
+\end{itemize}
+The question we have is: where to (Noetherian) Hopf algebras lie in this hierarchy?
+
+If we restrict to finite-dimensional Hopf algebras, Brown-Goodearl proved that Noetherian Hopf algebras
+are all Gorenstein rings.
+
+\begin{defn}
+	A Noetherian algebra $A$ is called \textbf{regular} if $\gldim A<\infty$.
+\end{defn}
+\begin{rmk}
+	Notice that since $A$ is Noetherian, we didn't have to talk about left vs. right global dimension.
+\end{rmk}
+\begin{ex}
+	If $L$ is a finite dimensional Lie algebra, then $U(L)$ is regular:
+	\[\gldim U(L)=\dim L.\]
+\end{ex}
+\begin{defn}
+	An element $x\in A$ is called \textbf{normal} if $xA=Ax$ (NOT $xa=ax$)
+\end{defn}
+\begin{defn}
+	A Noetherian algebra $A$ is called a \textbf{hypersurface ring} if there exists a Noetherian 
+	regular algebra $B$ and a normal non-zero-divisor $x\in B$ such that $A\cong B/(x)$
+\end{defn}
+\begin{ex}
+	$\ch k=p>0$, $V=k[x]/(x^p)$, a Hopf algebra with comultiplication $\Delta(x)=x\otimes 1+1\otimes x$.
+	Then $V$ is a hypersurface ring.
+\end{ex}
+\begin{defn}
+	A Noetherian algebra $A$ is called a \textbf{complete intersection} if there is a Noetherian regular algebra
+	$B$ and a sequence of elements $x_1,\dots,x_d$ such that:
+	\begin{itemize}
+		\item $x_1$ is a non-zero-divisor in $B$.
+		\item $x_i$ is a NZD in $B/(x_1,\dots,x_{i-1})$ for all $i$
+		\item $A\cong B/(x_i)$.
+	\end{itemize}
+\end{defn}
+
+\begin{defn}
+	A Noetherian algebra $A$ is called \textbf{Gorenstein} if 
+	\[\injdim{_AA}=\injdim A_A<\infty.\]
+\end{defn}
+\begin{defn}
+	A Noetherian algebra $A$ is called \textbf{Cohen-Macaulay} if there is an $A$-bimodule
+	$M$ such that
+	\begin{itemize}
+		\item $\injdim {_AM}<\infty$, $\injdim M_A<\infty$
+		\item $\End(M_A)\cong A,$ $\End({_AM})\cong A^{op}$
+		\item ${_AM}$ and $M_A$ are Noetherian.
+	\end{itemize}
+\end{defn}
+
+\section{February 20, 2019}
+Last time we wrote out a big chain of inclusions for algebras. We didn't really discuss why all complete
+intersections are Gorenstein algebras. Actually, this is one of the harder inclusions to prove. We will at least 
+try today, but will definitely get to it by Friday.
+
+\subsection{Example of the day}
+\begin{defn}
+	$V=k[g^{\pm 1}][y;\delta]$, an Orr extension of the Laurent polynomial ring by the derivation $\delta=(g^n-g)\frac{d}{dg}$.
+	For those (me) wo haven't seen Orr extensions before, we also have
+	\[V\cong k\langle g, g^{-1}, y\rangle/(yg-gy-(g^n-g), gg^{-1}-1, g^{-1}g-1)\]
+
+	This is a domain where $\gldim V=2$ (also the GK dimension, which we haven't defined). As a coalgebra, we get
+	$g$ is grouplike and $\Delta y= y\otimes g^{n-1}+1\otimes y$, $\varepsilon(y)=0$, and $S(y)=-yg^{-(n+1)}$.
+
+	Notice that $V$ is regular.
+\end{defn}
+\subsection{Problem of the day}
+\begin{prob}
+	Let $x$ be a normal non-zero-divisor in $A$ where $xA=Ax$. Then for all $a\in A$ let $\sigma\in\Aut A$ be defined such that
+	$\sigma(a) x= xa$.
+
+	Let $M\in {_A\calM}$ and define a left $A$ action on ${^\sigma M}$ whose underlying set is $M$ and the action is defined by $a\cdot m=\sigma(a)m$. In terms of the action (morphism), this is 
+	equivalent to precomposing with $\sigma:$ 
+	\[A\xrightarrow{\sigma} A\xrightarrow{\rho}\End(M)\]
+
+	Prove the following lemma:
+	\begin{lem}[Rees Lemma]
+		Let $x$ be a normal non-zero-divisor in $A$. If $L$ is a left $A/(x)$-module and $M$ is an $x$-torsion-free $A$-module, then
+		\[\Ext_{A/(x)}^n(L,M/xM)\cong \Ext_A^{n+1}(L,{^\sigma M}).\]
+	\end{lem}
+\end{prob}
+
+\subsection{Today's Results}
+We begin with some corollaries of Rees Lemma:
+\begin{cor}
+	\begin{enumerate}
+		\item $\Ext_{A/(x)}^n(L, A/(x))\cong \Ext_A^{n+1}(L,{^\sigma A})\cong\Ext_A^{n+1}(L,A)$
+		\item $\injdim_{A/(x)}(A/(x))\le \injdim_AA-1$
+		\item If $A$ is Gorenstein, so is $A/(x)$.
+	\end{enumerate}
+\end{cor}
+\begin{rmk}
+	Then the idea here is that we just have to prove that regular rings are Gorenstein, since then complete intersections
+	are just (finite) sequences of quotients by regular elements.
+\end{rmk}
+\subsection{Doing $\Ext$ again}
+Let $P^\bullet$ and $Q^\bullet$ be complexes of $A$-modules. Then $\Hom_A(P^\bullet, Q^\bullet)$ is a complex. Define
+\[\Hom_A(P^\bullet, Q^\bullet):=\prod_{i\in\Z}\Hom_A(P^i,Q^{i+n}=\prod_{-i+j=n}\Hom(P^i,Q^j)\]
+where we define the boundary map to be 
+\[d_{\Hom_A(P^\bullet,Q^\bullet)}:(f_i)_{i\in\Z}\mapsto (d_Q^{n+1}\circ f^i - (-1)^nf^{i+1}\circ d_P^i)_{i\in\Z}\]
+\begin{prob}
+	The \textbf{real} homework for this class (the other one is what we're showing, apparently) is to show that this is a
+	chain complex -- i.e. that $d^2=0$.
+\end{prob}
+
+Define the projective resolution to be the regular projective resolution, but do not include $M$ itself. But then we have
+\begin{align*}
+	R\underline{\Hom}=\Ext_A^n(M,N)&:=H^n(\Hom_A(P^\bullet_M,N))\\
+	&:=H^n(\Hom_A(P_M^\bullet,P_N^\bullet))\\
+	&:=H^n(\Hom_A(I_M^\bullet, I_N^\bullet))\\
+	&:=H^n(\Hom_A(M,I_N^\bullet))
+\end{align*}
+
+\subsection{Proof plz}
+Today we will try to get $n=0$ in the inductive argument.
+\begin{lem}
+	\begin{enumerate}
+		\item  There is a short exact sequence of left $A$ modules
+		\[0\to {^\sigma A}\xrightarrow{l_x}A\to A/(x)\to 0\]
+		where $l_x$ sis left multiplication by $x$.
+		\item If $M$ is $x$-torsion-free, then there is a SES of left $A$ modules
+		\[0\to {^\sigma M}\xrightarrow{l_x}M\to M/xM\to 0\]
+	\end{enumerate}
+\end{lem}
+The second item implies the first and neither is hard to show directly.
+\begin{lem}
+	Let $M$ be an $x$-torsion-free left $A$ modules and let $I_M$ be an injective resolution of $M$. THen there is a morphism of complexes
+	$l_x:{^\sigma I_M}\to I_m$.
+\end{lem}
+Again, not too hard to check.
+
+\brk
+
+Notice now that $xL=0$ by the hypotheses. Combining this with the last result, we have
+\begin{lem}
+	\begin{enumerate}
+		\item For any $L\in {_A\calM}$,
+		\[\Ext_A^n(L,l_x):\Ext_A^n(L,{^\sigma M})\to \Ext_A^n(L,M)\]
+		\item If $xL=0$ then the above map is zero for all $n\ge 0$.
+	\end{enumerate}
+\end{lem}
+Again, follow your nose a bit. $f:L\to {^\sigma I^i}$ is an $A$ homomorphism and pull that $x$ in.
+
+Applying $\Hom_A(L,-)$ to $0\to {^\sigma M}\xrightarrow{l_x}M\to M/xM\to 0$, we obtain the long exact sequence
+for $\Ext$. But then notice that $\Hom_A(L,M)=\Ext_A^1(L,M)=0$ since $M$ is $x$-torsion-free (and $L$ is killed by $x$).
+and since $\Ext_A^1(L,{^\sigma M})\cong \Hom_A(L,M/xM)\cong\Hom_{A/(x)}(L,M/xM)$, we get the base case proven.
+
+\section{February 22, 2019}
+Today we are going to finish the proof of Rees, then give some remarks, then give the example of the day. :)
+
+\subsubsection{Continuation of Proof of Rees}
+Last time we proved that $\Ext_{A}^1(L,{^\sigma M})\cong \Ext_{A/(x)}^0(L,M/xM)$. Now we proceed by induction.
+
+Consider the SES $0\to K\to F\to L\to 0$ of left $A/(x)$-modules where $F$ is free. Then we get a long exact sequence
+\begin{align*}
+	0\to \Hom_{A/(x)}(L,M/xM)\to \Hom_{A/(x)}&(F,M/xM)\to \Hom_{A/(x)}(K,M/xM)\\
+	&\to \Ext^1_{A/(x)}(L,M/xM)\to\Ext^1_{A/(x)}(F,M/xM)\to\cdots
+\end{align*}
+as well as the sequence
+\begin{align*}
+	\cdots \to \Ext^1_{A}(L,{^\sigma M})\to \Ext^1_{A}&(F,{^\sigma M})\to \Ext^1_{A}(K,{^\sigma M})\\
+	&\to \Ext^2_{A}(L,{^\sigma M})\to \Ext^2_{A}(F,{^\sigma M}\to\cdots)
+\end{align*}
+and we have isomorphisms between all the corresponding parts (except the fourth term). THe first three 
+follow from $n=0$ and the last one follows since $F$ is a projective $A/(x)$ module and since $F$ has projective dimension (over $A$) 
+less than or equal to one. Then five lemma proves that this holds for $n=1$.
+
+Then you can just extend both sequences and iteratively prove this holds for each term. Woot. :)
+
+\subsection{Return to Classifications}
+Recall we have the (descending) category chain
+\begin{itemize}
+	\item Algebras
+	\item Noetherian Algebras
+	\item Cohen-Macaulay Algebras
+	\item Gorenstein Algebras
+	\item Complete Intersections
+	\item Hypersurface Rings
+	\item Regular Algebras
+\end{itemize}
+Now we can show by applying Rees directly:
+\begin{cor}
+	$\injdim A/(x)\le \injdim A$
+\end{cor}
+Which then allows us to prove:
+\begin{cor}
+	Every complete intersection ring is Gorenstein.
+\end{cor}
+\begin{prf}
+	Let $A$ be a CI ring. Then there exists a Noetherian regular ring $B$ and a sequence of elements $b_1,\dots, b_n\in B$ 
+	such that each $b_i$ is a normal nonzerodivisor on $B/(b_1,\dots,b_{i-1})$.
+
+	Since $B$ is regular, it is Gorenstein. By the corollary $B/(b_1)$ is Gorenstein. Continuing this way, $A$
+	itself is Gorenstein and we are done. 
+\end{prf}
+
+\subsection{Where do Hopf algebras fit in?}
+Recall that we proved that (finite dimensional) Hopf algebras are Frobenius algebras. Well it ends up
+that Frobenius algebras are also Gorenstein! Thus all (f.d) Hopf algebra is Gorenstein.
+
+Recall the Brown-Goodearl conjecture: all Noetherian Hopf algebras are Gorenstein. This is still an open conjecture!
+But it gets worse!
+\begin{conj}
+	Every Noetherian Hopf algebra is a complete intersection.
+\end{conj}
+\begin{conj}
+	Every finite dimensional Hopf algebra is a complete intersection.
+\end{conj}
+There are no known counterexamples to either! This has been open for decades with no satisfactory result.
+\subsubsection{Even more classes of algebras!}
+Inside the category of Gorenstein rings, there are a couple more classes (not related to complete intersections):
+We get the decreasing chain
+\begin{itemize}
+	\item Gorenstein rings
+	\item Artin-Schelter Gorenstein
+	\item A-S Gorenstein with skew Calabi-Yau property
+\end{itemize}
+and over at regular algebras we get the decreasing chain
+\begin{itemize}
+	\item Regular algebras
+	\item A-S regular algebras
+	\item Skew C-Y algebras
+	\item C-Y algebras
+\end{itemize}
+\begin{defn}
+	A Noetherian Gorenstein ring $A$ of $\injdim$ d is called $A-S$ Gorenstein if, for all $S\in{_A\calM}_{fd},$
+	\[\Ext_A^i(S,A)=\left\{\begin{array}{lr}0 & i\ne d,\\ \in {_A\cal M}_{fd}, & i=d\end{array}\right.\]
+	where the above property is called the Artin-Schelter (AS) property.
+\end{defn}
+\begin{defn}
+	A Noetherian A-S Gorenstein algebra $A$ of injective dimension $d$ is called \textbf{skew Calabi-Yau} if
+	\[\Ext_{A^e}^i(A,A^e)=\left\{\begin{array}{lr}0 & i\ne d,\\ {^\sigma A}, & i=d\end{array}\right.\]
+	(remember that $A^e\cong A\otimes A^{op}$).
+\end{defn}
+\begin{defn}
+	$A$ is Calabi-Yau if it is skew C-Y and also $\Ext_{A^e}^d(A,A^e)=A$.
+\end{defn}
+\begin{rmk}
+	The idea here (and honestly I missed some parts of the discussion) is that C-Y algebras are ones where we can get 
+	Poincar\'e duality.
+\end{rmk}
+\subsection{Example of the Day}
+\begin{ex}
+	$V$ is generated by $g,g^{-1},x_2,x_3$ subject to
+	\[gg^{-1}=g^{-1}g=1,\quad gx_i=\eta^ix_i g,\quad x_2^3=x_3^2\quad x_2x_3=x_3x_2\]
+	where $\eta$ is a primitive $6^{th}$ root of unity.
+
+	Then $\gldim V=\infty$ and it is a kypersurface ring, since
+	\[V\cong k[x_1,x_2][g^{\pm 1};\phi]/(x_2^3-x_3^2)\]
+	where $\phi:x_i\to \eta^ix_i$.
+
+	As a coalgebra, $g$ is grouplike and $x_i$ are such that $\Delta(x_i)=x_i\otimes 1+g^i\otimes x_i$
+	and $\varepsilon(x_i)=0$. Then we get $S(x_i)=-g^{-i}x_i.$
+\end{ex}
+\subsection{HW for the day}
+\begin{prob}
+	Let $A$ and $B$ be rings. Let $_AM$, $_AN_B$, and $_BC$. Then 
+	\[\Hom_A(N\otimes_B C,M)\cong \Hom)B(C, \Hom_A(N,M))\]
+	and if instead $C_A$, $_AN_B$ and $M_B$, then you can do things over $A^{op}$ and $B^{op}$.
+\end{prob}
+
+\section{February 25, 2019}
+Topic for today: \textbf{Hopf actions on algebras.} One can naturally extend everything we talk about
+today to (co)actions on (co)algebras. :)
+\subsection{Example of the Day}
+\begin{ex}\label{ex-22519}
+	$V=k\langle g,g^{-1},x\rangle/(gg^{-1}=1=g^{-1}g)$. Then $g$ is grouplike and $\Delta(x)=x\otimes1+g\otimes x$, 
+	$\varepsilon(x)=0$, and $S(x)=-g^{-1}x$.
+
+	We can see that $\gldim V=1$ (use resolution $0\to V\oplus V\to V\to {_V k}\to 0$). Note that
+	it is NOT AS-Gorenstein. $\Ext_V^1(k,V)$ is infinite dimensional over $k$ (not easy!).
+\end{ex}
+\begin{rmk}
+	We've seen elements like $x$ above several times -- these elements are called $(1,g)$-primitive 
+	(generalizing the concept of primitive, obviously). 
+
+	Also, these are examples of \textbf{pointed Hopf algebras}(!!) These are $V$ such that (as a
+	coalgebra) the coradical is a sum of one-dimensional modules. This is actually related to the fact 
+	that every simple submodule of $V$ is of the form $kg^n$ (in this case $n=1$).
+\end{rmk}
+\subsection{HW of the Day}
+\begin{prob}
+	This problem considers (one of the) internal $\Hom$(s) in $_V\calM$. Suppose $V$ has bijective 
+	antipode. Then for any $M$ and $N$,
+	\[\Hom^{S^{-1}}(M,N):=\Hom_k(M,N)\]
+	where a $V$ action is defined by (for $v\in V$ and $f\in\Hom^{S^{-1}}(M,N)$) 
+	\[(v\cdot f)(m)=\sum v_2f(S^{-1}(v_1)m)\]
+	where, as usual, $\Delta v=\sum v_1\otimes v_2$.
+	\begin{enumerate}
+		\item Show that this makes $\Hom^{S^{-1}}(M,N)$ into a left $V$-module.
+		\item Show that $\Hom^{S^{-1}}(-,-)$ is right adjoint to $-\otimes_k -$.
+	\end{enumerate}
+\end{prob}
+\subsection{Automorphisms and Group Actions}
+Let $A$ be an algebra. $\Aut_{alg}(A)$ denotes the \textbf{group of autormorphisms of $A$.}
+\begin{defn}\label{def-action}
+	Let $G$ be a group. We say $G$ acts on $A$ ($G\curvearrowright A$) fi there is a group homomorphism
+	$G\to \Aut_{alg}(A)$.
+\end{defn}
+\begin{defn}
+	Alternatively, we say $G\curvearrowright A$ if
+	\begin{itemize}
+		\item $A$ is a $G$-module.
+		\item $\forall g\in G$, $g(1_A)=1_A$
+		\item $\forall a,b\in A$, $g(ab)=g(a)g(b)$
+		\item $g$ is bijective.
+	\end{itemize}
+\end{defn}
+\begin{defn}
+	Suppse $G\curvearrowright A$. Then the \textbf{invariant subring} of this action is 
+	\[A^G:=\{a\in A|g(a)=a,\forall g\in G\}\subseteq A\]
+\end{defn}
+This was fairly popular around 1880-1960 or so.
+\begin{ex}
+	$A=k[x_1,x_2]$, $G=\langle\sigma\rangle\cong C_2$ where
+	$\sigma\cdot f(x_i)=f(-x_i)$. One can compute that this just switches signs on monomial 
+	of odd degree (and fixes the even ones) so
+	\[A^G=\left\{\sum c_{ij}x_1^ix_2^j|i+j=2k\right\}\cong k[a,b,c]/(ac-b^2)\]
+\end{ex}
+Generalizing this, many of the questions of this time revolved around asking what category of 
+algebra $k[x_1,\dots,x_n]^G$ is for arbitrary $G$. We may return to this later.
+
+\subsection{Derivations}
+\begin{defn}
+	Let $A$ be an algebra. A map $d\in\Hom_k(A,A)$ is called a \textbf{derivation} if
+	it satisfies the Leibniz rule.
+\end{defn}
+\begin{lem}
+	The collection of all derivations of an algebra from a Lie algebra -- denoted $\Der(A)$.
+\end{lem}
+\begin{defn}
+	Let $L$ be a Lie algebra. We say $L$ acts on $A$ if there is a Lie algebra morphism $L\to \Der(A)$.
+	Equivalently, if
+	\begin{enumerate}
+		\item $A$ is a left $L$-module
+		\item $\forall l\in L$, $l(1_A)=0$
+		\item $\forall a,b\in A$, $l(ab)=l(a)b+al(b)$.
+	\end{enumerate}
+\end{defn}
+\begin{rmk}
+	The second item above is implied by the first (in fact, James included a similar statement in 
+	the definition of a derivation) but apparently there is a reason to include it!
+\end{rmk}
+\begin{ex}
+	$A=k[x_1,x_2]$, $d=\frac{\partial}{\partial x_1}$. Then $L=kd$ is a Lie algebra that acts on $A$.
+
+	Then $A^L$ (see below) is $k[x_2]$
+\end{ex}
+\begin{defn}
+	If $L$ is a Lie algebra acting on $A$, then the invariant subring under the action is
+	\[A^L=\{a\in A|l(a)=0,\forall l\in L\}\]
+\end{defn}
+
+\subsection{Putting These Things Together}
+Let $A$ be an algebra and $V$ be a Hopf algebra.
+\begin{defn}
+	We say $V$ actions on $A$ if
+	\begin{itemize}
+		\item $A$ is a left $V$-module
+		\item $A$ is an algebra object in $({_V\cal M},\otimes)$
+	\end{itemize}
+	Note that the second item above implies the first!
+
+	Equivalently, $V$ acts on $A$ if
+	\begin{itemize}
+		\item $A\in {_V\cal M}$
+		\item For all $v\in V$, $v\cdot(1_A)=\varepsilon(v)1_A$
+		\item For all $a,b\in A$, $v(ab)=\sum v_1(a)v_2(b)$.
+	\end{itemize}
+\end{defn}
+
+Returning to the example from the beginning of class (\ref{ex-22519}), if $V$ acts on $A$,
+then 
+\begin{itemize}
+	\item $g\in \Aut_{alg}(A)$
+	\item $x\in\Der_g(A)$
+\end{itemize}
+In particular, notice that $x(1)=0$ and $x(ab)=x(a)b+g(a)x(b)$.
 \end{document}
