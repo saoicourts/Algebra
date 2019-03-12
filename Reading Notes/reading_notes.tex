@@ -104,8 +104,9 @@
 \DeclareMathOperator{\Soc}{Soc}
 
 %schemes
-\newcommand{\Ga}{\ensuremath\mathbf{G_a}}
-\newcommand{\Gm}{\ensuremath\mathbf{G_m}}
+\newcommand*{\bbG}{\ensuremath\mathbb{G}}
+\newcommand*{\Ga}{\ensuremath\mathbf{G_a}}
+\newcommand*{\Gm}{\ensuremath\mathbf{G_m}}
 \newcommand*{\GL}[1]{\ensuremath\mathbf{GL_#1}}
 \newcommand*{\SL}[1]{\ensuremath\mathbf{SL_#1}}
 \newcommand*{\mun}[1]{\ensuremath\mathbf{\bm\upmu_#1}}
@@ -1014,6 +1015,35 @@ Note that this essentially boils down to the computation that $\Lambda^iS^n\cong
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newpage
+\section{Julia \& Dave Benson's preprint}
+As an aside, in response to me saying I needed to practice doing computations with spectral sequences,
+Julia recommended I read her current work \cite{julia-dave} with Dave Benson wherein there is a supposedly
+straightforward spectral computation in support of their larger work \cite{detecting-nilpotence}.
+
+I have already spent some time reading this paper, but the core objects in question are \textbf{supergroup schemes}
+which have coordinate Hopf algebras algebras with a $\bbZ/2$ grading that are furthermore (graded) cocommutative (just 
+as group schemes correspond to finite dimensional cocommutative Hopf algebras). The fundamental example is $\bbG_a^-$,
+which has as its coordinate ring $k[x]/(x^2)$, or equivalently the exterior algebra on a single element $x$,
+where $x$ is taken to be a primitive element.
+
+Then if we let $A$ be the coordinate algebra of $\bbG_a^-\times\bbG_a^-$ and $H$ that of $\bbG_{a(r)}\times(\bbZ/p)^s$ where $\bbG_{a(r)}$ is the
+$r^{th}$ Frobenius kernel of $\bbG_a$, we can define the \textbf{smash product} or in this case, since 
+$A$ is graded cocommutative, the \textbf{semidirect product} $A\#H=A\rtimes H$ where we define the action
+to be (if $\tau:H\otimes A\to A$ is the action of $H$ on $A$)
+\[(a\otimes h)\cdot(a'\otimes h')=\sum (-1)^{|h_1||b|}a\tau(h_1\otimes b)\otimes h_2g.\]
+
+So we use that $A\cong \Lambda(k[u,v])$, the exterior algebra on two (primitive) generators $u$ and $v$
+and that, if $t_i$ is the generator for the coordinate algebra of the $i^{th}$ copy of $\bbZ/p$, and if 
+we let $g_i=t_i-1$, these along with the $s_1,\dots s_r$ generating the Frobenius kernel, generate $H$.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \newpage
 \section{Affine Group Schemes (Waterhouse and Jantzen)}

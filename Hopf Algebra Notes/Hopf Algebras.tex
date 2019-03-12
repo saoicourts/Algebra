@@ -1884,4 +1884,98 @@ then
 	\item $x\in\Der_g(A)$
 \end{itemize}
 In particular, notice that $x(1)=0$ and $x(ab)=x(a)b+g(a)x(b)$.
+
+\section{March 11, 2019}
+We took a week off since James was in Germany for a conference. We're coming back together for this
+last week of the quarter.
+
+Here is one result that was brought up at the conference. It was proved by a grad student and might 
+have some missing hypotheses:
+\begin{thm}
+	If $\ch k=0$ (and some other mild hypotheses) then the Etingof-Ostrik conjecture holds for $H$ 
+	if and only if it holds for $H^*$. That is,
+	\[\operatorname{kdim}\oplus \Ext_H^i(k,k)=\operatorname{kdim}\oplus \Ext^i_{H^*}(k,k)\]
+	where $\operatorname{kdim}$ means Krull dimension.
+\end{thm}
+
+\subsection{Example of the Day}
+\begin{ex}[Small Quantum Group of $\sl_2$]
+	Let $q\in k$ be a primitive $l^{th}$ root of unity ($l\ge 2$). Then
+	\[u_q(\sl_2)=k\langle K,K^{-1},E,F\rangle/R\]
+	where $R$ is the ideal for the relations
+	\begin{align*}
+		KK^{-1}=K^{-1}K=1\\
+		KEK^{-1}=q^2E\\
+		KFK^{-1}=q^{-2}F\\
+		EF-FE=\frac{K-K^{-1}}{q-q^{-1}}\\
+		E^l=F^l=K^0\\
+		K^l=1
+	\end{align*}
+	Now $\dim_k u_q(\sl2)=l^3$ and this is (symmetric) Frobenius and noncommutative and noncocommutative.
+	As a coalgebra, $K$ is grouplike and $E,F$ are almost primitive:
+	\[\Delta E=E\otimes 1+K\otimes E,\quad \Delta F = F\times K^{-1}+1\otimes F\]
+	and $S(E)=-K^{-1}E$ and $S(F)=-FK$.
+
+	Then $\sl_2=ke\oplus kf\oplus kh$ and there is a map $e\mapsto E$, $f\mapsto F$ and $K=\exp(h)$. Hmm
+\end{ex}
+
+\subsection{Last Lecture}
+I wasn't here, so I missed this part. Let $A$ be a Noetherian connected graded AS-regular algebra and let
+$V$ be a Hopf algebra action on $A$ such that each $A_i$ is a left $V$-module.
+\begin{enumerate}
+	\item $k:=A/A_{\ge 1}$ and $\oplus_0^\infty \Ext_A^i(k,k)$ is an algebra.
+	\item (S. Paul Smith's Result) $\oplus \Ext_A^i(k,k)$ is Frobenius and $\Ext_A^d(k,k)$ is one
+	dimensional over $k$ when $d=\gldim A$.
+	\item  Each $\Ext^i_A(k,k)$ is a left $V$ module.
+	\item $(\oplus \Ext_A^i(k,k))^{op}$ is a left $V$ algebra.
+\end{enumerate}
+
+Now pick any nonzero element $e\in \Ext_A^d(k,k)$ where $d$ is as above. For all $v\in V$, 
+$v\cdot e\in \Ext_A^d(k,k)$ and we write $v\cdot e=\operatorname{hdet}(v)v$ for $\operatorname{hdet}(v)\in k$.
+\begin{defn}
+	A map $\operatorname{hdet}:V\to k$ that fits in as above is called the \textbf{homological determinant}
+	of the $V$-action on $A$.
+\end{defn}
+\begin{lem}
+	$\operatorname{hdet}$ is an algebra map.
+\end{lem}
+\begin{lem}
+	If $A=k[x_1,\dots,x_n]$, $V=kG$, $G\subseteq GL(n)$ then
+	\[\operatorname{hdet} g = \det g\]
+	for all $g\in G$.
+\end{lem}
+\begin{defn}
+	We say that $\operatorname{hdet}$ is trivial if $\operatorname{hdet}(v)=\varepsilon(v)$ for all $v\in V$.
+\end{defn}
+
+Recall the theorem
+\begin{thm}[Watanabe]
+	Suppose $G$ is a finite subgroup in $GL_n$. If $\deg g=1$ for all $g\in G$, then $k[x_1,\dots,x_n]^G$ is Gorenstein.
+\end{thm}
+\begin{thm}[Noncommutative Watanabe]
+	Let $A$ be a Noetherian connected graded AS-regular algebra. Let $V$ be a semisimple Hopf algebra acting on 
+	$A$ such that each $A)i$ is a left $V$-module. If $\operatorname{hdet}$ is trivial, then $A^V$ is AS Gorenstein.
+\end{thm}
+\begin{rmk}
+	This last result is important because it distinguishes between the commutative and noncommutative cases: in the commutative
+	case the only AS-regular ring is the polynomial ring. This shows us that there is in fact a vast class of them 
+	in the noncommutative case. In fact it's even bigger!
+\end{rmk}
+Recall that $g\in GL_n$ is a reflection if $g$ is similar to $\operatorname{diag}(1,\dots,1,\sqrt{-1})$. Let $R$ be the subgroup of $G$ generated
+by the reflections in $G$. 
+\begin{thm}[Watanabe II]
+	Suppose $G$ is a finite subgroup of $GL_n$. Then $k[x_1,\dots,x_n]^G$ is Gorenstein if and only if
+	$\det \bar g=1$ for all $g\in G/R$.
+\end{thm}
+
+\subsection{Noncommutative Reflections}
+\begin{defn}
+	Let $g\in\Aut_{gralg}(A)$. Then
+	\[\operatorname{Tr}(g)=\sum_0^\infty \operatorname{tr}(g|_{A_i})t^i\in k[[t]].\]
+\end{defn}
+Then a result (which?) gets us that $\operatorname{Tr}(g)=\frac{1}{p(t)}$ for a polynomial $p$.
+Consider $\tilde A=k_{p_{ij}}[x_1,\dots,x_n]$ where $x_jx_i=p_{ij}x_ix_j$ for all $i<j$. Then 
+\begin{defn}
+	$g\in\Aut_{gralg}(\tilde A)$ is a reflection if $\operatorname{Tr}(g)=\frac{1}{(1-t)^{n-1}(1-\lambda t)}$.
+\end{defn}
 \end{document}
