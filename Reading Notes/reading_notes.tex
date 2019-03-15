@@ -688,6 +688,26 @@ Don't worry too much about issues of convergence -- we are mostly interested in 
 David Anick is the name of an algebraic topologist who started off created (free) resolutions that we will end up looking at. 
 His paper \cite{anick-resolution} will probably be useful at some point.
 
+\subsection{Week 8}
+The last paper on Julia's page is a preprint with her and Dave Benson. There is a spectral sequence computation that might be illustrative.
+There is also an older paper...
+
+One of the things Julia is interested in at the moment is a super group scheme. These arise by having a $\bbZ_2$ grading on your Hopf algebra.
+For instance we can look at exterior algebra $\Lambda(x)$, which represents the super group scheme $G_a^-$. 
+
+The first non-elementary example is $G_a^-\times G_a^-$ with a $\bbZ_p$ action on it that ``folds'' the second factor
+onto the first. To write this out explicitly, we consider the group algebra $\Lambda(u,v)$ where $uv=-vu$ and the coordinate algebra of $\bbZ_p$
+is $k[t]/t^p$ where $t\cdot u=0$ and $t\cdot v=\alpha u$ for some $\alpha$. This is a $4p$ dimensional algebra.
+
+Then we want to compute coholomology. We know $H^{**}(k\bbZ/p,k)\cong k[x]\oplus\Lambda(y)$ for $|x|=2,0$.
+Note there is a notion of dimension that is an ordered pair $(a,b)$ of the graded degree and cohomology degree.
+THis give us new elements of degree $(1,1)$
+
+Look up Koszul duality! It is in the representations and local cohomology book! 
+
+\subsection{Week 10}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1039,7 +1059,88 @@ So we use that $A\cong \Lambda(k[u,v])$, the exterior algebra on two (primitive)
 and that, if $t_i$ is the generator for the coordinate algebra of the $i^{th}$ copy of $\bbZ/p$, and if 
 we let $g_i=t_i-1$, these along with the $s_1,\dots s_r$ generating the Frobenius kernel, generate $H$.
 
+One of the first propositions (3.1) of the paper computes the cohomology of $\bbG_a^-$ with 
+coefficients in $k$ (actually, refers to another paper) and computes how the ($\bbZ/2$-graded)
+Steenrod operations act on it. 
 
+\begin{defn}[Steenrod Operations]
+	If $p$ is odd and $A$ is a $\bbZ$-graded cocommutative Hopf algebra, then there are natural maps/operations
+	\[\mathcal P^i:H^{s,t}(A,k)\to H^{s+(2i-t)(p-1),pt}(A,k)\]
+	\[\beta \mathcal P^i:H^{s,t}(A,k)\to H^{s+1+(2i-t)(p-1),pt}(A,k)\]
+	satisfying the properties
+	\begin{enumerate}
+		\item $\mathcal P^i=0$ whenever $2i<t$ or $2i>s+t$,
+		\item $\beta\mathcal P^i=0$ whenever $2i<t$ or $2i\ge s+t$.
+		\item $\mathcal P^i(x)=x^p$ when $2i=s+t$
+		\item $\mathcal P^j(xy)=\sum_i\mathcal P^i(x)\mathcal P^{j-i}(y)$
+		\item $\beta\mathcal P^j(xy)=\sum_i(\beta\mathcal P^i(x)\mathcal P^{j-i}(y)+\mathcal P^i(x)\beta\mathcal P^{j-i}(y))$
+		\item $\mathcal P$ and $\beta\mathcal P$ satisfy the Adem relations.
+		\item $\mathcal P^0(\lambda u)=\lambda^p\mathcal P^0(u)$ for all $\lambda \in k$ ($\ch k= p$)
+	\end{enumerate}
+\end{defn}
+
+In the course of proving things here, the authors adapt these operations to the $\bbZ/2$ grading
+by reindexing, calling these new operations $\mathscr P_i$ and $\beta\mathscr P^i$ (they use \texttt{mathscr} but I've
+reassigned mine to a font I like better. :P)
+
+Okay, time is running out, so I am pulling together some questions:
+\begin{qst}
+	Is the cohomology you're using here group cohomology? It seems to me the Lyndon-Hochschild-Serre
+	applies to group cohomology.
+
+	If so, I will need to focus some time on getting familiar with it.
+\end{qst}
+
+Yes it is group cohomology, or more specifically group \textit{scheme} cohomology. Here we 
+are computing $\Ext_G^{i,\varepsilon}(k,k)$.
+
+We begin with our group algebra (here $\Lambda(v_1,v_2)\#k\bbG_{a(1)}$) and take 
+a projective resolutions and computing $H^*(\Hom_A(p^\bullet,k))$.
+
+Recall the syzygys, $\Omega^i k$ that occur in a projective resolution of $k$. Then we can compute the cohomology
+via the stable module category:
+\[\underline{\Hom}_G(\Omega^ik,k)=\Ext_G^{i,\varepsilon}(k,k)\]
+
+There is a result by Jeremy Rickard (rep theory) and by Buchweitz (more generally) that proves
+
+\begin{qst}
+	Where is $H^{*,*}(\bbG_a^-,k)$ computed? The papers claim it is $S^{*,*}(V^\sharp)\cong k[\zeta,\eta]$
+	where $\zeta$ and $\eta$ are the dual generators corresponding to the generators $u$ and $v$ of $V$,
+	the augmentation ideal of $k(\bbG_a^-\times \bbG_a^-)$.
+\end{qst}
+
+Again, this is an example of Koszul duality -- use that $k\bbG_a^-=\Lambda(v)$ where $v$ is primitive in degree 1.
+But then $k(\bbG_a^-\times\bbG_a^-)\cong\Lambda(v_1,v_2)$. Then applying Koszul duality you get the 
+symmetric algebra. Also you need the K\"unneth formula, where as algebras
+\[H^*(A\otimes B,k)\cong H^*(A,k)\otimes H^*(A,k).\]
+
+Evans has a book on The groups of cohomology. Here there are computations and resolutions of (cyclic)
+groups. There is also a discussion of spectral sequences which is relatively terse (although it defers
+somewhat to other sources).
+
+\begin{qst}
+	What is the importance of suspensions and what role do they play in this theory? They 
+	have come up at several points and I am realizing they are fairly pervasive. 
+
+	In particular, I understand the topological definition, but I don't see why they correspond
+	to what we want. I am looking at the formula from \cite{detecting-nilpotence}:
+	\[H^{1,1}(G,k)=\Hom_{sGr/k}(G^0,\mathbb{G}_a^-)^\pi\]
+	where $\pi$ is the group of connected components of $G$.
+\end{qst}
+	
+\begin{qst}
+	In $G=(\bbG_a^-\times\bbG_a^-)\rtimes G_{a(1)}$, where the action is said to be ``nontrivial'',
+	why does this seem to imply that the action on one of the copies of $\bbG_a^-$ is trivial?
+
+	The fact that there is a LHS spectral sequence 
+	\[H^{*,*}(\bbG_a^-\times \bbG_{a(1)},H^{*,*}(\bbG_a^-,k))\Rightarrow H^{*,*}(G,k)\]
+	seems to imply that there is a short exact sequence 
+	\[1\to \bbG_a^-\to G\to \bbG_a^-\times \bbG_{a(1)}\to 1\]
+	but since the product is direct on the right, doesn't this imply that the action of $\bbG_{a(1)}$ on 
+	$\bbG_a^-$ is trivial?
+\end{qst}
+
+Path 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1233,21 +1334,7 @@ in the definition below. It seems to only occur when I use \texttt{\textbackslas
 \end{sol}
 
 \section{To be filed:}
-The last paper on Julia's page is a preprint with her and Dave Benson. There is a spectral sequence computation that might be illustrative.
-There is also an older paper...
 
-One of the things Julia is interested in at the moment is a super group scheme. These arise by having a $\bbZ_2$ grading on your Hopf algebra.
-For instance we can look at exterior algebra $\Lambda(x)$, which represents the super group scheme $G_a^-$. 
-
-The first non-elementary example is $G_a^-\times G_a^-$ with a $\bbZ_p$ action on it that ``folds'' the second factor
-onto the first. To write this out explicitly, we consider the group algebra $\Lambda(u,v)$ where $uv=-vu$ and the coordinate algebra of $\bbZ_p$
-is $k[t]/t^p$ where $t\cdot u=0$ and $t\cdot v=\alpha u$ for some $\alpha$. This is a $4p$ dimensional algebra.
-
-Then we want to compute coholomology. We know $H^{**}(k\bbZ/p,k)\cong k[x]\oplus\Lambda(y)$ for $|x|=2,0$.
-Note there is a notion of dimension that is an ordered pair $(a,b)$ of the graded degree and cohomology degree.
-THis give us new elements of degree $(1,1)$
-
-Look up Koszul duality! It is in the representations and local cohomology book! 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%  Bibliography %%%%%%%%%%%%%

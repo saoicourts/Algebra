@@ -1978,4 +1978,196 @@ Consider $\tilde A=k_{p_{ij}}[x_1,\dots,x_n]$ where $x_jx_i=p_{ij}x_ix_j$ for al
 \begin{defn}
 	$g\in\Aut_{gralg}(\tilde A)$ is a reflection if $\operatorname{Tr}(g)=\frac{1}{(1-t)^{n-1}(1-\lambda t)}$.
 \end{defn}
+
+\section{March 13, 2019}
+Today we are going to discuss why considering algebras over $A$ is not quite sufficient in many cases --
+why we may be instead interested in studying $_A\calM$.
+
+Let $A$ be an algebra and $V$ a Hopf algebra. Let $V$ act on $A$ and define
+\[A^V=\{a\in A|va=\varepsilon(v)a,\forall v\in V\}\]
+We can see that we get $A^v=\Hom_V({_Vk},A)$ and then use this to compute the cohomology
+\[\Ext_V^i(k,A)\]
+
+We forgot the
+\subsection{(Non)-Examples of the Day}
+\begin{ex}
+	Let $A$ be an algebra, $n\ge 2$ an integer. Then $M_n(A)$ can't be a Hopf algebra.
+
+	The idea here is that there is no counit $\varepsilon:M_n(A)\to k$.
+\end{ex}
+\begin{ex}
+	If $V_1$ and $V_2$ are Hopf algebras, then $V_1\oplus V_2$ is not a Hopf algebra.
+	Notice here that it is both an algebra and a coalgebra!
+
+	Here, use that $1_V=1_{V_1}+1_{V_2}$ and compute $\Delta(1_V)\ne 1_V\otimes 1_V$.
+\end{ex}
+\begin{ex}
+	If $A$ is finite dimensional and not Frobenius, then $A$ can't be a Hopf algebra.
+\end{ex}
+
+\subsection{Some Category Theory}
+Let $k$ be af field.
+\begin{defn}
+	Let $\mathscr C$ be a category. $\mathscr C$ is called \textbf{$k$-linear} if
+	\begin{itemize}
+		\item $\Hom_{\mathscr C}(M,N)\in\Vectk$ for all $M$ and $N$ in $\mathscr C$
+		\item Composition is $k$-linear.
+	\end{itemize}
+\end{defn}
+\begin{defn}
+	A category $\mathscr C$ is called \textbf{finite} if $\mathscr C\cong {_A\calM_{fd}}$ 
+	for some finite dimensional algebra $A$.
+\end{defn}
+\begin{defn}
+	A category $\mathscr C$ is called \textbf{monoidal} (notice that sometimes this books 
+	call this a tensor category) if it is equipped with
+	\begin{itemize}
+		\item A bifunctor $-\otimes -:\mathscr C\times\mathscr C\to \mathscr C$
+		\item An associativity isomorphism: for all $X,Y,X\in\mathscr C$:
+		\[a_{X,Y,Z}:(X\otimes Y)\otimes Z\xrightarrow{\sim} X\otimes(Y\otimes Z)\]
+		\item An identity object $\mathbf{1}\in\mathscr{C}$
+		\item An isomorphism $i:\mathbf{1}\otimes\mathbf{1}\to \mathbf{1}.$
+	\end{itemize}
+	That satisfies the pentagon axiom (Figure~\ref{fig:pentagon}) and the unit axioms
+	\[L_\mathbf{1}X\xrightarrow{\sim} \mathbf{1}\otimes X,\qquad R_\mathbf{1}:X\xrightarrow{\sim}X\otimes \mathbf{1}\]
+\end{defn}
+\begin{figure}\label{fig:pentagon}
+	\centering
+	\begin{tikzcd}
+		((W\otimes X)\otimes Y)\otimes Z\ar[d,"a_{W,X,Y}\otimes \id_Z"]\ar[r,"a_{W\otimes X,Y,Z}"] & (W\otimes X)\otimes (Y\otimes Z)\ar[dd,"a_{W,X,Y\otimes Z}"]\\
+		(W\otimes(X\otimes Y))\otimes Z \ar[d,"a_{W,X\otimes Y,Z}"]& \\
+		W\otimes((X\otimes Y)\otimes Z)\ar[r,"\id_W\otimes a_{X,Y,Z}"] & W\otimes(X\otimes (Y\otimes Z))
+	\end{tikzcd}
+	\caption{The Pentagon Axioms}
+\end{figure}
+\begin{ex}
+	Let $A$ be an algebra and let $\mathscr C= ({_A\calM_A},\otimes_A,\mathbf{1}=A)$.
+	Clearly this works. :)
+\end{ex}
+
+Recall that if $V$ is a Hopf algebra and $M\in {_V\calM_{fd}}$, then $M^*:=\Hom_k(M,k)\in\calM_V$
+then we defined $M^{*S}=\tilde S\circ M^*\in {_V\calM}$. This is the right dual.
+
+We can also define the left dual if $S$ is bijective. In this case, we define $M^{*S^{-1}}=\tilde S^{-1}\circ M^*\in{_V\calM}$.
+
+Now let $(\mathscr C,\otimes, \mathbf{1})$ be a monoidal category.
+\begin{defn}
+	Let $X\in\mathscr C$. An object $X^*$ in $\mathscr C$ is said to be a \textbf{left dual of $X$}
+	if there exist an \textbf{evaluation map}
+	\[\operatorname{ev}_X:X^*\otimes X\to \mathbf{1}\]
+	and a \textbf{coevaluation map}
+	\[\operatorname{coev}_X:\mathbf{1}\to X\otimes X^*\]
+	such that
+	\[X\xrightarrow{\operatorname{coev}_X\otimes\id_X}(X\otimes X^*)\otimes X\to X\otimes (X^*\otimes X)\xrightarrow{\id_X\otimes \operatorname{ev}_X} X\]
+	is an isomorphism as well as the map ``on the other side''.
+\end{defn}
+\begin{defn}
+	In the context of the above, a \textbf{right dual of $X\in\mathscr C$} is a left dual of $X$ in $\mathscr C^{op}$.
+	The right dual is denoted (confusingly) by ${^*X}$.
+\end{defn}
+So in the Hopf algebra case, ${^*M}=M^{*S}$ and $M^*=M^{*S^{-1}}.$
+\begin{defn}
+	A category $\mathscr C$ is called \textbf{rigid} if every $X\in\mathscr C$ has both left and right duals.
+\end{defn}
+\begin{defn}
+	$\mathscr C$ is called a \textbf{tensor category} if 
+	\begin{itemize}
+		\item $\mathscr C$ is finite (this implies $k$-linear)
+		\item It is monoidal
+		\item it is rigid
+		\item $\End_\mathscr{C}(\mathbf{1})=k$
+	\end{itemize}
+\end{defn}
+\begin{rmk}
+	If we remove the last condition and replace it with $\End(\mathbf{1})=\oplus k$, then
+	we call $\mathscr C$ \textbf{multi-tensor.}
+\end{rmk}
+\begin{defn}
+	$\mathscr C$ is called \textbf{fusion} if 
+	\begin{itemize}
+		\item It is tensor
+		\item It is semisimple (every object is a direct sum of simple objects).
+	\end{itemize}
+\end{defn}
+\begin{rmk}
+	If instead $\mathscr C$ is multitensor and semisimple, then it is called \textbf{multifusion.}
+\end{rmk}
+\begin{ex}
+	\begin{enumerate}
+		\item $\Vectk$ is an example.
+		\item If $V$ is a finite dimensional Hopf algebra, ${_V\calM}$ is tensor.
+		\item If $V$ is also semisimple, ${_V\calM}$ is fusion.
+	\end{enumerate}
+\end{ex}
+Recall this conjecture for the first day (Etinghof-Ostrik restated):
+\begin{conj}
+	If $\mathscr C$ is a tensor category then $\Ext^*(\mathbf{1},\mathbf{1})$ is Noetherian.
+\end{conj}
+
+\section{March 15, 2019}
+On Wednesday, we said that if $M\in{_V\calM_{fd}}$ that $M^*=M^{*S^{-1}}$ and ${^*M}=M^{*S}$,
+but in fact these are reversed.
+\subsection{Example of the Day}
+\begin{ex}
+	Usually we have been defining Hopf algebras over vector spaces, but this will be an object in $\text{\sc grVect}_k$,
+	that is $V=\oplus_{i\in\Z}V_i$ and if $M=\oplus M_i$ and $N=\oplus N_i$, then $M\otimes N=\oplus_i(\oplus_{s+t=i}M_s\otimes N_t)$.
+
+	Now putting the ``symmetric'' back into the monoidal category, we define $\tau:M\otimes N\to N\otimes M$ via
+	\[m\otimes n\mapsto (-1)^{|m||n|}n\otimes m.\]
+	Then we have our symmetric monoidal category and we can define a Hopf algebra in it.
+
+	$V=\Lambda(x_1,\dots,x_n)$, the exterior algebra on $n$ elements. Define the coalgebra structure 
+	so that each $x_i$ is primitive. Note that here $V$ is a Hopf algebra over graded vector spaces, but 
+	NOT over vector spaces (unless $\ch k=2$).
+
+	To see this, we can compute 
+	\[0=\Delta(x_i^2)=\Delta(x_i)^2=(x_i\otimes 1+1\otimes x)^2=x_i^2\otimes 1+x_i\otimes x_i+\tau(x_i\otimes x_i)+1\otimes x_i^2\]
+	and if $\tau$ is the usual vector space twist (and the characteristic isn't 2) we get a contradiction.
+\end{ex}
+
+\subsection{Some History}
+Before 1941 people studied rings like $kG, \mathcal U(\g)$ and $\mathcal O(G)$. An open question at that
+point was ``If $\mathcal U(\g)$ is Noetherian, then is $\dim \g<\infty?$''
+
+In 1941, Hopf algebras were born, although they were originally defined (by Hopf) to be over graded
+vector spaces. Eventually people started considering them over vector spaces.
+
+In 1967, Sweedler wrote the first book about Hopf algebra over vector spaces. Then later, near 1970,
+Rota began working more on combinatorial Hopf algebras. It ends up in this context that often the 
+M\"obius function ends up being the co(unit? multiplication?).
+
+In 1975, Kaplansky posited 10 conjectures. Of those only one more remains:
+\begin{conj}{Kaplansky, `75 (\#6)}
+	If $V$ is a semisimple Hopf algebra and $M$ is a simple $V$-module, then 
+	\[\dim_kM|\dim_kV.\]
+\end{conj}
+
+From 1960-90, the studies of $kG, \mathcal U(G)$ and $\mathcal O(G)$ and semisimple Hopf algebra continued,
+led in large part by Radford. In 1987, Drinfeld and Jimbo came out with quantum groups.
+At the same time Drinfeld introduced quasi- and braided Hopf algebras and weak Hopf algebras.
+
+Of course we all know about Nichols algebras. Also we switched to different tensor categories, including
+fusion, pivotal, and spherical ones.
+
+In 1993 Lusztig invented the small quantum groups, which are of particular interest to representation theorists.
+`97 was Brown-Goodearl. Then around 1990 there were lots of classification projects including
+the one by Anruskiewitsch-Schneider project. Near this time Zhu proved that every Hopf algebra of dimension $p$
+is a group algebra $k\Z/p$. 
+
+In 2004 was Etingof-Ostrik. The next year, Etingof-Nikshych-Ostrik wrote a big paper ``On Fusion Categories''
+which really shifted the perspective from Hopf algebras to things in fusion categories, where many of the big
+results were transferred.
+
+In 2015 Etingof, Nikshych, Ostrik (and someone else) wrote ``Tensor Categories''.
+
+\subsection{Extensions}
+We can look at extensins of Brown-Goodearl. The question ``Is every Noetherian X Gorenstein?'' can be extended to be asked about any noun 
+in \{Hopf Algebras, weak Hopf algebras, braided hopf algebras, Nichols algebgras, quasi-Hopf algebras\}.
+
+We can also consider extensions of Etingof-Ostrik: ``Let $V$ be a finite dimensional X and $A$ be a 
+Notherian left $V$-module such that $A^V$ is Noetherian. Is then $\Ext_V^*(k,A)$ Noetherian?'' Again
+we can take $X$ to be anything in the above set.
+
+In 2019, who knows!
+
 \end{document}

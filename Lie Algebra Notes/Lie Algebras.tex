@@ -145,6 +145,7 @@
 \DeclareMathOperator{\coker}{coker}
 
 %characteristic
+%\let\char\relax
 %\DeclareMathOperator{\char}{char}
 \DeclareMathOperator{\ch}{ch}
 
@@ -162,6 +163,7 @@
 \let\sl\relax
 \DeclareMathOperator{\sl}{\mathfrak{sl}}
 \DeclareMathOperator{\so}{\mathfrak{so}}
+\DeclareMathOperator{\su}{\mathfrak{su}}
 \let\sp\relax
 \DeclareMathOperator{\sp}{\mathfrak{sp}}
 \DeclareMathOperator{\tr}{tr}
@@ -2617,5 +2619,175 @@ One such example is defined by the form
 \[(v_1,\dots,v_n)(w_1,\dots,w_n)=\sum_1^m v_i\bar w_i-\sum_{m+1}^n v_j\bar w_j.\]
 This is called the \textbf{symmetric group} $U(n,n-m)$.
 
-%TODO: FIX CHAR/CH
+\section{March 13, 2019}
+One correction from last week: the compact from of $\sp_{2n}(\C)$ is given by the skew-adjoing matrices of trace zero relative to the \textit{Hermitian}
+form $(v,w)=\sum_iv_i\bar w_i$ on $\mathbb{H}^n$ (not skew-Hermitian).
+
+\subsection{Continuing with Real Forms}
+Now we will address the non-compact forms. We've seen the compact and split real forms, which form 
+the opposite ends of a spectrum and now we consider the ones that lie in the middle. 
+
+\subsubsection{Real forms of type $A$}
+In type $A$, we have already
+seen $\su_n(\C)$ consisting of skew-adjoint matrices of trace zero relative to the positive definite Hermitian form on $\C$.
+We've also seen $\sl_n(\R)$.
+
+In between, we have $\su(p,q)$, consisting of the skey adjoint matrixes with respect to the Hermitian form $(-,-)_{pq}$ where
+\[(v,w)=\sum_1^pv_i\bar w_i-\sum_{p+1}^{p_q}v_i\bar w_i\]
+which is Hermitian of \textbf{signature} $(p,q)$ on $\C^{p+q}=\C^n$. WHen $p=n$ and $q=0$, we get the compact form $\su_n(\C)$.
+
+We get one more real form -- only in even dimensions -- $\su^*(2n)$: all $n\times n$ matrices over the quaternions $\mathbb{H}$ whose trace is a real
+combination of $i,j,k$.
+
+\subsubsection{Types $B$ and $D$}
+Here the story is mostly the same for these types with a small difference: we have $\so(p,q)$
+in either, which is all skew-adjoint matrices with respect of the symmetric form $(-,-)_{pq}$
+on $\R^{p+q}$ where
+\[(v,w)=\sum_1^pv_iw_i-\sum_{p+1}^{p+q}v_iw_i.\]
+
+But we get one extra in type $D$: $\so^*(2n)$. This consits of all skew-adjoint matrices with respect to the skey Hermitian form
+\[(v,w)=\sum_1^n v_ij\bar w_i\]
+where $j\in\mathbb{H}$.
+
+\subsubsection{Type $C$}
+Here we get $\sp(p,q)$ -- the skew-adjoint matrices with respect to the form as usual ($v_i\bar w_i$).
+We also have $\sp(n,\R)$, the compact form.
+
+Finally we get $\sp(2n,\R)$, the real matrices skew adjoint with respect to a skew-sypmmetric form on $\R^{2n}$.
+
+\subsection{Cartan Involution}
+In general, recall from last time that any real semisimple Lie algebra admits a Cartan decomposition
+$L=K+P$ where $K$ is compact and $[P,P]\subseteq K$. Furthermore, the Killing form $\kappa$ restricts
+to $K$ as a negative definite form and to $P$ as a positive definite form. Finally, $P$ is a $K$-sumbodule:
+$[KP]\subseteq P$.
+
+It follows that we get an involution on $L$ by decreeing that $\theta=1$ on $K$ and $\theta=-1$ on $P$ (???) the \textbf{Cartan
+involution.} Moreover $L$ admits a complexification $L\otimes_\R\C=L'$, which is complex semisimple, and
+$\theta$ extends to an involution of $L'$. We classify all real forms up to isomorphism by classifying the involutions
+$\theta$ up to conjugacy. It ends up there are only finitely many real forms.
+
+\subsection{Exceptional Cases}
+It turns out htat in the exceptional cases we can label real forms explicitly as $X_N(a)$ where the real form of type $X_N$ has $a=\dim P-\dim K$.
+Here the compact form is always $X_N(-\dim_CX_N)$
+\subsubsection{$E_6$}
+This ends up being the most interesting type (although it sits inside of its bigger brother).
+Here we get the real forms:
+\begin{figure}[h!]
+	\centering
+	\begin{tabular}{c|c|c|c}
+		$E_6(6)$ & $E_6(2)$ & $E_6(-14)$ & $E_6(-26)$\\\hline
+		$C_4$ & $A_5\times A_1$ & $D_5\times \C$ & $F_4$
+	\end{tabular}
+\end{figure}
+where here the $\C$ refers to the fact that there will be a (one-dimensional) nontrivial center.
+\subsubsection{$E_7$}
+\begin{figure}[h]
+	\centering
+	\begin{tabular}{c|c|c}
+		$E_7(7)$ & $E_7(-5)$ & $E_7(-25)$ \\\hline
+		$A_7$ & $D_6\times A_1$ & $E_6\times \C$
+	\end{tabular}
+\end{figure}
+\subsubsection{$E_8$}
+\begin{figure}[h]
+	\centering
+	\begin{tabular}{c|c}
+		$E_8(8)$ & $E_8(-24)$ \\\hline
+		$D_8$ & $E_7\times A_1$
+	\end{tabular}
+\end{figure}
+\subsubsection{$F_4$}
+\begin{figure}[h!]
+	\centering
+	\begin{tabular}{c|c}
+		$F_4(4)$ & $F_4(-20)$ \\\hline
+		$C_3\times A_1$ & $B_4$
+	\end{tabular}
+\end{figure}
+So again we get two.
+\subsubsection{$G_2$}
+Here we only have one form: $G_2(2)=A_1\times A_1$.
+
+\subsection{Diagram Automorphisms}
+There are three types of Lie algebras where diagram automorphisms of order two occur: namely 
+$A_n$, $D_n$ and $E_6$. In these cases, we create a different kind of extended Dynkin diagram:
+we add a vertex representing the lowest weight of the quotient representation that is formed
+by beginning by looking at $L$ and then quotienting out by the fixed points of the diagram 
+automorphism.
+
+\subsection{Next time...}
+The last lecture of the quarter will be dedicated to what happens when $k$ has positive characteristic.
+There is a classification, but it is much longer and mroe complicated than the one we have given. 
+
+In particular, one might at first think that at least the split form of a complex semisimple Lie algebra
+$L$ would have a characteristic $p$ analog. While this is true, it is not always (even) semisimple. 
+The problem is that we completely lose the notion of positivity in positive characteristic, so 
+the Killing form, even when restricted to a Cartan subalgebra, needn't be nondegenerate.
+
+In the simplest case, consider $\ch k=p$ and the Lie algebra $\sl_n(k)$. The identity matrix
+then has trace zero! Problems abound. Finally we will talk about the finite simple groups of Lie type,
+which form the building blocks for the Lie groups we are interested in.
+
+\section{March 15, 2019}
+Let $L$ be a complex simple Lie algebra. We have seen that $L$ has a Chevalley basis
+consisting of a basis of $H$, a Cartan subalgebra, with root system $\Phi$, and for each
+(nonzero) root $\alpha\in\Phi$ a vector $x_\alpha\in L_\alpha$ such that whenever $\alpha,\beta,\alpha+\beta$
+are all roots, $[x_\alpha,x_\beta]=c_{\alpha\beta}x_{\alpha+\beta}$. Then $c_{\alpha\beta}=-c_{-\alpha.-\beta}$
+and $c_{\alpha\beta}=\pm(r+1)$ where $r$ is the largest integer (possibly zero) such that $\beta-r\alpha\in\Phi$.
+
+Then the span $L_\Z$ over the integers of a Chevalley basis is a Lie algebra ``over $\Z$'', which is 
+simple in the sense that any nonzero ideal comtains $nL_\Z$ for some nonzero $n\in\Z$. We have seen however that
+the reduction $L_p$ of $L_\Z$ modulo $p$ need not be simple.
+
+So we focus on the \textbf{group} generated by $\exp\ad cx_\alpha$ for $c\in\Z$ and $\alpha\in\Phi$.
+Suppose that $\alpha,\beta,\beta+\alpha,\beta+2\alpha,\dots,$ are all roots. Then
+\[\exp\ad x_\alpha(x_\beta)=\pm(r+1)(r+2)\cdots x_{\beta+n\alpha}\]
+(since all root strings are actually finite, the series actually can be considered to be
+finite in any one case). Thus $\pm(r+1)\cdots(r+n)/w!$ is an integer, so the terms in the series
+expainsion of $\exp\ad cx_\alpha$ all preserve the $\Z$-span $L_\Z$ whence there reductions modulo
+a prime $p$ preserve the corresponding span $L_p$ so that if $F$ is any field containing $\Z_p$
+and if we set $L_F=L_p\otimes_{\Z/p}F$ then the group $G_F$ generated by $\exp\ad cx_\alpha$ acts on $L_F$.
+
+Specializing down to the case when $F=\mathbb{F}_q$, the finite field of order $q=p^n$,
+we therefore get a finite group acting on $L_q:=L_{\mathbb{F}_q}$. Then Chevalley proved that $L_q$ is always simple as a group, 
+with just a few exceptions occurring for very small fields $F$, thereby exhibiting a number 
+of families of finite simple groups, now said to be \textbf{of Lie Type.} Many of the resulting simple groups were known
+before but Chevalley was the first to give a unified treatment.
+
+\subsection{Examples}
+An explicit example comes from $GL_n(\mathbb{F}_q)$. It can be shown (see many old prelims) to 
+have order $q^{\binom{n}{2}}(q^n-1)\cdots(q-1)$. This is actually never simple! But luckily we want some smaller
+groups! We have $SL_n(\mathbb{F}_q)$ which has order $q^{\binom{n}{2}}(q^n-1)\cdots(q^2-1)$.
+
+Still not simple, unfortunately, but if we mod out scalars to $PSL_n(\mathbb{F}_q)$, we get a simple
+group (whenever $q\ge 4$) of order $q^{\binom{n}{2}}(q^n-1)\cdots(q^2-1)/g$ where $g=\operatorname{gcd}(n,q-1)$.
+
+We notice that the formula for the order of the simple group $PSL_n(\mathbb{F}_q)$ is given 
+by a power of $q$ times a product of $q^i-1$ for varius $i$, divided the by the order of a central
+subgroups.
+
+Chevalley showed this pattern always holds: the exponent of $q$ is the dimension of the Borel
+subalgebra of the Lie algebra giving rise to the group. The $q^i-1$ powers are called the \textbf{exponents}
+of the Weyl group of the Lie algebra.
+
+\subsection{Classificiations}
+Let us look at all finite simple roups of nonprime order: we have
+\begin{itemize}
+	\item $A_n$, the alternating groups, for $n\ge 5$
+	\item Finite groups of Lie type 
+	\item Chevalley groups
+	\item Further anaglogues of these arising from a nontrivial diagram automorphisms fo the Lie algebra
+	\item Steinberg analogues on characteristic 2 and 3 on types $B_2$ and $G_2$
+	\item Ree, Suzuki, and Tits (are these the discoverers of above?)
+	\item Only finitely many others! 26 sporadic groups with the monster group being the largest.
+\end{itemize}
+\begin{rmk}
+	There is also a monster Lie algebra.
+\end{rmk}
+
+Moreover, one can form an analgof of $L_\Z$ for the enveloping algebra: it has a $\Z$-form
+$U_\Z$ consisting of all sums of products $\frac{x^{n_\alpha}_{-\alpha}}{n_\alpha!}\cdots\frac{x_\alpha^{n_\alpha}}{n_\alpha!}$
+and this is stable under the action of the Chevalley group.
+
+I missed the last bit because Monty was talking, but that wraps it up for the quarter!
 \end{document}
