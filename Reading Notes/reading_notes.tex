@@ -135,6 +135,7 @@
 \newcommand*{\Ab}{\text{\textbf{Ab}}}
 \newcommand*{\Ring}{\text{\textbf{Ring}}}
 \newcommand*{\Lie}{\text{\textbf{Lie}}}
+\DeclareMathOperator{\stHom}{\underline{\Hom}}
 
 %general commands
 \DeclareMathOperator{\ch}{char}
@@ -202,279 +203,102 @@
 \date{}
 \maketitle
 
-\part{Autumn 2018}
-\section{Problems}
-\begin{prob}
-	Assume that $k$ is a field and let $K=k(t)$ (notice $K$ is a transcendental extension). Prove that $\Hom_k(K,k)\not\cong K$.
-\end{prob}
+\part{Spring 2019}
+\section{Meeting Notes}
 
-\begin{sol}
-	This is basically just a cardinality argument. I don't think it's particularly worth doing at this juncture.
-\end{sol}
+\subsection{Week 3}
+Due to travelling and some growing pains teaching my own 308 class research has gotten off to a slow
+start. Luckily Julia's class requires us to do a presentation on homological algebra and last week 
+we discussed some possible topics (mainly drawing on Dave Benson's course notes from Oberwolfach which I need 
+to add as a reference here).
 
-\begin{prob}
-	Let $G$ be a finite group scheme (actually we need only assume that $G$ is a Frobenius algebra so that a module
-	is injective if and only if it is projective). Prove that unless $M$ is projective, its projective dimension is 
-	infinite. Conclude that $H^n(G,M)=0$ for $n>N$ implies that $M$ is projective.
-\end{prob}
-\begin{sol}
-	Assume $M$ itself is not projective so that its minimal projective resolution is nontrivial and furthermore
-	that it is finite. That is, let $P_i$ be projective modules such that
-	\[0\to P_n\xrightarrow{f_n} P_{n-1}\to\cdots \xrightarrow{f_{1}}P_0\xrightarrow{f_0} M\to 0\]
-	is a minimal length projective resolution of $M$ (notice here that $n\ge 1$). 
-	
-	Next consider the short exact sequence
-	\[0\to P_n\xrightarrow{f_n}P_{n-1}\to \coker f_n\to 0\]
-	since $P_n$ is projective (and thus injective!) this sequence splits and therefore $P_{n-1}\cong P_n\oplus\coker f_n.$
-	But then consider the sequence
-	\[0\to P_n\xrightarrow{g} P_{n-2}\to\cdots\xrightarrow{f_0}M\to 0\]
-	where above we are using $P_{n-1}\supseteq P_n\cong f_n(P_n)$  and that
-	$g=f_{n-1}|_{f_n(P_n)}$. This map is injective since $\ker f_{n-1}=\coker f_n$, which is disjoint
-	from $f_n(P_n)\cong P_n$. Exactness everywhere else is evident since the maps are not effectively changed.
+\begin{qst} Is the right way to think about triangles in a homotopy category where the suspension
+measures failure to be exact? 
 
-	But then the existence of this sequence contradicts the minimality of the original sequence, so
-	no finite sequence can exist.
+Is a Cartesian square just a pushout/pullback ``modulo homotopy''? These seem to be related by 
+the fact that a Cartesian square
+\begin{center}
+	\begin{tikzcd}
+		A
+	\end{tikzcd}
+\end{center}
+corresponds to a sequence
+\[X\to Y'\sqcup Y''\to Z\to \Sigma X\]
+which appears to be ``almost'' the fiber product except the $\gamma$ map.
+\end{qst}
 
-	The last statement (as discussed with Julia) is actually false. 
-\end{sol}
+Maybe. Maybe not. Let's talk about it in the context of modular representation theory. The triangles 
+here comes from short exact sequences $0\to M'\to M\to M''\to 0$. But a triangle in the 
+triangluated category corresponds to $M'\to M\to M''\to \Sigma M$. 
 
-\begin{prob}
-	Establish the five-term exact sequence for spectral sequences.
-\end{prob}
-\begin{sol}
-	I plan to return to this problem in the future. I have other priorities at the moment,
-	but I will eventually return to cohomology and spectral sequences and this will be a good
-	exercise at that point.
-\end{sol}
+What this means is that 
+\[\Ext_G^1(M'',M')\cong \stHom_G(M'',\Omega^{-1}M')\]
 
-\begin{wprob}{1.1}
-	\begin{enumerate}
-		\item If $R$ and $S$ are two $k$ algebras and $F$ is a representable functor, show $F(R\times S)\cong F(R)\times F(S)$.
-		\item Show there is no representable functor $R$ such that every $F(R)$ has exactly two elements.
-		\item Let $F$ be the functor represented by $k\times k$. Show that $F(R)$ has two elements exactly when $R$ has no idempotents besides 0 and 1.
-	\end{enumerate}
-\end{wprob}
 
-\begin{sol}
-	\subsubsection*{(a)}
-	Let $A$ be the $k$-algebra representing $F$. Thus $F(R)$ is naturally isomorphic to
-	$\Hom_k(A,R)$ and $F(S)\simeq\Hom(A,S)$. Then define the map $\Phi:\Hom(A,R\times S)\to\Hom(A,R)\times\Hom(A,S)$
-	via
-	\[\Phi(\varphi)=(\pi_R\circ\varphi,\pi_S\circ\varphi)\]
-	where $\pi_X$ is the canonical projection onto $X$.
+For next week, read Neeman's paper on triangulated categories and try reading through the computation
+in \cite{julia-dave}.
 
-	This is surjective since (by the universal property of products) any pair of maps
-	$\varphi_R:A\to R$ and $\varphi_S:A\to S$ factors through the product $R\times S$
-	and furthermore it does so \textit{uniquely}, giving us injectivity. Thus this map
-	(which is clearly a homomorphism since $\pi_X$ is) is a bijection.
-	\subsubsection*{(b)}
-	By the last problem this is impossible since if $|F(k)|=2$ then 
-	\[|F(k\times k)|=|F(k)\times F(k)|=4.\]
-	\subsubsection*{(c)}
-	Let $F$ be such a functor. Consider any $\varphi\in\Hom(k\times k, R)\simeq F(R)$.
-	Assume first that $F(R)\cong \bbZ/2$ and let $r$ be an idempotent in $R$. 
-\end{sol}
+\subsection{Week 4}
+Most of my personal time has been spent on reading \cite{julia-dave}. I will summarize where I am at the moment.
 
-\begin{wprob}{1.2}
-	Let $E$ be a functor represented by $A$ and let $F$ be any functor. Show that the natural
-	maps $\eta:E\to F$ correspond to elements in $F(A)$.
-\end{wprob}
-\begin{sol}
-	Consider the map $\Phi$ from natural maps $E\to F$ to elements in $F(A)$ defined by
-	(again leveraging the representability of $E$)
-	\[\eta\mapsto \eta(\operatorname{id}_A)\in F(A).\]
-	Conversely, consider the map $\Psi$ from $F(A)$ to the natural maps $E\to F$ via
-	\[x\mapsto \xi_x\]
-	where $\xi_x$ where for any $Y$ and $y\in E(Y)\cong \Hom(A,Y)$ we define the $Y^{th}$ component of $\xi_x$
-	as 
-	\[\xi_x(y)=F(y)(x)\in F(Y)\]
-	where (for clarity while I get a grasp here) $F(y):F(A)\to F(Y)$.
+I am reading theorem 4.1, which states that if $G=(\Ga^-\times \Ga^-)\rtimes \Ga_{(1)}$, then $H^{\ast,\ast}(G,k)$
+is generated by $\zeta$ in degree $(1,1)$, $x\in(2,0)$, $\kappa\in(p,1)$ and $\lambda_i\in (i,i+1)$ for $1\le i\le p-2$.
+All of these generators are found by computations earlier giving a presentation of $kG$ as a quotient of a polynomial ring:
+\[\frac{k[u,v,t]}{(u^2,v^2,uv+vu,t^p, tv-vt, tu-ut-v)}\]
 
-	Since we are only looking for a bijection, we only need that these maps are inverses.
-	Consider that for all $Y$ and $y\in E(Y)$,
-	\begin{align*}
-		\Psi\circ\Phi(\eta)(y)&=\Psi\left(\eta(\operatorname{id}_A)\right)(y)\\
-		&= \xi_{\eta(\operatorname{id}_A)}(y)\\
-		&= F(y)\circ \eta (\operatorname{id}_A)\\
-		&= \eta\circ E(y) (\operatorname{id}_A)\\
-		&= \eta(y\circ\operatorname{id}_A)=\eta(y)
-	\end{align*}
-	where above we used the naturality of $\eta$ along with the fact that $E(y)$ is just
-	precomposition with $y$. Thus $\Psi\circ\Phi(\eta)=\eta.$
+\begin{qst}
+	We let $\mu_p$ be the (finite) group scheme of $p^{th}$ roots of unity and say that $\mu_p\times\mu_p$
+	acts on $kG$ where the first element acts on $u$ and the second on $t$.
+\end{qst}
+Wait... is this literally just multiplication by a (principle? does that even necessarily exist in general?) $p^{th}$ root of unity?
 
-	But then for any $x\in F(A)$,
-	\begin{align*}
-		\Phi\circ\Psi(x)&=\Phi\circ\xi_x\\
-		&=\xi_x(\operatorname{id}_A)\\
-		&=F(\operatorname{id}_A)(x)\\
-		&=\operatorname{id}_{F(A)}(x)=x
-	\end{align*}
-	completing the proof.
-\end{sol}
+\begin{qst}
+	What does the ``fibre'' correspond to the the spectral sequence?
+\end{qst}
 
-\begin{wprob}{1.3}
-	Let $E$ be a functor represented by $A$, and let $F$ be any functor. Let $\Psi:F\to E$
-	be a natural map with surjective component maps. Show there is a natural map $\Phi:E\to F$
-	with $\Psi\circ\Phi=\operatorname{id}_E$.
-\end{wprob}
-\begin{sol}
-	Since in particular $\Psi_A$ is surjective, there is an $x\in F(A)$ such that $\Psi(x)=\operatorname{id}_A$.
-	Then using the map from the last problem, let $\Phi=\xi_x$. Then we can compute for any $R$ and $g\in E(R)$
-	\begin{align*}
-		\Psi\circ\Phi (g) &= \Psi\circ F(g) (x)\\
-		&=E(g)\circ \Psi(x)\\
-		&=E(g)(\operatorname{id}_A)\\
-		&=g\circ \operatorname{id}_A=g
-	\end{align*}
-	since $g:A\to R$, so $E(g):E(A)\to E(R)$, which is just composition with $g$.
-\end{sol}
+\subsection{Week 5}
+The main thing I have been considering this week has been the computation
+\[d(\lambda^\varepsilon\eta^a\zeta^bx^c)\]
+where all terms in the sum (using the Leibniz rule) die (since $\lambda,\zeta,x$ lie in the bottom row) except 
+\[a\lambda^{\varepsilon+1}\eta^{a-1}\zeta^{b+1}x^c\]
+where we've used that $d(\eta)=\lambda\zeta$. It is clear that for this to be nonzero, we need $a\le p-1$
+and when $\varepsilon=1$. \textbf{It ends up there was an error}
 
-\begin{wprob}{1.5}
-	Write out $\Delta,\varepsilon,$ and $S$ for the Hopf algebras representing $\SL{2}, \mun{n},$ and $\alp{p}$.
-\end{wprob}
-\begin{sol}
-	\subsubsection*{$\SL{2}$:}
-	Notice $SL_2$ is represented by $A=k[X_1,X_2,X_3,X_4]/(X_1X_4-X_3X_2-1)$ so take two elements
-	$f,g\in\Hom(A,R)$ where $f(X_i)=a_i\in R$ and $g(X_i)=b_i\in R$ and notice that we want
-	\[(f,g)\Delta=h\]
-	where since
-	\[\begin{pmatrix}
-		a_1 & a_2\\ a_3 & a_4
-	\end{pmatrix}\begin{pmatrix}
-		b_1 & b_2\\ b_3 & b_4
-	\end{pmatrix}=\begin{pmatrix}
-		a_1b_1+a_2b_3 & a_1b_2+a_2b_4\\ a_3b_1+a_4b_3 & a_3b_2+a_4b_4
-	\end{pmatrix}=\begin{pmatrix}
-		c_1 & c_2\\ c_3 & c_4
-	\end{pmatrix}\]
-	we want to have that $h(X_i)=c_i.$
+\brk
 
-	So then if $\Delta:A\to A\otimes A$ is defined as follows:
-	\begin{align*}
-		X_1&\mapsto X_1\otimes X_1+X_2\otimes X_3\\
-		X_2&\mapsto X_1\otimes X_2 +X_2\otimes X_4\\
-		X_3&\mapsto X_3\otimes X_1+X_4\otimes X_3\\
-		X_4&\mapsto X_3\otimes X_2+X_4\otimes X_4
-	\end{align*}
-	Where one can compute
-	\begin{align*}
-		\id\otimes\Delta\circ \Delta (X_1)&= (\id\otimes\Delta)(X_1\otimes X_1+X_2\otimes X_3)\\
-		&= X_1\otimes X_1\otimes X_1 + X_1\otimes X_2\otimes X_3 + X_2\otimes X_3\otimes X_1 + X_2\otimes X_4\otimes X_3\\
-		&= (\Delta\otimes\id)(X_1\otimes X_1+X_2\otimes X_3)=\Delta\otimes\id\circ \Delta (X_1)
-	\end{align*}
-	and similar equality holds for the other $X_i$, so this is $\Delta$. 
+\subsubsection{Elementary abelian group schemes}
+$\Ga_{(r)}$ has group aglebra isomorphic to the the truncated polynomial algebra $k[x_i]/(x^p)$. Then an elementary abelian
+group scheme is $\Ga_{(r)}\times(\bbZ/p)^k$. Now the homology (of the two factors?) are isomorphic, but
+the Steenrod operations, which can further distinguish between them.
 
-	Using that we want $\varepsilon\otimes\id\circ \Delta(X_i)=1\otimes X_i$, we see that the map
-	$\varepsilon$ sending $X_1$ and $X_4$ to 1 and $X_2$ and $X_3$ to zero is the map we want.
+The Steenrod operations can bee seen as $\cal P$ and $\beta$, which is the connection homomorphism that arises 
+from the long exact sequence in cohomology arising from $\bbZ/p\to\bbZ/p^2\to\bbZ/p$: $\beta:H^1(G,\mathbb{F}_p)\to H^2(G,\mathbb{F}_p)$. We can generalize to other
+fields, but the $\beta$ map is no lnger linear, but $p$-semilinear! 
 
-	Notice that as a sanity check we get that 
-	\[\begin{pmatrix}
-		\varepsilon(X_1) & \varepsilon(X_2)\\
-		\varepsilon(X_3) & \varepsilon(X_4)
-	\end{pmatrix}=\begin{pmatrix}
-		1 & 0\\
-		0 & 1
-	\end{pmatrix}=I_2\]
+There is a theorem by Serre on Bocksteins (?). Frattini quoitient -- maximal elementary abelian quotient -- look this up!
 
-	Finally using that $(S,\id)\circ\Delta(X_i)=\varepsilon(X_i)$ and the fact that in $A$,
-	$\det=X_1X_4-X_3X_2=1$, we can define $S$ such that
-	\[\begin{pmatrix}
-		S(X_1) & S(X_2)\\
-		S(X_3) & S(X_4)
-	\end{pmatrix}=\begin{pmatrix}
-		X_4 & -X_2\\
-		-X_3 & X_1
-	\end{pmatrix}=\begin{pmatrix}
-		X_1 & X_2\\
-		X_3 & X_4
-	\end{pmatrix}^{-1}\]
-	and one can verify that this satisfies the relation above.
-	\subsubsection*{$\mun{n}:$}
-	For this scheme, $A=k[X]/(X^n-1)$ is the representing algebra. If $f,g\in\Hom(A,k)$ with
-	$f(X)=r$ and $g(X)=s$, then we want $(f,g)\Delta(X)=\sum f(X_{(1)})g(X_{(2)})=m(r,s)=rs$ where 
-	$\Delta(X)=\sum X_{(1)}\otimes X_{(2)}$. An obvious choice is the diagonal map.
+So the idea thien is we use this Frattini thing (think an analog to Nakayama) and we are trying to see when the Frattini quotient
+is the group itself. 
+\begin{lem}
+	Let $\varphi:H\to G$ be a (surjective?) map of $p$-groups and $\varphi^*$ ist induced map on the holomology rings with trivial coefficients.
+	then if $\varphi^*$ restricted to $H^1$ is an isomorphism and on $H^2$ is injectice, then $\varphi$ is an isomorphism.
+\end{lem}
+\begin{rmk}
+	This requires a result that $H^1(G,k)\ne 0$ when $G$ is a $p$ group.
+\end{rmk}
 
-	Then choosing $\varepsilon(X)=1$ satisfies the diagrams (as before in $G_m$) and using our
-	intuition, $S(X)=X^5$ which also works.
-	\subsubsection*{$\alp{p}$:}
-	This time we are working with $A=\bbZ/p[X]/(X^p)$. This time (since the group is additive) we want
-	$\Delta(X)=X\otimes 1+1\otimes X$, which we can see works with associativity immediately.
+\subsection{Week 6}
 
-	Following suit with the other additive group scheme $G$, setting $\varepsilon(X)=0$ and $S(X)=-X$
-	we can quickly check these still satisfy the given axioms.
-\end{sol}
 
-\begin{wprob}{1.6}
-	In $A=k[X_{11},\dots,X_{nn},1/\operatorname{det}]$ representing $GL_n$, show that $\Delta(X_{ij})=\sum X_{ik}\otimes X_{kj}$.
-	What is $\varepsilon(X_{ij})$?
-\end{wprob}
-\begin{sol}
-	Due to the uniqueness of $\Delta,\varepsilon,$ and $S$, we need only find maps satisfying 
-	the diagrams. I claim that $\varepsilon(X_{ij})=\delta_{ij}$. In this case, notice
-	\[(\varepsilon\otimes\operatorname{id})\circ\Delta(X_{ij})=\varepsilon\otimes\operatorname{id}\left( \sum X_{ik}\otimes X_{kj} \right)=\sum \delta_{ik}\otimes X_{kj}=1\otimes X_{ij}\]
-	exactly as we want.
 
-	For associativity, notice
-	\[(\Delta\otimes \operatorname{id})\circ \Delta (X_{ij})=\Delta\otimes\operatorname{id}\left( \sum_k X_{ik}\otimes X_{kj} \right)=\sum_k\left(\sum_l X_{il}\otimes X_{lk}\right)\otimes X_{kj}\]
-	and then the associativity of $\Delta$ follows simply from the associativity of the tensor product.
+\section{Group (Scheme) Cohomology}
 
-	For the last axiom, we compute $S$ such that $(S,\operatorname{id})\circ\Delta=\iota\circ\varepsilon$ where $\iota:K\to A$ is the map sending $k\mapsto k\cdot 1_A$.
-	That is, we define $S:A\to A$ so that
-	\[\sum_k S(X_{ik})X_{kj}=\delta_{ij}.\]
+To get some more background for reading \cite{julia-dave}, I began reading Evens' book on group cohomology \cite{evens}.
+So I will begin here.
 
-	We want to leverage the fact that for a fixed $i$ and $j$, the determinant is
-	\begin{align*}
-		\operatorname{det} &= \sum_{\sigma\in S_n}\operatorname{sgn}(\sigma)\prod_l X_{\sigma(l)l}\\
-		&=\sum_\sigma \operatorname{sgn}(\sigma)X_{\sigma{j}j}\prod_{l\ne j} X_{\sigma(l)l}\\
-		&=\sum_i X_{ij}\left(\sum_{\sigma(j)=i}\operatorname{sgn}(\sigma)\prod_{l\ne j}X_{\sigma(l)l}\right)
-	\end{align*}
-	and so we want that 
-	\[S(X_{ik})=\frac{1}{\operatorname{det}}\sum_{\sigma(i)=k}\operatorname{sgn}(\sigma)\prod_{l\ne k}X_{\sigma(l)l}\]
-	so that when $i=j$,
-	\[\sum_k S(X_{ik})X_{kj}=\frac{1}{\operatorname{det}}\sum_k X_{kj}\sum_{\sigma(j)=k}\operatorname{sgn}(\sigma)\prod_{l\ne k}X_{\sigma(l)l}=1=\delta_{ij}\]
-	whenever $i\ne j$, however, this equation is the determinant of the matrix where we have replaced
-	the $j^{th}$ column with a copy of the $i^{th}$ column. This is linearly dependent, so 
-	\[\frac{1}{\operatorname{det}}\sum_k S(X_{ik})S_{kj}=0=\delta_{ij}.\]
-	Thus these are precisely the maps we desire.
-\end{sol}
+I need to get better about typing notes! It is so useful!
 
-\begin{wprob}{1.10}
-	Prove the following Hopf algebra facts by interpreting them as statements about group functors:
-	\begin{enumerate}
-		\item $S\circ S=\id$
-		\item $\Delta\circ S=(\operatorname{twist})\circ(S\otimes S)\Delta$
-		\item $\varepsilon\circ S=\varepsilon$
-		\item The map $A\otimes A\to A\otimes A$ sending $a\otimes b$ to $(a\otimes 1)\Delta(b)$
-		is an algebra isomorphism.
-	\end{enumerate}
-\end{wprob}
-\begin{sol}
-	\subsubsection*{(a)}
-	Dualizing, we get
-	\begin{figure}[h]
-		\begin{tikzcd}[column sep=small]
-			A\ar[rr,equal]\ar[rd,"S",swap] & & A\\
-			& A\ar[ru,"S",swap] &
-		\end{tikzcd}
-		\begin{tikzcd}[column sep=small]
-			A\ar[rr,equal] & & A\ar[ld,"inv"]\\
-			& A\ar[lu,"inv"] &
-		\end{tikzcd}
-	\end{figure}
 
-	\noindent so this statement is equivalent to the group (scheme) fact that $(g^{-1})^{-1}=g$.
-	\subsubsection*{(b)}
-	Using a similar duality argument, this is equivalent to saying 
-	\[\operatorname{inv}\circ m = m\circ(\operatorname{inv}\times\operatorname{inv})\circ(\operatorname{twist})\]
-	but if we consider arbitrary elements $g,h\in G(R)$, this means
-	\[(gh)^{-1}=m\circ(\operatorname{inv}\times\operatorname{inv})(h,g)=m(h^{-1},g^{-1})=h^{-1}g^{-1}\]
-	which is clearly true.
-	\subsubsection*{(c)}
-	This one is equivalent to $(\operatorname{inv})\circ i=i$ where if $g\in G(R)$, 
-	\[(\operatorname{inv})\circ i(g)=(\operatorname{inv})(e)=e=i(g)\]
-	or in other words $e^{-1}=e.$
-	\subsubsection*{(d)}
-\end{sol}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1333,8 +1157,283 @@ in the definition below. It seems to only occur when I use \texttt{\textbackslas
 	\[\varphi(X)\otimes\varphi(1)+\varphi(1)\otimes\varphi(X)=\varphi(X)\otimes\varphi(X)\]
 \end{sol}
 
-\section{To be filed:}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\part{Autumn 2018}
+\section{Problems}
+\begin{prob}
+	Assume that $k$ is a field and let $K=k(t)$ (notice $K$ is a transcendental extension). Prove that $\Hom_k(K,k)\not\cong K$.
+\end{prob}
+
+\begin{sol}
+	This is basically just a cardinality argument. I don't think it's particularly worth doing at this juncture.
+\end{sol}
+
+\begin{prob}
+	Let $G$ be a finite group scheme (actually we need only assume that $G$ is a Frobenius algebra so that a module
+	is injective if and only if it is projective). Prove that unless $M$ is projective, its projective dimension is 
+	infinite. Conclude that $H^n(G,M)=0$ for $n>N$ implies that $M$ is projective.
+\end{prob}
+\begin{sol}
+	Assume $M$ itself is not projective so that its minimal projective resolution is nontrivial and furthermore
+	that it is finite. That is, let $P_i$ be projective modules such that
+	\[0\to P_n\xrightarrow{f_n} P_{n-1}\to\cdots \xrightarrow{f_{1}}P_0\xrightarrow{f_0} M\to 0\]
+	is a minimal length projective resolution of $M$ (notice here that $n\ge 1$). 
+	
+	Next consider the short exact sequence
+	\[0\to P_n\xrightarrow{f_n}P_{n-1}\to \coker f_n\to 0\]
+	since $P_n$ is projective (and thus injective!) this sequence splits and therefore $P_{n-1}\cong P_n\oplus\coker f_n.$
+	But then consider the sequence
+	\[0\to P_n\xrightarrow{g} P_{n-2}\to\cdots\xrightarrow{f_0}M\to 0\]
+	where above we are using $P_{n-1}\supseteq P_n\cong f_n(P_n)$  and that
+	$g=f_{n-1}|_{f_n(P_n)}$. This map is injective since $\ker f_{n-1}=\coker f_n$, which is disjoint
+	from $f_n(P_n)\cong P_n$. Exactness everywhere else is evident since the maps are not effectively changed.
+
+	But then the existence of this sequence contradicts the minimality of the original sequence, so
+	no finite sequence can exist.
+
+	The last statement (as discussed with Julia) is actually false. 
+\end{sol}
+
+\begin{prob}
+	Establish the five-term exact sequence for spectral sequences.
+\end{prob}
+\begin{sol}
+	I plan to return to this problem in the future. I have other priorities at the moment,
+	but I will eventually return to cohomology and spectral sequences and this will be a good
+	exercise at that point.
+\end{sol}
+
+\begin{wprob}{1.1}
+	\begin{enumerate}
+		\item If $R$ and $S$ are two $k$ algebras and $F$ is a representable functor, show $F(R\times S)\cong F(R)\times F(S)$.
+		\item Show there is no representable functor $R$ such that every $F(R)$ has exactly two elements.
+		\item Let $F$ be the functor represented by $k\times k$. Show that $F(R)$ has two elements exactly when $R$ has no idempotents besides 0 and 1.
+	\end{enumerate}
+\end{wprob}
+
+\begin{sol}
+	\subsubsection*{(a)}
+	Let $A$ be the $k$-algebra representing $F$. Thus $F(R)$ is naturally isomorphic to
+	$\Hom_k(A,R)$ and $F(S)\simeq\Hom(A,S)$. Then define the map $\Phi:\Hom(A,R\times S)\to\Hom(A,R)\times\Hom(A,S)$
+	via
+	\[\Phi(\varphi)=(\pi_R\circ\varphi,\pi_S\circ\varphi)\]
+	where $\pi_X$ is the canonical projection onto $X$.
+
+	This is surjective since (by the universal property of products) any pair of maps
+	$\varphi_R:A\to R$ and $\varphi_S:A\to S$ factors through the product $R\times S$
+	and furthermore it does so \textit{uniquely}, giving us injectivity. Thus this map
+	(which is clearly a homomorphism since $\pi_X$ is) is a bijection.
+	\subsubsection*{(b)}
+	By the last problem this is impossible since if $|F(k)|=2$ then 
+	\[|F(k\times k)|=|F(k)\times F(k)|=4.\]
+	\subsubsection*{(c)}
+	Let $F$ be such a functor. Consider any $\varphi\in\Hom(k\times k, R)\simeq F(R)$.
+	Assume first that $F(R)\cong \bbZ/2$ and let $r$ be an idempotent in $R$. 
+\end{sol}
+
+\begin{wprob}{1.2}
+	Let $E$ be a functor represented by $A$ and let $F$ be any functor. Show that the natural
+	maps $\eta:E\to F$ correspond to elements in $F(A)$.
+\end{wprob}
+\begin{sol}
+	Consider the map $\Phi$ from natural maps $E\to F$ to elements in $F(A)$ defined by
+	(again leveraging the representability of $E$)
+	\[\eta\mapsto \eta(\operatorname{id}_A)\in F(A).\]
+	Conversely, consider the map $\Psi$ from $F(A)$ to the natural maps $E\to F$ via
+	\[x\mapsto \xi_x\]
+	where $\xi_x$ where for any $Y$ and $y\in E(Y)\cong \Hom(A,Y)$ we define the $Y^{th}$ component of $\xi_x$
+	as 
+	\[\xi_x(y)=F(y)(x)\in F(Y)\]
+	where (for clarity while I get a grasp here) $F(y):F(A)\to F(Y)$.
+
+	Since we are only looking for a bijection, we only need that these maps are inverses.
+	Consider that for all $Y$ and $y\in E(Y)$,
+	\begin{align*}
+		\Psi\circ\Phi(\eta)(y)&=\Psi\left(\eta(\operatorname{id}_A)\right)(y)\\
+		&= \xi_{\eta(\operatorname{id}_A)}(y)\\
+		&= F(y)\circ \eta (\operatorname{id}_A)\\
+		&= \eta\circ E(y) (\operatorname{id}_A)\\
+		&= \eta(y\circ\operatorname{id}_A)=\eta(y)
+	\end{align*}
+	where above we used the naturality of $\eta$ along with the fact that $E(y)$ is just
+	precomposition with $y$. Thus $\Psi\circ\Phi(\eta)=\eta.$
+
+	But then for any $x\in F(A)$,
+	\begin{align*}
+		\Phi\circ\Psi(x)&=\Phi\circ\xi_x\\
+		&=\xi_x(\operatorname{id}_A)\\
+		&=F(\operatorname{id}_A)(x)\\
+		&=\operatorname{id}_{F(A)}(x)=x
+	\end{align*}
+	completing the proof.
+\end{sol}
+
+\begin{wprob}{1.3}
+	Let $E$ be a functor represented by $A$, and let $F$ be any functor. Let $\Psi:F\to E$
+	be a natural map with surjective component maps. Show there is a natural map $\Phi:E\to F$
+	with $\Psi\circ\Phi=\operatorname{id}_E$.
+\end{wprob}
+\begin{sol}
+	Since in particular $\Psi_A$ is surjective, there is an $x\in F(A)$ such that $\Psi(x)=\operatorname{id}_A$.
+	Then using the map from the last problem, let $\Phi=\xi_x$. Then we can compute for any $R$ and $g\in E(R)$
+	\begin{align*}
+		\Psi\circ\Phi (g) &= \Psi\circ F(g) (x)\\
+		&=E(g)\circ \Psi(x)\\
+		&=E(g)(\operatorname{id}_A)\\
+		&=g\circ \operatorname{id}_A=g
+	\end{align*}
+	since $g:A\to R$, so $E(g):E(A)\to E(R)$, which is just composition with $g$.
+\end{sol}
+
+\begin{wprob}{1.5}
+	Write out $\Delta,\varepsilon,$ and $S$ for the Hopf algebras representing $\SL{2}, \mun{n},$ and $\alp{p}$.
+\end{wprob}
+\begin{sol}
+	\subsubsection*{$\SL{2}$:}
+	Notice $SL_2$ is represented by $A=k[X_1,X_2,X_3,X_4]/(X_1X_4-X_3X_2-1)$ so take two elements
+	$f,g\in\Hom(A,R)$ where $f(X_i)=a_i\in R$ and $g(X_i)=b_i\in R$ and notice that we want
+	\[(f,g)\Delta=h\]
+	where since
+	\[\begin{pmatrix}
+		a_1 & a_2\\ a_3 & a_4
+	\end{pmatrix}\begin{pmatrix}
+		b_1 & b_2\\ b_3 & b_4
+	\end{pmatrix}=\begin{pmatrix}
+		a_1b_1+a_2b_3 & a_1b_2+a_2b_4\\ a_3b_1+a_4b_3 & a_3b_2+a_4b_4
+	\end{pmatrix}=\begin{pmatrix}
+		c_1 & c_2\\ c_3 & c_4
+	\end{pmatrix}\]
+	we want to have that $h(X_i)=c_i.$
+
+	So then if $\Delta:A\to A\otimes A$ is defined as follows:
+	\begin{align*}
+		X_1&\mapsto X_1\otimes X_1+X_2\otimes X_3\\
+		X_2&\mapsto X_1\otimes X_2 +X_2\otimes X_4\\
+		X_3&\mapsto X_3\otimes X_1+X_4\otimes X_3\\
+		X_4&\mapsto X_3\otimes X_2+X_4\otimes X_4
+	\end{align*}
+	Where one can compute
+	\begin{align*}
+		\id\otimes\Delta\circ \Delta (X_1)&= (\id\otimes\Delta)(X_1\otimes X_1+X_2\otimes X_3)\\
+		&= X_1\otimes X_1\otimes X_1 + X_1\otimes X_2\otimes X_3 + X_2\otimes X_3\otimes X_1 + X_2\otimes X_4\otimes X_3\\
+		&= (\Delta\otimes\id)(X_1\otimes X_1+X_2\otimes X_3)=\Delta\otimes\id\circ \Delta (X_1)
+	\end{align*}
+	and similar equality holds for the other $X_i$, so this is $\Delta$. 
+
+	Using that we want $\varepsilon\otimes\id\circ \Delta(X_i)=1\otimes X_i$, we see that the map
+	$\varepsilon$ sending $X_1$ and $X_4$ to 1 and $X_2$ and $X_3$ to zero is the map we want.
+
+	Notice that as a sanity check we get that 
+	\[\begin{pmatrix}
+		\varepsilon(X_1) & \varepsilon(X_2)\\
+		\varepsilon(X_3) & \varepsilon(X_4)
+	\end{pmatrix}=\begin{pmatrix}
+		1 & 0\\
+		0 & 1
+	\end{pmatrix}=I_2\]
+
+	Finally using that $(S,\id)\circ\Delta(X_i)=\varepsilon(X_i)$ and the fact that in $A$,
+	$\det=X_1X_4-X_3X_2=1$, we can define $S$ such that
+	\[\begin{pmatrix}
+		S(X_1) & S(X_2)\\
+		S(X_3) & S(X_4)
+	\end{pmatrix}=\begin{pmatrix}
+		X_4 & -X_2\\
+		-X_3 & X_1
+	\end{pmatrix}=\begin{pmatrix}
+		X_1 & X_2\\
+		X_3 & X_4
+	\end{pmatrix}^{-1}\]
+	and one can verify that this satisfies the relation above.
+	\subsubsection*{$\mun{n}:$}
+	For this scheme, $A=k[X]/(X^n-1)$ is the representing algebra. If $f,g\in\Hom(A,k)$ with
+	$f(X)=r$ and $g(X)=s$, then we want $(f,g)\Delta(X)=\sum f(X_{(1)})g(X_{(2)})=m(r,s)=rs$ where 
+	$\Delta(X)=\sum X_{(1)}\otimes X_{(2)}$. An obvious choice is the diagonal map.
+
+	Then choosing $\varepsilon(X)=1$ satisfies the diagrams (as before in $G_m$) and using our
+	intuition, $S(X)=X^5$ which also works.
+	\subsubsection*{$\alp{p}$:}
+	This time we are working with $A=\bbZ/p[X]/(X^p)$. This time (since the group is additive) we want
+	$\Delta(X)=X\otimes 1+1\otimes X$, which we can see works with associativity immediately.
+
+	Following suit with the other additive group scheme $G$, setting $\varepsilon(X)=0$ and $S(X)=-X$
+	we can quickly check these still satisfy the given axioms.
+\end{sol}
+
+\begin{wprob}{1.6}
+	In $A=k[X_{11},\dots,X_{nn},1/\operatorname{det}]$ representing $GL_n$, show that $\Delta(X_{ij})=\sum X_{ik}\otimes X_{kj}$.
+	What is $\varepsilon(X_{ij})$?
+\end{wprob}
+\begin{sol}
+	Due to the uniqueness of $\Delta,\varepsilon,$ and $S$, we need only find maps satisfying 
+	the diagrams. I claim that $\varepsilon(X_{ij})=\delta_{ij}$. In this case, notice
+	\[(\varepsilon\otimes\operatorname{id})\circ\Delta(X_{ij})=\varepsilon\otimes\operatorname{id}\left( \sum X_{ik}\otimes X_{kj} \right)=\sum \delta_{ik}\otimes X_{kj}=1\otimes X_{ij}\]
+	exactly as we want.
+
+	For associativity, notice
+	\[(\Delta\otimes \operatorname{id})\circ \Delta (X_{ij})=\Delta\otimes\operatorname{id}\left( \sum_k X_{ik}\otimes X_{kj} \right)=\sum_k\left(\sum_l X_{il}\otimes X_{lk}\right)\otimes X_{kj}\]
+	and then the associativity of $\Delta$ follows simply from the associativity of the tensor product.
+
+	For the last axiom, we compute $S$ such that $(S,\operatorname{id})\circ\Delta=\iota\circ\varepsilon$ where $\iota:K\to A$ is the map sending $k\mapsto k\cdot 1_A$.
+	That is, we define $S:A\to A$ so that
+	\[\sum_k S(X_{ik})X_{kj}=\delta_{ij}.\]
+
+	We want to leverage the fact that for a fixed $i$ and $j$, the determinant is
+	\begin{align*}
+		\operatorname{det} &= \sum_{\sigma\in S_n}\operatorname{sgn}(\sigma)\prod_l X_{\sigma(l)l}\\
+		&=\sum_\sigma \operatorname{sgn}(\sigma)X_{\sigma{j}j}\prod_{l\ne j} X_{\sigma(l)l}\\
+		&=\sum_i X_{ij}\left(\sum_{\sigma(j)=i}\operatorname{sgn}(\sigma)\prod_{l\ne j}X_{\sigma(l)l}\right)
+	\end{align*}
+	and so we want that 
+	\[S(X_{ik})=\frac{1}{\operatorname{det}}\sum_{\sigma(i)=k}\operatorname{sgn}(\sigma)\prod_{l\ne k}X_{\sigma(l)l}\]
+	so that when $i=j$,
+	\[\sum_k S(X_{ik})X_{kj}=\frac{1}{\operatorname{det}}\sum_k X_{kj}\sum_{\sigma(j)=k}\operatorname{sgn}(\sigma)\prod_{l\ne k}X_{\sigma(l)l}=1=\delta_{ij}\]
+	whenever $i\ne j$, however, this equation is the determinant of the matrix where we have replaced
+	the $j^{th}$ column with a copy of the $i^{th}$ column. This is linearly dependent, so 
+	\[\frac{1}{\operatorname{det}}\sum_k S(X_{ik})S_{kj}=0=\delta_{ij}.\]
+	Thus these are precisely the maps we desire.
+\end{sol}
+
+\begin{wprob}{1.10}
+	Prove the following Hopf algebra facts by interpreting them as statements about group functors:
+	\begin{enumerate}
+		\item $S\circ S=\id$
+		\item $\Delta\circ S=(\operatorname{twist})\circ(S\otimes S)\Delta$
+		\item $\varepsilon\circ S=\varepsilon$
+		\item The map $A\otimes A\to A\otimes A$ sending $a\otimes b$ to $(a\otimes 1)\Delta(b)$
+		is an algebra isomorphism.
+	\end{enumerate}
+\end{wprob}
+\begin{sol}
+	\subsubsection*{(a)}
+	Dualizing, we get
+	\begin{figure}[h]
+		\begin{tikzcd}[column sep=small]
+			A\ar[rr,equal]\ar[rd,"S",swap] & & A\\
+			& A\ar[ru,"S",swap] &
+		\end{tikzcd}
+		\begin{tikzcd}[column sep=small]
+			A\ar[rr,equal] & & A\ar[ld,"inv"]\\
+			& A\ar[lu,"inv"] &
+		\end{tikzcd}
+	\end{figure}
+
+	\noindent so this statement is equivalent to the group (scheme) fact that $(g^{-1})^{-1}=g$.
+	\subsubsection*{(b)}
+	Using a similar duality argument, this is equivalent to saying 
+	\[\operatorname{inv}\circ m = m\circ(\operatorname{inv}\times\operatorname{inv})\circ(\operatorname{twist})\]
+	but if we consider arbitrary elements $g,h\in G(R)$, this means
+	\[(gh)^{-1}=m\circ(\operatorname{inv}\times\operatorname{inv})(h,g)=m(h^{-1},g^{-1})=h^{-1}g^{-1}\]
+	which is clearly true.
+	\subsubsection*{(c)}
+	This one is equivalent to $(\operatorname{inv})\circ i=i$ where if $g\in G(R)$, 
+	\[(\operatorname{inv})\circ i(g)=(\operatorname{inv})(e)=e=i(g)\]
+	or in other words $e^{-1}=e.$
+	\subsubsection*{(d)}
+\end{sol}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%  Bibliography %%%%%%%%%%%%%

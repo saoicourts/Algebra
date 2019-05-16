@@ -1,0 +1,1544 @@
+\documentclass[12pt]{article}
+
+\usepackage{setspace}
+
+\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, x	color}
+\usepackage[framed,thmmarks]{ntheorem}
+
+%Replacement for the old geometry package
+\usepackage{fullpage}
+
+%Input my definitions
+\input{/home/nico/latex-includes/mydefs.tex}
+
+%header stuff
+\setlength{\headsep}{24pt}  % space between header and text
+\pagestyle{fancy}     % set pagestyle for document
+\lhead{Notes on Hopf Algebras} % put text in header (left side)
+\rhead{Nico Courts} % put text in header (right side)
+\cfoot{\itshape p. \thepage}
+\setlength{\headheight}{15pt}
+\allowdisplaybreaks
+
+% Document-Specific Macros
+\newcommand*{\dgVectk}{\mathbf{dgVect}_k}
+\newcommand*{\dgmodA}{\mathbf{dgmod}\text{-}A}
+\newcommand*{\modA}{\mathbf{mod}\text{-}A}
+\newcommand*{\Amod}{A\text{-}\mathbf{mod}}
+
+\begin{document}
+%make the title page
+\title{Cohomology Theories, Triangulated Categories, and Applications\vspace{-1ex}}
+\author{A course by: Prof. James Zhang\\
+Notes by: Nico Courts}
+\date{Spring 2019}
+\maketitle
+
+\renewcommand{\abstractname}{Introduction}
+\begin{abstract}
+	These are the notes I took in class during the Winter 2019 topics course
+	\textit{Math 583H - Cohomology Theories, Triangulated Categories, and Applications} at University of Washington, Seattle. 
+	
+	The course description follows:
+
+	\brk
+
+	This covers some (co)homology theories and structures of triangulated categories recently used in noncommutative algebra and 
+	noncommutative algebraic geometry. In addition, we will discuss some latest developments and applications in representation 
+	theory and noncommutative algebraic geometry. Some basics (see first two topics) can be found in the book \textit{An Introduction to Homological Algebra}
+	by Charles Weibel. Here is a list of possible topics:
+
+\begin{itemize}
+	\item Hochschild cohomology and group cohomology.
+	\item Homotopy categories and derived categories.
+	\item Dualizing complexes over noncommutative algebras and applications.
+	\item Artin-Schelter regular algebras and noncommutative projective spaces.
+	\item Semiorthogonal decomposition of derived categories.
+\end{itemize}
+\end{abstract}
+
+\section{April 1, 2019}
+
+The topic for this week includes dg-algebras and -categories. There is no great 
+textbook for these subjects (for the next topics you can use Weibel), but there is 
+a paper by B. Keller ``Deriving dg-categories'' which is pretty abstract. We might 
+need a little time to understand it, however.
+
+\subsection{What we are working with}
+Let $k$ be a field throughout the course. As a matter of notation, we let $\dgVectk$
+denote the category of differential graded vector spaces over $k$. Today we will discuss two ways to
+view this, as a \textit{category} and as a \textit{dg-category.}
+
+\subsection{As a category}
+Recall that $\Vectk$ is the category with $k$-vector spaces with $k$-linear maps. Now $\dgVectk$ consists of
+objects that are (cochain) complexes of $k$-modules $(M^i)_{i\in\bbZ}$ with differential
+$\partial_M=(\partial_M^i)_{i\in\bbZ}$ where each 
+\[\partial_M^i:M^i\to M^{i+1}\]
+is a differential in the usual sense in homological algebra.
+
+To describe the morphisms in this category: Let $M,N$ be two objects in $\dgVectk$. Then 
+a (degree zero) morphism $f:M\to N$ are chain morphisms (the components commute with the differentials).
+
+\begin{ex}
+	$M^i=kx^i\oplus ky^i$ and $\partial_M^i(x^i)=0$, $\partial_M^i(y^i)=x^{i+1}$. This clearly
+	works with everything above, so $M\in\dgVectk$.
+
+	Now let $N^i=kx^i$ and $\partial_N^i(x^i)=0$. Then there is a morphism $f:M\to N$ sending $y^i\mapsto x^i$ and $x^i\mapsto 0$.
+\end{ex}
+
+\begin{prob}
+	Check that $\dgVectk$ is an abelian category.
+\end{prob}
+
+\begin{defn}
+	If $M,N\in \dgVectk$ and $f:M\to N$ such that $f^i:M^i\to N^{i+d}$ for all $i$, 
+	we say $\deg f=|f|=d$.
+\end{defn}
+
+\subsection{As a symmetric monoidal category}
+The first thing to do is to define the tensor product. Let $M,N\in \dgVectk$. Then we define
+$M\otimes N$ to be
+\[(M\otimes N)^i=\oplus_{s+t=i} M^s\otimes N^t\]
+with differential (if $m\in M^s$ and $n\in N^t$)
+\[\partial_{M\otimes N}^i(m\otimes n)=\partial_M^s(m)\otimes n+(-1)^sm\otimes \partial_N^t(n)\]
+where we will often use the more universal notation $(-1)^s=(-1)^{|m|}$.
+
+\begin{rmk}
+	Notice that $|\partial|=1$, so the above sign can be more suggestively written as $(-1)^{|m||\partial|}$
+	which is a nod to the Koszul sign rule below.
+
+	To be clear, the Koszul sign rule states, if $f$ and $g$ are graded (that is, chain) maps, then
+	\[(f\otimes g)(m\otimes n)=(-1)^{|m||g|}f(m)\otimes g(n)\]
+	and so the map we are considering above is $\id_M\otimes \partial_N+\partial_M\otimes \id_N$
+\end{rmk}
+\begin{prob}
+	Check that $\partial_{M\otimes N}$ is a differential.
+\end{prob}
+
+We want this monoidal category to be \textit{symmetric}, however. So to see this, define the twist functor
+\[\tau:M\otimes N\to N\otimes M\]
+such that $\tau(m\otimes n)=(-1)^{|m||n|}n\otimes m$ (Koszul sign rule).
+\begin{lem}
+	\begin{enumerate}
+		\item $\tau\in\Hom_{\dgVectk}(M\otimes N,N\otimes M)$. 
+		\item $\tau\circ\tau|_{M\otimes N}=\id_{M\otimes N}$.
+	\end{enumerate}
+\end{lem}
+
+Then since we have the twist functor $\tau$ satisfying the above properties, we get that $\dgVectk$ is 
+symmetric monoidal. Notice that the unit object for the monoidal aspect is the complex
+\[\cdots\to 0\to k\to 0\to\cdots\]
+
+\subsection{Differential Graded Algebras}
+\begin{defn}
+	A differential graded algebra $A$ is an algebra object in $\dgVectk$.
+\end{defn}
+\begin{defn}
+	A differential graded algebra $A$ is a $\bbZ$-graded algebra $A=\oplus_{i\in \bbZ}A_i$ with differential
+	$\partial_A^i:A^i\to A^{i+1}$ satisfying:
+	\begin{enumerate}
+		\item $1\in A_0$
+		\item $A_iA_j\in A_{i+j}$
+		\item $\partial_A(1_A)=0$
+		\item $\partial_A(ab)=\partial_A(a)b+a\partial_A(b)$
+	\end{enumerate}
+\end{defn}
+
+\section{April 3, 2019}
+At the end of the last lecture, we wondered why we want to do homological algebra (and thus why
+are we interested in dg-structures)?
+
+\subsection{Some History}
+Suppose we have a class $\mathcal C$ of objects. Then around 1900, Poincar\'e noted we can construct 
+a class of complexes consisting of these objects. Then one can compute (co)homologies and their dimensions (Betti numbers).
+Then the alternating sum of the Betty numbers gives us the Euler characteristic.
+
+In topology, around 1925, people did this with topological spaces and singular (co)homology. Later, in the 1930's, 
+de Rham introduced de Rham complexes for manifolds and continued similarly. Also around this time, \v Cech developed 
+\v Cech complexes for schemes for \v Cech cohomology. In 1945, Hochschild developed Hochschild complexes.
+In 1948, Chevalley-Eilenberg did Lie algebras and Harrison did commutative algebras.
+
+\subsection{Commutative DGAs}
+Last time we saw the definition of a differential graded algebra. 
+\begin{defn}
+	A DGA $A$ is called \textbf{commutative} if 
+	\[ab=(-1)^{|a||b|}ba\]
+	for homogeneous elements $a,b\in A$.
+\end{defn}
+
+\subsection{Returning to $\dgVectk$}
+Recall that the objects in this category are complexes $M^\bullet$ with differential $\partial^i:M^i\to M^{i+1}$.
+\begin{defn}
+	For $M,N\in \dgVectk$, define
+	\[\Hom_{\dgVectk}(M,N)=(\Hom_{\dgVectk}(M,N)^i,\partial^i)\]
+	where 
+	\[\Hom_{\dgVectk}(M,N)^i:= \prod_{s\in\bbZ}\Hom(M^s,N^{s+i})\]
+	and for each $i$, $\partial^i_{\Hom}:\Hom_{\dgVectk}(M,N)^i\to \Hom_{\dgVectk}(M,N)^{i+1}$, where
+	\[\partial^i_{\Hom}((f^s)_{s\in\bbZ})=(\partial_N^{s+i}\circ f^s-(-1)^{|f||partial|}f^{s+1}\circ\partial_M^s)_{s\in\bbZ}\]
+\end{defn}
+\begin{prob}
+	Show that $\partial_{\Hom}$ is a differential. Hint: use that $\partial_M$ and $\partial_M$ are.
+\end{prob}
+\begin{rmk}
+	The composition in $\dgVectk$ is defined as: if $f\in\Hom_{\dgVectk}(M,N)^i$ and $g\in\Hom_{\dgVectk}(K,M)^j$,
+	then $f\circ g\in\Hom_{\dgVectk}(K,N)^{i+j}$ where $(f\circ g)=(f^{s+j}\circ g^s)_{s\in\bbZ}$.
+
+
+\end{rmk}
+\begin{lem}
+	\begin{enumerate}
+		\item $1_M\in\Hom_{\dgVectk}(M,M)^0.$
+		\item Composition has the following properties:
+		\begin{enumerate}
+			\item $\circ$ is associative.
+			\item $\Hom_{\dgVectk}(N,P)\otimes \Hom_{\dgVectk}(M,N)\xrightarrow{\circ} \Hom_{\dgVectk}(M,P)$
+			is a morphism of complexes. 
+		\end{enumerate}
+	\end{enumerate}
+\end{lem}
+
+\subsection{dg Categories}
+\begin{defn}
+	A \textbf{dg Category} is a category $\mathcal C$ enriched over $\dgVectk$.
+\end{defn}
+Okay, that is slightly cheating although it is quite nice. 
+\begin{defn}
+	Let $\mathcal C$ be a $k$-linear category. We say $\mathcal C$ is a \textbf{dg category} if:
+	\begin{enumerate}
+%		\item For all objects in $M,N\in\mathcal C$, $\Hom_{\mathcal C}(M,N)$ is a complex $(\Hom_{\mathcal C}(M,N)^i,\partial^i_\Hom )_{i\in\bbZ}$
+		\item $1_M\in\Hom_{\dgVectk}(M,M)^0$
+		\item The other stuff we talked about in the above lemma.
+	\end{enumerate}
+\end{defn}
+\begin{rmk}
+	So a natural question to arise is whether a specific category admits an ``enhancement'', or enrichment 
+	over $\dgVectk$. If so, we can do homological algebra!
+
+	Next lecture will be more concrete. :)
+\end{rmk}
+
+\section{April 5, 2019}
+Today we will just focus on examples of dg categories! No definitions today. :)
+
+\subsection{Examples of dg categories}
+\begin{ex}
+	$\dgVectk$ is a dg category. We also use this notation to refer to the category without the dg structure.
+
+	Some notation: when we write 
+	\[\hom(M,N)=\{\text{maps of degree zero}\}\]
+	we are taking about the regular category . Then we call the same category where the maps 
+	have arbitrary degree as the dg enchancement.
+\end{ex}
+\begin{ex}
+	A dg algebra $A$ is a dg category with one object. It has a single object $\ast$ and $\Hom_A(\ast,\ast)=A$.
+\end{ex}
+\begin{rmk}
+	This gives us a third definition for a dg category: a dg algebra with several objects. This parallels the fact
+	that an algebra over $k$ can be considered a $k$-linear category with a single object and a $k$-algebra with several
+	objects is a $k$-linear category. This is a bit funny.
+\end{rmk}
+In this last example, the differential on $A$ is $\Hom(\ast,\ast)$ and composition respects grading 
+and the differential. Furthermore, composition is a homomophism of degree zero ($\deg(a\circ b)=\deg a+\deg b$)
+and finally it is a morphism of complexes of degree zero.
+\begin{ex} 
+	Let $R$ be a algebra, then the category of complexes of right $R$-modules $\Ch=\Ch(\mathbf{mod}\text{-}R)$
+	is a dg category whose objects are complexes of right $R$-modules and whose morphisms are themselves complexes.
+
+	That is, $\Hom_{\Ch}(M,N)^i=\prod_{s\in\bbZ}\Hom_R(M^s,N^{s+i})$ with differential
+	\[d_{\Hom}(f)=d_N\circ f-(-1)^{|f|}f\circ d_M.\]
+\end{ex}
+\begin{rmk}
+	Usually when one studies $\Ch$, one only considers the regular (non dg) category structure. Actually 
+	this is the case in books like Weibel and Rotman.
+
+	When one is looking at representation theory, on considers $R$-modules and so it is natural to consider
+	$\mathbf{D}(\modR)$, the derived category where objects are complexes. Then $\Ch(R)$
+	has complexes for both objects and morphisms.
+
+	Recovering $R$ from the modules is Morita theory. Getting $\mathbf{mod}\text{-}R$ from its derived category
+	is derived Morita theory. 
+\end{rmk}
+
+\subsection{He lied about no definitions}
+\begin{defn}
+	Let $A=(A,m,u,\partial)$ be a dg algebra. $M$ is called a \textbf{dg right $A$-module} if 
+	\begin{enumerate}
+		\item $M$ is a complex with differential $\partial_M$. 
+		\item There is a right action on $M$ given by $m_M:M\otimes A\to M$ such that $m_M$ is a morphism
+		of complexes of degree zero (i.e. $\partial_M(ma)=\partial_M(m)a+(-1)^{|m|}m\partial_A(a)$). Furthermore
+		$m_M$ satisfies the usual diagrams for a right action.
+	\end{enumerate}
+\end{defn}
+\begin{rmk}
+	We write $\dgmodA$ to denote the right $A$-modules. As usual, we can define it as a dg category
+	or regular category.
+
+	Let $M$ and $N$ be two dg right $A$-modules. A morphism of degree zero from $M$ to $N$ maps
+	$M^i$ to $N^i$ for all $i$ and commutes with the differential and is $A$-linear.
+
+	When scaling up to the dg structure, we get $\Hom_{\dgmodA}(M,N)$ consists of complexes where each 
+	component consists of maps of the appropriate degree that are all still (right) $A$-linear.
+
+	Notice that in the general case we don't get commutativity with differentials.
+\end{rmk}
+\begin{rmk}
+	Notice that these are nonempty since $\id_M\in\Hom(M,M)^0$ and if $I$ is any dg-ideal  of $A$
+	(graded ideal closed under $\partial$), then the quotient map is in $\Hom(A,A/I)^0$.
+\end{rmk}
+The differential on $\Hom(M,N)$ is the usual thing with the sign trick.
+\begin{prob}
+	Prove that $\partial_{\Hom}\circ \partial_{\Hom}=0$ and that $\dgmodA$ is a dg category.
+\end{prob}
+
+Note that if we let $A=(\cdots\to 0\to R\to 0\to \cdots)$ then $\dgmodA$ is the same as $\Ch(\modR)$.
+
+\section{April 8, 2019}
+Today we will mostly be playing with morphisms. We expect it to be quite easy. On Wednesday we will play with the objects.
+
+\subsection{Morphisms in a dg category}
+Notice that if $A$ is a dg algebra (or just an algebra) -- recall that this is a (dg) Category with one object.
+Then we can define $B\subseteq A$ subalgebras, $I\subseteq A$ ideals, and quotients $A/I$ as usual.
+
+It is important to notice that properties can change from $A\to B$ and $A\to A/I$. The set of units may change, for instance.
+
+Today we will let $\mathcal C$ be a dg category and then analyze 6 (dg) categories and ideals associated to $\mathcal C$. Along
+the way, it is good to keep $\mathbf{dgAlg}$ and $\dgmodA$ in mind as examples.
+
+Recall we had one definition of a dg category $\mathcal C$ as an Algebra with several objects. Then we 
+are really studying $\mathcal B,\mathcal I\subseteq\mathcal C$ and $\mathcal C/\mathcal I$. Here we are 
+assuming that the objects in all related categories are the same.
+\begin{prob}
+	Write down the definitions of subcategory, ideal, and quotient that work with these definitions.
+\end{prob}
+
+\subsection{Homological Categories?!}
+Let $\mathcal C$ be a dg category. Then we will define analogs of the homological algebra objects 
+we look for usually.
+\begin{defn}
+	Define $Z(\mathcal C)$ to be the category with the same objects as $\mathcal C$ with 
+	\[Z\Hom_{\mathcal C}(M,N)=\Hom_{Z(\mathcal C)}(M,N)=\{f\in \Hom_{\mathcal C}(M,N)|\partial_{\Hom_{\mathcal C}}(f)=0\}\]
+\end{defn}
+\begin{lem}
+	$Z(\mathcal C)$ is a dg subcategory of $\mathcal C$ (with zero differentials).
+\end{lem}
+\begin{prf}
+	It is clear $Z(\mathcal C)\subseteq \mathcal C$. Recall that an axiom of a dg category is that $\partial 1_M=0.$
+	Thus $1_M\in \Hom_{Z(\mathcal C)}(M,M). $
+
+	Let $f\in\Hom(M,N)$ and $g\in\Hom(N,P)$. Then 
+	\[\partial(g\circ f)=\partial (g)\circ f+(-1)^{|g|}g\circ \partial(f)=0\]
+	and we are done. :)
+\end{prf}
+\begin{defn}
+	$B(\mathcal C)$ again consists of the same objects as $\mathcal C$ but now 
+	\[B\Hom_{\mathcal C}(M,N)=\Hom_{B(\mathcal C)}(M,N)=\{f\in \Hom(M,N)|f=\partial_{\Hom}s f'\}\]
+\end{defn}
+\begin{lem}
+	$B(\mathcal C)$ is an ideal of $Z(\mathcal C)$.
+\end{lem}
+\begin{rmk}
+	To show that $B(\mathcal C)$ is an ideal in $Z(\mathcal C)$, we need to check that for all $f\in Z(\mathcal C)$ and $g\in B(\mathcal C)$
+	that (if $f$ and $g$ can be composed) that $f\circ g$ and/or $g\circ f$ are back in $B(\mathcal C)$.
+\end{rmk}
+\begin{prf}
+	Let $f\in \Hom_Z(M,N)$ and $g\in\Hom_B(L,K)$. Then by definition $g=\partial g'$. If $f\circ g$ 
+	is defined, then 
+	\begin{align*}
+		(-1)^{|f|}f\circ g &= f\circ \partial(g')\\
+		&= \partial(f)\circ g +(-1)^{|f|}f\circ\partial(g')\\
+		&=\partial(f\circ g')\in B(\mathcal C)
+	\end{align*}
+	reversing the composition, if allowable, can be checked similarly.
+\end{prf}
+\begin{defn}
+	$H(\mathcal C)$ is defined to have the objects of $\mathcal C$ and
+	\[H\Hom(M,N)=\Hom_{H(\mathcal C)}(M,N)=\Hom_Z(M,N)/\Hom_B(M,N).\]
+\end{defn}
+James uses the book \textit{Rational Homotopy Theory} when he is talking about dgas and dg categories.
+He says it's a good reference for this part of the class.
+
+\begin{defn}
+	Suppose $\mathcal C$ is a dg category with zero differential. Then define
+	$\mathcal C^0$ to be the category with the same objects and 
+	\[\Hom_{\mathcal C^0}(M,N)=\Hom_{\mathcal C}(M,N)^0\]
+\end{defn}
+\begin{lem}
+	$\mathcal C^0$ is a category.
+\end{lem}
+\begin{prf}
+	``It's kinda obvious, right?''
+\end{prf}
+
+\subsection{Homotopy categories}
+We can define in the more concrete case the category $\mathbf{K}(\modR):=H^0(\Ch(\modR))$.
+
+\section{April 10, 2019}
+Today is going to be a three-star day. We are going to be doing the next natural thing: ``playing with objects \textit{and} morphisms.''
+
+\subsection{Playing with Objects}
+Last time we defined the categories we were talking about without changing the underlying objects of the category.
+We need to define:
+\begin{itemize}
+	\item Shift or suspension
+	\item Mapping cone
+	\begin{itemize}
+		\item To do this we will need some motivation.
+	\end{itemize}
+\end{itemize}
+Recall that last time we discussed the process of creating $H^0(\dgmodA)$. Here the $\hom$ sets 
+are just vector spaces (instead of dg vector spaces) so we lose some structure. Then the shift and the
+cone operations will help recover (some) of the lost information.
+
+\begin{rmk}
+	From last time: let $A$ be a (dg) algebra. Then we can define a subalgebra $B$ of $A$
+	and ideals $I\lhd A$ and quotients $A/I$. We did everything in categories on Monday: subcategories, ideals, and quotients.
+
+	One important process in algebras is localization. The analog also exists in category theory: we can invert 
+	a collection of morphisms. This is more complicated (as expected) than in the case of algebras, but analogous.
+\end{rmk}
+\begin{rmk}
+	$Z^0(\dgmodA)$ is an Abelian category. $H^0(\dgmodA)$ is usually not Abelian. So we can't really
+	talk about subobjects and quotients, etc, in the homotopy category although we can talk about them in the 
+	cycle category and remember the correspondence.
+\end{rmk}
+\begin{rmk}
+	Consider $\Ch(\modR)$. We can define three different functors:
+	\begin{itemize}
+		\item $P:\modR\to H^0(\Ch(\modR))$, which takes the projective resolution of a module.
+		\item $i:\modR\to H^0(\Ch(\modR))$, which embeds $M$ as a complex $\cdots\to 0\to M\to 0\to \cdots$.
+		\item $I:\modR\to H^0(\Ch(\modR))$, which assigns to each module an injective resolution.
+	\end{itemize}
+	The first and third functors are called the \textbf{projective} and \textbf{injective deriving functors,} respectively.
+
+	We have a natural transformations $P\to i\to I$ in $H^0(\Ch(\modR))$, but when we pass to $D(\modR)$,
+	these become natural isomorphisms.
+\end{rmk}
+
+\subsection{Shift/Suspension}
+\begin{defn}
+	Let $\mathcal C=\dgmodA$. Let $M$ be a right dg $A$ module (complex). Then the \textbf{shift}
+	of $M$, denoted by $\Sigma M$, is another right dg $A$-module such that:
+	\begin{itemize}
+		\item $\Sigma M=M$ as a right $A$-module.
+		\item $(\Sigma M)^i=M^{i+1}$ for all $i$.
+		\item $\partial_{\Sigma M}=\partial_M$
+	\end{itemize}
+\end{defn}
+\begin{rmk}
+	Elements in $(\Sigma M)^i=M^{i+1}$ are denoted by $sm$, where $m\in M^{i+1}$. Then 
+	\[\partial_{\Sigma M}(sm)=(-1)s(\partial_M(m))\in (\Sigma M)^{i+1}=M^{i+2}.\]
+\end{rmk}
+\begin{rmk}
+	Actually, $\Sigma$ is a functor! Just using that $|\partial|=1$ got us the sign, but we 
+	can generalize completely using $\sigma f=(-1)^|f|f.$
+\end{rmk}
+\begin{ex}
+	Suppose $A=(\cdots\to 0\to R\to 0\to \cdots)$ with $R$ in the zeroth position. Then $\Sigma M$ is the same complex
+	with $R$ shifted to the $(-1)^{st}$ position.
+\end{ex}
+\begin{lem}
+	$\Sigma$ is invertible and the inverse is denoted $\Sigma^{-1}$ in $\dgmodA$ and all cycle, cocycle, and homology categories.
+\end{lem}
+\begin{rmk}
+	It is a bit troubling talking about functors on $B^0(\mathcal C)$, which is an ideal category, but not 
+	a category proper. Basically the idea here is that we still get that it preserves morphisms, but identities may 
+	not exist and therefore can't be preserved.
+\end{rmk}
+\begin{lem}
+	\[\Hom_{\dgmodA}(M,\Sigma N)=\Sigma|_{\dgVectk} \Hom_{\dgmodA}(M,N)\] 
+	Hint: $\Hom(M,\Sigma N)^i=(\Sigma\Hom(M,N))^i$.
+\end{lem}
+\subsection{Mapping Cone}
+As a construction, we first consider it as a map of sets
+\[\cone:\Hom_{Z^0(\dgmodA)}(M,N)\to \dgmodA.\]
+\begin{defn}
+	If $f:M\to N$ is a cycle in $\dgmodA$, then we define \textbf{the cone of $f$}, denoted $\cone(f)$,
+	to be a right dg $A$ module such that
+	\begin{itemize}
+		\item $(\cone(f))^i=(\Sigma M\oplus N)^i=M^{i+1}\oplus N^i$
+		\item $(sm+n)\cdot a=s(m\cdot a)+n\cdot a$
+		\item $\partial_{\cone(f)}(sm+n)=-s\partial_M^{i+1}(m)+[f(m)+\partial_N^i(n)]$
+	\end{itemize}
+\end{defn}
+\begin{lem}
+	$\partial^{i+1}\circ\partial^i=0$.
+\end{lem}
+\begin{prf}
+	\[\partial(sm+n)=-s\partial_M(m)+[f(m)+\partial_N(n)]\]
+	so applying the differential again:
+	\[\partial^2(sm+n)=s\partial_M^2(m)+-s\partial\]
+	I am missing something here but I believe it is clear.
+\end{prf}
+\begin{thm}
+	$\cone:\operatorname{Mor}(Z^0(\dgmodA))\to \dgmodA$ descends to a map to $H^0(\dgmodA).$
+\end{thm}
+Here is some homework or just some facts if you are feeling lazy:
+\begin{itemize}
+	\item $0\to N\to \cone(f)\to \Sigma M\to 0$ is short exact (in $\dgmodA$).
+	\item If $K\in \dgmodA$, then 
+	\[\Hom_{\dgmodA}(K,\cone(f))\cong\cone_{\dgVectk}(\Hom_{\dgmodA}(K,f))\]
+\end{itemize}
+
+\section{April 12, 2019}
+Next week's topic will be Hochschild cohomology, which you can find in Weibel (chapter 9). Today we are going to finish
+the lecture we began on Wednesday. We will also review projective resolutions.
+
+\subsection{Mapping Cone (again)}
+Recall that if we have $f:M\to N$ in $Z^0(\dgmodA)$, we can construct $\cone(f)\in\dgmodA$ where
+\[\cone(f)^i=(\Sigma M\oplus N)^i\]
+and
+\[\partial_{\cone(f)}=\partial_{\Sigma M}\oplus(f+\partial_N)\]
+and more specifically
+\[\partial_{\cone(f)}(sm+n)=-s\partial_M^{i+1}(m)+(f(m)+\partial_N^i(n)).\]
+
+\begin{rmk}
+	Where does this formula come from? Consider the diagram
+
+	\begin{center}
+		\begin{tikzcd}
+			M^{i-1}\ar[r,"\partial_M^{i-1}"]\ar[d,"f^{i-1}"] & M^i\ar[r,"\partial^i_M"]\ar[d,"f^i"]\ar[dl] & M^{i+1}\ar[d,"f^{i+1}"]\ar[dl]\\
+			N^{i-1}\ar[r,"\partial_N"] & N^i\ar[r,"\partial N"] & N^{i+1}
+		\end{tikzcd}
+	\end{center}
+
+	\noindent where the diagonal arrow indicate ``pushing down'' a copy of $M^i$ to direct sum with $N^{i-1}$.
+	But then using the maps you have in the diagrams, you get the maps $\partial_M^{i+1},f^{i+1}$ and $\partial_N^i$
+	between $M^{i+1}\oplus N^i$ and $M^{i+1}\oplus N^{i+1}$, and $\partial_{\cone(f)}$ is just their sum!
+
+	I need to think more to see whether this fact is actually meaningful or just a mnemonic.
+\end{rmk}
+\begin{ex}
+	Consider a projective resolution $P_M$ of $M$ and the map $f:P_0\to M$. Then considering that $M$ is 
+	a complex with zeros everywhere except the zero position and consider the chain map $f$ induced by $f_0$
+	(and zeros elsewhere) and then we can compute
+	\[\cone(f)=\cdots \to P^{-1}\to P^0\to M\to 0. \]
+\end{ex}
+\subsection{Facts about $\cone(f)$}
+\begin{rmk}
+	There exists a short exact sequence in $\dgmodA$
+	\[0\to N\to\cone(f)\to\Sigma M\to 0\]
+	where $n\mapsto 0+n$ under the first man and $sm+n\mapsto sm$ in the second.
+
+	This is called the \textbf{mapping cone sequence.}
+\end{rmk}
+\begin{rmk}
+	Let $K$ be another dg right $A$ module. Then
+	\[Z^0(\dgVectk)\ni\Hom_{\dgmodA}(K,f):\Hom_{\dgmodA}(K,M)\to\Hom_{\dgmodA}K,N)\]
+	and furthermore
+	\[\cone(\Hom_{\dgmodA}(K,f))\cong\Hom_{\dgmodA}(K,\cone(f))\]
+	and
+	\[\cone(\Hom_{\dgmodA}(\Sigma f,K))\cong\Hom_{\dgmodA}(\cone(f),K)\]
+\end{rmk}
+\begin{rmk}
+	Let $K$ be a left dg $A$ module. Then the map
+	\[f\otimes_A \id_K:M\otimes_AK\to N\otimes_AK\]
+	is such that
+	\[\cone(f\otimes \id_K)=\cone(f)\otimes K.\]
+
+	We can also switch ``left'' and ``right.''
+\end{rmk}
+\subsection{A ``problem''}
+The map
+\[\cone:\operatorname{Mor}(Z^0(\dgmodA))\to \dgmodA\]
+is \textbf{not} functorial! 
+
+However, suppose that $f,g:M\to N$ and $[f]=[g]\in H^0(\dgmodA)$. Whenever this is true, there exists
+a map $\Phi:\cone(f)\to \cone(g)$ that fits into the diagram
+\begin{center}
+\begin{tikzcd}
+	0\ar[r] & N\ar[d,"\cong"]\ar[r]& \cone(f)\ar[r]\ar[d,dashed,"\Phi"] & \Sigma M\ar[d,"\cong"]\ar[r] & 0\\
+	0 \ar[r] & N\ar[r] & \cone(g)\ar[r] & \Sigma M\ar[r] & 0
+\end{tikzcd}
+\end{center}
+
+\noindent which is clearly an isomorphism via the five lemma. In fact, such a map exists 
+if and only if these two maps are homotopic!
+
+\subsection{Classical Homological Algebra}
+Recall that we can always construct projective resolutions of a (right) $R$-module by taking
+a free module that maps onto $M$ and then iterate. Thus such a resolution always exists.
+
+Let $f:M\to N$ be a morphism of right $R$-modules. Then there exits $F$, the lift of $f$,
+between any projective resolutions $P_M$ and $P_N$. Notice that the resolutions \textit{don't}
+include the module themselves. Furthermore any two lifts of $f$ differ only by a boundary in $\Ch(R)$,
+and thus are equal in the homotopy category.
+
+From this we can conclude that any $M$ in $H^0(\Ch(R))$, there exists a unique projective resolution,
+up to (a unique) isomorphism. In this way, we can see that ``taking a projective resolution'' defines a 
+functor from $\modR$ to $H^0(\Ch(R))$.
+
+For any two $R$ modules $M$ and $N$, 
+\[\Ext_R^i(M,N):=H^i(\Hom_{\Ch(R)}(P_M,P_N)\left(=H^i(\Hom_{\Ch(R)}(P_M,N)\right).\]
+
+If $M=N$, then $\Hom_{\Ch(R)}(P_M,P_M)$ is a dg algebra. As a consequence,
+\[\Ext_R^*(M,M)=\oplus_i H^i(\Hom(P_M,P_M))\]
+is a graded algebra.
+
+\begin{defn}
+	Then we can define \textbf{the Hochschild cohomology} as
+	\[\oplus_{i\in \bbZ}\Ext_{R\otimes R^{op}}^i(R,R)\]
+\end{defn}
+\begin{rmk}
+	A nickname of Hochschild cohomology is ``the derived functor of the center.'' 
+\end{rmk}
+
+\section{April 15, 2019}
+Today we will focus on understanding $\HH^0(A)$, the zeroth Hochschild cohomology. Recall that 
+Sarah Witherspoon has a preprint (I have it) of a book she is going to release on the subject.
+
+Define the Hochschild cohomology as we saw last week. Here james spent some extra time defining $A^{op}$ 
+as well as going over why it suffices to define it over $A^e$.
+
+\subsection{Hochschild Cohomology}
+For clarity:
+\begin{defn}[Hochschild Cohomology]
+	For every $i\in\bbZ_{\ge 0}$, the $i^{th}$ Hochschild cohomology of $A$ is defined to be
+	\[\HH^i(A)=\Ext_{A^e}^i(A,A)=H^i(\Hom_{\Ch(A^e)}(P_A,P_A))\]
+	where $A$ is any associative algebra.
+\end{defn}
+\begin{rmk}
+	In particular, $\HH^0(A)=\Ext_{A^e}^0(A,A)=\Hom_{A^e}(A,A)$.
+\end{rmk}
+\begin{rmk}
+	``\textbf{Slogan 1}'': Hochschild cohomology is the derived functor of $\Hom_{A^e}(A,A)$.
+\end{rmk}
+\begin{rmk}
+	In fact, we can (and will!) define \textit{Hochschild cohomology of an algebra with coefficents
+	in an $A^e$ module $M$} as $\HH^i(M)=\Ext_{A^e}^i(A,M).$
+\end{rmk}
+\begin{lem}
+	$\Hom_{A^e}(A,A)=Z(A)$.
+\end{lem}
+\begin{prf}
+	Given any $f\in \Hom(A,A)$, set $c=f(1)$. We claim that $c\in Z(A)$. To see this, notice that for 
+	every $a\in A$, $ac=af(1)=f(a\cdot 1)=f(1\cdot a)=f(1)a=ca.$ 
+
+	Thus we can define a map $f\mapsto f(1)$. To define the inverse, just sent $c\in Z(A)$ to 
+	$f$ mapping $a\mapsto ca(=ac)$. Then a standard verification shows what we want.
+\end{prf}
+\begin{rmk}
+	``\textbf{Slogan 2}'': Hochschild cohomology is the derived functor of ``the center.''
+\end{rmk}
+This leads us to a really ``wild'' conjecture:
+\begin{conj}
+	$\HH^*(A)$ is a commutative algebra.
+\end{conj}
+\begin{rmk}
+	We really have only proved this for the zeroth piece, which is why this is so wild. In fact, it is false.
+\end{rmk}
+Instead,
+\begin{thm}
+	$\HH^*(A)$ is \textit{graded} commutative.
+\end{thm}
+\begin{rmk}
+	We do not have the machinery we need to prove this yet. For today we will prove a weaker result.
+\end{rmk}
+\begin{thm}
+	$\HH^*(A)$ is a graded algebra.
+\end{thm}
+\begin{prf}
+	$\HH^*(A)=\Ext_{A^e}^{\ge 0}(A,A)$ by definition. This can be computed as
+	\[H^*(\Hom_{\Ch(A^e)}(P_A,P_A))=H^*(B)\]
+	where $B$ is a dg algebra. But then $H*(B)$ is a graded algebra.
+\end{prf}
+
+\subsection{Some more categories}
+Let $\calC$ be an abelian category and let $\mathbf{Rex}(\calC)$ be the category of functors $\calC\to \calC$
+that are right exact and commute with $\oplus.$
+\begin{rmk}
+	Notice that whenever $\operatorname{Fun}(\calC,\calC)$ can be a replacement, but it isn't always abelian.
+\end{rmk}
+\begin{thm}[Watts]
+	If $\calC=R\text{-}\mathbf{mod}$, then $\mathbf{Rex}(\calC)=A^e\text{-}\mathbf{mod}$.
+\end{thm}
+\begin{rmk}
+	More generally, any right exact functor from $A$ modules to $B$ modules that commutes with direct sums
+	is isomorphic to $M\otimes_A -$ for some $(B,A)$-bimodule.
+\end{rmk}
+\begin{lem}
+	Let $\calC$ be $A$-$\mathbf{mod}$. Then $\id_\calC=A\otimes_A-$.
+\end{lem}
+\begin{defn}
+	Let $\calC$ be an abelian category. For every $i\in\bbZ$, the $i^{th}$ Hochschild cohomology
+	of $\calC$ is defined to be
+	\[\HH^i(\calC)=\Ext^i_{\mathbf{Rex}(\calC)}(\id_\calC,\id_\calC).\]
+\end{defn}
+\begin{rmk}
+	If $\calC$ is $A$-$\mathbf{mod}$, then this agrees with $\HH^i(A)$. We have a map $\Phi:\mathbf{Rex}(\calC)\to A^e$-$\mathbf{mod}$
+	sending $\id_\calC$ to $A$, and when $i=0$,
+	\[\HH^0(\calC)=\Hom_{\mathbf{Rex}}(\id_\calC,\id_\calC)=\operatorname{Mor}_\calC(\id_\calC,\id_\calC)\]
+	where $\operatorname{Mor}$ denotes the natural transformations. This forms a commutative ring where the multiplication
+	is composition and the commutativity follows from the naturality squares.
+\end{rmk}
+\begin{defn}
+	With $\calC$ as above, $\operatorname{Mor}_\calC(\id_\calC,\id_\calC)$ is called the \textbf{center of $\calC$}. This definition
+	arises from the analogy with algebras.
+\end{defn}
+\begin{rmk}
+	Hochschild cohomology is the derived functor of $\Hom_{\mathbf{Rex}}(\id_\calC,\id_\calC)$.
+\end{rmk}
+Next time we will consider $\HH^1$!
+
+\section{April 17, 2019}
+The lectures this week will cover three apparently distinct topics: the center, derivations, and deformations. The 
+underlying math that connects these is the Hochschild complex, which we won't define until next week.
+
+Some homework (for those who haven't seen it):
+\begin{ex}
+	Find the definition of a Lie algebra and work out some examples.
+\end{ex}
+\subsection{Derivations and $\HH^1(A)$}
+Recall that $\HH^i(A)=\Ext_{A^e}^i(A,A)$.
+\begin{defn}
+	Let $A$ be an algebra. A $k$-linear map $f:A\to A$ is called a \textbf{derivation} if 
+	\[f(1)=0\]
+	and for all $a,b\in A$,
+	\[f(ab)=f(a)b+af(b).\]
+
+	The set of all derivations of $A$ is denoted $\Der(A)$.
+\end{defn}
+\begin{defn}
+	Let $x\in A$. Define $I_x:A\to A$ by $I_x(a)=xa-ax$. One can easily check that $I_x\in\Der(A)$.
+	This derivation is very special: it is called an \textbf{inner derivation.} Any derivation which is 
+	not inner is \textbf{outer.}
+\end{defn}
+\begin{ex}
+	$A=k[x]$ with derivation $\frac{d}{dx}$. Furthermore $\Der(A)=\{f(x)\frac{d}{dx}|f(x)\in A\}$. The only
+	inner derivation is zero since $A$ is commutative.
+\end{ex}
+\begin{rmk}
+	Notice that $\Der(A)$ is a Lie algebra with $[f,g]=fg-gf\in\Der(A)$. Furthermore $\text{Inn}(A)$ is a 
+	Lie ideal, and $\Der(A)/\text{Inn}(A)$ is a quotient Lie algebra.
+\end{rmk}
+And finally we get to another definition of $\HH^1$:
+\begin{defn}
+	The first Hochschild cohomology group of $A$ is defined to be
+	\[\HH^1(A)=\Der(A)/\text{Inn}(A)\]
+	which we sometimes write as $\text{Out}(A)$, the outer derivations of $A$.
+\end{defn}
+\begin{rmk}
+	(\textbf{Slogan 4}): $\oplus\HH^{i+1}(A)$ is the derived functor of $\text{Out}(A)$.
+\end{rmk}
+\begin{thm}
+	$\oplus\HH^{i+1}(A)$ is a graded Lie algebra.
+\end{thm}
+\begin{prf}
+	Nope.
+\end{prf}
+\begin{rmk}
+	Notice that if $\HH^1(A)=0$, then every derivation is inner. For example, when 
+	$A=M_n(k)$, every derivation of $A$ is inner. To see this, notice that $A\otimes A^{op}=M_n(k)\otimes M_n(k)=M_{n^2}(k)$,
+	which has global dimension zero. So $\Ext_{A^e}^1(A,A)=0$.
+\end{rmk}
+
+\subsection{Using Categories}
+Recall that $\HH^i(A)=\Ext_{\mathbf{Rex(\calC)}}^i(\id_{\calC},\id_\calC)$. It ends up that if we pick two 
+algebras $A$ and $B$ which are Morita equivalent (that is, their module categories are equivalent) and let $\calC=A\text{-}\mathbf{mod}$ or $B\text{-}\mathbf{mod}$, this construction
+yields the same thing! So $\HH^i(A)=\HH^i(B)$. This is not at all obvious on the level of complexes, 
+so it is a vote in favor of abstract nonsense.
+
+\section{April 19, 2019}
+Today we are talking about \textbf{infinitesimal deformations of algebras} and how they will relate to $\HH^2(A)$.
+
+It ends up that ``\textit{every deformation (moduli) problem is related to some cohomology.}'' We will use the letter 
+``i'' to stand for ``infinitesimal.'' Recall that we have usually been considering algebras $A$ over a field $k$, but
+we also want to consider algebras over a ring $R=k[t]/(t^2)\cong k\oplus kt$
+\subsection{Infinitesimal Deformations and $\HH^2$}
+\begin{defn}
+	Let $(A,m)$ be a $k$ algebra. An \textbf{infinitesimal deformation} of $A$ is a $k[t]/t^2$ algebra
+	structure $m_t=\ast_t$ (this is the multiplication) on $A\otimes k[t]/t^2$ (note this is free over $R$, using the $k$-basis of $A$).
+
+	The multiplication on the deformation is defined as 
+	\[a\ast_t b=ab+\mu(a,b)t\in A\oplus At\cong A\otimes R\]
+	for some $\mu:A\otimes A\to A$. This only defines the multiplication for elements in $A$, but this extends by linearity to $A\oplus At:$
+	\[(a+a't)\ast_t(b+b't)=a\ast_t b+(a'\ast_t b)t+(a\ast_t b')t+0\]
+	since in $R$, $t^2=0$.
+\end{defn}
+\begin{rmk}
+	Notice that it is actually part of the definition of an infinitesimal deformation is \textbf{associative.}
+	I didn't see this on the board, but rather than having this family of algebras freely parameterized by $\mu$, 
+	we only take those $\mu$ such that the deformation is associative.
+\end{rmk}
+\begin{ex}
+	The \textbf{trivial infinitesimal deformation of $A$} is determined by $\mu=0$.
+\end{ex}
+\begin{ex}
+	Let $A=k[x,y]$ (works for arbitrary variables) where we define, for all $f,g\in A$
+	\[f\ast_t g=fg+\left(\frac{\partial f}{\partial x}\frac{\partial g}{\partial y}-\frac{\partial f}{\partial y}\frac{\partial g}{\partial x}\right)t.\]
+	It ends up that this algebra is associative! You can show it. :) This version of Nico doesn't feel like typing it.
+\end{ex}
+\begin{lem}[Condition 2-C]\label{lem-2-C}
+	$m_t$ is associative if and only if for all $a,b\in A$,
+	\[a\mu(b,c)-\mu(ab,c)+\mu(a,bc)-\mu(a,b)c=0.\]
+\end{lem}
+\begin{lem}
+	An $i$-deformation is completely determined by $\mu:A\otimes A\to A$ satisfying the 2-C condition in lemma~\ref{lem-2-C}.
+\end{lem}
+\begin{prf}
+	Suppose $a,b,c\in A$ and that $(a\ast b)\ast c=a\ast(b\ast c)$. Then computing using the definitions gets us
+	\[(ab)c+\mu(ab,c)t+\mu(a,b)ct=a(bc)-\mu(a,bc)t+a\mu(b,c)t.\]
+
+	To go in the opposite direction, you basically use this identity to recover the equality for associativity.
+\end{prf}
+
+\begin{cor}
+	The collection of infinitesimal deformations is in one-to-one correspondence with the collection of $k$-linear maps $\mu A\otimes A\to A$ 
+	satisfying 2-C.
+\end{cor}
+\begin{cor}
+	The collection of infinitesimal deformations is a $k$ vector space.
+\end{cor}
+\begin{rmk}
+	Just formally define each infinitesimal deformation to be a vector corresponding to the $\mu$ which defines it.
+	The fact that the set of such $\mu$ is a $k$ vector space means the structure can be ``pushed over'' to the other collection.
+\end{rmk}
+
+\begin{defn}
+	Let $m_t^1$ and $m_t^2$ be two infinitesimal deformations of $A$. We say they are \textbf{equivalent} if 
+	there is an $R=k[t]/t^2$-algebra isormorphism
+	\[f_t:(A\otimes R,m_t^1)\to (A\otimes R, m_t^2)\]
+	such that $f(a)=a+\zeta(a)t$ for all $a\in A$. In this case we write $m_t^1\sim m_t^2$ or $\mu^1\sim \mu^2$.
+\end{defn}
+\begin{defn}
+	$m_t$ is called \textbf{quasi-trivial} if $m_t$ is equivalent to the trivial infinitesimal deformation.
+\end{defn}
+
+\begin{lem}[Condition 2-B]
+	Let $m_t^1$ and $m_t^2$ be two infinitesimal deformations of $A$. Then $m_t^1\sim m_t^2$ if and only if 
+	there exists $\zeta:A\to A$ such that $\mu^1(a,b)-\mu^2(a,b)=a\zeta(b)-\zeta(ab)+\zeta(a)b$ for all $a,b\in A$.
+	This is called condition 2-B.
+\end{lem}
+\begin{lem}
+	Every equivalence between $m_t^1$ and $m_t^2$ is completely determined by $\zeta$ in 2-B.
+\end{lem}
+\begin{defn}
+	$\mu:A\otimes A\to A$ is called a \textbf{2-coboundary} if there exists $\zeta:A\to A$
+	such that
+	\[\mu(a,b)=a\zeta(b)-\zeta(ab)+\zeta(a)b\]
+	(that is if $\mu$ is quasi-trivial).
+\end{defn}
+\begin{defn}
+	$\mu$ is called a \textbf{2-cocycle} if it satisfies 2-C.
+\end{defn}
+\begin{rmk}
+	This gives us a vector subspace of coboundaries (quasi-trivial infinitesimal deformations) of the
+	space of all infinitesimal deformations, so we can do cohomology!
+\end{rmk}
+\begin{defn}
+	The \textbf{second Hochschild cohomology of $A$} is
+	\[\HH^2(A)=\frac{\text{{infinitesimal deformations}}}{\text{{quasi-trivial i-defs}}}=\frac{\text{{2-cocycles}}}{\text{{2-coboundaries}}}\]
+\end{defn}
+
+\section{April 22, 2019}
+Today we will focus on connecting the notions that we have seen in the past several lectures (center/derivations/infinitesimal deformations) 
+via the Hochschild complex. On Wednesday we are going to prove that the cohomology associated with the Hochschild complex are what we have computed so far.
+
+Recall the definitions and constructions of $\HH^i(A)$ for $i=0,1,2$. Furthermore we asserted that $\HH^*(A)$
+is a graded commutative ring. Furthermore we showed that $\HH^1(A)$ is a Lie algebra and that $\HH^{*+1}(A)$ is a 
+graded Lie algebra.
+
+A natural question one may ask is if there is a ``multiplication'' operation on $\HH^2$ that we can apply, analogous to the commutative ring/Lie algebra
+in the first two examples. In that case, can we extend this structure to $\HH^{*+2}(A)$?
+\begin{rmk}
+	Weibel has a different way to talk about $\HH^2$. In fact, James seems to imply there are several different ways to think about it.
+\end{rmk}
+
+\subsection{The Hochschild Complex}
+\begin{defn}
+	Let $A$ be an algebra over $k$. Define the \textbf{Hochschild complex} $C(A)$ of $A$ to be a cochain complex 
+	such that 
+	\[C(A)^n=\Hom_k(A^{\otimes n},A)\]
+	for $n\ge 0$ and $0$ for $n<0$. Note that $A^{\otimes 0}=k$.
+
+	The differential is defined to be a map $\partial^n:C(A)^n\to C(A)^{n+1}$ where for every $f\in C(A)^n$,
+	\begin{align*}
+		\partial^n f(a_1\otimes \cdots\otimes a_{n+1})&=a_1f(a_2\otimes a_3\otimes\cdots\otimes a_{n+1})\\
+		&\qquad +\sum_1^n(-1)^if(a_1\otimes\cdots\otimes a_ia_{i+1}\otimes\cdots \otimes a_n)\\
+		&\qquad + (-1)^{n+1}f(a_1\otimes\cdots\otimes a_n)a_{n+1}
+	\end{align*}
+\end{defn}
+\begin{rmk}
+	The idea here is the first and last terms actually arise from the fact that $\Hom_k(A^{\otimes n},A)$ has a left- and right 
+	$A$-module structure while the interior terms arise more from the chain complex.
+\end{rmk}
+\begin{lem}
+	$C(A)$ is a cochain complex.
+\end{lem}
+\begin{rmk}
+	We omit the proof for the sake of time. James assures us it is true. :P
+\end{rmk}
+
+\subsection{Double-checking our work}
+Let's compute! 
+\begin{defn}
+	Define the $i$-cocycles and $i$-coboundaries as we do with any chain complex.
+\end{defn}
+Then we can compute $H^0(C(A))=Z^0(C(A))/B^0(C(A))=Z^0(C(A))$. But $C(A)^0=\Hom_k(k,A)\cong A$, 
+so we can determine when $\partial(f)=0$:
+\[\partial(f)(a)=af(1)-f(1)a=0\]
+for all $a$, so this means that $f(1)$ is in the center of $A$, so $Z^0(C(A))=H^0(C(A))\cong\cal Z(A)$.
+
+\brk
+
+What about $\HH^1$? Now $Z^1$ is the set of $f\in \Hom(A,A)$, such that
+\[\partial(f)(a\otimes b)=af(b)-f(ab)+f(a)b=0\]
+and so rewriting this, we get $f(ab)=af(b)+f(a)b$, so $f$ is a derivation!
+
+To compute the coboundaries, say $f=\partial(g)\in C(A)^1$. Then 
+\[f(a)=\partial(g)(a)=ag(1)-g(1)a=-I_{g(1)}(a)\]
+so $f$ is an inner derivation of $A$. So we recover $\HH^1$.
+
+\brk
+
+Now $Z^2$ is the set of $f\in C(A)^2$ such that $\partial(f)=0$ -- so
+\[\partial(f)(a\otimes b\otimes c)=af(b\otimes c)-f(ab\otimes c)+f(a\otimes bc)-f(a\otimes b)c=0\]
+which, via the universal property of the tensor product gets us a $\mu$ satisfying condition 2-C, giving us
+an infinitesimal derivation.
+
+Similarly unfurling definitions gets us that $B^2$ are the 2-coboundaries.
+
+\section{April 24, 2019}
+Today we are going to talk about the equivalence (in all degrees) of $H^i(C(A))$ and $\Ext_A^i(A,A)=\HH^i(A)$.
+On Friday, we well begin working on triangulated and derived categories and will spend about two weeks there. 
+For a reference, you can read Weibel, but the lecture will likely not follow his exposition for the most part.
+
+\subsection{The bar resolution}
+\begin{defn}
+Let $A$ be an algebra over $k$. The \textbf{bar resolution} of $A$ is a chain complex
+($\deg\partial=-1$) which is defined as follows:
+\[B(A)=B(A;A)=\left(\cdots A^{\otimes 4}\to A^{\otimes 3}\to A^{\otimes 2}\to A\to 0\to \cdots\right)\]
+where the tensor power in the $i^{th}$ term is $i+2$, whenever that makes sense.
+
+The differential is zero eventually, and otherwise is defined to be $\partial_N:A^{\otimes n+2}\to A^{\otimes n+1}$ via
+\[\partial(a_0\otimes a_1\otimes \cdots\otimes a_{n+1})=\sum_{i=0}^n(-1)^ia_0\otimes\cdots\otimes a_ia_{i+1}\otimes\cdots\otimes a_{n+1}\]
+\end{defn}
+\begin{rmk}
+	We could actually define this as a cochain, but it is pretty standard to use a chain instead.
+\end{rmk}
+\begin{rmk}
+	The name ``bar resolution'' comes from the fact that the notation for these tensor was (traditionally)
+	\[a_0\otimes\cdots\otimes a_{n+1}\sim[a_0|a_1|\cdots|a_{n+1}].\]
+\end{rmk}
+\begin{ex}
+	Some computations: $\partial_0(a_0\otimes a_1)=a_0a_1$ and
+	\[\partial(a_0\otimes a_1\otimes a_2)=a_0a_1\otimes a_2-a_0\otimes a_1a_2\]
+	so the idea is we are ``generalizing multiplication'' to higher tensor powers.
+\end{ex}
+\begin{lem}
+	$B(A)$ is a complex.
+\end{lem}
+\begin{lem}
+	Consider each $A^{\otimes n+2}$ as an $(A,A)$-bimodule using the natural multiplication on each 
+	factor. Then $\partial_n$ is an $(A,A)$-bimodule morphism.
+\end{lem}
+\begin{cor}
+	This gives us that $B(A)$ is a complex of $(A,A)$-bimodules.
+\end{cor}
+\begin{prf}
+	For any $x\in A$, we need to show that 
+	\[\partial_n(x\cdots(a_0\otimes\cdots\otimes a_{n+1}))=x\cdots\partial_n(a_0\otimes\cdots\otimes a_{n+1})\]
+	but this is pretty much immediate once you define it the right way:
+
+	Basically, define the left action of $A$ on $A^{\otimes n}$ by multiplication (in $A$ on the leftmost factor)
+	and the right action by multiplication on the rightmost factor. There is your structure and it is easy enough 
+	to confirm is compatible with your differential.
+\end{prf}
+\begin{thm}
+	There exist maps (note: not bimodule maps) $s_n:B(A)_n\to B(A)_{n+1}$ such that for all $n$,
+	\[\id_{B(A)_n}=s_{n-1}\circ\partial_n+\partial_{n+1}\circ s_n\]
+\end{thm}
+\begin{prf}
+	It is easy enough to confirm that the maps
+	\[s_n(a_0\otimes\cdots\otimes a_{n+1})=1\otimes a_0\otimes \cdots\otimes a_{n+1}\]
+	work.
+\end{prf}
+\begin{lem}
+	$B(A)$ is exact.
+\end{lem}
+\begin{rmk}
+	We've just shown that $\id_{B(A)}\sim 0$, so we're basically done. For a reminder: say $f\in \ker\partial_n$. 
+	But then 
+	\begin{align*}
+		f&=\id_{B(A)_n}(f)\\
+		&= s_{n-1}\partial_n(f)+\partial_{n+1}s_n(f)\\
+		&= 0 + \partial_{n+1}(s_n(f))\in\operatorname{Im}\partial_{n+1}.
+	\end{align*}
+\end{rmk}
+\begin{thm}
+	$B(A)_{n\ge 0}$ is a free/projective resolution of the $A^e$ module $A$.
+\end{thm}
+\begin{prf}
+	We have already seen that the $\delta$ are $A^e$ module maps and that this is an exact sequence.
+	It remains to see that each $A^{\otimes n+2}$ is free. But
+	\[A^{\otimes n+2}=A\otimes A^{\otimes n}\otimes A\cong A\otimes A\otimes A^{\otimes n}\cong A^e\otimes A^{\otimes n}\]
+	and so this is free over the $k$-basis for the $A^{\otimes n}$ term.
+\end{prf}
+
+\begin{cor}
+	$\Ext_{A^e}^i(A,A)=H^i(\Hom_{\Ch(A^e\text{-}\mathbf{mod}}(B(A)_{n\ge 0},(B(A)_{n\ge 0})))=H^i(\Hom_{\Ch}(B(A)_{n\ge 0},A))$
+\end{cor}
+\begin{thm}
+	$\Hom_{\Ch}(B(A)_{n\ge 0},A)\cong C(A)$
+\end{thm}
+\begin{prf}
+	The tricky part here is defining $\partial_{\Hom_{\Ch}(B(A),A)}:f\mapsto f\circ\partial_{B(A)}$ and then doing the computation. But recall that
+	$\partial_{B(A)}$ and $\partial_{C(A)}$ are almost the same except the first and last terms. Well, use the
+	$(A,A)$-bimodule structure to pull out $a_1$ and $a_{n+1}$ and you get what you want!
+\end{prf}
+\begin{cor}
+	$H^i(C(A))\cong\Ext_{A^e}^i(A,A)$
+\end{cor}
+
+\subsection{The more general problem}
+\begin{lem}
+	Let $M$ be a (left) $A$ module. Then $B(A)_{n\ge 0}\otimes_A M$ is a free resolution of $M$.
+\end{lem}
+\begin{rmk}
+	We could have just as easily have used right module structure by swapping the tensor.
+\end{rmk}
+\begin{rmk}
+	This gives us a very nice thing -- we can get a free resolution of any module! But unfortunately this 
+	is quite a terrible resolution to use if you want to do any computations.
+\end{rmk}
+
+\section{April 26, 2019}
+Finally we are talking about the thing I named these notes after: triangulated categories!
+I was late, but I don't believe that James has done the axioms yet.
+\begin{rmk}
+	It is an open question (Julia also mentioned this) about whether the octahedral axiom is really required for a triangulated category.
+\end{rmk}
+\subsection{Triangulated Categories}
+Some motivation (from Grothendieck): Let $X$ be a projective scheme of dimension $d$ and dualizing 
+sheaf $\omega_X$. Let $M$ be a coherent sheaf on $X$. Then Serre duality gets us that
+\[H_X^i(M)^*\cong H^{d-i}_X(\omega_x\otimes M)\]
+for all $i$ (as long as $X$ is Cohen-Macaulay).
+
+But when $X$ is NOT CM, what can we do? Well there is a complex $\Omega_X$ in the bounded derived category of coherent sheaves over $X$
+such that (in what is now called Grothendieck duality)
+\[H_X^i(M)^*\cong H^{d-i}_X(\Omega_X\otimes M).\]
+
+A triangulated (or derived) category is the place where such an $\Omega_X$ lives.
+\begin{defn}
+	A \textbf{triangle} in $\cal C$ is a diagram in $\cal C$:
+	\[X\to Y\to Z\to\Sigma X.\]
+\end{defn}
+\begin{defn}
+	A \textbf{morphism of triangles} is a commutative diagram
+	\begin{center}
+		\begin{tikzcd}
+			X\ar[r,"u"]\ar[d,"f"]& Y\ar[r,"v"]\ar[d,"g"] & Z\ar[r,"w"]\ar[d,"h"] & \Sigma X\ar[d,"\Sigma f"]\\
+			X'\ar[r] & Y'\ar[r] & Z'\ar[r] & \Sigma X'
+		\end{tikzcd}
+	\end{center}
+\end{defn}
+\begin{lem}
+	The collection of all triangles in $\cal C$ with triangle morphisms form a $k$-linear additive category denoted $\Delta(\cal C)$
+\end{lem}
+\begin{rmk}
+	By forgetting all the information except the $X\to Y$ (resp. just $X$) we can define a forgetful
+	functor $\Delta(\cal C)\to\mathbf{Mor}(\cal C)$ (resp. $\Delta(\cal C)\to\cal C$). Our goal is to define a map in 
+	the reverse direction (an adjoint?).
+\end{rmk}
+\begin{defn}
+	The \textbf{rotation} of a triangle $X\xrightarrow{u} Y\to Z\to \Sigma X$ is $Y\to Z\to \Sigma X\xrightarrow{-\Sigma u}\Sigma Y.$
+	We may be using $\mathscr R(\Delta)$ for the rotation of $\Delta$.
+\end{defn}
+
+\begin{defn}
+	Let $\cal C$ be a $k$-linear additive category with a \textbf{suspension} or \textbf{shift} functor (auto-equivalence, actually)
+	\[\Sigma:\cal C\to\cal C.\]
+
+	Then $({\cal C}, \Sigma ,D)$ is \textbf{pre-triangulated} category where $D$ is a full, nonempty subcategory $D\subseteq\Delta(\cal C)$
+	with shift functor $\Sigma$ of $D$ and we have the following axioms:
+	\begin{itemize}
+		\item (\textbf{TR0}) $X\xrightarrow{\id} X\to 0$ is in $D$ for each $X\in \cal C$ and furthermore $D$ is closed under both shifts and triangle isomorphisms.
+		\item (\textbf{TR1}) [\textit{Mapping Cone Axiom}] For any $f:X\to Y$ in $\cal C$, there is a triangle
+		\[X\xrightarrow{f} Y\to Z\to\Sigma X\]
+		\item (\textbf{TR2}) [\textit{Rotation Axiom}] If $F\in D$, then $\mathscr R(F),\mathscr R^{-1}(F)\in D$
+		\item (\textbf{TR3}) [\textit{Morphism Axiom}] Given two triangles 
+		\begin{center}
+			\begin{tikzcd}
+				X\ar[r]\ar[d,"f"] & Y\ar[r]\ar[d,"g"] & Z\ar[r] & \Sigma X\ar[d,"\Sigma f"]\\
+				X'\ar[r] & Y'\ar[r] & Z'\ar[r] & \Sigma X'
+			\end{tikzcd}
+		\end{center}
+		with maps $f$ and $g$, there exists an $h:Z\to Z'$. I am unclear about whether the resulting diagram should commute.
+	\end{itemize}
+\end{defn}
+\begin{defn}
+	A triple $(\cal C,\Sigma, D)$ is a \textbf{triangulated category} if it is pre-triangulated and, in addition,
+	satisfies the axiom \textbf{TR4} (Verdier/octahedral axiom):
+
+	Suppose we are given three triangles: $X\xrightarrow{u}Y\to Z'\to\Sigma X$, $Y\xrightarrow{v}Z\to X'\to\Sigma Y$
+	and $X\xrightarrow{v\circ u} Z\to Y'\to\Sigma X$. Then there is a triangle $Z'\to Y'\to X'\to\Sigma Z'$ such that
+	\begin{center}
+		\begin{tikzcd}
+			X\ar[dr,"u"]\ar[rr,"v\circ u",bend left] && Z\ar[rr,bend left]\ar[dr] && X'\ar[rr,dashed,bend left]\ar[dr] && \Sigma Z'\\
+			& Y\ar[ur,"v"]\ar[dr] && Y'\ar[ur,dashed]\ar[dr] && \Sigma Y\ar[ur] &\\
+			&& Z'\ar[rr,bend right]\ar[ur,dashed] && \Sigma X\ar[ur] &&
+		\end{tikzcd}
+	\end{center}
+\end{defn}
+\begin{rmk}
+	Notice that the map constructing a triangle for any morphism is not well-defined but it exists. Furthermore
+	it is far from being functorial. This is one of the qualms people have with the definition of these categories.
+	Grothendieck attempted to fix this in an unpublished paper on ``derivators'' but it is significantly more complicated.
+\end{rmk}
+\begin{rmk}
+	Topologists generally drop the $k$-linearity in $\cal C$. James is unsure if it actually ever comes up.
+\end{rmk}
+\begin{rmk}
+	The model category you should be thinking about is $H^0(\Ch(\modR))$.
+\end{rmk}
+
+\section{April 29, 2019}
+Recall (notice?) that, given maps $f:X\to X'$ and $g:Y\to Y'$, using the morphism axiom,
+we can define a morphism of triangles by just this data.
+
+We have a couple other diagrams equivalent to the octahedral diagram (with slightly different information):
+\begin{center}
+	\begin{tikzcd}
+		X\ar[r,"u"]\ar[d,"\sim"] & Y\ar[r]\ar[d,"v"] & Z'\ar[r]\ar[d,dashed] &\Sigma X\ar[d,"\sim"]\\
+		X\ar[r,"v\circ u"] & Z\ar[r]\ar[d] & Y'\ar[r]\ar[d,dashed] &\Sigma X\ar[d,"\Sigma u"]\\
+		& X'\ar[r,"\sim"] \ar[d] & X\ar[r]\ar[d,dashed] & \Sigma Y\\
+		&\Sigma Y\ar[r] & \Sigma Z' &
+	\end{tikzcd}
+\end{center}
+
+\begin{center}
+	\begin{tikzcd}
+		& & X\ar[dl,"u"]\ar[dd,"v\circ u"] &\\
+		& Y\ar[dr,"v"]\ar[ddl] & &\\
+		& & Z\ar[d]\ar[dr] &\\
+		Z'\ar[rr,dashed] & & Y'\ar[r,dashed] & X'
+	\end{tikzcd}
+\end{center}
+
+\begin{ex}
+	Let ${\cal C}=K(\modR)=H^0(\Ch(\modR))$. This is a triangulated category. It is easy to check that $\cal C$ is $k$-linear additive.
+
+	$\Sigma$ is given by shifting of complexes and is an auto-equivalence. $D$ is the full subcategory containing all triangles that are
+	isomorphic to $\cone(f)$ where 
+	\[X\xrightarrow{f} Y\to \cone(f)\to \Sigma X\]
+	is an object such that $\cone(f)^i=(\Sigma X\oplus Y)^i$ and 
+	\[\partial_{\cone}:(sm)+(n)\mapsto (-s\partial (m))+(f(m)+\partial(m)).\]
+	Notice that there is some collision of notation: $\cone(f)$ can refer either to the complex or the triangle above.
+
+	Then we need to find a chain homotopy to establish that $X\to X\to \cone(\id_X)\to\Sigma X$ is isomorphic to $X\to X\to 0\to\Sigma X$ 
+	to show that $D$ satisfies (TR0).
+
+	To prove (TR1), let $u:X\to Y$ be any morphism. Then we have the triangle
+	\[X\xrightarrow{u} Y\to\cone(u)\to\Sigma(X)\]
+	which gives us the axiom.
+
+	For (TR2): start with a triangle $X\to Y\to Z\to \Sigma X=F$ we want to show that $F\in D$ if and only if $\mathcal{R}(F)\in D$.
+	Since all our triangles are isomorphic to the mapping cone, we can just assume that $F$ is the mapping cone of $X\xrightarrow{u}Y$.
+	To show $\mathcal{R}(F)$ is in $D$, we want to show that 
+	\[(Y\xrightarrow{i}\cone(u)\to\Sigma X\to \Sigma Y)\cong (Y\xrightarrow{i}\cone(u)\to\cone(i)\to \Sigma Y)\]
+	The idea here is that you notice that $\cone(\id_Y)=\Sigma Y\oplus Y$ is nullhomotopic. Then you get your copy of $\Sigma X$
+	since $\cone(i)=\Sigma Y\oplus(\Sigma X\oplus Y)$ (with the appropriate differential).
+	
+	For (TR3), if we have $a:X\to X'$ and $b:Y\to Y'$ and $u:X\to Y$ and $u':X'\to Y'$, then we can define the 
+	map $\Sigma a+b:\cone(u)\to\cone(u')$ by 
+	\[\Sigma a+b(sm+n)=sa(m)+b(n).\]
+	This map is natural and makes the diagram commute so we're golden.
+
+	(TR4) is a bit of a pain. But given the triangles 
+	\[X\xrightarrow{u}Y\to Z'\to \Sigma X,\quad X\xrightarrow{v\circ u}Z\to Y'\to \Sigma X,\quad Y\xrightarrow{v}Z\to X'\to\Sigma Y\]
+	we can again assume that these are mapping cones. That this works is slightly less trivial because of the dimensionality of the 
+	diagrams necessary, but can be done. 
+
+	So here we assume $Z'=\cone(u)$, $Y'=\cone(v\circ u)$ and $X'=\cone(v)$. This gives us the diagram
+	\begin{center}
+		\begin{tikzcd}
+			x\ar[r,"u"]\ar[d,"\sim"] & Y\ar[r]\ar[d,"v"] & \cone(u)\ar[r]\ar[d,dashed,"\id_{\Sigma X}\oplus v"] &\Sigma X\ar[d,"\sim"]\\
+			X\ar[r,"v\circ u"] & Z\ar[r]\ar[d] & \cone(v\circ u)\ar[r]\ar[d,dashed,"\Sigma u+\id_Z"] &\Sigma X\ar[d,"\Sigma u"]\\
+			& \cone(v)\ar[r,"\sim"] \ar[d] & \cone(v)\ar[r]\ar[d,dashed,"\pi_{\Sigma Y}"] & \Sigma Y\\
+			&\Sigma Y\ar[r] & \Sigma Z'=\Sigma^2X\oplus \Sigma Y &
+		\end{tikzcd}
+	\end{center}
+\end{ex}
+\begin{prob}
+	Fill in the details of the above proof for (TR2) (which is surprisingly similar to the ``fake'' proof above.)
+\end{prob}
+
+\begin{defn}
+	We define $\Ch^b(\modR)$, $\Ch^+(\modR)$ and $\Ch^-(\modR)$ to be the subcategories of $\Ch(\modR)$ consisting 
+	of the (totally) bounded, bounded below, and bounded above chains.
+\end{defn}
+
+\begin{prop}
+	$H^0(\Ch^x(\modR))=K^x(\modR)$ are triangulated categories for $x\in\{b,+,0\}$. 
+\end{prop}
+\begin{rmk}
+	People refer to these as 
+	subcategories. Even though this isn't strictly true, it most works out.
+\end{rmk}
+\begin{rmk}
+	It ends up that you can just pop different properties on your modules (e.g. finite dimensional, projective injective, flat)
+	are all preserved by your shift functor and other operations, so these are also examples. ``It works with any 
+	property you can think of.'' --James
+\end{rmk}
+\subsection{Properties of Triangulated Categories}
+\begin{prop}
+	IF $X\xrightarrow{u}Y\xrightarrow{v} Z\xrightarrow{w}\Sigma X\in D$ then $v\circ u=0$.
+\end{prop}
+\begin{prf}
+	Consider the diagram
+	\begin{center}
+		\begin{tikzcd}
+			X\ar[r,"\id_X"]\ar[d,"\id_X"] & X\ar[r]\ar[d,"u"] & 0\ar[d,dashed,"0"]\ar[r] & \Sigma X\ar[d,"\Sigma(\id_X)"]\\
+			X\ar[r,"u"] & Y\ar[r,"v"] & Z\ar[r] &\Sigma X
+		\end{tikzcd}
+	\end{center}
+	where both the above triangles are in $D$, so we can apply (TR3) to get the existence of the dashed map above, 
+	and then by commutativity $v\circ u=0.$
+\end{prf}
+\begin{prop}
+	If $(\cal C,\Sigma, D)$ is a triangulated category, then so is $(\cal{C}^{op},\Sigma^{-1},D^{op})$.
+\end{prop}
+
+\section{May 4, 2019}
+Missed this day!
+
+\section{May 6, 2019}
+Today we will discuss 3 kinds of localizations. We will construct the derived category $D(\modR)$ via localization.
+
+\subsection{Localization}
+\begin{defn}
+	Let $\cal C$ be a category. Let $S$ be a collection of morphisms in $\cal C$. The localization of $\cal C$ with respect
+	to $S$ is a category $S^{-1}\cal C$ together with a quotient map $\pi:\cal{C}\to S^{-1}\cal C$ such that 
+	\begin{enumerate}
+		\item The objects in $S^{-1}\cal C$ are the same as those in $\cal C$.
+		\item For any $s\in S$, $\pi(s)$ is invertible (an isomorphism).
+		\item For any functor $F:\cal{C}\to\cal D$ such that $F(s)$ is invertible for all $s\in S$, $F$ factors through $S^{-1}\cal C$.
+	\end{enumerate}
+\end{defn}
+\begin{ex}
+	If $G$ is a semigroup and $\cal C$ is a one-object category whose morphisms are the elements in $G$, then if 
+	we let $S=G$, then $S^{-1}\cal C$ is the category with one object whose morphisms are $\langle G\rangle$.
+\end{ex}
+\begin{ex}
+	If $\cal C$ is the one-object category for $R$, a $k$-algebra, then we can pick a (multiplicative) subset $S$ of $R$ 
+	to get $S^{-1}\cal C$ is essentially $R_S$.
+\end{ex}
+\begin{ex}
+	$K(\modR)$ is a localization of $\Ch(\modR)$.
+\end{ex}
+\begin{rmk}
+	Ignoring set-theoretic issues, $S^{-1}\cal C$ always exists. If we want to fix any such problems, we 
+	can just work over a (locally) small category. Generally if $S$ is a set we are okay, but we will see 
+	soon that we will want to include all our identity maps! So we had better have a small $\cal C$.
+\end{rmk}
+
+\subsection{Ore Localization}
+\begin{defn}
+	A collection $S$ of morphisms in $\cal C$ is called a \textbf{multiplicative system} 
+	if
+	\begin{itemize}
+		\item $S$ is closed under composition and contains $\id_X$ for all $X\in\cal C$.
+		\item (\textbf{Right Ore Condition}) If $t:Z\to Y$ is in $S$ and $g:X\to Y$ in $\cal C$,
+		then there are maps $f$ and $s$ and a commutative diagram
+		\begin{center}
+			\begin{tikzcd}
+				W\ar[r,"f",dashed]\ar[d,"s",dashed] & Z\ar[d,"t"]\\
+				X\ar[r,"g"] & Y
+			\end{tikzcd}
+		\end{center}
+		such that $s\in S$.
+		\item (\textbf{Right Ore Condition}) $\mathcal{C}^{op}$ has the right Ore condition.
+		\item (\textbf{Cancellation}) If $f,g:X\to Y$ are two morphisms, then the following are equivalent:
+		\begin{itemize}
+			\item $sf=sg$ for some $s:Y\to Z$ in $S$
+			\item $ft=gt$ for some $t:V\to X$ in $S$
+		\end{itemize}
+	\end{itemize}
+\end{defn}
+\begin{defn}
+	If $S$ is a multiplicative system, then $S^{-1}\cal C$ is called an \textbf{Ore localization} of $\cal C$.
+\end{defn}
+\begin{thm}
+	Let $S$ be a multiplicative system in $\cal C$. Then the $\Hom$ in $S^{-1}\cal C$ can be described 
+	as
+	\[\Hom_{S^{-1}\cal C}(X,Y)=\{X\xleftarrow{s}Z\xrightarrow{f}Y| s\in S\}/\sim=\{(s,f)|s\in S\}/\sim\]
+	where the equivalence $\sim$ is defined as follows: $(s_1,f_1)\sim(s_2,f_2)$ if there exists $(s_3,f_3)$
+	and $a_1,a_2\in S$ such that the following commutes:
+	\begin{center}
+		\begin{tikzcd}
+			& Z_1\ar[dl,"s_1"]\ar[dr,"f_1"] &\\
+			X & Z_3\ar[u,"a_1"]\ar[d,"a_2"]\ar[l,"s_3"]\ar[r,"f_3"] & Y\\
+			& Z_2\ar[ul,"s_2"]\ar[ur,"f_2"] &
+		\end{tikzcd}
+	\end{center}
+	In this case, the equivalence class of $(s,f)$ is denoted $[fs^{-1}]$ or $[f/s]$.
+\end{thm}
+\begin{rmk}
+	Dually we can characterize $\Hom$ using diagrams $X\xrightarrow{g} Z\xleftarrow{t} Y$ for $t\in S$. These are
+	equivalent but we have to use the left Ore condition instead of right to do composition.
+\end{rmk}
+
+So then we get a functor $\pi:\mathcal{C}\to S^{-1}\mathcal{C}$ that sends $X\mapsto X$ and $(f:X\to Y)\mapsto (X\xleftarrow{\id_X}X\xrightarrow{f}Y)$.
+Composition is just what you'd expect, using the ore conditions. Checking that composition is well-defined (modulo the equivalence relation)
+seems like a bit of a chore, but maybe worth checking.
+
+\subsection{Verdier Localization}
+Let $(\mathcal{C}, \Sigma, D)$ be a triangulated category. let $\cal T$ be a full triangulated subcategory of $\cal C$.
+Then $\mathcal{C}/\mathcal{T}$ is the category such that $X\simeq 0$ for all $X\in\mathcal{T}$.
+
+Recall
+\begin{prop}
+	If $X\xrightarrow{f} Y\to Z\to\Sigma X$ is a triangle, $f$ is an isomorphism if and only if $Z\simeq 0$.
+\end{prop}
+
+Set $S_{\cal T}$ to be $\{f|\cone(f)\in\mathcal{T}\}$. Then 
+\begin{lem}
+	$\Sigma S_{\mathcal{T}}=S_{\mathcal{T}}$.
+\end{lem}
+\begin{lem}
+	$S_{\mathcal{T}}$ is a multiplicative system.
+\end{lem}
+\begin{thm}
+	$S_{\mathcal{T}}^{-1}\mathcal{C}$ is a triangulated category.
+\end{thm}
+\begin{rmk}
+	James may or may not prove this on Wednesday. Some sketches: $\Sigma_{S^{-1}\cal C}$ sends $X\to\Sigma X$ and $[f/s]$ to $[(\Sigma f)/(\Sigma s)]$.
+
+	Then $D_{S^{-1}\cal C}$ is the set of all triangles in $\Delta(S^{-1}\cal C)$ that are isomorphic to some $X\to Y\to Z\to\Sigma X$ in $D(\mathcal{C})$.
+\end{rmk}
+
+\section{May 8, 2019}
+Today we will discuss examples of Verdier localization. First some motivation for it: in commutative algebra or in algebraic 
+geometry, there is always a concept of localization and this (along with ``local-global principles'') gives us a nice 
+way to get a handle on things.
+
+In a more general case, we no longer have localization! So we don't have hope of chopping up things into local pieces.
+So instead we can move to a triangulated category! So if we are trying to study $\modR$ for some algebra $R$,
+we can instead consider $D(\modR)$ where we can localize by any subcategory we choose!
+
+\subsection{Examples of Verdier Localization}
+As a convention, let $(\mathcal{C},\Sigma,D)$ be a triangulated category and let $\mathcal{T}$ be a full triangulated subcategory
+such that if $Y\in\mathcal T$ and $X\cong Y$, then $X\in\mathcal T$ ($\mathcal T$ is closed under isomorphism). Furthermore, $\mathcal T$ is 
+triangulated via $(\mathcal{T}, \Sigma|_{\mathcal T}, D\cap\Delta(\mathcal{T}))$.
+
+Now let $P$ be some property. First, we will say $P$ is a property on objects.
+
+\begin{ex}
+	Let $\mathcal C=K(\modR)$. Let $P(C)$ mean that $C$ is a (bounded/bounded above/bounded below) complex of 
+	(projective/injective/flat/f.g./some mixture). Then take $\mathcal T=\{X|\exists Y: Y\cong X,P(Y)\}$. We need to check that $P$ is 
+	stable under suspension and that the set of $P$-objects is closed under cone constructions.
+
+	In this case since the cone is just a coproduct, it suffices to show that this preserved under coproducts.
+\end{ex}
+
+Next $P$ is a property on morphisms:
+\begin{ex}
+	Now let $X$ be a $P$ object if $\Hom_{\calC}(\Sigma^nX,-)$ commutes with coproducts for all $n\in\bbZ$. Alternatively, we could 
+	let the $P$ objects be those $Y$ such that $\Hom_\calC(\Sigma^nX,Y)=0$ for all $n\in\bbZ$ for some fixed $X$.
+
+	Then we can take the objects of $\calT$ to be the objects in $\calC$ isomorphic to a $P$ object. Once one proves that these  
+	objects are stable under suspension and cone constructions, $\calC/\calT$ exists.
+\end{ex}
+\begin{lem}
+	$\Hom_{\Ch(\modR)}(R,X)=X$.
+\end{lem}
+\begin{prf}
+	Look at the $i^{th}$ component of each:
+	\[\Hom_{\Ch(\modR)}(R,X)^i=\prod_{s\in\bbZ}\Hom_R(R^s,X^{s+i})=\Hom_R(R^0,X^i)=X^i\]
+	It remains to show the differentials are the same, but it can be shown (HW).
+\end{prf}
+\begin{lem}
+	If $X$ and $Y$ are acyclic complexes and $X\xrightarrow{f}Y\to Z\to\Sigma X$ is a triangle, then $Z$ is acyclic.
+\end{lem}
+\begin{rmk}
+	To prove this, one applies $\Hom_\calC(\Sigma^n R,-)$ to the triangle and uses that $\Hom_\calC(\Sigma^n R,\Sigma X)=\Hom_{\calC}(\Sigma^{n-1}R,X)=0$.
+\end{rmk}
+\begin{ex}
+	Let $\calC=K(\modR)$. Let the $P$ objects to be the $X$ such that $\Hom_\calC(\Sigma^n R,X)=0$. Now notice 
+	\[\Hom_\calC(\Sigma^0R,X)=\Hom_{H^0(\Ch(\modR))}(R,X)=H^0(\Hom_{\Ch(\modR)}(R,X))=H^0(X)\]
+	and (a claim) $\Hom_{\calC}(\Sigma^nR,X)=H^n(X)=0$.
+
+	Thus $X$ has $P$ if and only if $H^n(X)=0$ for all $n$ -- that is, if $X$ is \textbf{acyclic.}
+\end{ex}
+\begin{defn}
+	The \textbf{derived category of complexes of right $R$ modules} is 
+	\[D(\modR):=K(\modR)/K_{\text{acyclic}}(\modR)\]
+\end{defn}
+\begin{rmk}
+	There are some useful subcategories $D^b(\modR)$, the bounded derived category, as well as $D^+(\modR)$ and $D^-(\modR)$,
+	where are the bounded (resp.) below and above complexes. Here one applies the property to the homotopy category before taking the quotient. 
+	One also considers $D_{f.g.}^b(\modR)$ where one puts the finite generation 
+	condition on $\modR$ first, then takes the quotient of the appropriate homotopy (sub) categories.
+\end{rmk}
+
+\begin{ex}
+	Let $\scrD=D^b_{f.d.}(\modR)$ and let $P$ be the complexes of finitely generated projective modules (i.e. \textbf{perfect complexes}).
+	Then $\calT_P:=D_{per}^b(\modR)$, a sub triangulated category of $\scrD$. Then 
+	\[D_{sing}(\modR):=D^b_{f.g.}(\modR)/D_{per}^b(\modR)\]
+	is called the \textbf{singular category} and corresponds to the singularities of $\operatorname{spec} R$.
+\end{ex}
+\begin{rmk}
+	If $\gldim R <\infty$ and $R$ is Noetherian, then $D_{sing}(R)=0$.
+\end{rmk}
+
+\section{May 10, 2019}
+Today will be largely random remarks. There will continue to be holes in proofs. :)
+
+Last time, we let $R$ be an algebra and considered the derived category $D(\modR)$, which is a Verdier localization of $K(\modR)$
+or (somehow equivalently) a quotient. I think he is playing a bit fast and loose here.
+
+Note that the mapping cones (the triangles) are precisely the quasi-isomorphisms. This can be seen by applying $H^0=\Hom_K(R,-)$
+to $\Sigma^{-1}\cone(f)\to X\xrightarrow{f} Y\to \cone(f)$
+\begin{rmk}
+	If $S$ is the set of quasi-isomorphisms in $\Ch(\modR)$, then 
+	\[S^{-1}\Ch(\modR)\cong D(\modR),\] 
+	but this is just (for now?) as $k$-linear categories, since $\Ch(\modR)$ is not triangulated (it's abelian!).
+\end{rmk}
+\begin{rmk}
+	There exists a fully faithful embedding $\modR$ into $D(\modR)$ where we have $\Hom_R(M,N)=\Hom_{D(\modR)}(M,N)$.
+\end{rmk}
+\begin{rmk}
+	$\Ext_R^i(M,N)=\Hom_{D(\modR)}(M,\Sigma^iN)$. This can be useful for computations, but recall that composition in the Verdier localization is 
+	all about them roof constructions.
+\end{rmk}
+\begin{rmk}
+	Let $P_\bullet\to N$ be a projective resolution. Then $P_\bullet$ is quasi-isomorphic to $N$, so they become (honestly) isomorphic in $D(\modR)$
+	even though $P_\bullet\not\cong N$ in $K(\modR)$.
+\end{rmk}
+\begin{rmk}
+	Suppose $X$ is a bounded-above complex of projectives. Then 
+	\[\Hom_{D(\modR)}(X,Y)=\{X\to Y\}/\sim = \Hom_{K(\modR)}(X,Y)=H^0(\Hom_{\Ch(\modR)}(X,Y)).\]
+	This motivates somewhat why we often want to have projective resolutions of our objects -- they become more computationally feasible 
+	in this case.
+\end{rmk}
+\begin{rmk}
+	$K^{-}(\mathbf{projmod}\text{-}R)\cong D^-(\modR)$. In other words, (recall we have a fully faithful embedding of $\modR$ into $D(\modR)$)
+	there is a fully faithful embedding of $\modR$ into $K^-(\mathbf{projmod}\text{-}R)$ sending each $M$ to 
+	a projective resolution of $M$.
+
+	Dually, $D^+(\modR)$ is equivalent to $K^+(\mathbf{projmod}\text{-}R)$, so $\modR$ embeds fully faithfully into it.
+\end{rmk}
+\begin{rmk}
+	In particular, $D^b(\mod-R)$ embeds into either $K^+(\mathbf{injmod}\text{-}R)$ or $K^-(\mathbf{injmod}\text{-}R)$.
+\end{rmk}
+
+\subsection{Derived Functors}
+Consider algebras $A$ and $B$. Let $F$ be an additive $k$-linear functor from $A$ modules to $B$ modules. This easily extends 
+to a functor between the chain and homotopy categories of these categories. But \textbf{there is not a clear extension of $F$ to the derived category.}
+
+Consider the composition of maps (and embeddings):
+\[D^-(\mathbf{mod}\text{-}A)\hookrightarrow K^-(\mathbf{projmod}\text{-}A)\xrightarrow{F} K^-(\mathbf{mod}\text{-}B)\xrightarrow{\nu} D^-(\mathbf{mod}\text{-}B)\]
+where $\nu$ is the Verdier localization.
+
+Then the composition of these maps is called the \textbf{left derived functor of $F$}, which is written $LF$.
+\begin{ex}
+	Let $F=-\otimes_R N:\modR\to\Vectk$. Then $H^i(LF(M))=\Tor_{-i}^A(M,N)$.
+\end{ex}
+Next week we are going to discuss dualizing complexes. From these you can prove some very nice results 
+that otherwise require some complicated argument.
+
+\section{May 13, 2019}
+\subsection{Dualizing Complexes}
+Today we will start with definitions and an introduction to the idea.
+
+Grothendieck introduced dualizing complexes (over schemes) in the 1960's. Using these complexes, 
+he proved what was called ``Grothendieck duality'', a generalization of Serre duality. In 1990(ish)
+Yekutieli introduced them in the noncommutative case.
+
+This is a powerful tool in noncommutative/homological algebra. Even the existence of dualizing 
+complexes has many consequences:
+\begin{thm}
+	Take any simple factor ring of the universal enveloping algebra $\calU(\frakg)$ ($\frakg$ finite dimensional) is Auslander-Gorenstein and Cohen-MacCaulay.
+\end{thm}
+\begin{thm}[Bass Theorem (for Hopf algebras)]
+	Let $H$ be a Noetherian Hopf algebra satisfying a polynomial identity. let $M$ be a finitely generated (left) $H$-module.
+	Then $\injdim_H M$ is either infinite or equal to $\injdim_H H$.
+\end{thm}
+\begin{thm}[Auslander-Buchsbaum]
+	Let $A$ be a local Noetherian algebra with balanced dualizing complex. Let $M$ be a finitely generated (left) $A$-module.
+	Then $\projdim M$ is either infinite or is $\operatorname{depth}(A)-\operatorname{depth}(M)\le \operatorname{depth}(A)$.
+\end{thm}
+
+\subsection{Conventions}
+We will be working a lot in $\Algk,\modR,$ and $\Ch$ over the next couple weeks. We should fix 
+some conventions to work with.
+
+\begin{itemize}
+	\item Let $A,B,C$ be Noetherian $k$-algebras.
+	\item Usually $R$ will stand for a dualizing complex (Except directly below where my notation varied).
+	\item Let $M$ and $N$ be left (or right) modules over $A$.
+	\item Let $X,Y,Z$ be complexes.
+	\item The category of $(A,B)$-bimodules is identified with left $A\otimes B^{op}$ modules.
+	\item Usually we work with left $A$-modules. To study the right $A$-modules, we study the left $A^{op}$ modules.
+	\item We want to identify $\Db(\Rmod)$ with a subcategory of $\D(\modR)$, so notice
+	\[\Db(\Rmod)\cong \{X\in \D(\modR)|X\simeq\text{ some object in } \Db(\Rmod)\}\]
+	where the isomorphism there is on the level of triangulated categories.
+\end{itemize}
+\begin{prop}
+	If $X\simeq Y$ for some bounded complex, then $H^n(X)=0$ for all $n>>0$. The converse is also true.
+\end{prop}
+
+This is a slightly nonstandard definition of projective dimension, but it is the one we will use in this class:
+\begin{defn}
+	Let $X\in\Db(\Rmod).$ Then 
+	\[\projdim X=\max\{i|\Ext_R^i(X,M)\ne 0,\text{ some } M\in\Rmod\}\]
+\end{defn}
+The upshot here is
+\begin{lem}
+	$\projdim \Sigma X=\projdim X+1$ and therefore $\projdim\Sigma^n X=\projdim X+n.$
+\end{lem}
+\begin{lem}
+	Let $d=\projdim X<\infty$. Then 
+	\[X\simeq (\cdots 0\to P^{-d}\to\cdots\to P^s\to 0)\]
+	with all $P^i$ projective.
+\end{lem}
+
+Then define $\injdim X$ dually. 
+
+Recall that for bounded complexes $X$ and $Y$ of $R$-modules, 
+\[R\Hom_R(X,Y):=\Hom_{\Ch(\Rmod)}(X,I_Y)=\Hom_{\Ch(\Rmod)}(P_X,Y)\in \D(\Vectk)\]
+\begin{lem}
+	Let $M$ be a left $R=A\otimes B^{op}$ module.
+	\begin{enumerate}
+		\item If $M$ is free over $R$, then it is free over both $A$ and $B$.
+		\item If $M$ is projective over $R$, then it is projective over both $A$ and $B$.
+		\item If $M$ is flat over $R$, then it is flat over both $A$ and $B$.
+		\item If $M$ is injective over $R$, then it is injective over both $A$ and $B$.
+	\end{enumerate}
+\end{lem}
+\begin{prf}
+	(a): If $M\cong (A\otimes B^{op})^n$, then $A\otimes B^{op}\cong A^{\dim B^{op}}$, so $M\cong A^{n\dim B^{op}}$.
+
+	(b): pretty easy.
+
+	(c) and (d): a little more tough. Use adjoints.
+\end{prf}
+\begin{lem}
+	Let $M$ and $N$ be $(A,B)$-bimodules. Then $\Hom_A(M,N)$ is a $(B,B)$-bimodule. Furthermore, $\Hom_{B^{op}}(M,N)$ is an $(A,A)$-bimodule.
+\end{lem}
+\begin{lem}
+	Let $X,Y$ be complexes of $(A,B)$-bimodules. Then $\Hom_{\Ch(\Amod)}\in\Ch(B^e\text{-}\mathbf{mod})$.
+	Also flip it and reverse it.
+\end{lem}
+\begin{lem}
+	Let $X$ and $Y$ be complexes of $(A,B)$-bimodules. Then $R\Hom_A(X,Y)\in \D(B\otimes B^{op}\text{-}\mathbf{mod})$ and flip it.
+\end{lem}
+
+\subsection{Dualizing Complexes}
+\begin{defn}
+	Let $A$ and $B$ be two $k$-algebras and let $R$ be a complex in $\Db(A\otimes B^{op}\text{-}\mathbf{mod})$.
+	Then $R$ is called a \textbf{dualizing complex over $(A,B)$} if 
+	\begin{itemize}
+		\item $H^i(R)\in A\otimes B^{op}\text{-}\mathbf{mod}$ is finitely generated on both sides.
+		\item $\injdim_AR,\injdim_BR<\infty$.
+		\item The natural maps $A\xrightarrow{\Phi_A}R\Hom_B^{op}(R,R)$ and $B\xrightarrow{\Phi_B} R\Hom_A(R,R)$
+		are isomorphisms in $\D(A^e\text{-}\mathbf{mod})$ and $\D(B^e\text{-}\mathbf{mod})$, respectively.
+	\end{itemize}
+\end{defn}
+\begin{rmk}
+	The map Recall that $R\Hom_{B^{op}}(R,R)=\Hom_{\Ch(B^{op}\text{-}\mathbf{mod})}(P_R,P_R)$. Then $\Phi_A$ sends 
+	$a\mapsto l_a:P_R\to P_R$.
+
+	One can verify this more easily when $A=B=R=k$.
+\end{rmk}
+
+\end{document}

@@ -1,0 +1,1824 @@
+\documentclass[12pt]{article}
+
+\usepackage{setspace}
+
+\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, x	color}
+\usepackage[framed,thmmarks]{ntheorem}
+\usepackage[mathscr]{euscript}
+
+%Replacement for the old geometry package
+\usepackage{fullpage}
+
+\input{/home/nico/latex-includes/mydefs.tex}
+
+%class-specific macros
+\DeclareMathOperator{\sExt}{\mathscr{E}xt}
+
+%header stuff
+\setlength{\headsep}{24pt}  % space between header and text
+\pagestyle{fancy}     % set pagestyle for document
+\lhead{Notes on Homological Algebra} % put text in header (left side)
+\rhead{Nico Courts} % put text in header (right side)
+\cfoot{\itshape p. \thepage}
+\setlength{\headheight}{15pt}
+\allowdisplaybreaks
+
+\begin{document}
+%make the title page
+\title{Homological Algebra\vspace{-1ex}}
+\author{A course by: Prof. Julia Pevtsova\\
+Notes by: Nico Courts}
+\date{Spring 2019}
+\maketitle
+
+\renewcommand{\abstractname}{Introduction}
+\begin{abstract}
+	These are the notes I took in class during the Winter 2019 topics course
+	\textit{Math 509 - Homological Algebra} at University of Washington, Seattle. 
+	
+	The course description follows:
+
+	\brk
+
+	This course is an introductory course on homological algebra. We will be following the 
+	book \textit{An Introduction to Homological Algebra} by Charles Weibel. We will be
+	covering the following topics:
+
+\begin{itemize}
+	\item Chain complexes, homotopies, homology and long exact sequence in homology
+	\item Resolutions, derived functors, Ext and Tor. Koszul complexes
+	\item Group (co)homology
+	\item Triangulated and derived categories
+	\item Spectral sequences or open topic depending on the class interests
+\end{itemize}
+\end{abstract}
+
+\section{April 1, 2019}
+
+The idea here is that we are going to spend a significant amount of time doing traditional lectures.
+After a while we are going to be doing some presentations. We have two weeks to pick groups
+(and topics, if desired) before we are assigned to them randomly.
+
+Again, we are using Weibel's book. At the beginning we are going to be following the text quite closely,
+so that is a perfect reference.
+
+\subsection{Chain Complexes, Maps, Homotopies, and Homology}
+Let $R$ be a ring. In general we will say it is unital and associative, but not much more.
+We will be generally working in the category $\mathbf{Mod}_R$ of (left) $R$-modules.
+
+\begin{defn}
+	A chain complex $C_\bullet$ is a sequence of $R$-modules and $R$-module homomorphisms
+	\[d_n:C_n\to C_{n-1}\]
+	where the $C_n$ are $R$-modules and $f_n$ are $R$-module homomorphisms, subject to the relation
+	\[d_n\circ d_{n-1}=0.\]
+\end{defn}
+The first HW problem:
+\begin{prob}
+	Show that $\Ch$, the category of chain complexes forms an abelian category.
+\end{prob}
+
+\begin{defn}
+	Given two chain complexes $C_\bullet$ and $D_\bullet$, then $f_\bullet:C_\bullet\to D_\bullet$
+	is a \textbf{chain map} if
+	\[f_n:C_n\to D_n\]
+	is a map of $R$-modules and the obvious diagram commutes. (figure~\ref{fig-commute})
+\end{defn}
+\begin{figure}\label{fig-commute}
+	\centering
+	\begin{tikzcd}
+		C_n \ar[r,"d_n"]\ar[d,"f_n"] & C_{n-1}\ar[d,"f_{n-1}"]\\
+		D_n\ar[r,"d'_n"] & D_{n-1}
+	\end{tikzcd}
+	\caption{Commuting Figure for Chain Maps}
+\end{figure}
+
+\begin{defn}
+	Let $C_\bullet$ be a chain complex. Then $Z_n=Z_n(C_\bullet)$ is defined to be
+	\[Z_n=\ker d_n\]
+	called the $n$-\textbf{cycles} of $C_\bullet$.
+
+	Similarly, define
+	\[B_n=\Im d_{n+1}\]
+	the $n^{th}$ \textbf{boundary} of $C_\bullet$. 
+
+	Then $H_n=Z_n/B_n$, the $n^{th}$ \textbf{homology group}. 
+\end{defn}
+
+\subsection{Some Notation}
+The category $\mathbf{Ch}_\bullet$ (double underline!!!) is the category of (unbounded) complexes,
+but we are also sometimes interested in $\mathbf{Ch}_\bullet^b$, the category of \textbf{bounded}
+complexes. Furthermore, we may consider $\mathbf{Ch}_\bullet^{\ge 0}$ or $\mathbf{Ch}_\bullet^{\le 0}$
+
+Furthermore, there are cochain complexes, where we switch the direction and the notation is changed as
+we do for any dual notion.
+
+\subsection{Types of Complexes}
+\begin{defn}
+	A complex $C_\bullet$ is called \textbf{exact} if it is an exact sequence. Equivalently the 
+	homology groups are trivial.
+\end{defn}
+\begin{rmk}
+	A complex with trivial homology is also called \textbf{acyclic}. This is obviously equivalent to being 
+	exact.
+\end{rmk}
+\begin{lem}
+	Let $f:C_\bullet\to D_\bullet$ be a map of chain complexes. Then it induces a well-defined map on 
+	cycles, boundaries, and homology.
+\end{lem}
+\begin{prf}
+	Homework.
+\end{prf}
+
+\begin{defn}
+	Let $f:C_\bullet\to D_\bullet$ be a chain map. It is called a \textbf{quasi-isomorphism}
+	if it induces isomorphisms on homology groups.
+\end{defn}
+\begin{rmk}
+	An acyclic complex $C_\bullet$, then $C_\bullet\to 0$ is a quasi-isomorphism.
+\end{rmk}
+\subsection{Snake Lemma}
+\begin{lem}[Snake]
+	Given a commutative diagram with exact rows as in figure~\ref{fig-snake},
+	we have a long exact sequence
+	\[\ker f\to \ker g\to \ker h\xrightarrow{\delta} \coker f\to \coker g\to \coker h\to 0\]
+\end{lem}
+\begin{figure}[h!]\label{fig-snake}
+	\centering
+	\begin{tikzcd}
+		& A'\ar[r]\ar[d,"f"] &B'\ar[r]\ar[d,"g"] &C\ar[d,"h"]\ar[r] & 0\\
+		0\ar[r]& A\ar[r] & B\ar[r] & C &
+	\end{tikzcd}
+	\caption{Snake Lemma}
+\end{figure}
+
+\subsection{An Example}
+We talked about singular homology. Cool!
+
+\section{April 3, 2019}
+\subsection{Long Exact Sequence of Homology}
+\begin{defn}
+	A short exact sequence $0\to A_\bullet\xrightarrow{f} B_\bullet\xrightarrow{g} C\bullet\to 0$
+	of chain complexes is a width four double complex with exact rows.
+\end{defn}
+\begin{thm}
+	Let $0\to A_\bullet\to B_\bullet\to C_\bullet\to 0$ be a short exact sequence of complexes. Then 
+	there exists a (natural) long exact sequence in homology:
+	\[\cdots\to H_n(A)\to H_n(B)\to H_n(C)\to H_{n-1}(A)\to\cdots\]
+\end{thm}
+\begin{rmk}
+	The statement of naturality just means that the maps above are induced from those in the SES
+	under application of $H_n$ functor.
+\end{rmk}
+\begin{prf}
+	Snaaaaaaaake.
+
+	(Sketch) Use first the fact that $d:A_n\to A_{n-1}$ factors through both $A_n/B_n(A_\bullet)$ and $Z(A_\bullet)$,
+	so using the induced maps between these quotients to get a nice little snake-like diagram:
+
+	\begin{center}
+	\begin{tikzcd}
+		& A_n/B(A_n)\ar[r]\ar[d] & B_n/B(B_n)\ar[r]\ar[d] & C_n/B(C_n)\ar[r]\ar[d] & 0\\
+		0\ar[r] & Z_{n-1}(A)\ar[r] & Z_{n-1}(B)\ar[r] & Z_{n-1}(C)\ar[r] & 0
+	\end{tikzcd}
+	\end{center}	
+
+	where the exactness of the rows above follows from applications of snake lemma to the original
+	SES of chains.
+
+	A final application of snake gets us the SES we desire.
+\end{prf}
+\subsection{Some Topology}
+\begin{defn}
+	Let $f:C_\bullet\to D_\bullet$ be a chain map. We say $f$ is \textbf{nullhomotopic} if there are $s_n:C_n\to D_{n+1}$
+	for all $n$ such that
+	\[f_n=d_{n+1}\circ s_n+s_{n-1}\circ d_n.\]
+
+	Sometimes we just write $f=ds+sd$ and let the indicies figure themselves out.
+\end{defn}
+\begin{defn}
+	If $f,g:C_\bullet\to D_\bullet$ are chain maps, we say that they are \textbf{chain homotopic}
+	if $f-g$ is nullhomotopic.
+
+	Here we write $f\sim g$, so $f\sim 0$ means $f$ is nullhomopotic.
+\end{defn}
+\begin{defn}
+	We say $C_\bullet$ and $D_\bullet $ are \textbf{chain homotopy equivalent} if there
+	exist maps $f:C\to D$ and $g:D\to C$ such that $f\circ g\sim\id_D$ and $g\circ f\sim \id_C$.
+\end{defn}
+\begin{defn}
+	We say a complex $C_\bullet$ is \textbf{contractible} if $\id_C\sim 0$.
+\end{defn}
+\begin{rmk}
+	Some motivation: say we have $X,Y$ topological spaces and $f,g:X\to Y$ continuous maps. Then $f\sim g$
+	if there is a continuous map $H:X\times [0,1]\to Y$ such that $H(x,0)=f(x)$ and $H(x,1)=g(x)$.
+
+	Now if $f\sim g$, then the natural (induced) maps $S_\bullet(f)$ and $ S_\bullet(g)$ on singular 
+	chain complexes are chain homotopic.
+\end{rmk}
+\begin{thm}
+	If $f,g:C_\bullet\to D_\bullet$ are chain homotopic, then they induce the same map on $H_\bullet$.
+\end{thm}
+\begin{prf}
+	We will be using that homology is an additive functor: $H_n(f)-H_n(g)=H_n(f-g)$. Then it suffices to show 
+	that if $f\sim 0$ then $H_n(f)=0$ for all $n$.
+
+	Assume $f\sim 0$ with homotopy $s_\bullet:C_\bullet\to D_\bullet[1]$. Then we have
+	\begin{center}
+		\begin{tikzcd}
+			C_{n+1}\ar[r,"d"] & C_n\ar[r,"d"]\ar[ld,"s"]\ar[d,"f"] & C_{n-1}\ar[ld,"s"]\\
+			D_{n+1}\ar[r,"d"] & D_n\ar[r,"d"] & D_{n-1}
+		\end{tikzcd}
+	\end{center}
+
+	\noindent and so if $a\in Z_n(C)$, then say $H_n(f)(a)=f(a)$. But 
+	\[f(a)=(ds+sd)(a)=d_{n+1}(s(a))+s(d_n(a))=d_{n+1}(s(a))\in B_n(D).\]
+\end{prf}
+\begin{rmk}
+	We can define the \textbf{homotopy category} $K_\bullet(\mathbf{Mod}_R)$ or $K_\bullet(\mathbf{Ch}_\bullet)$
+	where the objects are chain complexes and the morphisms are chain homotopy equivalence classes of maps.
+
+	This category is additive and in our homework we will investigate whether it is abelian. So then 
+	our homology functors $H_n:\Ch(R)\to \mathbf{Ab}$ factor through $K_\bullet(R)$.
+\end{rmk}
+
+\subsection{Split exact complexes}
+\begin{defn}
+	$C_\bullet$ is a \textbf{split exact sequence} if its an exact sequence that splits. That is,
+	\[C_n=B_{n+1}(C_\bullet)\oplus B_n(C_\bullet)\]
+	or since the sequence is exact, the sum of cycles.
+
+	The boundary maps simply map isomorphic summands to one another.
+\end{defn}
+\begin{ex}
+	$R=k$. Then $\mathbf{Mod}_R$ is actually $\mathbf{Vect}_k$. All exact sequences here split.
+\end{ex}
+
+\section{April 5, 2019}
+\begin{ex}
+	Continuing from our example on Wednesday, let $R=k$ and consider $\Ch(k)$. Everything in $\Vectk$ splits, 
+	so we can write $C_n=Z_n\oplus C_n/Z_n\cong Z_n\oplus B_{n-1}$.
+
+	But then $C_n\cong B_n\oplus H_n\oplus B_{n-1}$, so $C$ is exact iff $H_n=0$ (it is acyclic)
+	iff $C$ is split exact.
+\end{ex}
+\begin{rmk}
+	In general, split exact implies acyclic, but the converse is not true.
+\end{rmk}
+\begin{ex}
+	Consider $\Ch(\bbZ)$ and consider the chain of $\cdots \to\bbZ/4\to\bbZ/4\to\bbZ/4\to\cdots$
+	with differential $\ast 2$.
+
+	Notice that $H_n(C)=0$, but it is NOT nullhomotopic/contractible! This is because $\id=sd+ds$ maps
+	only to even numbers!
+\end{ex}
+
+\subsection{Operations with complexes}
+We can do some operations on complexes $C\in\Ch$:
+\begin{itemize}
+	\item $(C[d])_i=C_{i+d}$
+	\item Total complexes
+\end{itemize}
+\begin{defn}
+	A \textbf{double (chain) complex} is a collection of $R$-modules and maps $C_{pq}$ 
+	\begin{center}
+		\begin{tikzcd}
+			C_{pq}\ar[r,"d^h"]\ar[d,"d^v"] & C_{p-1\,q}\ar[d,"d^v"]\\
+			C_{p\,q-1}\ar[r,"d^h"] & C_{p-1\,q-1}
+		\end{tikzcd}
+	\end{center}
+
+	such that $(d^h)^2=(d^v)^2=d^h\circ d^v+d^v\circ d^h=0.$
+\end{defn}
+\begin{ex}
+	Let $f:C\to C'$ be a chain map. Then 
+
+	\begin{center}
+		\begin{tikzcd}
+			C_{n+1}\ar[r,"-f"] \ar[d,"-d"] & C_{n+1}'\ar[d,"d'"]\\
+			C_n\ar[r,"-f"]\ar[d,"-d"] & C_n'\ar[d,"d'"]\\
+			C_{n-1}\ar[r,"-f"] & C_{n-1}'
+		\end{tikzcd}
+	\end{center}
+
+	Is a double complex. Notice we also could use $f$ instead of $-f$ but for some reason this 
+	is usually what we want.
+\end{ex}
+\begin{defn}
+	Let $(C_{pq},d)$ be a double complex. Then
+	\[\operatorname{Tot}_n(C_{\bullet\bullet})=\oplus_{p+q=n}C_{pq}\]
+	with differential $d=d^v+d^h$. This is a chain complex.
+\end{defn}
+\begin{rmk}
+	Notice that $(d^h+d^v)^2=d^h\circ d^h+d^h\circ d^v+d^v\circ d^h+d^v\circ d^v=0.$ So this
+	is indeed a chain complex.
+\end{rmk}
+\begin{rmk}
+	Notice that we have technically used the fact that our category contains coproducts to
+	define $\operatorname{Tot}=\operatorname{Tot}^\oplus$ as we just did. These should exist 
+	in an abelian category.
+\end{rmk}
+\begin{ex}
+	Let $f:B\to C$ be a chain map. Then $\operatorname{Cone}(f)$ is the total complex of the associated
+	double complex of $f$. 
+
+	Here $(\operatorname{Cone}(f))_n=B_{n-1}\oplus C_n$ (careful, the indices are a bit wonky here.)
+	Then the differential is given by $(\begin{smallmatrix}
+		-d_B & 0\\ -f & d_C
+	\end{smallmatrix})$.
+\end{ex}
+\begin{rmk}
+	Notice that
+	\[B_\bullet\xrightarrow{f} C_\bullet\to (\operatorname{Cone}(f))_\bullet\to B_\bullet[-1]\]
+	is a short(?!) exact sequence of complexes.
+\end{rmk}
+\begin{rmk}
+	This idea comes from an idea in topology: given a continuous map $f:X\to Y$
+\end{rmk}
+
+\section*{April 8, 2019}
+Some quick comments about the topological analogy we discussed last time (I trailed off because
+there was a question about what the map between topological spaces induces this map on homology):
+
+The idea is that although the image of $f$ is a deformed copy of $X$ in $\operatorname{Cone}(f)$, 
+the suspension $\Sigma X$ is somehow recovered in the cone over $\Im f$.
+
+This is a bit hand-wavy, but we then recover via the long exact sequence in homology the sequence
+we were cosidering last time.
+
+\subsection*{Derived Functors, $\Ext$, and $\Tor$}
+Recall that we are working over $\Rmod$.
+\begin{defn}
+	An $\Rmod$ $P$ is projective if one of the following equivalent conditions hold:
+	\begin{itemize}
+		\item This diagram commutes:
+		\begin{center}\begin{tikzcd}
+		& P\ar[ld,swap,dashed,"\tilde f"]\ar[d,"f"]\\
+		M\ar[r,two heads,"\varphi"]& N
+		\end{tikzcd}\end{center}
+		\item $\Hom_R(P,-):\Rmod\to\Ab$ is an exact functor.
+		\item $P$ is a direct summand of a free module. \textit{Notice that this only works in $\Rmod$}
+	\end{itemize}
+\end{defn}
+\begin{rmk}
+	Notice that we are generally assuming (as in the definition of an exact functor) that our
+	functors are additive -- that is, it preserves sums. 
+\end{rmk}
+
+A question one may ask: what are the projective objects in $\Ch(R)$? This will be the topic of a homework 
+question.
+\begin{defn}
+	A \textbf{projective resolution} $P_\bullet$ of an $R$ module $M$ is a complex
+	\[\cdots\to P_2\to P_1\to P_0\]
+	of projective $R$ modules such that if we tack on $\varepsilon:P_0\to M$, it becomes exact.
+
+	Equivalently, the chain map induced by $(\cdots,0,\varepsilon):P_\bullet\to (\cdots\to 0\to M\to 0)$ 
+	is a quasi-isomorphism.
+\end{defn}
+\begin{defn}
+	A category $\mathcal A$ has \textbf{enough projectives} if, for all $A\in\mathcal A$, there exists
+	a projective $P\in\mathcal A$ and an epimorphism $P\to A$.
+\end{defn}
+\begin{lem}
+	$\Rmod$ has enough projectives.
+\end{lem}
+\begin{prf}
+	Let $P_0$ be any free module over $M$ (say the free module on all elements of $M$) and say $\varepsilon:P_0\to M$ is the covering map.
+	and let $\Omega M=\ker \varepsilon$, the zeroth syzygy of $M$. Then let $P_1$ be a projective cover of $\Omega_0M$
+	and continue in the fashion.
+\end{prf}
+\begin{cor}
+	Any $R$-module has a projective resolution.
+\end{cor}
+
+\subsection*{Fundamental Theorem of Homological Algebra}
+\begin{thm}[Fundamental Theorem]
+	If $P_\bullet$ is a projective complex with map $\varepsilon_M:P_0\to M$ (not necessarily projective) and $Q_\bullet\to N$ is a projective 
+	resolution of $N$ and $f:M\to N$ is an $R$-linear map, then there exists an $F:P_\bullet \to Q_\bullet$ 
+	extending $f$. That is it makes following diagram commute:
+	\begin{center}
+		\begin{tikzcd}
+			P_\bullet\ar[r,"\varepsilon_M"]\ar[d,"F",dashed] & M\ar[d,"f"]\\
+			Q_\bullet \ar[r,"\varepsilon_N"] & N
+		\end{tikzcd}
+	\end{center}
+
+	Furthermore $F$ is unique up to chain homotopy.
+\end{thm}
+\begin{rmk}
+	Notice that while any two extensions are chain homotopic, this doesn't mean there exists
+	a \textit{unique} homotopy between them and this is the cause of many problems in homological algebra.
+\end{rmk}
+\begin{prf}
+	Begin by lifting $f\circ \varepsilon_M$ to a map $f_0:P_0\to Q_0$ using the definition of projectivity.
+	Then construct $f_n$ by induction. Consider
+	\begin{center}
+		\begin{tikzcd}
+			P_n\ar[r,"d^P"] \ar[rd] & P_{n-1}\ar[r]\ar[d,"f_{n-1}"] & P_{n-2}\ar[d,"f_{n-2}"]\\
+			Q_n\ar[r] & Q_{n-1}\ar[r,"d^Q"] & Q_{n-2}
+		\end{tikzcd}
+	\end{center}
+	and by the induction hypothesis, $d^Q\circ f_{n-1}\circ d^P=0$ whence $\varphi:P_n\to Q_{n-1}$ 
+	maps to $\ker d^Q_{n-1}=\Im d^Q_n$. But this gives us a map $P_n\to \Im d^Q$ onto which $Q_n$ surjects,
+	so again we leverage the projectivity of $P_n$ to lift to $f_n$.
+
+	To see the uniqueness, assume $F$ and $F'$ are two liftings of $f$. We want to show $H=F-F'\sim 0$.
+	It will be sufficient once we see that any lifting of $0:M\to N$ is nullhomotopic. We will see this next time.
+\end{prf}
+
+\section{April 10, 2019}
+\begin{thm}
+	... and it is unique up to chain homotopy.
+\end{thm}
+\begin{prf}
+	Say that $F$ and $F'$ are two chain maps extending $f:M\to N$ in the above scenario.
+	Notice that since we want to show $F\sim F'$, it suffices to show that $0:M\to N$ induces 
+	a nullhomotopic map $H$.
+
+	Let $H$ be a lifting of $0$ and define $s_i$ such that
+	\begin{center}
+		\begin{tikzcd}
+			P_1\ar[r]\ar[d,"h_1"] & P_0\ar[dl,"s_0"]\ar[d,"h_0"],\ar[r] & M\ar[d,"0"]\ar[dl,"s_{-1}=0"]\\
+			Q_1\ar[r] & Q_0 \ar[r,"\varepsilon_N"] & N
+		\end{tikzcd}
+	\end{center}
+	where we need to have that $h_0=s_0\circ d_Q$ for some $s_0$. we know that $h_0(P_0)\subseteq\ker\varepsilon_N=d_Q(Q_1)$
+	so lifting $h_0$ through $Q_1\twoheadrightarrow d(Q_1)$, we get a map $s_0:P_0\to Q_1$ (since $P_0$ is projective).
+
+	Continuing my induction, consider
+	\begin{center}
+		\begin{tikzcd}
+			P_{n+1}\ar[r]\ar[d,"h_{n+1}"] & P_n\ar[dl,"s_n"]\ar[d,"h_n"],\ar[r] & P_{n-1}\ar[d,"h_{n-1}"]\ar[dl,"s_{n-1}"]\\
+			Q_1\ar[r] & Q_0 \ar[r,"\varepsilon_N"] & Q_{n-1}
+		\end{tikzcd}
+	\end{center}
+	and consider the map $s_n=h_n-(s_{n-1}\circ d_P)$, which maps $P_n$ into $d_Q(Q_{n+1})$. Now $d_Q(Q_{n+1})=\ker d_Q$ (easy lemma)
+	This establishes that $s_n$ exists and satisfies all the requisite properties.
+\end{prf}
+\begin{cor}
+	Any two projective resolutions of $M$ induce the same homology.
+\end{cor}
+\begin{rmk}
+	Lift the identity map $M\to M$ in both directions to get chain maps $(P\to M)\to(Q\to M)$
+	and backwards. These compose to the identity map! Then apply the theorem!
+\end{rmk}
+
+\begin{lem}[Horseshoe]
+	(\textbf{Weibel 2.2.8}) Say that we have a short exact sequence $0\to A\to B\to C\to 0$ 
+	and projective resolutions $P^A_\bullet$ and $P_\bullet^C$ of $A$ and $C$, respectively.
+	Then $P_\bullet^B=(P_i^A\oplus P_i^C)_{i\in\bbZ}$ is a resolution of $B$ and furthermore we have 
+	maps for the following diagram (which commutes everywhere):
+
+	\begin{center}
+		\begin{tikzcd}
+			P_2^A\ar[r] & P_1^A\ar[r]\ar[d] & P_0^A\ar[r]\ar[d] & A\ar[d]\\
+			 & P_1^A\oplus P_1^C\ar[r]\ar[d] & P_0^A\oplus P_0^B\ar[r]\ar[d] & B\ar[d]\\
+			P_2^C\ar[r] & P_1^C\ar[r] & P_0^C\ar[r]s & C
+		\end{tikzcd}
+	\end{center}
+\end{lem}
+
+\subsection{Left Derived Functors}
+\begin{defn}
+	Let $\mathcal A, \mathcal B$ be Abelian categories and let $F:\mathcal A\to \mathcal B$
+	be an additive functor. We say that $F$ is \textbf{right exact} if for every exact sequence
+	$A\to B\to C\to 0$ in $\mathcal A$, 
+	\[F(A)\to F(B)\to F(C)\to 0\]
+	is exact in $\mathcal B$.
+\end{defn}
+\begin{defn}
+	Assume $\mathcal A$ is an abelian category with enough projective and that $\mathcal B$ is abelian.
+	Let $F:\mathcal A\to \mathcal B$ be a right exact functor. Then $L_iF$ for $i\ge 0$ are called
+	\textbf{the left derived functors of $F$} which are defined as follows:
+
+	For all $A\in\mathcal A$, let $P_\bullet\to A$ be a projective resolution. Then we have an 
+	exact sequence
+	\[\cdots\to F(P_2)\to F(P_1)\to F(P_0)\]
+	and we define $(L_iF)(A):=H_i(F(P_\bullet))$.
+\end{defn}
+\begin{rmk}
+	\begin{enumerate}
+		\item $L_i F$ are functors because of the fundamental theorem.
+		\item The functors are well-defined because of the lemma.
+	\end{enumerate}
+\end{rmk}
+The derived functors have some nice properties:
+\begin{itemize}
+	\item $L_i F= 0$ for $i<0$.
+	\item Say $0\to A\to B\to C\to 0$ is short exact and $F$ is right exact. Then we get a long exact sequence
+	\[\cdots \to L_1F(A)\to L_1F(B)\to L_1F(C)\to F(A)\to F(B)\to F(C)\to 0\]
+\end{itemize}
+
+\section{April 17, 2019}
+Last time we wrote down the definition for (left) derived functors, but never wrote out why $\Tor$ is an example.
+\subsection{Examples of $L_i$}
+Let $R$ be a ring and $M$ and $N$ be right- and left-$R$-modules, respectively. Then $M\otimes_RN$ 
+is the set of $m\otimes n$ for $m\in M$ and $n\in N$ where $m\cdot a\otimes n=m\otimes a\cdot n$
+for all $a\in R$.
+
+This can also be defined formally as a bifunctor $-\otimes_R-:\Rmod\times\modR\to\Ab$, or as a regular
+functor by currying. So then
+
+\begin{defn}
+	\[\Tor_i^R(M,N):=L_i(M\otimes_R-)(N)\]
+	and
+	\[\Tor_i^R(M,N)=L_i(-\otimes_R M)(N)\]
+\end{defn}
+\begin{rmk}
+	Notice that the two definitions are completely equivalent and compatible. That is, $\Tor_i^R(M,N)$ 
+	is what we call \textbf{balanced.}
+
+	To see this you can do a few computations including computing the homology of the total complex to show that 
+	you always get the same thing.
+\end{rmk}
+
+\subsection{Injective Modules}
+\begin{defn}
+	Let $\mathcal A$ be an abelian category. Then $E\in \mathcal A$ is injective if we have the diagram
+	\begin{center}
+		\begin{tikzcd}
+			M\ar[d,"f"]\ar[r,hook] & N\ar[dl,dashed,"\tilde f"]\\
+			E &
+		\end{tikzcd}
+	\end{center}
+\end{defn}
+\begin{lem}
+	If $\mathcal A=\Rmod$, then in the above definition it suffices to check that maps $f:I\to E$ from
+	every \textit{ideal} lift to maps $\tilde R\to E$ from $R$.
+\end{lem}
+\begin{ex}
+	Injective $\bbZ$-modules are precisely the divisible abelian groups. For instance, $\bbQ$, $\bbQ/\bbZ$, $\bbZ_{p^\infty}=\bbZ_{(p)}/\bbZ$.
+\end{ex}
+In fact:
+\begin{lem}
+	The indecomposable injective $\bbZ$ moduels are $\bbQ$ and $\bbZ_{p^\infty}$.
+\end{lem}
+\begin{thm}
+	For any ring $R$, $\modR$ has enough injectives.
+\end{thm}
+\begin{cor}
+	Every $M\in\modR$ has an injective resolution.
+\end{cor}
+\begin{prf}
+	It suffices to show that for all $M\in\modR$, there is an injective $R$-module $E$ 
+	such that $M\hookrightarrow E$.
+
+	To begin, we will see that $\bbZ$-$\mathbf{mod}=\Ab$ has enough injectives. Let $A\in\Ab$
+	and define the notation
+	\[A^{\vee}=\Hom_{\Ab}(A,\bbQ/\bbZ).\]
+	Then $\bbZ^\vee=\bbQ/\bbZ$, since any map is determined uniquely by its image. So then if $F=\bbZ^n$,
+	we use linearity of $\Hom$ to prove $F^\vee=(\bbQ/\bbZ)^n$, so all free groups are divisible (whence injective).
+
+	Finally, for all $A$, there is a natural map $A\to A^{\vee\vee}$. Now for any $A\in\Ab$, there exists a 
+	surjective map $F\to A^{\vee}$ from a free module onto the dual of $A$. Thus we get an embedding
+	$A^{\vee\vee}\hookrightarrow F^\vee$ (note that $\Hom(-,\bbQ/\bbZ)$ is exact). Since $A\hookrightarrow A^{\vee\vee}$,
+	this gets us an embedding of $A$ into $F^\vee$.
+
+	\brk
+
+	Now let $R$ be any ring. Let $A\in\Ab$, then the claim is that $\Hom_\bbZ(R,A)$ is a (right) $R$-module via
+	the action $(f\cdot a)(b)=f(ba)$ (\textbf{check this}).
+
+	Next, we claim that there exists a natural isomorphism for all $M\in\modR$ and $A\in\Ab$
+	such that
+	\[\Hom_\bbZ(M,A)\cong\Hom_R(M,\Hom_\bbZ(R,A)).\]
+	We claim that one can ``follow their nose'' here.
+
+	Using these facts, we will finish the proof of the main theorem: Let $A$ be a divisible abelian group.
+	Then $\Hom_\bbZ(R,A)$ is injective. This is because 
+	\[\Hom_R(-,\Hom_\bbZ(R,A))\]
+	is exact since $A$ is injective (by the last claim).
+
+	Let $M$ be any right $R$-module. Then in particular it is an abelian group, so 
+	$M\hookrightarrow A\in\Ab$, where $A$ is divisible. Thus (again by the last fact) we have a map
+	$\varphi:M\to \Hom_\bbZ(R,A)$ is a map of $R$-modules. Then it suffices to show that $\varphi$ is injective.
+
+	This follows from the explicit construction of the natural isomorphism between the functors.
+\end{prf}
+\begin{rmk}
+	The map referred to above takes $f\in \Hom_Z(M,A)$ to a map $\varphi_f\in\Hom(M,\Hom_\bbZ(R,A))$
+	where
+	\[\varphi_f(a)(r)=(f\cdot a)(r).\]
+
+	To show it is injective we just construct the inverse map: let $\psi_g$ for any $g:M\to\Hom_\bbZ(R,A)$
+	to be
+	\[\psi_g(a)=(g(a))(1).\]
+	One can easily check that this composes to the identity in each direction.
+\end{rmk}
+
+\section{April 19, 2019}
+I came late to the discussion, but it looks like we defined left exact contravariant functors --
+those are functors that are left exact as functors $F:C^{op}\to D$.
+
+\begin{rmk}
+	$\Hom_R(-,W)$ is left exact.
+\end{rmk}
+
+From here, we can continue the sequence to a long exact sequence of homology. The point of this 
+section was to show that we can compute $\Ext_R^i(V,W)$ \textit{either} from a projective resolution of $V$ or 
+an injective resolution of $W$.
+
+\begin{lem}
+	$P$ is a projective $R$ module if and only if $\Ext_R^i(P,-)=0$ for all $i>0$.
+\end{lem}
+\begin{lem}
+	$I$ is an injective $R$ module if and only if $\Ext_R^i(-,I)=0$ for all $i>0$
+\end{lem}
+\subsection{Adjoint Functors}
+\begin{defn}
+	We say the functors $\cal F:\cal A\to \cal B$ and $\cal G:\cal B\to \cal A$ are \textbf{adjoint functors}
+	if there exists a natural isomorphisms
+	\[\eta_{AB}:\Hom_{\cal B}({\cal F}(A),B)\to \Hom_{\cal A}(A,{\cal G}(B))\]
+	and in this case we say $\cal F$ is left adjoint to $\cal G$.
+\end{defn}
+\begin{ex}
+	Recall we hat the functors $\cal F$ and $\cal G$ from $\bbZ$-modules to $R$-modules and back, respectively,
+	where $\cal F=\Hom_\bbZ(R,-)$, assigning to each $\bbZ$ module an $R$-module with the action we discussed last time.
+
+	Then $\cal G=\operatorname{Res}_\bbZ^R$, the forgetful functor, is its left adjoint.
+\end{ex}
+\begin{ex}
+	In rep theory we have Frobenius Reciprocity! Woo.
+\end{ex}
+
+\section{April 22, 2019}
+Recall the tensor-hom adjunction: $-\otimes_S B$ and $\Hom_R(B,-)$ are adjunctions between $\modR$ and $\mathbf{mod}$-$S$.
+There is some shadiness here (mirroring what we saw before) but the fact that 
+\[(f.s)(b)=f(sb)\]
+defines a right $S$ action on $\Hom_R(B,C)$ is not immediately evident to me.
+
+Again, many of the common adjunctions we see are actually just special cases of tensor-hom.
+
+\subsection{Why Adjointness Matters}
+\begin{lem}
+	If $\cal F$ and $\cal G$ are adjoints ($\cal F$ is left adjoint to $\cal G$), then $\cal F$ is
+	right exact and $\cal G$ is left exact.
+\end{lem}
+\begin{prf}
+	Let $0\to A' \to A\to A''\to 0$ be a short exact sequence. Then consider the diagram
+	\begin{center}
+		\begin{tikzcd}
+			\Hom_{\cal A}(A',\cal G(B))\ar[d,"\sim"]& \ar[l] \Hom_{\cal A}(A,\cal G(B))\ar[d,"\sim"] &\ar[l]\Hom_{\cal A}(A'',\cal G(B)\ar[d,"\sim"])& \ar[l]0\ar[d,"\sim"]\\
+			\Hom_{\cal B}(\cal F(A'),B) & \ar[l] \Hom_{\cal B}(\cal F(A),B) & \ar[l] \Hom_{\cal B}(\cal F(A''),B) & \ar[l] 0
+		\end{tikzcd}
+	\end{center}
+	and since the top sequence is exact (by left exactness of $\Hom$), and by the naturality of the isomorphism
+	between the functors, we get exactness below.
+\end{prf}
+\begin{rmk}
+	There is a fact that $C'\to C\to C''\to 0$ is exact \textbf{if and only if} $\Hom_{\cal B}(C_\bullet,B)$ is 
+	exact \textit{for all $B$.} One direction is just left exactness, the other basically uses Yoneda lemma.
+\end{rmk}
+\begin{thm}
+	If $\cal F$ and $\cal G$ are adjoint (left and right, resp.), then
+	\begin{enumerate}
+		\item $\cal F$ commutes with colimits (e.g. coproducts, $\oplus$, cokernels).
+		\item $\cal G$ commutes with limits (e.g. products and kernels).
+	\end{enumerate}
+\end{thm}
+\begin{cor}
+	Let $\cal A$ be an abelian category with enough projectives and let $\cal F:\cal A\to \cal B$ be right exact.
+	Then
+	\[(L_i\cal F)\left(\bigoplus_j A_j\right)\cong \bigoplus_j L_i\cal F(A_j).\]
+\end{cor}
+
+\begin{ex}
+	Let $R$ be a PID. Consider torsion modules (free ones are uninteresting when computing $\Tor$).
+	Let's compute $\Tor_\ast^R(R/(a),M)$ for any $M$. Take the resolution
+	\[0\to R\xrightarrow{\cdot a} R\to R/(a)\]
+	which is free whence projective. Then compute the homology of
+	\[0\to R\otimes_R M\xrightarrow{\cdot a} R\otimes_RM\to 0\]
+	and since $R\otimes_RM\cong M$, we get $\Tor_{\ge 2}^R(R/(a),M)=0$. Then $\Tor_0^R(R/(a),M)=R/(a)\otimes_R M\cong M/aM$.
+
+	Finally $\Tor_1^R(R/(a),M)={_a}M$, the $a$-torison in $M$.
+\end{ex}
+\begin{rmk}
+	Because of the fact that derived functors of right exact functors preserve colimits, we have actually effectively computed
+	$\Tor_i^R(N,M)$ for all $N$.
+\end{rmk}
+\begin{ex}
+	In the case when $R=Z$ and $N=\bbQ/\bbZ$, we can use the fact that $\bbQ/\bbZ$ is the colimit (directed limit)
+	of its finite subgroups. Then you can pull this out and say that $\Tor_*^R(\bbQ/\bbZ,M)$ is the ``total torsion module'' of $M$,
+	the directed limit of all finite torsion subgroups (is this last sentence correct?).
+\end{ex}
+
+\section{April 24, 2019}
+We're going to start by doing some more computations.
+\subsection{Computing $\Ext$}
+Begin by letting $A=\bbZ$. Then $\Ext_\bbZ^{i>0}(\bbZ,B)=0$ since $\bbZ$ is free whence projective.
+When $A=\bbZ/n$, we can compute $\Ext$ via the free resolution
+\[0\to \bbZ\xrightarrow{\cdot n}\bbZ\to \bbZ/n\]
+and then applying $\Hom_\bbZ(-,B)$, we get the complex 
+\[0\to \Hom_\bbZ(\bbZ,B)\xrightarrow{\cdot n}\Hom_\bbZ(\bbZ,B)\to 0\]
+so $\Ext_\bbZ^{i\ge 2}(\bbZ/n,B)=0$ and $\Ext_\bbZ^1(\bbZ/n,B)=B/nB$ and $\Ext_\bbZ^0(\bbZ/n,B)={_n}B/$.
+
+\begin{thm}
+	$\Ext_{\bbZ}^{i\ge 2}(A,B)=0.$
+\end{thm}
+\begin{prf}
+	Take an injective resolution of $B$:
+	\[B\to I^0\to I^1\cong\Omega^{-1}B\to 0\]
+	and every resolution can end there! This is because the cokernel of $B\to I^0$ is the 
+	quotient of a divisible group, whence divisible.
+\end{prf}
+
+\begin{rmk}
+	Notice that $\operatorname{gldim}(\bbZ)=1$.
+\end{rmk}
+Notice that when $B=\bbZ$, we can consider the injective resolution
+\[\bbZ\to \bbQ\to \bbQ/\bbZ\to 0\]
+amd then compute from the complex
+\[\Hom_\bbZ(A,\bbQ)\to\Hom_Z(A,\bbQ/\bbZ)\]
+where the first is zero and the latter is $A^\vee$, the \textbf{Pontragin dual} of $A$. Here
+we get that $\Ext_\bbZ^1(A,\bbZ)\cong \Hom_\bbZ(A,\bbQ/\bbZ)=A^\vee$.
+
+Now let $A=Z/p^\infty=\lim_\to \bbZ/p^n$. Then 
+\[\Ext_\bbZ^1(\lim_\to\bbZ/p^ny,\bbZ)=\lim_\leftarrow(\bbZ/p^n,\bbZ)=\lim_\leftarrow \bbZ/p^n=\widehat\bbZ_p\]
+the $p$-adic numbers.
+
+Recall:
+\begin{lem}
+	$P$ is projective iff $\Ext^1(P,-)$ is exact if and only if $\Ext^i(P,-)$ is exact for all $i\ge 1$.
+\end{lem}
+\begin{defn}
+	$M$ is a flat module if $-\otimes_R M$ is exact.
+\end{defn}
+\begin{thm}
+	THe following are equivalent
+	\begin{itemize}
+		\item $M$ is flat
+		\item $-\otimes_RM$ is exact
+		\item if $N'\hookrightarrow N$ then $N'\otimes_RM\hookrightarrow N\otimes_RM$.
+		\item $\Tor_i^R(-,M)=0$ for $i\ge 1$
+		\item $\Tor_1^R(-,M)=0$
+	\end{itemize}
+\end{thm}
+\begin{rmk}
+	Any projective module is flat.
+\end{rmk}
+
+\subsection{Local Properties of Modules}
+Here let $R$ be a commutative ring, $\mathfrak p\lhd R$ is a prime, and $R_{\mathfrak p}$ is localization at $\mathfrak p$
+and $(-)_{\mathfrak p}$ is a functor from $R$-mod to $R_{\mathfrak p}$-mod.
+\begin{prop}
+	$(-)_{\mathfrak p}$ is exact.
+\end{prop}
+\begin{defn}[Informal]
+	We say that a property $P$ is local if $M$ satisfies $P$ if and only if $M_{\mathfrak p}$ satisfies $P$ for all $\mathfrak p\lhd R$.
+\end{defn}
+\begin{prop}
+	$M\cong 0$ if and only if
+	\begin{itemize}
+		\item $M_{\mathfrak p}=0$ for all $\mathfrak p$
+		\item $M_{\mathfrak m}=0$ for all maximals $\mathfrak m$
+	\end{itemize}
+\end{prop}
+\begin{rmk}
+	Other examples of local properties are flatness of a module and exactness of a short exact sequence.
+\end{rmk}
+\begin{prop}
+	If $R$ is commutative, and if $S$ is flat as an $R$-algebra (flatness is just referring to the module structure), then
+	\[S\otimes_R\Tor^R_i(A,B)\cong \Tor_i^S(S\otimes_R A,S\otimes_R B).\]
+\end{prop}
+\begin{rmk}
+	The idea above is ``flat base changes commute with $\Tor$.''
+\end{rmk}
+\begin{cor}
+	The following are equivalent:
+	\begin{itemize}
+		\item $\Tor_i^R(M,N)=0$
+		\item For all $\mathfrak p$, $\Tor_i^{R_{\mathfrak p}}(M_{\mathfrak p},N_{\mathfrak p})=0$
+		\item For all maximal $\mathfrak m$, $\Tor_i^{R_{\mathfrak m}}(M_{\mathfrak m},N_{\mathfrak m})=0$
+	\end{itemize}
+\end{cor}
+
+\section{April 26, 2019}
+\subsection{A bit more about flat modules}
+\begin{prop}
+	Let $R$ be a local ring and let $M$ be a finitely generated $R$-module. Then the following are equivalent:
+	\begin{itemize}
+		\item $M$ is flat.
+		\item $M$ is free.
+		\item $M$ is projective.
+	\end{itemize}
+\end{prop}
+\begin{rmk}
+	In other words, every flat module is locally free.
+\end{rmk}
+\begin{rmk}
+	In general we have the inclusions: free, projective, flat, torsion free.
+\end{rmk}
+
+\subsection{$\Ext$ as Extensions}
+Recall the five lemma 
+\begin{lem}[Weak 5-lemma]
+	If we have the commutative diagram with exact rows:
+	\begin{center}
+		\begin{tikzcd}
+			0\ar[r] & A\ar[r]\ar[d,"\sim"] & B\ar[r]\ar[d,"f"] & C\ar[r]\ar[d,"\sim"] & 0\\
+			0 \ar[r] & A'\ar[r] & B'\ar[r] & C'\ar[r] & 0
+		\end{tikzcd}
+		then $f$ is an isomorphism.
+	\end{center}
+\end{lem}
+
+\begin{defn}
+	Define $\sExt_R^1(M,N)$ to be the set of short exact sequences $0\to N\ to E\to M\to 0$
+	modulo the relation that if there is a map (necessarily an ismomorphism) $\varphi:E\to E'$ extending 
+	the identity maps on $M$ and $N$, then the two sequences are equivalent.
+
+	We call $0\to N\to E\to M\to 0$ a \textbf{extension of $M$ by $N$ of length 1.}
+\end{defn}
+\begin{prop}
+	$\sExt_R^1(N,M)$ has the structure of an abelian group.
+\end{prop}
+\begin{rmk}
+	Let $\alpha:M'\to M$ and let $E\times^MM'$ be the pullback over
+	\[E'\xrightarrow{g} M\xleftarrow{\alpha}M'\]
+	where where $0\to N\to E\to M\to 0$ is an extension.
+
+	Then setting $E'=E\times^MM'$, we can pull back along $\alpha$ to a short exact sequence 
+	\[0\to N\to E'\to M'\to 0.\]
+	Here we usually refer to this map (of short exact sequences) as $\alpha^*:\sExt^1(M,N)\to \sExt^1(M',N)$.
+
+	Dually, we can use a $\beta:N\to N'$ and the pushforward $E''=N'\times_NE$ under
+	\[N'\xleftarrow{\beta} N\xrightarrow{f}E\]
+	and this gives us a map to the sequence $0\to N'\to E''\to M\to 0$. This gives us 
+	the map $\beta_*:\sExt^1(M,N)\to \sExt^(M,N')$.
+\end{rmk}
+
+\begin{rmk}
+	A natural thing to want to do is sum SES's by using direct sums of the elements in the sequence.
+	Call this $\xi\oplus \xi'$.
+	That is great, but it doesn't quite work. To do so, you use the (co)diagonal maps $\Delta:M:M\oplus M$
+	sending $m\mapsto(m,m)$ and $\nabla:N\oplus N\to N$ via $(n,n')\mapsto n+n'$.
+
+	Then we can define a sum of extensions:
+	\[\xi+\xi':= \nabla_*\Delta^*(\xi\oplus\xi')=\Delta^*\nabla_*(\xi\oplus\xi')\]
+	The last equality isn't completely trivial.
+\end{rmk}
+From here we talked about how one proves that this is indeed a group. The zero element is the split exact sequence.
+\begin{prop}
+	There exists a natural group isomorphism
+	\[\sExt^1_R(M,N)\cong\Ext_R^1(M,N).\]
+\end{prop}
+\begin{rmk}
+	The proof isn't too hard. Check Weibel.
+\end{rmk}
+
+\brk
+
+In general, for $i\ge 1$, we use an analogous definition but now we define two extensions
+to be equivalent if there exist a collection of ($i$) maps $f_k:E_k\to E_k'$ making the diagram commute.
+
+The general group law via pushbacks and -forwards like before. Then we define the addition the same way.
+\begin{prop}
+	There exists a natural isomorphism $\sExt^i_R(M,N)\to \Ext^i_R(M,N)$.
+\end{prop}
+\begin{prf}
+	(Sketch) Take a projective resolution $P_\bullet\to M\to 0$ and for any extension 
+	\[0\to N\to E_1\to \cdots\to E_i\to M\to 0\]
+	lift the identity map on $M$ to a map of resolutions (not both projective) of $M$.
+
+	Say that $f:P_i\to N$ is the map you get in this chain map. We claim that $f$ is a cycle
+	in $\Hom(P_\bullet,N)$. If $d_i^*$ is the differential on this complex, then since $d_i^*(f)=f\circ d_i$,
+	and using the extension since the map $f\circ d_i:P_{i+1}\to P_i\to N$ is the same as $0:P_{i+1}\to 0\to N$,
+	we have it.
+
+	But then $\bar f$ is in $\Ext_R^i(M,N)$.
+\end{prf}
+
+\subsection{Yoneda Product}
+There is a relatively natural pairing
+\[\Ext_R^i(L,M)\times\Ext_R^j(M,N)\to \Ext_R^{i+j}(L,N)\]
+where we just concatenate the two exact sequences (eliminating $M$ along the way). It is easy to 
+check that it is still exact.
+
+\section{April 29, 2019}
+Today we will finish up the last bit on $\sExt$. Let $M=N$ and consider $\Ext_R^\ast(M,M)$.
+Then the Yoneda product gives the the structure of a graded ring.
+
+Usually when you are working in another context (e.g. group cohomology) where you have another 
+product (e.g. the cup product) this ends up being the same as the Yoneda product. There is something 
+to prove here.
+
+\begin{ex}
+	Recall $\Ext_\bbZ^1(\bbZ/p,\bbZ/p)\cong\bbZ/p$. Then consider the SES
+	\[0\to \bbZ/p\hookrightarrow\bbZ/p^2\to \bbZ/p\]
+	where the embedding on the first map takes (written multiplicatively) $a\mapsto ap$.
+	Then there are $p-1$ different choices we have for the surjection where $a\mapsto ia$ for $1\le a\le p-1$.
+	
+	The one remaining expension comes from the split exact sequence.
+\end{ex}
+\begin{rmk}
+	These are the same embedings we say in $\bbZ/p^\infty$!
+\end{rmk}
+
+\subsection{The K\"unneth formula and the Universal Coefficient Theorem}
+The motivation here is that, given a space $X$, it is most natural to consider $H_\ast(X,\bbZ)$, 
+but if there is some kind of an action of $M$ on these cycles, one may want to compute $H_\ast(X,M)$.
+
+\begin{defn}
+	Let $P_\bullet$ and $Q_\bullet$ be complexes. Then $P_\bullet\otimes Q_\bullet$ be defined by 
+	\[(P_\bullet\otimes_RQ_\bullet)_n=\bigoplus_{i+j=n}P_i\otimes_R Q_j\]
+	and the differential 
+	\[d_n=\sum_{i+j=n}d_{ij}:(P\otimes Q)_n\to (P\otimes Q)_{n-1}\]
+	is such that if $p$ is in degree $i$ and $q$ is in degree $j$, then 
+	\[d_n(p\otimes q)=d_i(p)\otimes q+(-1)^ip\otimes d_j(q).\]
+\end{defn}
+
+A natural question to ask: what is the homology of this complex?
+\begin{rmk}
+	We will be using the fact that, to compute $\Tor$, it suffices to take flat (rather than projective)
+	resolutions. 
+
+	There is a more general principle here that one can use modules that are ``acyclic'' (higher derived functors are zero)
+	for a functor and these resolutions give us homology.
+\end{rmk}
+
+\begin{thm}
+	Let $P$ and $Q$ be complexes of (right- and left-) $R$ modules such that the $P_n$ and 
+	\[B_n^P=d_{n+1}(P_{n+1})\]
+	are flat. 
+
+	Then there exists a short exact sequence
+	\[0\to \bigoplus_{i+j=n}H_i(P)\otimes H_j(Q)\to H_n(P\otimes Q)\to \bigoplus_{i+j=n}\Tor_1^R(H_i(P),H_j(Q))\to 0\]
+\end{thm}
+\begin{prf}
+	We will not use boundaries and cycles for $Q$, so throughout $Z$ and $B$ refer to those for $P$. 
+	Now since we have the short exact sequence
+	\[-\to Z_i\to P-i\to B_{i-1}to 0\]
+	and the long exact sequence of $\Tor$ gives us that $Z_i$ are flat as well. Furthermore (again by the long exact sequence)
+	we get 
+	\[0\to Z_i\otimes Q_j\to P_i\otimes Q_j\to B_{i-1}\otimes Q_j\to 0\]
+	is short exact.
+
+	Now consider
+	\[0\to\bigoplus_{i+j=n}Z_i\otimes Q_j\to \bigoplus_{i+j=n} P_i\otimes Q_j\to\bigoplus_{i+j=n-1}B_i\otimes Q_j\to 0\]
+	which gives us a SES of complexes
+	\[-\to Z_\bullet\otimes Q_\bullet \to P_\bullet\otimes Q_\bullet \to B_\bullet\otimes Q_\bullet[-1]\to 0\]
+	and by taking the long exact sequence in homology (note the index shift because of the shift on $Q$):
+	\[\cdots\to H_n(B\otimes Q)\to H_n(Z\otimes Q)\to H_n(P\otimes Q)\to H_{n-1}(B\otimes Q)\to H_{n-1}(Z\otimes Q)\to\cdots\]
+	Let $\partial:H_n(B\otimes Q)\to H_n(Z\otimes Q)$ be the map above. Then we get the SES
+	\[0\to \coker\partial\to H_n(P\otimes Q)\to \ker \delta\to 0\]
+	where $\coker d_{ij}$ is $H_i(P)\otimes H_j(Q)$ (this needs some work -- see the book!)
+
+	Finally $ker\partial$ can be computed via using the (flat!) resolution $0\to B_i\to Z_i\to H_i(P)$ and computing $\Tor$.
+\end{prf}
+\begin{rmk}
+	Notice that it is \textit{not true} that if $A$ and $B$ are flat that $A/B$ are flat! 
+\end{rmk}
+
+\section{May 1, 2019}
+\begin{cor}[Universal Coefficient Theorem -- Corollary of K\"unneth Formula]
+	Let $P_\bullet$ be a chain complex of flat modules and that $d_n(P)$ are flat, and that $M$ is an $R$ module.
+	Then we have a short exact sequence
+	\[0\to H_n(P_\bullet)\otimes M\to H_n(P_\bullet\otimes M)\to \Tor_1^R(H_{n-1}(P_\bullet),M)\to 0\]
+	and in particular if $M$ is flat, then $H_n(P_\bullet)\otimes M\cong H_n(P_\bullet\otimes M)$ 
+\end{cor}
+\begin{prop}[UCT for $\bbZ$]
+	Let $P_\bullet$ be a complex of free abelian groups. Then there exists a (non-canonical) isomorphism
+	\[H_n(P\otimes M)\cong H_n(P_\bullet)\otimes M\bigoplus \Tor_1^R(H_{n-1}(P_\bullet),M)\]
+	where the statement that this isomorphism is non-canonical amounts to saying that this splitting
+	in the sequence from the UCT doesn't behave well with respect to maps.
+\end{prop}
+\begin{rmk}
+	What does this come from? Well in topology, if $X$ is a topological space, then ``homology with coefficients''
+	is just $H_n(X,M)=H_n(S(X)\otimes M)$. Then the universal coefficient theorem gives us a way to compute this.
+\end{rmk}
+
+
+\begin{prop}[UCT for $H^n$]
+	Let $P_\bullet$ be a chain complex of projective $R$-modules where the $d_n(P_\bullet)$ are projective and
+	$M$ is any $R$-module. Then we can apply $\Hom(-,M)$ to $P_\bullet$ to compute cohomology, yielding the short exact sequence
+	\[0\to \Ext_R^1(H_{n-1}(P_\bullet),M)\to H^n(\Hom(P_\bullet,M))\to \Hom(H_n(P_\bullet,M))\to 0\]
+\end{prop}
+\begin{prop}[K\"unneth for $H^n$]
+	Let $P_\bullet$ be a chain complex of projectives with $d_n(P_\bullet)$ projective. Let $Q_\bullet$ be a cochain complex. 
+	Then we have the short exact sequence
+	\[0\to\prod_{i+j=n-1}\Ext_R^1(H_i(P),H^j(Q))\to H^n(\Hom(P,Q))\to \prod_{i+j=n}\Hom(H_i(P),H^j(Q))\]
+\end{prop}
+
+\subsection{A reminder on dimension theory}
+\begin{defn}
+	Let $M$ be a (left) $R$-module. Then
+	\[\projdim_RM:=\inf_n\{0\to P_n\to\cdots\to P_0\to M\}\]
+	Notice that $\projdim$ can be infinite.
+\end{defn}
+\begin{rmk}
+	A module has zero projective dimension if and only if it is projective.
+\end{rmk}
+\begin{rmk}
+	One can define (analogously) injective and flat dimension.
+\end{rmk}
+\begin{lem}
+	Let $M$ be an $R$-module. The following are equivalent:
+	\begin{enumerate}
+		\item $\projdim_RM\le d$
+		\item $\Ext_R^i(M,N)=0$ for all $i\ge d+1$, for all $N$.
+		\item $\Ext_R^{d+1}(M,N)=0$ for all $N$.
+		\item If $0\to\Omega^dM\to P_{d-1}\to P_{d-2}\to\cdots\to P_0\to M$ is a resolution, then $\Omega^d(M)$ is projective.
+	\end{enumerate}
+\end{lem}
+\begin{rmk}
+	Everything can be dualized (e.g. use injective resolutions and injective dimension and $\Omega^{-d}$) 
+	and get a similar set of equivalences.
+\end{rmk}
+\begin{rmk}
+	Notice here that the syzygies are not uniquely defined, but they are uniquely defined \textit{up to projective summands.}
+	In fancier parlance, they are uniquely defined in the stable module category.
+\end{rmk}
+\begin{rmk}
+	Notice that $\Omega(\Omega^{d-1}(M))=\Omega^d(M)$. Using this, we can compute
+	\[\Ext_R^{d+1}(M,N)\cong \Ext_R^1(\Omega^dM,N)\cong\underline{\Hom}_R(\Omega^{d+1},N)\]
+	where $\underline{\Hom}$ is $\Hom$ is the stable module category.
+\end{rmk}
+\begin{rmk}
+	Sometimes the \textbf{syzygy} is called \textbf{Heller shift} in representation theory or just \textbf{shift}
+	when using a categorical viewpoint.
+\end{rmk}
+
+\begin{thm}
+	The following numbers are the same:
+	\begin{enumerate}
+		\item $\sup_{M\in\Rmod}\projdim_R M$
+		\item $\sup_{M\in\Rmod}\injdim_R M$
+		\item $\sup_{I\text{ a left ideal}}\projdim_RR/I$
+		\item $\sup_{M,N\in\Rmod}\{d|\Ext_R^d(M,N)\ne 0\}$
+	\end{enumerate}
+\end{thm}
+\begin{defn}
+	The above number is called the \textbf{left global dimension of $R$.}
+\end{defn}
+\begin{rmk}
+	This is where commutative algebra diverges: we have notions of \textit{right}
+ global dimension (just change to $\mathbf{mod}$-$R$) as well as global dimension proper.
+\end{rmk}
+
+We also have a notion of \textit{weak global dimension} or $\Tor$ global dimension:
+\begin{defn}
+	The $\Tor$ dimension of $R$ is any of the following numbers:
+	\begin{enumerate}
+		\item $\sup_{M\in\Rmod}\operatorname{flatdim}_RM$
+		\item $\sup_{M\in\modR}\operatorname{flatdim}_RM$
+		\item $\sup_{I\text{ left ideal}}\operatorname{flatdim}_R R/I$
+		\item $\sup_{J\text{ right ideal}}\operatorname{flatdim}_R R/J$
+		\item $\sup_{M\in\modR,N\in\Rmod}\{d|\Tor_d^R(M,N)\ne 0\}$
+	\end{enumerate}
+\end{defn}
+\begin{rmk}
+	If $R$ is (left) Noetherian, then $\operatorname{flatdim}_R(M)=\projdim_R(M)$ for all finitely
+	generated left $R$-modules. Furthermore the \textbf{left} $\gldim R=\operatorname{Tordim}R$.
+\end{rmk}
+
+\begin{rmk}
+	If $R$ is (right) Noetherian, you get all the same stuff but flipped.
+\end{rmk}
+\begin{rmk}
+	Rings of global dimension zero are exactly the semisimple ones!
+\end{rmk}
+
+\section{May 3, 2019}
+Recall that semisimple rings are precisely those of global dimension zero. 
+\subsection{Frobenius Algebras}
+\begin{defn}
+	Let $R$ be a finite dimensional algebra over $k$. Then $R$ is \textbf{Frobenius} if there exists a non-degenerate,
+	associative, bilinear form $\sigma:R\times R\to k$.
+\end{defn}
+\begin{defn}
+	If $R$ is Frobenius and furthermore $\sigma$ is a symmetric form, then $R$ is \textbf{symmetric}.
+\end{defn}
+\begin{prop}
+	If $R$ is Frobenius, then
+	\[R^\ast=\Hom_k(R,k)\cong R\]
+	as (left) $R$-modules.
+\end{prop}
+\begin{prf}
+	Consider the map $R\to R^\ast$  where we send $a\mapsto \varphi_a=\sigma(-,a)$. One can check that this
+	actually gives you an isomorphism.
+\end{prf}
+\begin{cor}
+	$R$ is injective as an $R$-module.
+\end{cor}
+\begin{rmk}
+	The idea here is that $R^*$ is projective, and dualizing takes projectives to injectives.
+\end{rmk}
+\begin{cor}
+	When $R$ is Frobenius, all projectives are injective (and vice versa).
+\end{cor}
+\begin{rmk}
+	$R$ is Frobenius implies that $R$ is ``self-injective'', or that $\injdim_RR=0$. Note that this 
+	then implies that $R$ is \textit{Gorenstein!}
+
+	It often happens in representation theory that one proves something for finite dimensional algebras, 
+	then Frobenius algebras, then sees that it generalizes to Gorenstein ones.
+\end{rmk}
+\begin{defn}
+	$R$ is called \textbf{quasi-Frobenius} (according to Wikipedia) if the collection of injectives and 
+	projectives are the same.
+\end{defn}
+\begin{ex}
+	(This is homework) If $G$ is a finite group then $kG$ is symmetric. Note that it is uninteresting when 
+	we have Artin-Wedderburn, so the fun stuff happens in the modular case.
+\end{ex}
+\begin{ex}
+	Consider the Lie algebra $\frakg$ over $k$, a field of characteristic $p$. Then $[p]:\frakg\to \frakg$
+	is a $p^{th}$ power map or \textbf{restriction operation} if
+	\begin{enumerate}
+		\item $\ad x^{[p]}=(\ad(x))^p$
+		\item $(\lambda x)^{[p]}=\lambda^{[p]}x^{[p]}$
+		\item $(x+y)^{[p]}=x^{[p]}+y^{[p]}+\sum_1^{p-1}s_i(x,y)$
+	\end{enumerate}
+	where $is_i(x,y)$ is the coefficient of $\lambda^{i-1}$ in 
+	\[(\ad(\lambda x+y))^{p-1}(x)=[\lambda x+y,[\lambda x+y,[\cdots,[\lambda x + y,x]\cdots,x],x],x]\]
+\end{ex}
+\begin{rmk}
+	If $\frakg$ is linear (sits in $\gl_n$), then we have the $p^{th}$ power map that takes every matrix 
+	to its $p^{th}$ power. This is what we are trying to capture without having to rely on what is going to be 
+	an inherently coordinate-dependent definition.
+\end{rmk}
+
+\begin{defn}
+	The universal enveloping algebra $\mathfrak{U}(\frakg)$ is the universal object representing the smallest
+	associative algebra capturing the relations of $\frakg$. Look to my Lie algebra notes for more details.
+\end{defn}
+\begin{defn}
+	The \textbf{restricted enveloping algebra} $\mathfrak{u}(\frakg)$ is 
+	\[\mathfrak{u}(\frakg)=\mathfrak{U}(\frakg)/\langle x^p-x^{[p]}\rangle\]
+\end{defn}
+\begin{prop}
+	$\mathfrak{u}(\frakg)$ has a ``PBW'' style basis. The monomials take a basis for $\frakg$ and 
+	then the monomials look like 
+	\[x_1^{i_1}\cdots x_n^{i_n}\]
+	for $0\le i_1,\dots\le p-1$.
+\end{prop}
+In general, the category of representations of $\frakg$ is equivalent to $\mathfrak{U}(\frakg)$-$\mathbf{mod}$
+and the restricted representations of $\frakg$ are equivalent to $\mathfrak{u}(\frakg)$ modules.
+\begin{prop}
+	$\mathfrak{u}(\frakg)$ is Frobenius.
+\end{prop}
+\subsection{Hereditary Rings}
+\begin{defn}
+	A ring $R$ is \textbf{(left) hereditary} of every submodule of a free module is projective.
+\end{defn}
+\begin{rmk}
+	Equivalently, the (left) $\gldim R\le 1$.
+\end{rmk}
+\begin{ex}
+	PIDs are hereditary, of course. Furthermore, a commutative integral domain $R$ is hereditary if and only if $R$
+	is a Dedekind domain.
+\end{ex}
+
+\begin{prop}
+	If $f:R\to S$ is a ring homomorphism and $M$ is an $S$-module, then 
+	\[\projdim_R(M)\le\projdim_R(S)+\projdim_S(M).\]
+\end{prop}
+\begin{prf}
+	The proof of this statement (which we may have seen with S\'andor?) uses Cartan-Eilenberg resolutions.
+	Let $\cal A$ be an abelian category with enough projectives and let $C$ be a chain complex in $\cal A$.
+	Then $P=P_{\bullet,\bullet}$ (a double complex) is a \textbf{Cartan-Eilenberg Resolution of $C$} if we have 
+	a commutative diagram
+	\begin{center}
+		\begin{tikzcd}
+			& \vdots\ar[d] & \vdots\ar[d] & \\
+			& P_{n+1,1}\ar[d] & P_{n,1}\ar[d] & \\
+			& P_{n+1,0}\ar[d] & P_{n,0}\ar[d] & \\
+			\cdots\ar[r] & C_{n+1}\ar[r] & C_n\ar[r] & \cdots
+		\end{tikzcd}
+	\end{center}
+	where we have the properties: 
+	\begin{itemize}
+		\item $P_{n\bullet}\to C_n$ is a projective resolution.
+		\item $P_{nj}=0$ for $j<0$
+		\item $B(P_{n\bullet})\to B(C_\bullet)$ and $H(P_n)\to H_n(C_\bullet)$ are projective resolutions.
+	\end{itemize}
+\end{prf}
+
+\section{May 8, 2019}
+\begin{lem}
+	Cartan-Eilenberg resolutions exist for any complex $C$.
+\end{lem}
+\begin{prop}
+	Let $f:R\to S$ be ar ring homomorphism and let $M$ be an $S$-module and let $f^\ast(M)$ be the $R$-module
+	taken by acting on $M$ via $f$. Then 
+	\[\projdim_S(f^\ast(M))=\projdim_S(M)+\projdim_R(S)\]
+\end{prop}
+\begin{prf}
+	\textit{Sketch.} Let $n=\projdim_S(M)$ and let $P_\bullet\to M$ be a projective resolution of $M$ (as an $S$-module)
+	of length $n$. Now we use the fact (exercise) that $\projdim_R(P_i)\le \projdim_R(S)$. 
+
+	Let $Q_{\bullet\bullet}\to P_\bullet$ be a Cartan-Eilenberg resolution of $P_\bullet$ as $R$-modules. Now we can ``chop off''
+	higher terms of the CE complex, replacing the $m^{th}$ row with $\Omega^m(Q_{n\bullet})$ and the higher rows with zeros. One can 
+	show without too much work that this is still a CE resolution of $P_\bullet$.
+
+	Now we have already that $P_\bullet\sim M$ is a quasi isomorphism and the total complex $\operatorname{Tot}(Q_{\bullet\bullet})$ 
+	is quasi isomorphic to $P_\bullet$, so we have, in effect, created a projective resolution of $M$ using $R$-modules of length $n+m$.
+\end{prf}
+\subsection{Koszul Complex/Resolution}
+As motivation, let $R$ be a regular local ring of dimension $n$. Then the Koszul resolution is a resolution of the 
+residue field $k=R/\mathfrak{m}$ of length $n$.
+
+\begin{ex}
+	Let $x$ be a central element in $R$. Consider the map $R\xrightarrow{x}R$. This is a complex! We can compute 
+	$H_1={_x}R$ and $H_0=R/xR$. In particular, if $x$ is not a zero divisor, then $K_\bullet(x)=R\to R$ is a 
+	projective resolution of $R/xR$.
+
+	This gives us the Koszul complex on a single element.
+\end{ex}
+
+\begin{defn}[Koszul Complex]
+	Let $\underline x=(x_1,\dots,x_n)$ be a sequence (not yet regular) of central elements. Then 
+	\[K_\bullet(\underline{x})=K_\bullet(x_1)\otimes\cdots\otimes K_\bullet(x_n)\]
+	is the Koszul complex of $\underline{x}$.
+\end{defn}
+\begin{ex}
+	Let's consider what happens when $n=2$. Then the length of this complex is going to be 2. This comes 
+	from the diagonals of the double complex:
+	\begin{center}
+		\begin{tikzcd}
+			R\ar[r,"x_1"]\ar[d,"-x_2",swap] & R\ar[d,"x_2"]\\
+			R\ar[r,"x_1"] & R
+		\end{tikzcd}
+	\end{center}
+	giving us the complex 
+\[R\xrightarrow{\begin{pmatrix}-x_2 & x_1\end{pmatrix}} R\oplus R\xrightarrow{\begin{pmatrix}x_1\\x_2\end{pmatrix}} R\]
+\end{ex}
+
+Now in general if $K_p(\underline{x})$ is the $p^{th}$ component of the Koszul complex, we get $\dim_R(K_p(\underline{x})))=\binom{n}{p}$.
+We denote the generators for $K_p(\underline{x})$ as $e_{i_1}\wedge\cdots\wedge e_{i_p}$ for $1\le i_1\cdots i_p\le n$.
+
+Then we claim that the differential on this complex is 
+\[d_p(e_{i_1}\wedge \cdots\wedge e_{i_p})=\sum (-1)^{k+1}x_k e_{i_1}\cdots\wedge \widehat{e_{i_k}}\wedge\cdots\wedge e_{i_p}\]
+
+\begin{prop}
+	$K_\ast(\underline{x})$ is a differential graded algebra with product formed by concatenation modulo
+	the relation $e_i\wedge e_j=-e_j\wedge e_i$ and $e_i\wedge e_j=0$. If $V=Rx_1\oplus \cdots\oplus Rx_n$, then
+	$K_\ast(\underline{x})\cong \Lambda^\ast(V)$ and $K_p(\underline{x})\cong\Lambda^p(V)\cong\Lambda^p(R^n)$.
+\end{prop}
+\begin{rmk}
+	Note that in the proposition above, $K_\ast(\underline{x})\cong \Lambda^\ast(V)$ is meant to imply isomorphism \textit{on the level of graded algebras.}
+\end{rmk}
+\begin{defn}
+	If $M$ is any (left) $M$ module then $K_\bullet(\underline{x})\otimes M$ is a Koszul complex of $M$.
+\end{defn}
+\begin{rmk}
+	Then, as a matter of notation, $H_i(\underline{x},M)=H_i(K_\bullet(\underline{x}\otimes M))$.
+\end{rmk}
+
+\section{May 10. 2019}
+\subsection{Koszul Complexes Continued}
+Let $R$ be a commutative local ring $(R,\frakm,k)$. 
+\begin{thm}
+	Let $(x_1,\dots,x_n)\in \frakm$ is an $M$-regular sequence for $M$, then
+	\begin{itemize}
+		\item $H_0(\underline{x},M)=M/((x_1,\dots,x_n)M)$.
+		\item $H_i(\underline{x},M)=0$ when $i>0$.
+	\end{itemize}
+\end{thm}
+\begin{rmk}
+	Equivalently, $K_\bullet(\underline{x})\otimes M$ is a projective resolution of $M/(x_1,\dots,x_n)M$.
+\end{rmk}
+In particular, when $M=R$, and when $\dim R=n$, then the (length $n$) sequence is just a regular sequence. Then $K_\bullet(\underline{x})\to k$ is a free resolution of $k=R/\frakm$.
+\begin{cor}
+	If $R$ is a regular ring, $\projdim_Rk=n=\dim R$
+\end{cor}
+\begin{lem}
+	Let $x$ be a non-zero-divisor in the center of $R$ and let $C\in\Ch(\Rmod)$. Then there 
+	exists a natural short exact sequence
+	\[0\to H_i(C)/xH_i(C)\to H_i(K_\bullet(x)\otimes C)\to {_x}H_i(C)\to 0\]
+\end{lem}
+\begin{prf}
+	K\"unneth formula!
+\end{prf}
+\begin{thm}
+	Let $R$ be a commutative local ring, $M$ an $R$-module, and a sequence $(x_1,\dots,x_n)\in\frakm$. Then 
+	\begin{itemize}
+		\item $(x_1,\dots,x_n)$ is $M$-regular.
+		\item $H_i(\underline{x},M)=0$ for $i>0$.
+		\item $H_1(\underline{x},M)=0$
+	\end{itemize}
+\end{thm}
+\begin{cor}
+	If $(x_1,\dots,x_n)$ is a regular sequence in a local ring, then any permutation of it is also regular!
+\end{cor}
+\begin{rmk}
+	Definitely not true when $R$ is non-local. We did an example with S\'andor.
+\end{rmk}
+
+\subsection{Group (co)homology}
+Let $G$ be a group. Then we can consider $\bbZ G$ modules and compute 
+\[\Ext_G^i(M,N)=R^i\Hom_G(M,N).\]
+
+Recall that we can consider representations of $G$ over $R$ (a commutative ring). Then if $M$ and $N$ 
+are two representations of $G$ ($RG$-modules), then $M\otimes_R N$ can be defined to have the diagonal action of $G$.
+Similarly $\Hom_R(M,N)$ becomes a representation via $(g\cdot f)(m)=g\cdot(f(g^{-1}m))$.
+\begin{rmk}
+	Notice here that $\Hom_R(-,-)$ is \textit{internal hom} since it becomes again a $G$-module.
+\end{rmk}
+\begin{prop}
+	$\Hom_R(M,N)^G\cong \Hom_{RG}(M,N)$ where the later is the external (categorical) $\Hom$.
+\end{prop}
+
+The upshot of all of this is that we can compute the group cohomology:
+\[H^i(G,M):=\Ext_{RG}(R,M)=R^i\Hom_{RG}(R,M)=R^i\Hom_R(Z,M)^G=R^iM^G\]
+so we can define the group cohomology functor 
+\[H^i(G,-)=R^i(-)^G.\]
+
+Now $H_i(G,M)=\Tor_i^{RG}(R,M)$. But $R\otimes_{RG}M$ is going to be isomorphic to $M_G$, the \textbf{coinvariance} of $M$,
+which is $M/\langle m-gm|m\in M,g\in G\rangle$. So then $H_i(G,-)=L_i(-)_G$.
+
+\begin{rmk}
+	How do we compute this in general? This is not actually known. For instance, consider $GL_n(\bbF_p)$ is a relatively simple group (finite!)
+	and we don't know the minimal $i>0$ such that $H^i(GL_n(\bbF_p),\bbF_p)\ne 0$.
+\end{rmk}
+
+Na\"ively, we can use that $H^i(G,M)=\Ext_G^i(\bbZ,M)$ (here setting $R=\bbZ$) and then compute this via a resolution 
+either of $P_\bullet\to\bbZ$ and compute $H^i(\Hom(P_\bullet,M))$ or $H^i((I^\bullet)^G)$.
+
+\section{May 13, 2019}
+\subsection{Sample Computations}
+\begin{ex}
+	Let $G=\bbZ/p=C_p$ (not necessarily a prime yet). For instance, let $p=0$ first and $G=\bbZ$.
+	Then to compute $H^i(C_p,A)=\Ext_{C_p}^i(\bbZ,A)$ is computed either with a resolution of $\bbZ$ or $A$. Since the 
+	latter is allowed to be general, we need to do the former. Consider 
+	\[\cdots\to\bbZ C_p\xrightarrow{N}\bbZ C_p\xrightarrow{\sigma-1}\bbZ C_p\xrightarrow{\varepsilon}\bbZ\to 0\]
+	where $N=(\sigma^p-1)/(\sigma-1)$.
+
+	Let's begin by noticing that $\Hom_{\bbZ C_p}(\bbZ C_p,A)\cong A$, so we get a resolution 
+	\[\cdots\leftarrow A\xleftarrow{\sigma-1}A\xleftarrow{N}A\xleftarrow{\sigma-1}A\]
+	Doing our computations, we get $H^0(C_p,A)=\ker\{\sigma-1:A\to A\}=A^{C_p}$. As we expected!
+
+	Then $H^1(C_p,A)=\ker(N)/(\sigma-1)A$ and $H^2(C_p,A)=A^{C_p}/NA$, and this just cycles.
+\end{ex}
+\begin{rmk}
+	The above is an example of a \textbf{periodic resolution of $\bbZ$}. We will not talk much about this, but there is a measure of 
+	\textit{complexity of a module} which refers to the length of the period in such a resolution.
+\end{rmk}
+
+\begin{ex}
+	In a specific case, consider $A=\bbZ$ (the trivial $\bbZ C_p$ module). Then $H^0$ is $\bbZ$, $H^1=0$ and $H^2=\bbZ/p$.
+\end{ex}
+\begin{ex}
+	Now let's let $k$ be a field of characteristic $p$ (now $p$ is a prime, obviously) and let $A$ be a $k$-module. 
+	Then the same thing goes through in computing $H^i(C_p,A)=\Ext_{kC_p}(k,A)$, but we just replace $\bbZ$ with $k$.
+
+	If instead we compute $H^i(C_p,k)$, we get $k$ every time (since $\sigma-1$ is the zero map as well as $1+\sigma+\cdots+\sigma^{p-1}$).
+\end{ex}
+\begin{ex}
+	Let $\langle t\rangle=C$ be a cyclic group and consider the group algebra $\bbZ C\cong \bbZ[t,t^{-1}]$.
+	But then a resolution of $\bbZ$ is 
+	\[0\to \bbZ\langle t\rangle\xrightarrow{t-1}\bbZ\langle t\rangle\xrightarrow{\varepsilon}\bbZ\]
+	And so you get a result about Poincar\'e duality that I missed but don't have time to figure out.
+\end{ex}
+\begin{ex}
+	Now if $A=\bbZ\langle t\rangle$ and $C=\langle t\rangle$. THen $H^0(C,\bbZ C)=0$ and $H^1(C,\bbZ C)=\bbZ$.
+	Replacing $\bbZ$ with $k$, we get $H^0(C,\bbZ C)=0$ and $H^1(C,\bbZ C)=k$.
+\end{ex}
+\begin{rmk}
+	This gives us one of the examples of the differences between finite and infinite groups: if $C$ were finite,
+	$kC$ would be Frobenius, whence self-injective, whence $H^1(C,kC)=0$.
+\end{rmk}
+
+\subsection{Products in Cohomology}
+We will begin by discussing the idea of a ``coss-product.'' Let $G$ and $H$ be groups. Then we want to define 
+a map 
+\[H^p(G,\bbZ)\otimes H^q(H,\bbZ)\xrightarrow{\times} H^{p+q}(G\times H,\bbZ).\]
+Eventually we can let $G=H$ and using the coproduct (diagonal) map $\Delta(g)=(g,g)$, whose image under $H^{p+q}$ is 
+$\Delta^\ast:H^{p+q}(G\times G,\bbZ)=H^{p+q}(G,\bbZ)$ to get our cup product.
+
+\begin{prop}
+	Let $P_\bullet\to\bbZ$ be a projective resolution as $\bbZ G$ modules and $Q_\bullet\to\bbZ$ a resolution as $\bbZ H$ modules.
+	Then $P_\bullet\otimes Q_\bullet\to\bbZ$ is a projective resolution as $\bbZ G\otimes \bbZ H=\bbZ(G\times H)$ modules.
+\end{prop}
+
+Let's begin by defining a map
+\[f:\Hom_G(P_\bullet,\bbZ)\otimes \Hom_H(Q,\bbZ)\to \Hom_{G\times H}(P\otimes Q,\bbZ)\]
+via
+\[f(\mu\otimes \nu)(x\otimes y)=\mu(x)\mu(y)\]
+for all $x\in P$ and $y\in Q$. Notice here that if $|\mu|\ne |x|$, then we set $\mu(x)=0$.
+
+Now using that $H^i(G,\bbZ)=H^i(\Hom_G(P_\bullet,\bbZ)),$ and using the first map from the K\"unneth formula,
+\[H^i(\Hom_G(P_\bullet))\otimes H^j(\Hom_H(Q_\bullet,\bbZ))\to H^{i+j}(\Hom_G(P_\bullet,\bbZ)\otimes \Hom_H(Q_\bullet,\bbZ))\]
+and then it can be checked that this map behaves well with respect to cycles and boundaries, so we 
+get a map 
+\[H^{i+j}(\Hom_G(P_\bullet,\bbZ)\otimes \Hom_H(Q_\bullet,\bbZ))\to H^{i+j}(\Hom_{G\times H}(P\otimes Q,\bbZ))\cong H^{i+j}(G\times H,\bbZ).\]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%              Homework                %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\section{HW1 -- Due April 17}
+Throughout the assignment, $R$ is an associative ring with 1.
+\begin{prob}
+	Show that $\Ch(R)$ is an abelian category.
+\end{prob}
+\begin{sol}
+	We begin by proving a lemma:
+	\begin{lem}\label{lem-chain-additive} 
+		$\Ch=\Ch(R)$ is additive. 
+	\end{lem}
+	\begin{prf}
+		Let $C,D\in\Ch$ and $f\in\Hom_{\Ch}(C,D)$. Then 
+		$f=(f_i)_{i\in\bbZ}$ is a collection of maps of $R$-modules. Then, leveraging that $\Rmod$ is Abelian
+		(\textit{the} Abelian category in some ways) and the fact that addition of chain maps is perfomed 
+		component-wise, this gives $\Hom_{\Ch}(C,D)$ the structure of an Abelian group as the direct product
+		of Abelian groups. That the component-wise sum is actually a chain map is evident since 
+		\[d((f+g)(x))=d(f(x)+g(x))=d(f(x))+d(g(x))=f(d(x))+g(d(x))=(f+g)(d(x)).\]
+
+		The chain $0_\bullet=\cdots 0 \to 0\to 0\to \cdots$ is the zero object in $\Ch$ since there is a 
+		unique map $\mathbf{0}=(0)_{i\in\bbZ}$ both from and to $0_\bullet$ from any chain (again, since maps
+		are component-wise $R$-module maps, so each component must be $0$). This map is indeed a chain map
+		since $0=0\circ d=d'\circ 0$. Therefore $\Ch$ is additive.
+	\end{prf}
+
+	\brk
+
+	Now for the final three properties (that (co)kernels exist, that every monic is the kernel of its cokernel,
+	and that every epi is the cokernel of its kernel) follow from the fact that $\Rmod$ is abelian (and thus satisfy
+	these properties) and that (co)kernels in $\Ch$ are ``what we would hope they would be'' component-wise. 
+	Therefore the properties pass from $\Rmod$ up to $\Ch$.
+
+	\begin{lem}\label{lem-chain-ker}
+		Let $C,D\in\Ch$ and $f\in\Hom_{\Ch}(C,D)$. Then there is a complex $K$ and a map $i:K\to C$ 
+		that is the kernel of $f$ and furthermore corresponds to the ($\Rmod$) kernel 
+		\[i_n:K_n=\ker f_n\to C_n\]
+		on the components.
+	\end{lem}
+	\begin{prf}
+		\begin{rmk}
+		I have just noticed that I am basically re-proving part of snake lemma below for the existence of the maps between
+		kernels. Oh well, good practice.
+		\end{rmk}
+		Consider the following diagram:
+
+	\begin{center}
+		\begin{tikzcd}
+			\ker f_n \ar[r,"\partial_n"]\ar[d,hook,"i_n"] & \ker f_{n+1}\ar[d,hook,"i_{n+1}"]\\
+			C_n\ar[r,"d_n"]\ar[d,"f_n"] & C_{n+1}\ar[d,"f_{n+1}"]\\
+			D_n\ar[r,"d_n'"] & D_{n+1}
+		\end{tikzcd}
+	\end{center}
+
+	Let $f\in\Hom_{\Ch}(C,D)$ as above. Define $K=(\ker f_i,\partial)\in\Ch$ where 
+	$\partial^i:\ker f_i\to \ker f_{i+1}$ is defined as follows: let $x\in\ker f_n$. Then since $f$
+	is a chain map, 
+	\[0=d_n'(0)=d_n'(f_n(x))=f_{n+1}(d_n(x))\]
+	so in particular $d_n(x)\in\ker f_{n+1}$. So $d_n(\ker f_n)\subseteq \ker f_{n+1}$, so we can lift
+	$d_n\circ i_n$ through $i_{n+1}$ to a map $\partial_n:\ker f_n\to \ker f_{n+1}$. Then $K$ is a chain 
+	and $i$ is a chain map by construction.
+	
+	That this is the kernel of $f$ in $\Ch$ follows since if $g\in\Hom(A,C)$ and $f\circ g=0$, each component
+	map $g_n$ must factor through $\ker f_n$. It remains to see that this map is a chain map. Consider the diagram
+
+	\begin{center}
+		\begin{tikzcd}
+			& A_n\ar[rr,"d_A"]\ar[ld,"\tilde g_n",swap]\ar[ldd,"g_n"] & & A_{n+1}\ar[ld,"\tilde g_{n+1}",swap]\ar[ldd,"g_{n+1}"]\\
+			\ker f_n\ar[rr,"d_K"]\ar[d,hook,"i_n",swap] & & \ker f_{n+1}\ar[d,hook,"i_{n+1}",swap] &\\
+			C_n\ar[rr,"d_C"] & & C_{n+1} &
+		\end{tikzcd}
+	\end{center}
+
+	\noindent where $\tilde g_n$ is the canonical map through the kernel of $f_n$. Pick any $a\in A_n$ and notice
+	\begin{align*}
+		(i_{n+1}\circ d_K)\circ \tilde g_n(a)&=(d_C\circ i_n)\circ \tilde g_n(a) \\
+		&= d_C\circ g_n(a)\\
+		&=g_{n+1}\circ d_A(a)\\
+		&=i_{n+1}\circ \tilde g_{n+1}\circ d_A(a)
+	\end{align*}
+	and so since $i_{n+1}$ is mono, this establishes
+	\[d_K\circ\tilde g_n = \tilde g_{n+1}\circ d_A\]
+	so $\tilde g$ is a chain map and therefore $i:K\to C$ is the kernel of $f$, which lies in $\Ch$.
+	\end{prf}
+
+	\brk
+	\begin{lem}\label{lem-chain-coker}
+		Let $C,D\in\Ch$ and $f\in\Hom_{\Ch}(C,D)$. Then there is a complex $E$ and a map $q:D\to E$ 
+		that is the cokernel of $f$ and furthermore corresponds to the ($\Rmod$) cokernel 
+		\[q_n:D_n\to E_n=\coker f_n\]
+		on the components.
+	\end{lem}
+	\begin{prf}
+	Consider
+	
+	\begin{center}
+		\begin{tikzcd}
+			C_n\ar[r,"d_n"]\ar[d,"f_n"] & C_{n+1}\ar[d,"f_{n+1}"]\\
+			D_n\ar[r,"d_n'"]\ar[d,two heads,"q_n"] & D_{n+1}\ar[d, two heads,"q_{n+1}"]\\
+			\coker f_n\ar[r,"\partial_n"] &\coker f_{n+1}
+		\end{tikzcd}
+	\end{center}
+
+	\begin{rmk}
+		This also follows from snake lemma and is less ``elementy''.
+	\end{rmk}
+	Given $\hat x\in\coker f_n$, let $x$ be any preimage of $\hat x$ under $q_n$ and define
+	\[\partial_n(\hat x)=q_{n+1}\circ d_n'(x).\]
+
+	To show that this map is well-defined, let $y$ be any other preimage of $x$ under $q_n$.
+	Then since $q_n(x-y)=0$, we can pull $x-y$ back through $f_n$ to some $c\in C_n$. Then
+	\begin{align*}
+		(q_{n+1}\circ d_n')(x-y)&=q_{n+1}\circ (d_n'\circ f_n)(c)\\
+		&=q_{n+1}\circ(f_{n+1}\circ d_n)(c)\\
+		&=(q_{n+1}\circ f_{n+1})\circ d_n(c)\\
+		&=0\circ d_n(c)=0
+	\end{align*}
+	so $q_{n+1}\circ d_n'(x)=q_{n_1}\circ d_n'(y)$, so $\partial_n(\hat x)$ is well-defined. Then 
+	$E=(\coker f_n)_{n\in\bbZ}$ is a chain complex with differential $\partial$. To show that $q:D\to E$ 
+	is the cokernel of $f$, let $A\in\Ch$ and $g\in\Hom_{\Ch}(D,A)$  with $g\circ f = 0$ then from the universal property in 
+	$\Rmod$, the component maps must factor through the $E_n$:
+
+	\begin{center}
+		\begin{tikzcd}
+			& A_n\ar[rr,"d_A"] & & A_{n+1}\\
+			\coker f_n\ar[rr,"d_E"]\ar[ur,"\tilde g_n"]& & \coker f_{n+1}\ar[ur,"\tilde g_{n+1}"] &\\
+			D_n\ar[rr,"d_D"]\ar[uur,"g_n",swap]\ar[u,two heads,"q_n"] & & D_{n+1}\ar[uur,"g_{n+1}",swap]\ar[u,two heads,"q_{n+1}"] &
+		\end{tikzcd}
+	\end{center}
+
+	Then for any $d\in D_n$, 
+	\begin{align*}
+		\tilde g_{n+1}\circ d_E\circ q_n(d) &= \tilde g_{n+1}\circ q_{n+1}\circ d_D(d)\\
+		&= g_{n+1}\circ d_D(d)\\
+		&= d_A\circ g_n(d)\\
+		&= d_A\circ \tilde g_n\circ q_n(d)
+	\end{align*}
+	and since $q_n$ is epi, we conclude that 
+	\[\tilde g\circ d_E=d_A\circ \tilde g\]
+	so since $E$ is the (unique) object satisfying this property, it is the cokernel of $f$ in $\Ch$.
+	\end{prf}
+\end{sol}
+
+\begin{prob}
+	Show that a chain map $f:C_\bullet\to D_\bullet$ induces a well-defined map $H_n(f)$ on homology.
+\end{prob}
+\begin{sol}
+	Since $f$ is a chain map, it is easy to see it induces a map on cycles: let $c\in Z_n(C)$.
+	Then 
+	\[d_D(f(c))=f(d_C(c))=f(0)=0\]
+	so $f(Z_n(C))\subseteq Z_n(D).$ Thus it suffices to show that if $x$ and $y$ differ by a boundary,
+	$f(x)$ and $f(y)$ do as well.
+
+	To see this, assume that $x-y\in B_n(C)$, so there is a $z\in C_{n+1}$ such that $d_C(z)=x-y$.
+	But then 
+	\[f(x)-f(y)=f(x-y)=f(d_C(z))=d_D(f(z))\in B_n(D)\]
+	so the map $H_n(f)$ is well-defined.
+\end{sol}
+
+\begin{prob}
+	(\textbf{Weibel 1.4.5}) 
+	\begin{enumerate}
+		\item Show that the chain homotopy equivalence is an equivalence relation on the set of all chain maps from $C$
+		to $D$. Let $\Hom_\mathbf{K}(C,D)$ denote the equivalence classes of such maps. Show that $\Hom_\mathbf{K}(C,D)$
+		is an Abelian group.
+		\item Let $f\sim g$ where $f,g:C\to D$. If $u:B\to C$ and $v:D\to E$ are chain maps, show $vfu$ and $vgu$ are 
+		chain homotopic. Deduce that there is a category $\mathbf K$ whose objects are chain complexes and whose morphisms
+		are given in (a).
+		\item Let $f_0,f_1,g_0,$ and $g_1$ be chain maps $C\to D$ such that $f_i$ is chain homotopic to $g_i$. Show that 
+		$f_0+f_1\sim g_0+g_1$. Deduce that $\mathbf K$ is an additive category and that $\Ch\to\mathbf K$ is an 
+		additive functor.
+		\item (Optional) Is $\mathbf K$ an abelian category? Explain.
+	\end{enumerate}
+\end{prob}
+\begin{sol}
+	\textbf{(a):} Let $f,g,h\in\Hom_{\Ch}(C,D).$ It is clear that $f\sim f$ since $f-f=0$ is nullhomotopic via $s=0$. Thus $\sim$ is reflexive.
+	If $f\sim g$, then there is a chain homotopy $s$ such that $f-g=ds+sd$. Setting $s'=-s$, we get
+	\[ds'+s'd=-(ds+sd)=-(f-g)=g-f\]
+	so $g\sim f$, whence $\sim$ is symmetric.
+
+	Finally, assume $f\sim g$ via $s$ and $g\sim h$ via $t$. But then notice that
+	\begin{align*}
+		f-h &= f-g + g-h\\
+		&= ds+sd+dt+td\\
+		&= ds+dt+sd+td\\
+		&= d(s+t)+(s+t)d
+	\end{align*}
+	so $f-h\sim 0$ via the chain homotopy $s+t$. Therefore $\sim$ is an equivalence relation.
+
+	The last statement follows since 
+	\[\Hom_{\mathbf K}(C,D)=\Hom_{\Ch}(C,D)/\sim\]
+	and every quotient of an Abelian group is Abelian.
+
+	\vspace{2ex}\noindent \textbf{(b):} Say $s$ is the homotopy from $f-g$ to $0$. Then notice since everything is linear:
+	\begin{align*}
+		vfu-vgu &= v(f-g)u\\
+		&= v(sd_C+d_Ds)u\\
+		&= vs(d_Cu)+(vd_D)su\\
+		&= vsud_B+d_Evsu
+	\end{align*}
+	so $vfu\sim vgu$ via the chain homotopy $vsu$. This means that if $[f]$ is the chain homotopy
+	equivalence class of $f$, that the composition of chain maps is well-defined. To see this, we can let
+	either $B=C$ and $u=\id_C$ or else $D=E$ and $v=\id_D$. 
+	
+	The identity map in $\Hom_{\mathbf K}(C,C)$ is $[\id_C]$, containing all nullhomotopic self-maps of $C$.
+	Since $\mathbf K$ is a collection of objects and morphisms with an identity map for each object and that is closed 
+	under composition, we get that $\mathbf K$ is a category.
+
+	\vspace{2ex}\noindent \textbf{(c):} Let $f_0,f_1,g_0$ and $g_1$ be defined as provided. Then
+	\begin{align*}
+		f_0+f_1-g_0-g_1 &= (f_0-g_0)+(f_1-g_1)\\
+		&= s_0d_C+d_Ds_0 +s_1d_C+d_D s_1\\
+		&= (s_0+s_1)d_C+d_D(s_0+s_1)
+	\end{align*}
+	so $f_0+f_1\sim g_0+ g_1$. Then $[f]+[g]=[f+g]$ for all $f,g\in\Hom_{\Ch}(C,D)$. Now $0_\bullet$
+	is the zero object in $\mathbf K$ since there is a unique map in $\Hom_{\Ch}(0,C)$ and $\Hom_{\Ch}(C,0)$,
+	so the same is true in $\mathbf K$. Therefore $\mathbf K$ is additive.
+
+	The functor $Q:\Ch\to\mathbf K$ sending complexes to themselves and chain maps $Q(f)=[f]$ (which is
+	a functor since composition is respected by (b) and identity maps are respected by definition)
+	is additive since for any $A,B\in \Ch$,
+	\[\Hom_{\Ch}(A,B)\to \Hom_{\mathbf K}(A,B)\]
+	is a group homomorphism as shown above.
+
+	\vspace{2ex}\noindent\textbf{(d):} I suspect the answer to this is no.
+\end{sol}
+
+\begin{prob}
+	Show that a chain complex $C$ is split exact if and only if it is nullhomotopic.
+\end{prob}
+\begin{sol}
+	Begin by assuming that $C$ is split exact. Then consider the diagram
+	
+	\begin{center}
+		\begin{tikzcd}
+			C_{n-1}^0\oplus C_{n-1}^1\ar[r,"d"]\ar[d,"\id"] & C_n^0\oplus C_n^1\ar[r,"d"]\ar[d,"\id"]\ar[ld,"s"] & C_{n+1}^0\oplus C_{n+1}^1\ar[d,"\id"]\ar[ld,"s"]\\
+			C_{n-1}^0\oplus C_{n-1}^1\ar[r,"d"] & C_n^0\oplus C_n^1\ar[r,"d"] & C_{n+1}^0\oplus C_{n+1}^1
+		\end{tikzcd}
+	\end{center}
+
+	\noindent where $C_n=C_n^0\oplus C_n^1$ and $d_n|_{C_n^0}$ is the zero map and $d_n|_{C_n^1}$ is 
+	an isomorphism onto $C_{n+1}^0.$ 
+	
+	Define $s$ to be 
+	\[(0,\pi_0)_i:C_i^0\oplus C_i^1\to C_{i-1}^0\oplus C_{i-1}^1\]
+	where 
+	\[\pi_0:C_i^0\oplus C_i^1\to C_i^0\cong C_{i-1}^1\]
+	is projection onto the first coordinate. Then clearly 
+	\[f((a,b))=(a,b)=(a,0)+(0,b)=d((0,a))+s((b,0))=d(s((a,b)))+s(d((a,b)))\]
+	whence $\id\sim 0$ so $C$ is nullhomotopic.
+
+	\brk
+
+	Now assume there exists a map $\id_C\sim 0$ via chain homotopy $s:C\to C[-1]$. The exactness of 
+	$C$ is immediate since homotopic maps induce isomorphisms on homology. Consider the SES
+
+	\begin{center}
+		\begin{tikzcd}
+			0\ar[r] & \ker d \ar[r,"i"] & C_n\ar[r,swap,"d"] & d(C_n)\ar[r]\ar[l,bend right,"s'",swap] & 0
+		\end{tikzcd}
+	\end{center}
+	
+	\noindent where 
+	\[s'=s_{n+1}|_{d(C_n)}\]
+
+	But then consider the restriction of $\id =\id_{C_{n+1}}$, to $d(C_n)\subseteq C_{n+1}$:
+	\[\id|_{d(C_n)}=(s_{n+2}\circ d+d\circ s_{n+1})|_{d(C_n)}=(s_{n+2}\circ d)|_{d(C_n)}+(d\circ s_{n+1})|_{d(C_n)}=(d\circ s_{n+1})|_{d(C_n)}\]
+	so $d\circ s'$ is the identity on $d(C_n)$ whence $s$ is a splitting of the above short exact sequence.
+
+	Since this holds for an arbitrary $n$, this establishes that $C_n\cong \ker d\oplus d(C_n)$, 
+	and thus by exactness $C$ is split exact.
+\end{sol}
+
+\begin{prob}
+	Show that a chain complex $P_\bullet$ is a projective object in the category of
+chain complexes over a ring $R$ if and only if $P_\bullet$ is a split exact complex of projective
+modules.
+\end{prob}
+\begin{sol}
+	Assume first that $P$ is a projective object in $\Ch$. Following a hint in Weibel, we consider the surjection
+	$\operatorname{cone}(P)\xrightarrow{\delta} P[-1]\to 0$, which admits a splitting map $\sigma:P[-1]\to\operatorname{cone}(P)$
+	via the standard argument -- lift $\id_P:P\to P$ to a map $\sigma:P\to \operatorname{cone}(P)$ such that
+	$\delta\circ\sigma=\id_P$.
+
+	From Weibel, we know $\delta(a,b)=-a$, so if $\sigma_i=(s,t)_i:P_{i-1}\to P_{i-1}\oplus P_i,$ we get that
+	\[\delta\circ(s,t)(p)=-s(p)=p=\id_P(p)\]
+	by the property of the lift $\sigma$ and therefore $s=-\id_P$.
+
+	Then using the fact that $\sigma$ is a chain map, we can compute (if $C=\operatorname{cone}(P)$):
+	\[
+		(s\circ d_P,t\circ d_{P[-1]})=(s,t)\circ d_P=d_C\circ(s,t)=(d_P\circ s, d_P\circ t-\id_P\circ s)
+	\]
+	and therefore by focusing on the second component:
+	\[t\circ d_{P[-1]}-d_P\circ s=-t\circ d_P-d_P\circ s=\id_P\]
+	whence $-\id_P\sim\id_P\sim 0$, so by problem three above $P$ is split exact.
+
+	To see every element is injective, we can ``localize'' by considering a lift of $P\to M_\bullet=(\cdots\to0\to M\to 0\to \cdots)$
+	through the surjection $(\cdots\to 0\to N\to 0\to\cdots)\twoheadrightarrow M_\bullet$. Since a lift always exists for $M$ and $N$ 
+	in any component, this shows all the terms in the complex $P$ are projective.
+
+	\brk
+
+	Now assume that $P$ is a split exact. Then since the $P_i$ are projective, for any chain map $f:P\to M$ and 
+	surjection $g:N\to M$, we get maps $\tilde f_i:P_i\to N_i$. Recall that since $P$ is split exact, there 
+	exists a splitting map $\sigma_n:P_n\to P_{n+1}$ for every $n$ such that $d_P\circ \sigma_n=\id_{P_n}.$
+
+	Now define $F_n:P_n\to N_n$ by 
+	\[F_n=d_N\circ \tilde f_{n+1}\circ \sigma_n+\tilde f_n\circ\sigma_{n-1}\circ d_P\]
+	and so we can compute
+	\begin{align*}
+		d_N\circ F_n&=d_N^2\circ\tilde f_{n+1}\circ \sigma_n + d_N\circ\tilde f_n\circ \sigma_{n-1}\circ d_P\\
+		&= d_N\circ\tilde f_n\circ \sigma_{n-1}\circ d_P\\
+		&= d_N\circ\tilde f_n\circ \sigma_{n-1}\circ d_P + \tilde f_{n-1}\circ\sigma_{n-2}\circ d_P^2\\
+		&= F_{n-1}\circ d_P
+	\end{align*}
+	so $F$ is a chain map, and therefore $F$ is a lift of $f$, so since $P$ satisfies the usual 
+	diagram, it is a projective object.
+\end{sol}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\section{HW2 -- Due XXXXX}
+\begin{prob}
+	Let $R$ be a commutative ring, and $N$ be an $R$-module. Show that the following are equivalent:
+	\begin{enumerate}
+		\item $N$ is flat 
+		\item $\Tor_i^R(M,N) = 0$ for any $i>0$ and any $R$-module $M$
+		\item $\Tor_1^R(M,N) = 0$ for any $R$-module $M$
+		\item $\Tor_1^R(R/I, N) = 0$ for any ideal $I \subset R$.
+	\end{enumerate}
+\end{prob}
+\begin{sol}
+	(a)$\Rightarrow$(b)$\Rightarrow$(c) is clear since $\Tor_i^R(-,N)$ is a left derived functor of $-\otimes N$. But when $N$ is flat, $-\otimes N$ is exact.
+
+	That (c)$\Rightarrow$(a) can be seen by using the long exact sequence of $\Tor$ arising from any short exact sequence $0\to A\to B\to C\to 0$:
+	\[\cdots\to\Tor_2^R(C,N)\to 0\to 0\to 0\to A\otimes N\to B\otimes N\to C\otimes N\to 0\]
+	but then in particular $0\to A\otimes N\to B\otimes N\to C\otimes N\to 0$ is exact, so $-\otimes N$ is exact whence $N$ is flat.
+
+	Clearly (c)$\Rightarrow$(d), so it remains to see that (d) implies any of (a),(b), or (c).
+
+\end{sol}
+
+\begin{prob}
+	Let $(R, \frakm, k)$ be a commutative local ring and $M$ be a finitely generated $R$-module. Prove that the following are equivalent: 
+	\begin{enumerate}
+		\item $M$ is free
+		\item $M$ is flat
+		\item The map $\frakm \otimes_R M \to R \otimes_R M =M$ induced by the embedding $\frakm \subset R$ is injective
+		\item $\Tor_1(k,M)=0$.
+	\end{enumerate}
+\end{prob}
+\begin{sol}
+	(a)$\Leftrightarrow$(b): First let $M$ be free (and finitely generated). Then $M\cong R^k$ for some finite $k$. 
+	Then take an injection
+\end{sol}
+
+\begin{prob}
+	Let $R$ be a Frobenius algebra over a field $k$. Show that the global dimension of $R$ is either zero or infinity.
+\end{prob}
+\begin{sol}
+	Assume that $\gldim(R)=n<\infty$. Then for any $R$-module $M$ both $\projdim_R(M)$ and $\injdim_R(M)$
+	are less than or equal to $n$. Take minimal projective and injective resolutions $P_\bullet\xrightarrow{\varepsilon} M$ and $M\xrightarrow{\eta} I_\bullet$
+	where in particular we have $I_k=P_k=0$ for all $k>n.$ But then consider the diagram 
+	\begin{center}
+		\begin{tikzcd}
+			P_n\ar[r] & \cdots\ar[r] & P_1\ar[r] & P_0\ar[dr,"\varepsilon"]\ar[rr,"\eta\circ\varepsilon"] & & I_0\ar[r] & \cdots\ar[r] & I_n\ar[r] & 0\\
+			& & & & M\ar[ur,"\eta"] & & & &
+		\end{tikzcd}
+	\end{center}
+	where, since $\varepsilon$ is epi and $\eta$ is mono, the top row is still exact. Therefore since $R$ is Frobenius, 
+	the $I_k$ are all projective as well, so this is a projective resolution of $I_n$. Then $\Ext^i_R(I_n,N)$ (for any $N$)
+	is zero everywhere except (possibly) the zeroth position.
+
+	Here we consider two cases. Notice that $n=0$ if and only if $M$ is projective and injective. In this case we are done since $\projdim_R(M)=\injdim_R(M)=0$. If this is not the case, 
+	$P_1$ and $I_1$ are both not trivial. Then we can continue by noticing that the homology at $\Hom_R(P_1,N)$ is unaffected 
+	by this splicing of sequences. Observe 
+	\[\Ext_R^{n+1}(I_n,N)=\Ext_R^1(M,N)=0\]
+	which implies that $M$ is projective (since $N$ was arbitrary) and injective. But then all $R$-modules are projective and injective,
+	so $\gldim(R)=0$.
+\end{sol}
+
+\begin{prob}
+	Let $k$ be a field of positive characteristic $p$. 
+	\begin{enumerate} 
+		\item Show that the group algebra $kG$ for a finite group $G$ is Frobenius (in fact, symmetric). 
+		\item Show that the restricted enveloping algebra $\fraku(\gl_n)$ is Frobenius. 
+	\end{enumerate} 
+\end{prob}
+\begin{sol}
+
+\end{sol}
+
+\begin{prob}
+	Let $\underline{x} = (x_1, x_2,\ldots, x_n)$ be a sequence of 
+	elements in a commutative ring $R$, and let $K(\underline{x})=K(x_1) \otimes \ldots \otimes K(x_n)$ 
+	be the corresponding Koszul  complex. 
+
+	\begin{enumerate}  
+		\item Prove the explicit formula for the differential in $K(\underline{x})$. 
+		\item Show that $K(\underline{x})$ 
+		is a graded commutative DGA and, moreover, that $K(\underline{x}) \simeq \Lambda^*(V)$ where $V = \bigoplus Rx_i$.
+	\end{enumerate}
+\end{prob}
+\begin{sol}
+
+\end{sol}
+
+\end{document}
