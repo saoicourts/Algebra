@@ -1,5 +1,7 @@
 # My additions
 Pipfile
+*.json
+.vscode
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
