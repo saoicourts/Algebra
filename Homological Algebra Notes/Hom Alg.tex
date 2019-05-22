@@ -13,6 +13,7 @@
 
 %class-specific macros
 \DeclareMathOperator{\sExt}{\mathscr{E}xt}
+\DeclareMathOperator{\stmod}{stmod}
 
 %header stuff
 \setlength{\headsep}{24pt}  % space between header and text
@@ -1701,7 +1702,77 @@ Above dotted lines refer to shifting.
 \end{ex}
 
 \section{May 22, 2019}
+Some examples of triangulated categories: we have already seen that $\K(\Rmod)$ and $\D(R)$ are. But we also have
+that $\stmod G,$ the category of all $G$ modules and 
+\[\Hom_{\stmod G}(M,N)=\underline{\Hom}(M,N)=\Hom_G(M,N)/P\Hom_G(M,N)\]
+where $P\Hom_G(M,N)$ is the collection of all morphisms that factor through a projective object $P$.
 
+In essence, $\stmod G$ is the same as considering $G$ modules ``up to projective summand''. Recall that this makes the syzygies 
+uniquely defined.
+
+\begin{prop}
+	$\stmod G$ is a tensor triangulated category.
+\end{prop}
+\begin{prf}
+	The key idea here is that the category of $G$-modules is Frobenius, so all injectives are projective and vice versa.
+
+	Then the triangulated structure comes from short exact sequences of $G$-modules and now our shift $\Omega$ is the syzygy operator.
+
+	Recall that we have seen the dimension shifting identity: for $i>1$:
+	\[\Ext_G^i(M,N)\cong\Ext^{i-1}(\Omega M,N)\cong\Ext^{i+1}(M,\Omega^{-1}N)\]
+	the reason this doesn't actually extend to $i=1$ is that this doesn't work with $\Hom$.
+
+	But it ends up that this actually \textit{does} work if we work with stable $\Hom$. But then we get $\Ext^1(M,N)\cong\underline{\Hom}(M,\Omega^{-1}N)$!
+	so somehow this gives us a notion of a map $M\to \Omega^{-1}N$, so given the triangle $N\to P \to M$ of $G$ modules,
+	\[N\to P\to M\to \Omega^{-1}N\]
+	is a triangle in $\stmod G$.
+\end{prf}
+
+\subsection{Singularity category}
+Let $R$ be a ring and consider $\Db(R)$, the bounded derived category. There is a subcategory $\Dbperf(R)$,
+which is the bounded derived category of projective modules.
+
+Now since the tensor of a projective module with anything is again projective, this forms a (categorical) ideal within $\Db(R)$. Taking the 
+(categorical) quotient, we get $\Dsing(R)$, the \textbf{singuarity category.}
+
+In the case that $R$ is regular (think finite global dimension), we get that any bounded complex is quasi-isomorphic to (via the Cartan-Eilenberg resolution)
+to a perfect complex! So then $\Dsing(R)$ is trivial.
+
+\begin{thm}[Rikard, Buchweitz, Orlov]
+	Without assumptions on $k$ or $G$,
+	\[\Dbperf(kG)\hookrightarrow \Db(kG)\to\stmod G\]
+	is an exact sequence.
+\end{thm}
+\begin{rmk}
+	Notice that this (essentially) says that semisimplicity (from the world of representation theory) is
+	effectively the same as regularity (from algebraic geometry).
+\end{rmk}
+
+\subsection{Cohomological Functors}
+\begin{defn}
+Let $\calK$ be a triangulated category and let $\calA$ be abelian. Then $H:\calK\to \calA$ is called \textbf{cohomological}
+if it takes triangles in $calK$ to long exact sequences in $\calA$.
+\end{defn}
+\begin{prop}
+	$\Hom_\calK(X,-):\calK\to\Ab$ is cohomological.
+\end{prop}
+\begin{prf}
+	Look at $A\xrightarrow{u}B\xrightarrow{v}C\to\Sigma A$. Now we want to show that $v_\ast u\ast=(vu)_\ast=0$
+	or that $\ker v_\ast= \Im u_\ast$. Basically you can find a map to show it. Use the morphism axiom!
+\end{prf}
+
+\subsection{Yoneda Lemma}
+The idea here is that objects can be determined (up to isomorphism) by the maps to or from them.
+
+Let $\calA$ be a locally small category. Then $\mathbf{Funct}(\calA,\mathbf{Set})$ is the category of $\mathbf{Set}$-valued functors. Then there is a functor 
+$\calA\to\mathbf{Funct}(\calA,\mathbf{Set})$ sending $A$ to $h_A=\Hom(A,-)$ (or $h^A=\Hom(-,A)$). Then the lemma says 
+\begin{lem}[Yoneda]
+	There exist bijections
+	\[\Hom_\calA(A,A')\cong\mathbf{Nat}(h_{A'},h_A)\cong \mathbf{Nat}(h^A,h^{A'})\]
+\end{lem}
+\begin{cor}
+	There is a fully faithful embedding of $\calA$ into $\mathbf{Funct}(\calA,\mathbf{Set})$.
+\end{cor}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
