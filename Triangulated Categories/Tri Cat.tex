@@ -1751,4 +1751,319 @@ Now let $A$ be local and write ${_A}k=A/J(A)$.
 	\[\projdim X=\sup(R\Hom_A(M,N)).\]
 \end{cor}
 
+\section{May 22, 2019}
+\subsection{Example of the day}
+This is a combination of some results of Artin, Van den Bergh, Yehutieli, Wu, Chan, and many others.
+
+Suppose $A$ is a Noetherian algebra satisfying the following conditions:
+\begin{itemize}
+	\item $A$ is either connected graded or complete local
+	\item $A$ is a finite module over it center.
+\end{itemize}
+Then there exists a dualizing complex $R$ over $(A,A)$, such that 
+\begin{itemize}
+	\item $R\Hom_A(k,R)\cong k$ and $R\Hom_{A^{op}}(k,R)\cong k$. This is sometimes called the \textit{pre-balanced condition.}
+\end{itemize}
+
+\begin{ex}
+	Let $q$ be a root of unity. Let $A=k_q[[x_1,\cdots,x_n]]$ where we say any $x_i$ and $x_j$ $q$-commute, for $i\ne j$. Then this satisfies the hypotheses and $R$ exists.
+	There is a method of constructing it via locak cohomology that is perhaps too much for what we have left in our course. We will, however, discuss local 
+	cohomology and the $\chi$-condition next time.
+\end{ex}
+
+\subsection{Back to the future (Monday)}
+We're going to tweak things a little.
+\begin{thm}
+	Let $A$ be a Noetherian local algebra. Let $X\in\Db_{fg}(\Amod)$ with $\projdim X<\infty$.
+	Then there is a $Y\in\Db(\Amod)$ (here's where we weaken slightly) such that $\Hom_A(H^s(Y),k)\ne 0$ where 
+	$s=\sup(Y)$. Then 
+	\[\sup(R\Hom_A(X,Y))=\projdim X+\sup Y.\]
+\end{thm}
+\begin{prf}
+	Last time we saw ``$\le$''. Now let $d=\projdim X$ and $s=\sup Y$. It suffices to show that
+	\[H^{d+s}(R\Hom_A(X,Y))=H^{d+s}(\Hom_{\Ch(\Amod)}(P,Y))\ne 0\]
+	where we take $P$ to be any (in this case minimal) free resolution of $X$. But if you consider the $d+s$ morphisms from $P$ to $Y$,
+	there is only one map between nonzero things! So 
+	\[\Hom_{\Ch(\Amod)}(P,Y)^{d+s}=\Hom_A(P^{-d},Y^s).\]
+
+	We want to construct an $\tilde f\in\Hom_{\Ch}(P,Y)^{d+s}$ (notice it is already in the kernel) such that $\tilde f$ isn't in the image. To see this, 
+	set $N=H^s(Y)=Y^s/\Im(\partial_Y^{s-1})\ne 0$ (we can assume $Y^{s+1}=0$). Then by the hypothesis, $\Hom_A(N,k)\ne 0$,
+	but this is equal to 
+	\[\Hom_A(N,A/J(A))=\Hom_k(A/J(A)\otimes N, A/J(A))\ne 0.\]
+
+	This implies that $A/J(A)\otimes N\ne 0$ or $N/J(A)N\ne 0$. Notice that
+	\[N/J(A)N=Y^s/(\Im(\partial_Y)+J(A)Y^s)\ne 0.\]
+
+	Now since $N/J(A)N$ is a direct sum of simple modules, there is a nonzero morphism $f:P^{-d}\to N/J(A)N$. Since $P^{-d}$ is 
+	(in particular) projective, we can lift to a morphism $\tilde f:P^{-d}\to Y^s$. Furthermore, $\Im(\tilde f)$ is not contained within
+	$\Im(\partial_Y^{s-1})+J(A)Y^s$ (since it wasn't the zero map on $N/J(A)N$).
+
+	Now consider the chain complex $\Hom_{\Ch(\Amod)}(P,Y)^\ast$ at the $d+s-1^{st}$ term. The differential maps from 
+	$\Hom_A(P^-d,Y^{s-1})\oplus\Hom_A(P^{-d+1},Y^s)\to \Hom_A(P^{-d},Y^s)$ where 
+	\[\partial(\alpha+\beta)=\partial_Y\circ\alpha+\beta\circ\partial_P\]
+
+	But then by checking maps (and using that since $P$ is minimal, $\partial_P^{-d}$ maps into $J(A)P^{-d+1}$), we can 
+	show that the image of any map under this differential must map into this object, so $\tilde f$ must not lie in the image, 
+	so it is a nonzero element of the homology.
+\end{prf}
+
+\subsection{Tensor Product of Complexes}
+Now let $X\in\Ch(\modA)$ and $Y\in\Ch(\Amod)$. Then $X\otimes_A Y\in\Ch(\Vectk)$ is
+\[(X\otimes_A Y)^i=\bigoplus_{i+j=i}X^i\otimes Y^j\]
+and the differential is given by the Koszul sign rule $\partial(x\otimes y)=\partial_X(x)\otimes y+(-1)^|x|x\otimes\partial_Y(y)$
+
+The derived functor of $-\otimes_A-$ is 
+\[X\otimes_A^LY\cong P_X\otimes_A y\cong X\otimes_A P_Y\cong P_x\otimes_AP_Y\]
+where, for example, $A\otimes_A^LY=A\otimes_AY=Y$ and $X\otimes_A^LA=X$.
+
+\begin{thm}
+	Let $A$ be a Noetherian local algebra. Let $X\in\Db_{fg}(\Amod)$ with $\projdim X<\infty$. Let $Y\in\Db(\modA)$
+	such that $\Hom_A(k,H^i(Y))\ne 0$ where $i=\inf Y$. Then 
+	\[\inf(Y\otimes_A^LX)=-\projdim X+\inf Y\]
+\end{thm}
+
+\begin{lem}
+	Let $A$ be Noetherian and $X\in\Db_{fg}(\Amod)$, $Y\in\Db(A^e\text{-}\mathbf{mod})$ and $Z\in \Dbperf(\Amod)$. Then 
+	\[R\Hom_A(XY\otimes_A^LZ)\cong R\Hom_A(X,Y)\otimes_A^LZ\]
+\end{lem}
+\begin{prf}
+	Let $F(-)=R\Hom_A(X,Y\otimes_A^L-)$ and $G(-)=R\Hom_A(X,Y)\otimes_A^L-$. We want to construct 
+	a natural isomorphism between them. There is a map $\eta:F\to G$ that sends 
+	\[f\otimes z\mapsto \{x\mapsto f(x)\otimes z\}.\]
+	Then it only remains to check it is natural.
+
+	The next step is to show that it holds (trivially!) for $Z=A$ and then since $A$ generates $\Dbperf(\Amod)$, we get that $G\cong F$ for all 
+	things in $\Dbperf(\Amod)$.
+\end{prf}
+
+\section{May 24, 2019}
+Had to miss this day.
+
+\section{May 29, 2019}
+
+\subsection{Example of the Day}
+Let $A$ be a Noetherian algebra that is a finitely generated module over its center. Furthermore, suppose that 
+$\calZ(A)\cong k[x_1,\cdots,x_n]/I$. Then $A$ has a dualizing complex $R$ where $R=R\Hom_{k[x_1,\dots,x_n]}(A,k[x_1,\dots,x_n][n])$
+
+Then $\injdim R_A=\injdim {_A}R=0$, $\Ext^i_A(S,R)=\delta_{i=0}T$ for all simple left $A$-modules $S$.
+
+\begin{defn}
+	$R$ is called balanced if 
+	\begin{itemize}
+		\item $\injdim {_A}R=\injdim R_A=0$
+		\item $R\Hom_A(k,R)=k$ and $R\Hom_{A^{op}}(k,R)=k$
+	\end{itemize}
+\end{defn}
+
+So the idea we wrote down above is very similar to the idea of a balanced dualizing complex (it is stronger).
+
+\subsection{Bass' Theorem}
+\begin{thm}[Bass]
+	Let $A$ be a local Noetherian algebra with balanced dualizing complex. Let $X\in\Dbperf(\Amod)$ with finite injective dimension. Then 
+	\[\injdim X=\sup X+\depth A\]
+\end{thm}
+\begin{cor}
+	Under the same hypotheses, let $M$ be a finitely-generated left $A$-module with finite injective dimension. Then 
+	\[\injdim M=\depth A\]
+\end{cor}
+\begin{rmk}
+	Notice that this also implies that the depth of $A$ is finite.
+\end{rmk}
+
+We begin the proof of the theorem with a lemma or two:
+\begin{lem}
+	Suppose $Y\in\Db_{fg}(\Amod)$. Then 
+	\[\projdim Y=\sup\{R\Hom_A(Y,k)\}\]
+	and 
+	\[\sup Y=-\inf\{R\Hom_A(Y,k)\}\]
+\end{lem}
+\begin{prf}
+	To see this, let $P$ be a minimal projective resolution of $Y$. Write $S=\sup(U)$ and $d=\projdim Y$.
+	
+	The idea for completing this proof again leverages that $\partial(P^i)\subseteq J(A)P^{i+1}$ for all $i$. Then notice that 
+	everything is in the kernel of $\partial^\ast$, the induced map from the functor $\Hom_A(-,k)$, which then implies that
+	$\sup(\Hom_A(P,k))=d$ and that $\inf \Hom_A(P,k)=-s$ is clear. Then the result follows from using that $R\Hom_A(Y,k)=\Hom_A(P,k)$.
+\end{prf}
+Let's get another lemma!
+\begin{lem}
+	Suppose $X\in\Db_{fg}(A)$. Then 
+	\[\injdim\bbD(X)\le \projdim X\]
+	and 
+	\[\projdim \bbD(X)\le\injdim X.\]
+\end{lem}
+\begin{prf}
+	Recall here that $\bbD(X)=R\Hom_A(X,R)$ and $\bbD^\circ(X_A)=R\Hom_{A^{op}}(X,R).$ Then suppose that $d=\projdim X<\infty.$ Let $P$ be a minimal 
+	free resolution of $X$. Write $I_R$ to denote a resolution of $R$ as an $A$-bimodules such that each term is injective on the right. Since $\injdim R=0$, $I_R^{>0}=0.$
+
+	But now $\bbD(X)=R\Hom_A(X,R)=\Hom_A(P,I_R)$. Now note that 
+	\[\Hom_A(P,I_R)^i=\oplus_{w\in\bbZ}\Hom(P^w,I_R^{i+w})=\oplus (I_r^{i+w})^{\operatorname{rank}(P^w)}\]
+	so in particular, it is injective. Furthermore, $\Hom_A(P,I_k)^i=0$ whenever $i>d.$
+
+	But then $\bbD(X)$ has an injective resolution that is bounded above at $d$.
+
+	But then we know that 
+	\[\projdim \bbD(X)=\sup\{R\Hom_{A^{op}}()\bbD(X),k)\}=\sup\{R\Hom_A(\bbD^\circ(k),\bbD^\circ\bbD(X))\}\]
+	where the last equality is by the (earlier) duality theorem. But $\bbD^\circ(k)=k$ and $\bbD^\circ\bbD(X)=X$,
+	and so since $\sup\{R\Hom_A(k,X)\}\le\injdim X$, we get
+	\[\projdim\bbD(X)\le\injdim X\]
+
+	I think I missed the other one?!
+\end{prf}
+\begin{cor}\label{cor-equalities}
+	\[\projdim \bbD(X)=\injdim X\] 
+	and 
+	\[\injdim X=\sup\{R\Hom_A(k,X)\}\].
+\end{cor}
+\begin{lem}
+	If $R$ is the balanced dualiznig complex of $A$,
+	\[\depth A=-\sup(R)\ge 0\]
+\end{lem}
+\begin{prf}
+	\begin{align*}
+		\depth A &= \inf\{R\Hom_A(k,A)\}\\
+		&= \inf\{R\Hom_{A^{op}}(\bbD(A),\bbD(k))\}\\
+		&=\inf\{R\Hom_{A^{op}}(R,k)\}\\
+		&= -\sup R.
+	\end{align*}
+\end{prf}
+Next recall some identities from last week:
+\begin{lem}
+	Let $X\in\Dbperf(\Amod)$. Then if $\Hom(H^s(Y),k)\ne 0$ where $s=\sup Y$, then 
+	\[\sup\{R\Hom(X,Y)\}=\projdim X+\sup Y.\]
+\end{lem}
+
+Finally we get around to proving the theorem:
+\begin{prf}[of Bass' theorem]
+	Suppose $\injdim X<\infty.$  Then by corollary~\ref{cor-equalities} above, $\projdim\bbD(X)<\infty$. Then
+	\begin{align*}
+		\sup X &=\sup\{R\Hom_A(A,X)\}\\
+		&=\sup\{R\Hom_{A^{op}}(\bbD(X),\bbD(A))\}\\
+		&=\sup\{R\Hom_{A^{op}}(\bbD(X),R)\}\\
+		&=\projdim\bbD(X)+\sup R\\
+		&=\injdim X-\depth A.
+	\end{align*}
+	And that's what we wanted to prove!
+\end{prf}
+\begin{rmk}
+	The preceding proof was adapted by Peter Jorgensen's paper. He apparently has very clear exposition 
+	and arguments where each step is carefully justified. The paper in question here is entitled something like \textit{Homological Identiies}
+	but apparently all of his papers have a similar level of polish and James recommends reading them all.
+\end{rmk}
+
+\subsection{No Holes Theorem}
+\begin{thm}[No Holes]
+	For every $i$ between $\depth M$ and $injdim M$,
+	\[\Ext_A^i(k,M)\ne 0.\]
+\end{thm}
+
+\section{May 31, 2019}
+Today we begin our discussion of Artin-Schelter regular algebras.
+\subsection{Some History/Comments}
+In the 1980's ('86), Artin and Schelter started a project of classifying connected graded regular algebras of global dimension 3. 
+This is somehow comparible to quantum or noncommutative projective planes $q\bbP^2$ or $\bbP^2_{nc}$.
+
+There were actualy some examples of such algebras discovered befor this, however. In 1982, 
+Sklyanin found examples of regular algebras of global dimension 4 in the suty of they Yang-Baxter equation and quantum groups.
+
+In 1991, the ``AS'' project was finished by Artin, Schelter, Tate, and Ven den Bergh. All together they constitute about 
+150 pages and the result was that there were 14 families. Later on these were named Artin-Shelter regular algebras.
+
+\subsection{Examples}
+\begin{ex}
+	Let $d=\gldim A$. Then the following are AS-regular:
+	\begin{itemize}
+		\item When $d=0$, only $k$ is AS regular.
+		\item When $d=1$, $k[x]$ is AS regular when $\deg x>0$.
+		\item For $d=2$, if $k=\bar k$, then $k_q[x,y]:=k\langle x,y\rangle/(yx-qxy)$ and $k_J[x,y]=k\langle x,y\rangle/(yx-xy-x^2)$ are examples.
+	\end{itemize}
+\end{ex}
+\subsection{Definitions}
+Recall that $A$ is called connected graded if $A=\oplus_\bbN A_i$ with $1_A\in A_0=k$ and $A_iA_j\subseteq A_{i+j}$. Then $\bbN$ is called 
+an internal (or Adams) grading, which is NOT the complex grading -- in particular the Koszul sign rule does \textbf{not} apply to this grading.
+\begin{defn}
+	A connected graded algebra $A$ is called \textbf{Artin-Schelter regular} (AS regular) if 
+	\begin{itemize}
+		\item $\gldim A=d<\infty$
+		\item Let $k=A/A_{\ge 1}$ be the trivial module. Then 
+	\[\Ext_A^i(k,A)=\Ext_{A^{op}}^i(k,A)=\left\{\begin{array}{lr}0, & i\ne d\\ k,& i=d\end{array}\right.\]
+	\end{itemize}
+\end{defn}
+\begin{rmk}
+	Notmally one requires that the algebra also has finite GK dimension (no idea what this is), but we will assume that our algebras are Noetherian, 
+	which obviates this restriction.
+\end{rmk}
+\begin{prop}
+	If $A$ is connected graded and commutative, then the following are equivalent:
+	\begin{itemize}
+		\item $A$ is AS regular.
+		\item $A$ has finite global dimension
+		\item $A=k[x_1,\cdots,x_n]$.
+	\end{itemize}
+\end{prop}
+\begin{ex}
+	A \textbf{non-example} is that $k\langle x_1,\cdots,x_n\rangle$ is \textit{not} AS-regular.
+\end{ex}
+\begin{rmk}
+	A connected graded algebra is a graded version of a complete local algebra. That is, $A=\varprojlim A/A_{\ge n}$.
+\end{rmk}
+\begin{rmk}\label{rmk-AB}
+	\textsc{(Auslander-Buchsbaum formula)}: Suppose $A$ satisfies the $\chi$ condition (that is, for all finitely generated $A$-modules $M$, $\dim\Ext_A^i(k,M)<\infty$ for all $i$)
+	If $M$ has finite projective dimension then 
+	\[\projdim M=\depth A-\depth M.\]
+\end{rmk}
+
+\subsection{Today's Main Result}
+\begin{thm}
+	Let $A$ be a connected graded Notherian algebra with finite global dimension. Then the following are equivalent:
+	\begin{itemize}
+		\item $A$ is AS regular
+		\item $A$ satrisfies the $\chi$ condition
+		\item For any $X\in\Db(\Amod_{fg})$ (can also switch sides) then $\dim\Ext_A^i(k,X)<\infty,\forall i$.
+		\item $A$ has a balanced dualizing complex.
+	\end{itemize}
+\end{thm}
+To prove this, we will first need two lemmas.
+\begin{lem}
+	Suppose $A$ satisfies $\chi$  and $\gldim A=d<\infty$. Then 
+	\begin{itemize}
+		\item $\depth A=d$
+		\item $\projdim k=d$.
+	\end{itemize}
+\end{lem}
+\begin{prf}
+	Proving this uses the Auslander-Buchsbaum formula from remark~\ref{rmk-AB}. For any finitely-generated module $M$,
+	\[\depth A=\projdim M=\depth M\ge \projdim M\]
+	and so by definition, $\depth A\ge \gldim A=d$.
+
+	To prove the other inequality we need to unpack the definition of depth:
+	\[\depth A=\inf(R\Hom(k,A))\le \sup(R \Hom(k,A))=\projdim k\le \gldim A=d.\]
+	Thus $\depth A=d$. But we also havev $\projdim k$ in there, so the second equality also holds.
+\end{prf}
+\begin{lem}
+	Let $F:\Amod_{fd}\to \modA_{fd}$ and $G:\modA_{fg}\to\Amod_{fg}$ be inverse functors. Then $F({_A}k)=k_A$
+	and $G(k_A)={_A}k.$
+\end{lem}
+\begin{prf}
+	This is almost trivial if you think hard about where a simple trivial module has to be sent.
+\end{prf}
+\begin{prf}[of theorem]
+	(1)$\Rightarrow$(3): By definition we know what $\Ext_A^i(k,A)$ is. Define $\calT$ to be the triangulated subcategory of 
+	$\Db_{fg}(\Amod)$ of all objects $X$ such that $\dim\Ext_A^i(k,X)<\infty$ for all $i$.
+
+	It is easy to check that this is a triangulated subcategory. By the definition of AS-regularity, $A$ is in $\calT$. And we know $\Db_{fg}(\Amod)=\Dbperf(\Amod)=\langle A\rangle$, so $\calT$ is 
+	the entire category $\Db_{fg}(\Amod).$
+
+	\brk
+
+	(3)$\Rightarrow$(2) is left as an exercise, but we can do it by taking $X=M$.
+
+	\brk
+
+	(2)$\Rightarrow$(1) By the first lemma, we have $\Ext_A^i(k,A)=0$ when $i\ne d$ and is finite dimensional otherwise.
+	Let $F(-)=\Ext_A^d(-,A)$ and $G(-)=\Ext^d_{A^{op}}(-,A)$. Now note that 
+	\[F(M)=R\Hom_A(M,A)[-d]=R\Hom_A(M,A[d])\]
+	and let $R=A[d]$. The claim is that $R$ is a dualizing complex. This implies that $F(M)=\bbD(M)$ and $G(N)=\bbD^\circ(N)$,
+	and we can apply the lemma to show that $\Ext_A^d(k,A)=F(k)=k$ and $\Ext_{A^{op}}^d(k,A)=k$, so we're done.
+\end{prf}	
+
 \end{document}

@@ -5,6 +5,7 @@
 \usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, x	color}
 \usepackage[framed,thmmarks]{ntheorem}
 \usepackage[mathscr]{euscript}
+\usepackage{hyperref}
 
 %Replacement for the old geometry package
 \usepackage{fullpage}
@@ -1773,6 +1774,196 @@ $\calA\to\mathbf{Funct}(\calA,\mathbf{Set})$ sending $A$ to $h_A=\Hom(A,-)$ (or 
 \begin{cor}
 	There is a fully faithful embedding of $\calA$ into $\mathbf{Funct}(\calA,\mathbf{Set})$.
 \end{cor}
+
+\section{May 29, 2019}
+\subsection{Motivation}
+As some motivation for today, recall the problem on the first homework assignment where we were asked to 
+say whether $\K(\Ch R)$ is abelian. The answer was no. Recall the 5-lemma (applied to triangles):
+
+\begin{prop}
+	If the following is a commutative diagram:
+	\begin{center}
+		\begin{tikzcd}
+			A\ar[r]\ar[d,"\sim"] & B \ar[r]\ar[d,"\sim"] & C\ar[r]\ar[d,"h"] & \Sigma A\ar[d]\\
+			A'\ar[r] & B'\ar[r] & C'\ar[r] & \Sigma A'
+		\end{tikzcd}
+	\end{center}
+	is a morphism of triangles, then $h$ is an isomorphism.
+\end{prop}
+\begin{prf}
+	Basically use Yoneda.
+\end{prf}
+
+\begin{rmk}
+	In any triangulated category every monomorphism splits. To see this, take a triangle $A\xrightarrow{i}B\to C\to\Sigma A$.
+	There is also an exact triangle $A\to A\oplus C\to C\xrightarrow{0}\Sigma A$ in $\K(R)$. Then use the five lemma and $B\cong A\oplus C$.
+\end{rmk}
+\begin{ex}
+	We want to show that $\K(\bbZ)$ is not abelian. Let $C=\bbZ/4$ in degree zero and let $C'=\bbZ/2$ in degree zero. Let 
+	$f:C\to C'$ be a morphism. If this category is abelian, then there exists a kernel of $f$, 
+	so $\ker f\hookrightarrow C\xrightarrow{f}C'$ and furthermore this splits. 
+	\[\bbZ/4\cong H(C)\not\cong H(C')\oplus H(\ker f)\] 
+	but since $H(C')\cong\bbZ/2$, this is a contradiction.
+\end{ex}
+\subsection{Localization and the calculus of fractions}
+Note that here set theory and size begins to be a problem, and this is discussed (e.g.) in Weibel. We 
+won't delve into it much.
+\begin{defn}
+	Let $\calC$ be a category and $S$ a collection of morphisms in $\calC$. Then $S$ is called a multiplicative system of $\calC$ if 
+	\begin{itemize}
+		\item $S$ is closed under composition and contains all identity morphisms.
+		\item (\textit{Ore Condition}) For any $s:Y\to X$ and $f:Z\to X$ are maps with $s\in S$,
+		there are maps $t:W\to Z$ and $g:W\to Y$ with $t\in S$ such that 
+		\begin{center}
+			\begin{tikzcd}
+				W\ar[r,"g"]\ar[d,"t"] & Y\ar[d,"s"]\\
+				Z\ar[r,"f"] & X
+			\end{tikzcd}
+		\end{center}
+		\item If $f,g:X\to Y$ are maps, then there exists a map $s\in S$ such that $s\circ f=s\circ g$ if 
+		and only if there exists $t\in S$ such that $f\circ t=g\circ t$.
+	\end{itemize}
+\end{defn}
+
+Then you get a new category $S^{-1}\calC$, the localizaton of $\calC$ at $S$. There is a functor $F:\calC\to S^{-1}\calC$ and it satisfies 
+a universal property that if $G:\calC\to\calD$ is a functor for which $G(s)$ is an isomorphism for all $s\in S$, then $G$
+factors through $S^{-1}\calC$.
+
+We can do the usual ``roof construction'' on the $\Hom$ sets to complete the structure of this category.
+\begin{thm}[Gabriel-Zisman]
+	Let $S$ be a locally-small multiplicative system and let $S^{-1}\calC$ consist of the objects of $\calC$
+	and whose morphisms are the roofs modulo the appropriate equivalence relation (see James' notes). This is a category and 
+	satisfies the universal property.
+\end{thm}
+\begin{rmk}
+	If $\calC$ is additive, then $S^{-1}\calC$ is additive.
+\end{rmk}
+\begin{rmk}
+	The fact that all things in $S$ go to isomorphisms is a matter of playing with diagrams (roofs).
+\end{rmk}
+
+Using this, one can construct the derived category! Just localize $\K^\ast(R)$ a the quasi-isomorphisms.
+
+\begin{defn}
+	Let $\calA$ be an abelian category. Then $\calB$ is a Serre subcategory of $\calA$ if it is closed under
+	\begin{itemize}
+		\item subobjects
+		\item quotients
+		\item extensions
+	\end{itemize}
+\end{defn}
+Then if we fix a subcategory $\calB$, let $S_\calB$ be the set of morphisms in an abelian category $\calA$ such that
+both $\ker f$ and $\coker f$ lie in $\calB$, then 
+\[\calA/\calB\cong S_\calB^{-1}\calA\]
+is the quotient category.
+
+\section{May 31, 2019}
+Today I presented my talk on Brown representability. You can find the repository containing my notes for it \href{https://github.com/NicoCourts/Brown-Representability}{here}.
+
+\section{June 3, 2019}
+Today we're talking about spectral sequences! The primary references are Vakil's ``The Rising Sea'' (specifically section 1.7)
+as well as Weiel and May's ``A primer on spectral sequences.''
+
+\subsection{Crush Course in Spectral Sequences}
+There are two usual treatments that are followed here: either filtered complexes or exact couples. In this lecture we will do neither.
+Instead we will focus on a subcase of a filtered complex: double complexes. Recall
+\begin{defn}
+	A \textbf{double complex} $E_{\bullet\bullet}$ of a $\bbZ\times\bbZ$ indexed collection of objects $E_{pq}$ in some 
+	abelian category, with differentials 
+	\[d^v_{pq}:E_{pq}\to E_{p,q-1}\quad d^h_{p,q}:E_{p,q}\to E_{p-1,q}\]
+	such that $d^v\circ d^v=d^h\circ d^h=0$ and 
+	\[d^h\circ d^v+d^v\circ d^h=0\]
+	(anticommutativity).
+\end{defn}
+So a diagram for a double complex (specifically a first-quadrant complex which we will be focusing on) is 
+\begin{center}
+\begin{tikzcd}
+	later
+\end{tikzcd}
+\end{center}
+\begin{defn}
+	Recall that $\operatorname{Tot}(E_{\bullet\bullet})$ is the total complex where the $n^{th}$ piece is given by 
+	\[\oplus_{i+j=n}E_{i,j}\]
+	with differential $d=d^h+d^v$.
+\end{defn}
+The goal here is to compute information about the homology of this complex.
+\subsection{Spectral Sequences}
+\begin{defn}
+	A \textbf{spectral sequence} is a sequence of \textbf{pages} $E_{p,q}^0,E_{p,q}^1,\dots$ for all $p$ and $q$ and all $r\ge 0$
+	with differentials
+	\[d_{p,q}^r:E_{p,q}^r\to E_{p-r,q+r-1}^r\]
+	and fixed isomorphisms 
+	\[E_{p,q}^{r+1}\cong H_{p,q}^r\]
+	where $H_{p,q}^r$ is the homology on the $r^{th}$ page of $d^r$ at $E_{p,q}^r$.
+\end{defn}
+
+The zeroth page has vertical differentials, the first page has horizontal differentials. In general, the slope of the 
+differential on the $r^{th}$ page is $\frac{r-1}{r}$.
+
+\begin{rmk}
+	For each $p,q$, there is an $r$ (large enough) such that any location stablizizes:
+	that is, eventually the differential looks like 
+	\[0\xrightarrow{d^r}E_{p,q}^r\xrightarrow{d^r}0\]
+	and so $E_{p,q}^r\cong E_{p,q}^{r+1}$.
+
+	This always happens when we are using a first quadrant complex, but whenever it happens, we will call 
+	this stabilization point $E_{p,q}^\infty$. Notice where this happens is dependent on position, in general.
+\end{rmk}
+
+\begin{prop}
+	$d^h$ induces $d^1$, the differential on the first page.
+\end{prop}
+\begin{prf}
+	This amounts to showing that the obvious map is well-defined. :)
+\end{prf}
+\begin{prob}
+	Show that $d^2$ is well-defined. This seems not completely obvious, but apparently it is a diagram chase away.
+\end{prob}
+\begin{rmk}
+	Vakil apparently has an idea of ``$r$-closed $(p,q)$ strips'' that somehow obviate the need for such diagram chasing.
+\end{rmk}
+
+\subsection{Filtrations}
+\begin{thm}
+	$H_k(\operatorname{Tot}_\bullet(E_{\bullet\bullet}))$ is filtered by $E_{p,q}^\infty$ for $p+q=k$. 
+
+	More precisely, there is a filtration 
+	\[0\subseteq F_0\subseteq \cdots\subseteq F_k\subseteq H_k(\operatorname{Tot}_\bullet(E_{\bullet\bullet}))\]
+	such that $F_i/F_{i-1}\cong E_{i,k-i}^\infty$.
+\end{thm}
+\begin{rmk}
+	In such a case, we say that $E_{p,q}^r$ \textbf{converges to} (or \textbf{abuts}) $H_{p+q}$ and write $E_{p,q}^r\Rightarrow H_{p+q}$.
+\end{rmk}
+\begin{rmk}
+	We can ``flip'' across $y=x$ and use this spectral sequence. Notice the specific entries may be different.
+\end{rmk}
+
+\subsection{Applications}
+We can use it to prove the snake lemma! Consider the diagram (which anticommutes):
+\begin{center}
+	\begin{tikzcd}
+		0 & D\ar[d,"\alpha"]\ar[l] & E\ar[l]\ar[d,"-\beta"] & F\ar[l]\ar[d,"\gamma"] & 0\ar[l]\\
+		0 & A\ar[l] & B\ar[l] & C\ar[l] & 0\ar[l]
+	\end{tikzcd}
+\end{center}
+
+Then if we compute the horizontal direction first, we get $E_{pq}^1=E_{pq}^\infty=0$ so $H_k(\operatorname{Tot}_\bullet(E_{\bullet\bullet}))=0$ for all $k$.
+
+Then consider the other direction (vertical first). From here you can extract the fact that you have an exact map between the kernels/cokernels 
+and you get an isomorphism $d^2:E_{2,0}^2\to E_{0,1}^2$ on the second page, which basically gives you your connecting homomorphism.
+
+\subsection{Further Reading and Applications}
+The original context that these arose were in Leray's spectral sequence: Given an orientable fibration $F\hookrightarrow E\to B$, 
+we get 
+\[H^p(B,H^q(F))\Rightarrow H^\ast(E).\]
+
+Another example is the Grothendieck spectral sequence. Given some ``nice'' functors $\calF$ and $\calG$, 
+\[R^p\calF\circ R^q\calG(X)\Rightarrow R^{p+q}(\calF\circ \calG)(X)\]
+
+Finally, (very recently!) Karim Adiprasito proved the ``g-conjecture.'' Along the way, he used certain spectral sequences 
+of tensor products of chain complexes, and this motivated Sean's original research.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
