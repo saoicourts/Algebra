@@ -1861,8 +1861,8 @@ is the quotient category.
 Today I presented my talk on Brown representability. You can find the repository containing my notes for it \href{https://github.com/NicoCourts/Brown-Representability}{here}.
 
 \section{June 3, 2019}
-Today we're talking about spectral sequences! The primary references are Vakil's ``The Rising Sea'' (specifically section 1.7)
-as well as Weiel and May's ``A primer on spectral sequences.''
+Today we're talking about spectral sequences! Sean Griffin is presenting. The primary references are Vakil's ``The Rising Sea'' (specifically section 1.7)
+as well as Weibel and May's ``A primer on spectral sequences.''
 
 \subsection{Crush Course in Spectral Sequences}
 There are two usual treatments that are followed here: either filtered complexes or exact couples. In this lecture we will do neither.
@@ -1963,6 +1963,136 @@ Another example is the Grothendieck spectral sequence. Given some ``nice'' funct
 Finally, (very recently!) Karim Adiprasito proved the ``g-conjecture.'' Along the way, he used certain spectral sequences 
 of tensor products of chain complexes, and this motivated Sean's original research.
 
+\section{June 5, 2019}
+Today we are going to discuss Galois cohomology. The Thomases Carr and Browning are presenting.
+
+\subsection{Getting Started}
+The set up here is that we have an extension $L/K$ of fields with $G=\operatorname{Gal}(L/K)$. It ends up that really Galois cohomology is 
+really just group cohomology, transported to this context. There are two modules one may consider: $L^+$ and $L^\times$. Unfortunately,
+\begin{thm}
+	$H^i(G,L^+)=0$ for all $i>0$.
+\end{thm}
+So instead we ocus on using $L^\times.$ Here we still get a nice result:
+\begin{thm}[Hilbert Theorem 90]
+	$H^1(G,L^\times)=1$ 
+\end{thm}
+\begin{rmk}
+	Notice that in general the higher $H^i(G,L^\times)$ may or may not be trivial.
+\end{rmk}
+\subsection{Some Definitions}
+\begin{defn}
+	An abelian extension $L/K$ with Galois group $G$ is said to be of \textbf{exponent $n$} if $\sigma^n=1$ for all $\sigma\in G$.
+\end{defn}
+\begin{defn}
+	A \textbf{Kummer extension} $L/K$ is an abelian extension of exponent $n$ where $k$ contains all $n^{th}$ roots of unity.
+\end{defn}
+\begin{ex}
+	When $n=2$, $L=K(\sqrt{a})$ where $a$ is a nonsquare in $K$ is a Kummer extension.
+
+	When $n=3$, we can let $L$ be the splitting field of $x^3-\alpha$ where $\alpha$ is a non-cube. Then we set $K$ to be the subfield containing the third roots of unity.
+\end{ex}
+
+\subsection{Good Stuff}
+Let $L/K$ be Kummer. Consider 
+\[1\to \mu_n\to L^\times\xrightarrow{n^{th}\text{power}}(L^\times)^n)\to 1\]
+and using Galois cohomology, we get the long exact sequence (leveraging that $H^1(G,L^\times)=1$
+\[1\to \mu_n\to K^\times\to K^\times\cap(L^\times)^n\twoheadrightarrow H^1(G,\mu_n)\to 1\]
+and so since $H^1(G,\mu_n)$ ($\mu_n$ is a trivial module and $G$ is abelian although the latter is not necessary), 
+\[K^\times\cap(L^\times)^n/(K^\times)^n\cong \Hom(G,\mu_n).\]
+
+But then we can use a form of Pontryagin duality,
+\[\Hom(G,\mu_n)\cong\Hom(G,\bbZ/\bbZ)\]
+There is a 
+
+And we get an overall correspondence between subgroups of $K^\times\cap (L^\times)^n$ containing $(K^\times)^n$ and 
+Kummer extensions $L/K$ of exponent $n$. The upshot here is that if we pass to some maximal Kummer extension of $K$, (call it $N$), 
+then $K^\times\cap (N^\times)^n=K^\times$, so subgroups of $K^\times$ containing $(K^\times)^n)$ are in bijection with 
+Kummer extensions of $K$ of exponent $n$.
+
+More explicitly the correspondence takes a field $L$ to a group $(L^\times)^n\cap K^\times$ and a group $\Delta$ to $K(\sqrt{\Delta})=K(\sqrt[n]{\alpha},\alpha\in\Delta)$.
+
+\subsection{What this means}
+As an application, we get a correspondence between the subgroups of $\bbQ^\times/(\bbQ^\times)^2$ and Kummer extensions of exponent 2.
+
+\subsection{Global Stuff}
+Let $K$ be a number field (a finite extension over $\bbQ$). Then we get a SES 
+\[1\to K^\times\to I_K\to C_K\to 1\]
+where $I_K$ is the so-called \textbf{idele group} and $C_K$ is the \textbf{idele class group}. 
+
+To define these we need some fancy stuff so I am going to ignore it. Something about restricted products. :)
+
+Now if $L/K$ is Galois, we get $K^\times\subseteq L^\times$. This naturally gives us $I_K\subseteq I_L$ and some kind of inclusion $C_K\to C_L$.
+If $G$ is the Galois group for $L/K$, then 
+\[(L^\times)^G=K^\times\quad (I_L)^G=I_K\quad (C_L)^G=C_K.\]
+
+Introduce the following notation:
+\[H^n(L/K)=H^n(\operatorname{Gal}(L/K),C_L)\]
+Then we get the following generalization of Hilbert 90:
+\begin{thm}
+	$H^2(L/K)=1$
+\end{thm}
+\begin{prf}
+	This is at least the interesting bit. Induct of $[L:K]$. Let $\operatorname{Gal}(L/F)$ be a Sylow $p$-subgroup 
+	of the bigger Galois group. Then we get restriction and corestriction maps:
+	\[H^1(L/K)\xrightarrow{res}H^1(L/F)\xrightarrow{cores}H^1(L/K)\]
+	and in particular $res$ is injective on the $p$-subgroup. So our goal will be to show that $H^1(L/F)$ is trivial, 
+	proving that the $p$ part of $H^1(L/K)$ is trivial, and letting it vary over primes.
+
+	Now assume that $\operatorname{Gal}(L/K)$ to be a $p$-group and $\operatorname{Gal}(L/F)$ be normal of index $p$.
+	Then you get an inflation restriction sequence 
+	\[1\to H^1(F/K)\xrightarrow{inf}H^1(L/K)\xrightarrow{res}(L/F)\]
+	and then you can do some number theory to prove what you want.
+\end{prf}
+\begin{rmk}
+	Notice that the above sequence is, in fact, the first three terms of the five term exact sequence you get from the Lyndon-Hochschild-Serre
+	spectral sequence in group cohomology.
+\end{rmk}
+
+\begin{thm}
+	$H^2(L/K)\cong\left(\frac{1}{[L:K]}\bbZ\right)/\bbZ\subseteq \bbQ/\bbZ$ is cyclic of order $[L:K]$
+\end{thm}
+
+\subsection{A slight aside: Tate cohomology}
+Let $G$ be a finite group and $A$ a $G$-module. Let $N=\sum_{g\in G} g\in\bbZ G$. Then we get a map 
+$A_G\xrightarrow{N_G}A^G$. Then define 
+
+\[\hat H^n(G,A)=\left\{\begin{array}{lr} H^n(G,A),& n\ge 1\\
+	\coker N_G, & n=0\\
+	\ker N_G & n=-1\\
+H_{-n-1}(G,A),& n\le -2\end{array}\right.\]
+
+It just happens that this ends up working together very nicely!
+
+\begin{prop}
+	Given $0\to A\to B\to C\to 0$ an SES, we get our long exact sequence in Tate cohomology.
+\end{prop}
+\begin{prop}
+	When $G$ is cyclic, $\hat H^n(G,A)\cong\hat H^{n+2}(G,A)$
+\end{prop}
+\begin{prop}
+	We have a nice cup product
+	\[\hat H^m(G,A)\otimes \hat H^n(G,B)\to \hat H^{n+m}(G,A\otimes B)\]
+\end{prop}
+\begin{prop}
+	For all $m$ there exists a ``shift module'' $S_m$ such that 
+	\[\hat H^n(G,A)\cong\hat H^{n-m}(G,A\otimes S_m).\]
+\end{prop}
+\begin{thm}[Tate]
+	Let $G$ be finite, $A$ a $G$ module such that 
+	\begin{itemize}
+		\item $\forall H\le G,\hat H^1(H,A)=0$
+		\item $\forall H\le G, \hat H^2(H,A)$ is cyclic of order $|H|$
+	\end{itemize}
+	Then if $A$ generates $\hat H^2(G,A)$ then we get an isomorphism
+	\[a\cup -:\hat H^n(G,\bbZ)\cong \hat H^{n+2}(G,A)\]
+\end{thm}
+Then setting $n=-2$, we get that 
+\[\hat H^{-2}(G,\bbZ)\cong\hat H^0(G,A)=\coker N_G=A^G/NA\]
+but then 
+\[A^G/NA\cing \hat H^0(G,A)\cong H_2(G,\bbZ)=G^{ab}\]
+where the last thing is the abelianization of $G$.
+
+$C_L^G/NC_L\cong\operatorname{Gal}(L/K)^{ab}$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

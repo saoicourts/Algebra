@@ -2065,5 +2065,163 @@ To prove this, we will first need two lemmas.
 	and let $R=A[d]$. The claim is that $R$ is a dualizing complex. This implies that $F(M)=\bbD(M)$ and $G(N)=\bbD^\circ(N)$,
 	and we can apply the lemma to show that $\Ext_A^d(k,A)=F(k)=k$ and $\Ext_{A^{op}}^d(k,A)=k$, so we're done.
 \end{prf}	
+\begin{rmk}
+	In all honesty I lost track of the proof near the end, but I am pretty confused about whether that last part actually proved the equivalence of 4 or not.
+	In class the next day, James mentioned that (4)$\Rightarrow$(2) is a result of Yekutieli in his thesis.
+\end{rmk}
+
+\section{June 3, 2019}
+Today we are talking about Poincar\'e duality and something about Nakayama.
+\subsection{Examples of AS regular algebras}
+Examples abound, but this result gives us several:
+\begin{thm}[Brown]
+	Let $A$ be a connected graded algebra over a field of characteristic zero with finite GK dimension (think noncommutative Krull dimension). If $A$ admits a Hopf 
+	algebra structure, then $A$ must be AS regular.
+
+	Furthermore, $A$ satisfies 
+\[\Ext_{A^e}(A,A^e)=\left\{\begin{array}{rl}
+	0, & \text{GK dim}\ne i\\
+	A,&\text{otherwise}\end{array}\right.\]
+\end{thm}
+
+\subsection{Some Major Theorems}
+This one is courtesy of James and our guest Dan Rogalski!
+\begin{thm}[RRZ]
+	Let $A$ be connected graded. Then the following are equivalent:
+	\begin{itemize}
+		\item $A$ is AS regular.
+		\item $A$ is skew Calabi-Yau.
+	\end{itemize}
+\end{thm}
+Another from Michelle Van den Bergh:
+\begin{thm}[Van den Bergh]\label{thm-VdB}
+	Let $A$ be connected graded and AS regular (or equivalently skew Calabi-Yau). Then for any bimodule $M$,
+	and for some automorphism $\mu$ of $A$,
+	\[\HH^i(M)=\Ext^i_{A^e}(A,M)\cong \Tor_{d-i}^{A^{e}}(A,{^\mu}M)=\HH_{d-i}({^\mu}M)\]
+\end{thm}
+\begin{rmk}
+	This gives us a form of Poincar\'e duality that is similar to the one that comes from topology.
+\end{rmk}
+\begin{defn}
+	Let $M$ be an $A$ bimodule and $\mu$ an automorphism of $A$. Then $'M^\mu$ is a new $A$ bimodule where $A$ 
+	has the same action on the left as $M$ but the right action is twisted by $\mu$.
+\end{defn}
+\begin{defn}
+	An algebra $A$ is called skew Calabi-Yau (CY) if 
+	\begin{itemize}
+		\item $A\in\Dbperf(A^{e}\text{-}\mathbf{mod})$
+		\item There is an integer $d$ and algebra automorphism $\mu$ such that 
+	\[\Ext_{A^{e}}(A,A^e)=\left\{\begin{array}{rl}
+	0, & i\ne d\\ 'A^\mu, & \text{otherwise}\end{array}\right.\]
+	\end{itemize}
+	Here $\mu$ is called a \textbf{Nakayama automorphism} of $A$.
+\end{defn}
+\begin{rmk}
+	In 1988 Kansvitch introduced CW categories. Later in 2006 Gingzburg defined CYalg, the Calabi-Yau category. This 
+	was done in a (mysteriously unpublished) paper that James highly recommends we read.
+\end{rmk}
+\begin{lem}\label{lem-useful}
+	If $X\in\Dbperf(B)$, add $Y\in D(B)$, then 
+	\[R\Hom_B(X,Y)\cong R\Hom_B(X,B)\otimes_B^LY.\]
+\end{lem}
+\begin{prf}
+	The above equation holds when we set $X=B$. This is more-or-less self-evident.
+
+	Then we can take $\calT$ to be the set of objects satisfying the above equation, show it is a triangulated subcategory, then show it's everything 
+	because $\langle B\rangle=\Dbperf(B)$.
+\end{prf}
+\begin{prf}[of theorem~\ref{thm-VdB}]
+	\begin{align*}
+		\HH^i(M)&=H^i(R\Hom_{A^e}(A,M))\\
+		&=H^i(R\Hom(A,A^e)\otimes_{A^e}^LM)\\
+		&=H^i('A^\mu[-d]\otimes_{A^e}^LM)\\
+		&=H^{i-d}('A^\mu\otimes_{A^e}^LM)\\
+		&=H^{i-d}(A\otimes_{A^e}^L(A\otimes 'A^\mu)\otimes_{A^e}^LM)\\
+		&=H^{i=d}(A\otimes_{A^e}^L({^\mu}M))\\
+		&=\HH_{d-i}(^{\mu}M).
+	\end{align*}
+\end{prf}
+\subsection{Another neat result}
+\begin{thm}[S. P. Smith]
+	Let $A$ be a connected graded algebra. Then $A$ is AS regular if and only if $\Ext_A^\ast$ is Frobenius.
+\end{thm}
+
+Next lecture will be our last class and we will discuss the proof to James' theorem mentioned above.
+
+\section{June 5, 2019}
+Today we will finish up establishing that AS regular algebras are precisely the skey CY ones.
+
+As a special calse, say that $L$ is an $N_{\ge 0}$-graded Lie algebra what is finite dimensional over $k$. Then $\calU(L)$ is connected graded and 
+furthermore is AS regular and CY.
+
+\begin{defn}
+	An algebra $A$ is called \textbf{skew Calabi-Yau} if 
+	\begin{itemize}
+		\item $A\in\Dbperf(A^{e}\text{-}\mathbf{mod})$
+		\item $\HH^i(A^e)=\Ext_{A^e}^i(A,A^e)=\delta_{i=d}{'}A^\mu$.
+	\end{itemize}
+\end{defn}
+
+To prove [RRZ], we need several lemmas. (10 in total although we only need four to prove (skew CY)$\Rightarrow$(AS)).
+\begin{lem}
+	\[\gldim A\le \projdim_{A^e}A\]
+\end{lem}
+\begin{lem}
+	\begin{itemize}
+		\item $\gldim A\otimes B\le \projdim_{A^e\otimes B^e}(A\otimes B)$
+		\item $\projdim_{A^e}(A)\le \gldim A^e\le \projdim_{(A^e)^e)}A^e=2\projdim_{A^e}A.$
+	\end{itemize}
+\end{lem}
+Then we also have lemma~\ref{lem-useful} from yesterday, as well as 
+\begin{lem}
+	Let $\sigma$ be an automorphism of $A$. Then 
+	\begin{itemize}
+		\item $('A^\sigma\otimes k)\otimes_{A^e}^LA\cong k$
+		\item $A\otimes_{A^e}^L('A^\sigma\otimes k)\cong k$.
+	\end{itemize}
+\end{lem}
+\begin{prf}
+	Let $P$ be a projective resolution of ${_{A^e}}A$. Then 
+	\[('A^\sigma\otimes k)\otimes_{A^e}^LA=('A^\sigma\otimes k)\otimes_{A^e}P='A^\sigma\otimes_AP\otimes_Ak={^{\sigma^{-1}}}P\otimes_A k={^{\sigma^{-1}}}A\otimes_Ak={^{\sigma^{-1}}}k\]
+\end{prf}
+
+\subsection{Koszul Duality}
+\begin{defn}
+	Let $A$ be a connected graded algebra that is generated in degree 1. Then $A$ is called \textbf{Koszul} if 
+	(there are several equivalent definitions but this is the easiest) 
+	\[E:=\oplus_{i\ge 0}\Ext_A^i(k,k)\] 
+	is generated by $\Ext_A^1(k,k)$.
+\end{defn}
+\begin{thm}[Koszul Duality: Beilinson-Ginzburg-Soergel]
+	let $A$ be a Koszul AS-regular algebra. Then we have an equivalence of categories
+	\[\Db_{fg}(\Amod)\simeq \Db_{fg}(E\text{-}\mathbf{mod}).\]
+\end{thm}
+\begin{cor}
+	$\HH^\ast(A)\cong\HH^\ast(E)$.
+\end{cor}
+\begin{rmk}
+	Notice that we \textbf{do not} get isomorphism on the individual graded pieces above: in general, $\HH^i(A)\not\cong\HH^i(E)$.
+	In fact, there are only finitely many $\HH^i(A)$ nonzero, while this is not true for $\HH^i(E)$.
+\end{rmk}
+
+\subsection{The right context for noncommutative algebraic geometry}
+\begin{defn}
+	$\mathbf{proj} A$ is the category of graded modules over $A$ modulo the finitely generated ones. This is an abelian category.
+\end{defn}
+\begin{thm}[Beilinson-Gelfand-Gelfand]
+	$\Db(\mathbf{proj} A)\cong \Db_{fg}(E\text{-}\textbf{Grmod})/\Dbperf(E\text{-}\mathbf{mod}).$
+\end{thm}
+
+\begin{thm}[Beilinson]
+	$\Db(\mathbf{proj} A)\cong\Db_{fd}(B\text{-}\mathbf{mod})$ where $B\subseteq M_{d\times d}(A)$
+	where $d=\gldim A$, where the matrices look like elements of $k$ down the diagonal and when $j>i$, the element in 
+	the $(i,j)^{th}$ position comes from $A_{j-i}.$
+\end{thm}
+
+\begin{thm}[Orlov]
+	Let $\bbV=\Db_{fd}(\Vectk)$. Then 
+	\[\Db(\mathbf{proj}A)\cong (\bbV\rtimes \bbV)\rtimes\bbV\cdots\rtimes \bbV\]
+	where the above is $d=\gldim A$ copies of $A$. We haven't defined the semidirect product of a category, but it can be done. This is called a semi-orthogonal decomposition of $\Db(\mathbf{proj}A)$.
+\end{thm}
 
 \end{document}
