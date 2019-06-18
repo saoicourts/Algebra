@@ -1,0 +1,286 @@
+%set up theorem/definition/etc envs
+%Problems will be created using their own counter and style
+\theoremstyle{break}
+\theoreminframepreskip{0pt}
+\theoreminframepostskip{0pt}
+\newframedtheorem{prob}{Problem}[section]
+
+%solution template
+\theoremstyle{nonumberbreak}
+\theoremindent0.5cm
+\theorembodyfont{\upshape}
+\theoremseparator{:}
+\theoremsymbol{\ensuremath\spadesuit}
+\newtheorem{sol}{Solution}
+
+%Theorems
+\definecolor{thmcol}{RGB}{120,100,50}
+\theoremstyle{changebreak}
+\theoremseparator{}
+\theoremsymbol{}
+\theoremindent0.5cm
+\theoremheaderfont{\color{thmcol}\bfseries} 
+\newtheorem{thm}{Theorem}[subsection]
+
+%Lemmas and Corollaries
+\theoremheaderfont{\bfseries}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+
+%Create a new env that references a theorem and creates a 'primed' version
+%Note this can be used recursively to get double, triple, etc primes
+\newenvironment{thm-prime}[1]
+  {\renewcommand{\thethm}{\ref{#1}$'$}%
+   \addtocounter{thm}{-1}%
+   \begin{thm}}
+  {\end{thm}}
+
+\setlength\fboxsep{15pt}
+
+%Example
+\theoremstyle{break}
+\def\theoremframecommand{\colorbox[rgb]{0.9,0.9,0.9}}
+\newshadedtheorem{ex}{Example}[section]
+
+%Man, that's really good! Let's use the same thing for definitons.
+\newenvironment{def-prime}[1]
+  {\renewcommand{\thethm}{\ref{#1}$'$}%
+   \addtocounter{thm}{-1}%
+   \begin{def}}
+  {\end{def}}
+
+%proofs
+\theoremstyle{nonumberbreak}
+\theoremindent0.5cm
+\theoremheaderfont{\sc}
+\theoremseparator{}
+\theoremsymbol{\ensuremath\spadesuit}
+\newtheorem{prf}{Proof}
+
+\theoremstyle{nonumberplain}
+\theoremseparator{:}
+\theoremsymbol{}
+\newtheorem{conj}{Conjecture}
+
+%remarks
+\theoremstyle{change}
+\theoremindent0.5cm
+\theoremheaderfont{\sc}
+\theoremseparator{:}
+\theoremsymbol{}
+\newtheorem{rmk}[thm]{Remark}
+
+%Put page breaks before each part
+\let\oldpart\part%
+\renewcommand{\part}{\clearpage\oldpart}%
+
+% Blackboard letters
+\newcommand*{\bbA}{\mathbb{A}}
+\newcommand*{\bbB}{\mathbb{B}}
+\newcommand*{\bbC}{\mathbb{C}}
+\newcommand*{\bbD}{\mathbb{D}}
+\newcommand*{\bbE}{\mathbb{E}}
+\newcommand*{\bbF}{\mathbb{F}}
+\newcommand*{\bbG}{\mathbb{G}}
+\newcommand*{\bbH}{\mathbb{H}}
+\newcommand*{\bbI}{\mathbb{I}}
+\newcommand*{\bbJ}{\mathbb{J}}
+\newcommand*{\bbK}{\mathbb{K}}
+\newcommand*{\bbL}{\mathbb{L}}
+\newcommand*{\bbM}{\mathbb{M}}
+\newcommand*{\bbN}{\mathbb{N}}
+\newcommand*{\bbO}{\mathbb{O}}
+\newcommand*{\bbP}{\mathbb{P}}
+\newcommand*{\bbQ}{\mathbb{Q}}
+\newcommand*{\bbR}{\mathbb{R}}
+\newcommand*{\bbS}{\mathbb{S}}
+\newcommand*{\bbT}{\mathbb{T}}
+\newcommand*{\bbU}{\mathbb{U}}
+\newcommand*{\bbV}{\mathbb{V}}
+\newcommand*{\bbW}{\mathbb{W}}
+\newcommand*{\bbX}{\mathbb{X}}
+\newcommand*{\bbY}{\mathbb{Y}}
+\newcommand*{\bbZ}{\mathbb{Z}}
+%Fraktur letters
+\newcommand*{\frakA}{\mathfrak{A}}
+\newcommand*{\frakB}{\mathfrak{B}}
+\newcommand*{\frakC}{\mathfrak{C}}
+\newcommand*{\frakD}{\mathfrak{D}}
+\newcommand*{\frakE}{\mathfrak{E}}
+\newcommand*{\frakF}{\mathfrak{F}}
+\newcommand*{\frakG}{\mathfrak{G}}
+\newcommand*{\frakH}{\mathfrak{H}}
+\newcommand*{\frakI}{\mathfrak{I}}
+\newcommand*{\frakJ}{\mathfrak{J}}
+\newcommand*{\frakK}{\mathfrak{K}}
+\newcommand*{\frakL}{\mathfrak{L}}
+\newcommand*{\frakM}{\mathfrak{M}}
+\newcommand*{\frakN}{\mathfrak{N}}
+\newcommand*{\frakO}{\mathfrak{O}}
+\newcommand*{\frakP}{\mathfrak{P}}
+\newcommand*{\frakQ}{\mathfrak{Q}}
+\newcommand*{\frakR}{\mathfrak{R}}
+\newcommand*{\frakS}{\mathfrak{S}}
+\newcommand*{\frakT}{\mathfrak{T}}
+\newcommand*{\frakU}{\mathfrak{U}}
+\newcommand*{\frakV}{\mathfrak{V}}
+\newcommand*{\frakW}{\mathfrak{W}}
+\newcommand*{\frakX}{\mathfrak{X}}
+\newcommand*{\frakY}{\mathfrak{Y}}
+\newcommand*{\frakZ}{\mathfrak{Z}}
+\newcommand*{\fraka}{\mathfrak{a}}
+\newcommand*{\frakb}{\mathfrak{b}}
+\newcommand*{\frakc}{\mathfrak{c}}
+\newcommand*{\frakd}{\mathfrak{d}}
+\newcommand*{\frake}{\mathfrak{e}}
+\newcommand*{\frakf}{\mathfrak{f}}
+\newcommand*{\frakg}{\mathfrak{g}}
+\newcommand*{\frakh}{\mathfrak{h}}
+\newcommand*{\fraki}{\mathfrak{i}}
+\newcommand*{\frakj}{\mathfrak{j}}
+\newcommand*{\frakk}{\mathfrak{k}}
+\newcommand*{\frakl}{\mathfrak{l}}
+\newcommand*{\frakm}{\mathfrak{m}}
+\newcommand*{\frakn}{\mathfrak{n}}
+\newcommand*{\frako}{\mathfrak{o}}
+\newcommand*{\frakp}{\mathfrak{p}}
+\newcommand*{\frakq}{\mathfrak{q}}
+\newcommand*{\frakr}{\mathfrak{r}}
+\newcommand*{\fraks}{\mathfrak{s}}
+\newcommand*{\frakt}{\mathfrak{t}}
+\newcommand*{\fraku}{\mathfrak{u}}
+\newcommand*{\frakv}{\mathfrak{v}}
+\newcommand*{\frakw}{\mathfrak{w}}
+\newcommand*{\frakx}{\mathfrak{x}}
+\newcommand*{\fraky}{\mathfrak{y}}
+\newcommand*{\frakz}{\mathfrak{z}}
+% Caligraphic letters
+\newcommand*{\calA}{\mathcal{A}}
+\newcommand*{\calB}{\mathcal{B}}
+\newcommand*{\calC}{\mathcal{C}}
+\newcommand*{\calD}{\mathcal{D}}
+\newcommand*{\calE}{\mathcal{E}}
+\newcommand*{\calF}{\mathcal{F}}
+\newcommand*{\calG}{\mathcal{G}}
+\newcommand*{\calH}{\mathcal{H}}
+\newcommand*{\calI}{\mathcal{I}}
+\newcommand*{\calJ}{\mathcal{J}}
+\newcommand*{\calK}{\mathcal{K}}
+\newcommand*{\calL}{\mathcal{L}}
+\newcommand*{\calM}{\mathcal{M}}
+\newcommand*{\calN}{\mathcal{N}}
+\newcommand*{\calO}{\mathcal{O}}
+\newcommand*{\calP}{\mathcal{P}}
+\newcommand*{\calQ}{\mathcal{Q}}
+\newcommand*{\calR}{\mathcal{R}}
+\newcommand*{\calS}{\mathcal{S}}
+\newcommand*{\calT}{\mathcal{T}}
+\newcommand*{\calU}{\mathcal{U}}
+\newcommand*{\calV}{\mathcal{V}}
+\newcommand*{\calW}{\mathcal{W}}
+\newcommand*{\calX}{\mathcal{X}}
+\newcommand*{\calY}{\mathcal{Y}}
+\newcommand*{\calZ}{\mathcal{Z}}
+% Script Letters
+\newcommand*{\scrA}{\mathscr{A}}
+\newcommand*{\scrB}{\mathscr{B}}
+\newcommand*{\scrC}{\mathscr{C}}
+\newcommand*{\scrD}{\mathscr{D}}
+\newcommand*{\scrE}{\mathscr{E}}
+\newcommand*{\scrF}{\mathscr{F}}
+\newcommand*{\scrG}{\mathscr{G}}
+\newcommand*{\scrH}{\mathscr{H}}
+\newcommand*{\scrI}{\mathscr{I}}
+\newcommand*{\scrJ}{\mathscr{J}}
+\newcommand*{\scrK}{\mathscr{K}}
+\newcommand*{\scrL}{\mathscr{L}}
+\newcommand*{\scrM}{\mathscr{M}}
+\newcommand*{\scrN}{\mathscr{N}}
+\newcommand*{\scrO}{\mathscr{O}}
+\newcommand*{\scrP}{\mathscr{P}}
+\newcommand*{\scrQ}{\mathscr{Q}}
+\newcommand*{\scrR}{\mathscr{R}}
+\newcommand*{\scrS}{\mathscr{S}}
+\newcommand*{\scrT}{\mathscr{T}}
+\newcommand*{\scrU}{\mathscr{U}}
+\newcommand*{\scrV}{\mathscr{V}}
+\newcommand*{\scrW}{\mathscr{W}}
+\newcommand*{\scrX}{\mathscr{X}}
+\newcommand*{\scrY}{\mathscr{Y}}
+\newcommand*{\scrZ}{\mathscr{Z}}
+
+%Section break
+\newcommand*{\brk}{
+\rule{2in}{.1pt}
+}
+
+%General purpose stuff
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\ch}{char}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\End}{End}
+\let\Im\relax
+\DeclareMathOperator{\Im}{Im}
+
+%Category Theory
+\DeclareMathOperator{\Hom}{Hom}
+\let\hom\relax
+\DeclareMathOperator{\hom}{hom}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\colim}{colim}
+\DeclareMathOperator{\invlim}{\lim_{\leftarrow}}
+\DeclareMathOperator{\dirlim}{\lim_{\rightarrow}}
+
+%Commutative Algebra
+\DeclareMathOperator{\gldim}{gldim}
+\DeclareMathOperator{\projdim}{projdim}
+\DeclareMathOperator{\injdim}{injdim}
+\DeclareMathOperator{\findim}{findim}
+\DeclareMathOperator{\flatdim}{flatdim}
+\DeclareMathOperator{\depth}{depth}
+
+%Common Categories
+\newcommand*{\modR}{\mathbf{mod}\text{-}R}
+\newcommand*{\Rmod}{R\text{-}\mathbf{mod}}
+\DeclareMathOperator{\Vectk}{\mathbf{Vect}_k}
+\DeclareMathOperator{\Ch}{\mathbf{Ch}}
+\newcommand*{\Ab}{\mathbf{Ab}}
+\newcommand*{\Grp}{\mathbf{Grp}}
+\newcommand*{\Algk}{\mathbf{Alg}_k}
+\newcommand*{\Ring}{\mathbf{Ring}}
+\newcommand*{\K}{\mathbf{K}}
+\newcommand*{\D}{\mathbf{D}}
+\newcommand*{\Db}{\mathbf{D}^b}
+\newcommand*{\Dpos}{\mathbf{D}^+}
+\newcommand*{\Dneg}{\mathbf{D}^-}
+\newcommand*{\Dbperf}{\mathbf{D}^b_{\text{perf}}}
+\newcommand*{\Dsing}{\mathbf{D}_{sing}}
+
+%Homological algebra
+\DeclareMathOperator{\cone}{cone}
+\DeclareMathOperator{\HH}{HH}
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Tor}{Tor}
+
+%Lie algebras
+\DeclareMathOperator{\ad}{ad}
+\newcommand*{\gl}{\mathfrak{gl}}
+\let\sl\relax
+\newcommand*{\sl}{\mathfrak{sl}}
+\let\sp\relax
+\newcommand*{\sp}{\mathfrak{sp}}
+\newcommand*{\so}{\mathfrak{so}}
+
+% Hacks and Tweaks
+% Enumerate will automatically use letters (e.g. part a,b,c,...)
+\setenumerate[0]{label=(\alph*)}
+% Always use wide tildes
+\let\tilde\relax
+\newcommand*{\tilde}[1]{\widetilde{#1}}
+%raise that Chi!
+\DeclareRobustCommand{\Chi}{{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
+

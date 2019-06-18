@@ -12,6 +12,16 @@
 
 \input{/home/nico/latex-includes/mydefs.tex}
 
+%Shade definitions
+\theoremindent0cm
+\theoremheaderfont{\normalfont\bfseries} 
+\def\theoremframecommand{\colorbox[rgb]{1,0.9,.55}}
+\newshadedtheorem{defn}[thm]{Definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% Customize Below %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %class-specific macros
 \DeclareMathOperator{\sExt}{\mathscr{E}xt}
 \DeclareMathOperator{\stmod}{stmod}
@@ -2089,10 +2099,150 @@ It just happens that this ends up working together very nicely!
 Then setting $n=-2$, we get that 
 \[\hat H^{-2}(G,\bbZ)\cong\hat H^0(G,A)=\coker N_G=A^G/NA\]
 but then 
-\[A^G/NA\cing \hat H^0(G,A)\cong H_2(G,\bbZ)=G^{ab}\]
+\[A^G/NA\cong \hat H^0(G,A)\cong H_2(G,\bbZ)=G^{ab}\]
 where the last thing is the abelianization of $G$.
 
-$C_L^G/NC_L\cong\operatorname{Gal}(L/K)^{ab}$
+$C_L^G/NC_L\cong\operatorname{Gal}(L/K)^{ab}$ 
+
+Bah I missed something here.
+
+\section{June 7, 2019}
+Today Christine and Tejas are going to talk about \textit{Abelian Sheaf Cohomology}.
+
+\subsection{Sheaves}
+\begin{ex}
+	The idea here is that we are generalizing functions on spaces. For instance, consider $X=S^2$, the 2 sphere.
+	Then take our fuctions to be ones satisfying $f\in\bbR[x,y,z]/(x^2+y^2+z^2-1)$ and open sets to be the usal ones on the spheres.
+\end{ex}
+\begin{defn}
+	A \textbf{presheaf} of ableiang groups on a toplological space $X$ is a functor 
+	\[\calF:\mathbf{Ob}(X)^{op}\to \Ab\]
+	where $\mathbf{Op}(X)$ is the poset category on the open sets of $X$.
+
+	Generally we suppres the space and the fact we are using abelian groups.
+\end{defn}
+\begin{defn}\label{defn-sheaf}
+	A \textbf{sheaf} of abelian groups on $X$ is a presheaf such that the following are satisfied:
+	\begin{itemize}
+		\item (\textbf{Locality}) If $\{U_i\}$ is an open cover of an open set $U$ and if $s,t\in\calF(U)$ such that 
+		\[s|_{U_i}=t|_{U_i},\forall i\]
+		then $s=t$.
+		\item (\textbf{Gluing}) If $\{U_i\}$ is an open cover of $U$ and if for each $i$ there is a $s_i\in\calF(U_i)$
+		such that $s_i|_{U_i\cap U_j}=s_j|_{U_i\cal U_j}$, then there is a \textbf{global section} $s\in \calF(U)$ such taht $s|_{U_i}=s_i$.
+	\end{itemize}
+\end{defn}
+If we like categories more (WE DO!) then we can equivalently define it thusly:
+\begin{defn}\label{defn-sheaf-2}
+	A sheaf is a presheaf $\calF$ such that for any open $U$ with cover $\{U_i\}$,
+	\[\calF(U)\to \prod_i\calF(U_i)\stackrel{\to}{\to}\prod_{i,j}\calF(U_i\cap U_j)\]
+	where, more generally, we could write this using $U_i\times_UU_j=U_i\cap U_j.$
+\end{defn}
+
+What is a morphism of sheaves, then?
+\begin{defn}
+	Let $\calF$ and $\calG$ be sheaves on $X$ a morphism $\varphi:\calF\to\calG$ is just a natural transformation.
+\end{defn}
+\begin{rmk}
+	We say that $\varphi$ is injective (resp. surjective) if for all $x\in X$, 
+	\[\varphi_x:\colim_{U\ni x}\calF(U)\to colim_{U\ni x}\calG(U)\]
+	is injective (resp. surjective).
+\end{rmk}
+
+\begin{prop}
+	The category of abelian sheaves form an Abelian category. :)
+\end{prop}
+
+\subsection{Operations with Sheaves}
+Notice first that every sheaf is a presheaf. Then for any presheaf $\calF$, we can associate to it a sheaf 
+by ``sheafifying.'' You can peek at Hartshorne for the actual definiton, but basically you add in the global sections that are missing (where local sections glue together to form them)
+and remove global sections that are locally trivial.
+
+More concretely, we get a functor:
+\[()^+:\mathbf{Presh}_X\to\mathbf{Sh}_X\]
+such that $()^+$ is left adjoint to the forgetful functor.
+
+\begin{defn}
+	The \textbf{global sections functor} is a functor 
+	\[\Gamma(X,-):\mathbf{Sh}_X\to\Ab\]
+	defined to be $\Gamma(X,\calF)=\calF(X)$.
+\end{defn}
+\begin{prop}
+	$\Gamma(X,-)$ is left but not right exact.
+\end{prop}
+\begin{prf}
+	That it is left exact can be proved a few ways, but Isaac mentioned that limits commute with limits which seems to be pretty slick.
+
+	The primary counter-example that it is not right exact, consider the space $X=\bbC\setminus \{0\}$ and the sequence:
+	\[0\to\underline\bbZ\hookrightarrow \calO\to \calO^\ast\to 0\]
+	where $\underline\bbZ$ is the constant sheaf, $\calO$ is the holomorphic functions on $X$ and $\calO^\ast$ is the nonzero holomorphic functions on $X$. But then letting 
+	the surjection be $f\mapsto e^{2\pi i f}$, there is clearly no global logarithm function in all cases. 
+\end{prf}
+
+\begin{thm}[Grothendieck `57]
+	$\mathbf{Sh}_X$ has enough injectives.
+\end{thm}
+
+\subsection{Sites}
+The motivation here is that there is a correspondence between affine schemes and commutative rings, and every scheme is glued together in such a way.
+The problem here, though, is that he standard (Zariski) topology is just too coarse to glean anything useful.
+
+The goal here is to put a topology on the category of schemes, forgetting completely about what the underlying topological space is. This motivates \'Etale coverings.
+
+\begin{defn}
+	Let $\calC$ be any category. A \textbf{Grothendieck topology} is a collection of distinguished collections indexed by objects in $\calC$ (think a collection of all coverings of a topological space)
+	such that 
+	\begin{itemize}
+		\item Isomorphisms are coverings
+		\item Coverings of coverings are coverings 
+		\item Base changes of coverings are coverings: If $\{U_i\to X\}$ is a covering and if $V\to X$ is any morphism,
+		then the fiber products (pullbacks) $\{U_i\times_XV\to V\}$ exist and are a covering.
+	\end{itemize}
+	Then $\calC$ along with its Grothendieck topology is called a \textbf{site.}
+\end{defn}
+\begin{ex}
+	If $X$ is a topological space, $\mathbf{Op}(X)$ is a site, called the \textbf{small site} of $X$.
+
+	$\mathbf{Top}$ is a site with jointly surjective open embeddings. Then $\mathbf{Top}/X$ is the \textbf{big site} of $X$.
+\end{ex}
+
+We're not going to talk about schemes here, but we will talk more about schemes.
+
+\begin{defn}
+	A \textbf{sheaf on a site} is a functor $\calF:\calC^{op}\to\mathbf{Set}$ satisfying the equalizer 
+	diagram I wrote in definition~\ref{defn-sheaf-2}.
+
+	An \textbf{abelian sheaf} is a sheaf that factors as $\calF:\calC^{op}\to\Ab$.
+\end{defn}
+\begin{ex}
+	$\Hom_{\mathbf{Top}}(-,X):\mathbf{Top}^{op}\to\mathbf{Set}$. That this is a sheaf (on the big site of $X$) basically follows from the fact that 
+	we have the gluing property in topological spaces.
+\end{ex}
+\begin{rmk}
+	Notice that on the category of topological spaces, this tells us that all representable functors are sheaves!
+\end{rmk}
+\begin{ex}
+	If $X$ is an abelian group object in $\mathbf{Top}$, then $\Hom(-,X)$ is an abelian functor.
+\end{ex}
+\begin{defn}
+	$\Ab(\calC)$ is the category of abelian sheaves on $\calC$. 
+\end{defn}
+\begin{thm}
+	$\Ab(\calC)$ is an abelian category with enough injectives.
+\end{thm}
+\begin{prop}
+	For any object $X\in \calC$, we can define 
+	\[\Gamma(X,-):\Ab(\calC)\to \Ab.\]
+
+	Furthermore $\Gamma(X,-)$ is left exact, but not right exact.
+\end{prop}
+
+Then the goal is to measure failure of exactness of $\Gamma(T,-)$ where $T$ is a terminal object. Since we are in an abelian category we can do this in the usual way.
+
+\begin{defn}
+	If $\calF\in\Ab(\calC)$, $V\in \calC$, then the $i^{th}$ cohomology group of $\calF$ over $V$ is 
+	\[H^i(V,\calF):=R^i\Gamma(V,\calI^\bullet)\]
+	where $\calI^\bullet$ is an injective resolution of your $\calF$.
+\end{defn}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2427,7 +2577,7 @@ modules.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
-\section{HW2 -- Due XXXXX}
+\section{HW2 -- Due May}
 \begin{prob}
 	Let $R$ be a commutative ring, and $N$ be an $R$-module. Show that the following are equivalent:
 	\begin{enumerate}
@@ -2449,7 +2599,7 @@ modules.
 \end{sol}
 
 \begin{prob}
-	Let $(R, \frakm, k)$ be a commutative local ring and $M$ be a finitely generated $R$-module. Prove that the following are equivalent: 
+	Let $(R, \frakm, k)$ be a Noetherian commutative local ring and $M$ be a finitely generated $R$-module. Prove that the following are equivalent: 
 	\begin{enumerate}
 		\item $M$ is free
 		\item $M$ is flat
@@ -2458,8 +2608,32 @@ modules.
 	\end{enumerate}
 \end{prob}
 \begin{sol}
-	(a)$\Leftrightarrow$(b): First let $M$ be free (and finitely generated). Then $M\cong R^k$ for some finite $k$. 
-	Then take an injection
+	(a)$\Rightarrow$(b): First let $M$ be free (and finitely generated). Then $M\cong R^k$ for some finite $k$. 
+	Then take an injection $\iota:A\hookrightarrow B$ and consider the induced map $A\otimes_R M\to B\otimes_R M$. Since $M\cong R^k$, we get 
+	that $A\otimes M\cong A^k$ and $B\otimes M\cong B^k$ with the induced map between them being $\iota$ on each summand. This is clearly injective.
+
+	(b)$\Rightarrow$(c) follows since if $M$ is flat, $-\otimes_RM$ is exact, so it preserves injections. Thus in particular 
+	the image of $\frakm\hookrightarrow R$ is also an injection. 
+
+	(c)$\Rightarrow$(d) Consider the short exact sequence 
+	\[0\to\frakm\to R\to k\to 0\]
+	and apply the long exact sequence in $\Tor$. But since the induced map from (c) is still injective, the following is exact:
+	\[0=\Tor_1(R,M)\to \Tor_1(k,M)\to \frakm\otimes M\to R\otimes M\to k\otimes M\to 0\]
+	where the equality on the left is because free modules are flat (see above).
+	But then by the assumption in (c), this implies that $\Tor_1(k,M)$ injects into the trivial module, so it must be 0 as well.
+
+	(d)$\Rightarrow$(a) Let $\{m_1,\dots,m_n\}$ be a minimal set of generators for $M$. Then define the map $f:R^n\to M$ via 
+	$f(r_1,\dots,r_n)=r_1m_1+\cdots+r_nm_n.$ Let $I=\ker f$. Then we have the short exact sequence 
+	\[0\to I\to R^n\to M\to 0\]
+	and taking the long exact sequence associated to $-\otimes k$, we get 
+	\[\cdots \Tor_1(k,M)\to I\otimes k\to R^n\otimes k\to M\otimes k\to 0\]
+	and since $\Tor_1(k,M)=0$ and leveraging a couple more isomorphisms,
+	\[0\to I/\frakm I\to k^n\to M/\frakm M\to 0\]
+	is exact.
+
+	But now by Nakayama, a basis for $M/\frakm M$ lifts to a minimal set of generators for $M$, but then $M/\frakm M\cong k^n$. Then by a dimension counting 
+	argument, this forces $I/\frakm I=0.$ Since we assume that $R$ was Noetherian, $I$ is finitely generated, so again we can leverage Nakayama: since the quotient is 
+	trivial, so is $I$ itself. But then $M\cong R^n$ and we're done. \textit{Thanks to Cody for giving me a hint to use Nakayama here.}
 \end{sol}
 
 \begin{prob}
@@ -2495,7 +2669,12 @@ modules.
 	\end{enumerate} 
 \end{prob}
 \begin{sol}
+	\textbf{(a):} Define the form 
+	\[\omega\left(\sum_{g\in G}a_gg,\sum_{g\in G}b_g g\right)=\sum_{g\in G}a_gb_g.\]
 
+	One can easily check that this is a (symmetric!) nondegenerate form on $R\otimes R$. Note that I came up with this 
+	by just guessing, but my first thought was to mirror the natural pairing we get with a vector space and its dual (linear functionals). Using this,
+	one can construct (essentially) the same form. Perhaps this is what was intended, although my guesswork paid off this time. :)
 \end{sol}
 
 \begin{prob}

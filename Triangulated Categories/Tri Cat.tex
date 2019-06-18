@@ -11,6 +11,16 @@
 %Input my definitions
 \input{/home/nico/latex-includes/mydefs.tex}
 
+%Shade definitions
+\theoremindent0cm
+\theoremheaderfont{\normalfont\bfseries} 
+\def\theoremframecommand{\colorbox[rgb]{1,0.9,.55}}
+\newshadedtheorem{defn}[thm]{Definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% Customize Below %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %header stuff
 \setlength{\headsep}{24pt}  % space between header and text
 \pagestyle{fancy}     % set pagestyle for document
