@@ -1,0 +1,1545 @@
+\documentclass[12pt]{article}
+
+\usepackage{setspace}
+
+\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, xcolor, hyperref}
+\usepackage[framed,thmmarks]{ntheorem}
+
+%Replacement for the old geometry package
+\usepackage{fullpage}
+
+%Input my definitions
+\input{./mydefs.tex}
+
+%Shade definitions
+\theoremindent0cm
+\theoremheaderfont{\normalfont\bfseries} 
+\def\theoremframecommand{\colorbox[rgb]{0.9,1,.8}}
+\newshadedtheorem{defn}[thm]{Definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% Customize Below %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%header stuff
+\setlength{\headsep}{24pt}  % space between header and text
+\pagestyle{fancy}     % set pagestyle for document
+\lhead{Workshop Notes} % put text in header (left side)
+\rhead{Nico Courts} % put text in header (right side)
+\cfoot{\itshape p. \thepage}
+\setlength{\headheight}{15pt}
+\allowdisplaybreaks
+
+% Document-Specific Macros
+% Primes and Maximals for the lazy person.
+\newcommand{\p}{\frakp}
+\newcommand{\m}{\frakm}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\SH}{\mathcal{SH}}
+\DeclareMathOperator{\DMack}{DMack}
+\DeclareMathOperator{\Sing}{Sing}
+\DeclareMathOperator{\SpcBal}{Spc_{Bal}}
+\newcommand{\Rep}{\mathbf{Rep}\,}
+
+%stable module category stuff
+\DeclareMathOperator{\uHom}{\underline{Hom}}
+\DeclareMathOperator{\uExt}{\underline{Ext}}
+\DeclareMathOperator{\uEnd}{\underline{End}}
+
+%group schemes
+\newcommand{\Ga}{\bbG_a}
+
+\begin{document}
+%make the title page
+\title{Workshop Notes\vspace{-1ex}}
+\author{Nico Courts}
+\date{June 24-28, 2019}
+\maketitle
+
+\renewcommand{\abstractname}{Introduction}
+\begin{abstract}
+	These notes were the ones I took while attending the ``Triangulated Categories in Geometry and Representation Theory'' Workshop 
+	at the University of Sydney during the week beginning June 23, 2019.
+\end{abstract}
+
+\section{The spectrum of the category of derived Mackey functors}
+This talk was given by Beren Sanders on a joint work alongside Irakli Patchkoria and Christian Wimmer.
+
+First we are going to talk about tensor triangulated geometry. Essentially we are looking at 
+an essentially small tensor triangulated category and then we want to talk about the ``geometry''.
+Analogous to the way we define the spectrum of a ring, we can define 
+\begin{defn}
+	The \textbf{spectrum} of a tensor-triangulated category $\calK$ is 
+	\[\operatorname{Spec}{\calK}=\{\p\subsetneq \calK|\p\text{is a prime tensor triangulated ideal}\}\]
+\end{defn}
+
+Then if $X\in\calK$ is an object, then we can define the support of $X$ to be 
+\[\operatorname{supp}(X)=\{\p\in\operatorname{Spec}(\calK)|x\notin\p\}\]
+
+We define the closure of a prime to be the set of primes that are contained in it. There are some great universal properties.
+
+\begin{lem}
+	\begin{itemize}
+		\item $\Spec(D(T)^c)\cong\Spec(R)$
+		\item $\Spec(\Db(kG-\mathbf{mod}))\cong \Spec(H^\ast(G,k))$.
+	\end{itemize}
+	The second result is was generalized by (among others) Julia to group schemes.	
+\end{lem}
+
+\subsection{The Stable Homotopy Category}
+This is the context for most of the talk for today. Let $\SH$ be the stable homotopy category.
+There are a couple sources for objects here. We can consider $\sigma^\infty X$, the infinite suspension of a pointed space, 
+or a cohomology theory $\bbE$ (e.g. singular cohomology).
+
+$\SH$ is a tensor-triangulated category although I missed the tensor structure.
+
+\begin{thm}[Balmer `10]
+	There is a \textbf{comparison map}, a continuous map
+	\[\rho_\calK:\Spec(\calK)\to \Spec(\End_\calK(1))\]
+	where $1$ is the monoidal unit (since I haven't set up the macro for the bb font.)
+\end{thm}
+The idea here is that the object on the right is more easy to understand in general.
+
+So for the example of $\SH^c$, we can compute that the endomorphism ring is $\bbZ$. 
+Then if we look at any prime $\p\in\Spec(\bbZ)$, the fiber contains all the extraordinary cohomology theories 
+that correspond to computing cohomology over characteristic $p$ fields.
+
+\subsection{The spectrum of \texorpdfstring{$\SH(G)$}{SH(G)}}
+If $G$ is a finite group, then $\SH(G)$ is the $G$-equivariant stable homotopy group.
+In this case, the endomorphism ring is known as the Burnside ring $A(G)$.
+
+Dress in `69 computed the spectrum of $A(G)$: For each $H\le G$, we ahve a ring homomorphism 
+\[f^H:A(G)\to \bbZ\]
+where $[X]$ is sent to $|X^H|.$ These induce embeddings:
+\[(f^H)^\ast:\Spec(\bbZ)\to\Spec(A(G))\]
+where $(p)\mapsto \p(H,p)$ and $(0)\mapsto \p(H,0)$.
+
+\begin{defn}
+	Let $O^p(G)$ be the smallest normal subgroup of $G$ such that $G/O^p(G)$ is a $p$-group.
+\end{defn}
+\begin{thm}[Dress '69]
+	$\p(H,p)=\p(K,p)$ if and only if $O^p(H)\sim_G O^p(K).$
+\end{thm}
+\begin{rmk}
+	For example if $p\nmid |G|$ then $O^p(H)=H$ for all $H\le G$. If $G$ is a$p$ group, then $O^p(H)=1$ for all $H$.
+\end{rmk}
+
+\subsection{Categorifying Dress' Work}
+FOr each $H\le G$, we have the \textbf{geometric $H$-fixed points functor}
+\[\Phi^H:\SH(G)^c\to \SH^c\]
+that induce embeddings 
+\[(\Phi^H)^\ast:\Spec(\SH^c)\hookrightarrow \Spec(\SH(G)^c)\]
+where $\calC_{p,n}\mapsto \calP(H,p,n)$. Furthermore the copies of $\Spec(\SH^c)$ cover $\Spec(\SH(G)^c)$. T
+\textbf{They do not overlap.}
+
+The speaker, together with Paul Blamer, computed the spectrum of $\SH(G)^c$. The picture is interesting, but there is a topological connecting
+them: In particular when $G=C_p$, $\calP(1,p,n)\not\subseteq \calP(G,p,n)$ but $\calP(1,p,n+1)$ is.
+
+\begin{defn}
+	For a finite $p$-group $G$, define the ``blue shift'' to be 
+	\[\beta(G,n)\]
+	which is the smallest $i$ such that $\calP(1,p,n+i)\subseteq\calP(G,p,n)$
+\end{defn}
+It was shown that for $p$ groups, $\beta(G,n)$ is the free rank of $G$.
+\begin{rmk}
+	For instance, $\beta((C_p)^r,n)=r$ and $\beta(C_{p^r},n)=1$
+\end{rmk}
+
+The bottom line here is that the spectrum of the $G$-equivariant can be understood ``locally''
+as $\Spec(A(G))$.
+
+\subsection{``Linearization'' of stable homotopy theories}
+Some examples of what we're talking about: We can in some way think of the linearization of $\SH$ as being $\D(\bbZ)$.
+Furthermore, the motivic derived category of $k$ could be the linearization of $\SH^{\bbA^1}(k)$.
+
+In our case, we may want to consider the derived category of Mackey functors on $G$ as the linearization of $\SH(G)$. Mackey functors 
+are functors that behave well with respect to the group/representation theory (e.g. induction and restriction).
+
+One may think this category is the derived category of the abelian category of $G$-Mackey functors, but 
+Kaledin (2008) argues that it should be this other category $\DMack(G)$. The speaker computed the spectrum of this 
+category as well as developing a different construction.
+
+One interpretation of the linearization in the earlier cases is that $\SH$ is the derived category of a circle 
+and $D(\bbZ)$ is the derived category of the Eilenberg-Maclane spectrum $H\bbZ$. For our example, we can define 
+$H\bbZ_G$ to be $H\bbZ$ considered as a trivial $G$-module in $\SH(G)$. Then we say 
+\[\D(H\bbZ_G)=\DMack_{Kal}(G)\]
+and compute the spectrum.
+
+\begin{thm}
+	The extension of scalars functor 
+	\[\SH(G)\to D(H\bbZ_G)\]
+	induces an embedding 
+	\[\Spec(D(H\bbZ_G))\hookrightarrow \Spec(\SH(G))\]
+	into the top and bottom layers. 
+\end{thm}
+
+The main takeaway her is that for $C_p$ the spectrum of the derived category of Mackey functors lies between that 
+of $A(C_p)$ and of $\Spec(\SH(C_p))$ where the first step splits points into two and the second introduces this chromatic splitting. 
+
+\section{Supports and Cosupports in the Stable Module Category}
+This series of talks was given by Julia Pevtsova.
+
+\subsection{Tensor triangulated geometry for finite group schemes}
+Let $A$ be a finite dimensional Hopf algebra and associate to $A$ the category $\Sing(A)$, the singularity category of $A$ which measures how non-semisimple
+$A$ is. One of the reasons we ways to approach tensor-triangulated geometry is to develop what points are. As a disclaimer, Julia 
+says that there might be some misunderstandings she has here, but that it has been developed by Balmer and Krause.
+
+For some motivation, let $R$ be a commutative ring, $\p\in\Spec R$ and let $M$ be an $R$-module. We can gain local information 
+by looking at $M_\p$ or $M\otimes_R k_p$.
+
+Now ler $\calT=\D(R)$ where $\calT^c=\Dbperf(R)$. Take $Y\in\calT$ and $\p\in\Spec(R)$ and we can define $Y_\p$ or 
+$Y\otimes_R^Lk_p$. Then we define 
+\[\supp Y=\{\p\in\Spec R|Y\otimes_R^Lk_\p\ne 0\}.\]
+
+This has some nice properties:
+\begin{itemize}
+	\item (Defection Property) $Y\simeq 0\Leftrightarrow \supp Y=\varnothing$.
+	\item Invariant under $\otimes, \oplus,$ cones, and syzygies.
+\end{itemize}
+\begin{thm}[Neeman '92]
+	The class of localizing subcategories in $\D(R)$ (here $R$ is Noetherian) are in one to one correspondence via $\supp$ to the subsets in $\Spec R$.
+
+	Furthermore restricting to $\calT^c$, the thick subcategories in $\Dbperf(R)$ correspond to specialization closed subsets in $\Spec R$.
+\end{thm}
+
+\subsection{General Definitions and \texorpdfstring{$\SpcBal(\calT^c)$}{SpcBal(Tc)}}
+\begin{defn}
+	Let $T$ be a tensor triangulated category. We say that $\calC\subseteq\calT$ is \textbf{localizing} subcategory if $\calC$ is a full triangulated 
+	subcategory that is closed under $\oplus$.
+
+	$\calC\subseteq \calT^c$ is \textbf{thick} if it satisfies the same conditions. 
+
+	$\calC\subseteq\calT$ is a tensor ideal if it absorbs tensor products.
+\end{defn}
+
+\begin{rmk}
+	In this talk $\calT$ is symmetric but this works in braided categories.
+\end{rmk}
+\begin{defn}
+	The \textbf{Balmer Spectrum of $\calT^c$} is defined via a map $T^c\mapsto \SpcBal(T^c)$ where we send 
+	$M\mapsto\supp_{Bal}M$.
+\end{defn}
+
+Now knowing $\SpcBal(T^c)$ is equivalent ot classifying thick tensor ideals in $T^c$. When $T^c=\Dbperf(R)$, 
+and $\p\in\Spec R$, the map $R\to k_\p$ induces maps 
+\[\Dbperf(R)\to \Dbperf(k_\p)=\D\mathbf{Vect}_{k_\p}\]
+and thus 
+\[\SpcBal \D\mathbf{Vect}_{k_\p}\to \SpcBal\Dbperf(R).\]
+
+\subsection{Doing this in modular representation theory}
+Classically we are doing modular representation theory when we have a finite group $G$ and a field $k$ where $\ch k| |G|$.
+In essence this is just saying that our representation theory is with non-semisimple rings.
+
+We can do this theory on a series of objects:
+\begin{itemize}
+	\item Finite groups (as above)
+	\item Finite group schemes
+	\item Finite supergroup schemes
+	\item Small quantum groups
+	\item Algebraic group $G$ and algebra $A$ over $G$. Then considering $\operatorname{Bimon}(G,A)$ is one possibility.
+	\item Finite dimension pointed Hopf algebras
+	\item Lie superalgebras (characteristic zero).
+	\item One can continue the list. The idea here is that you have a big enough endomorphism ring.
+\end{itemize}
+
+Today we are focusing on finite group schemes (FGS) although we might get to say something about supergroup schemes and quantum groups.
+
+\subsection{Affine Group Schemes}
+\begin{defn}
+	An \textbf{affine groups scheme $G$ over $k$} is a representable functor $G$ from commutative $k$-algebras to groups.
+\end{defn}
+
+\begin{rmk}
+	$G(R)\cong \Hom_{\Algk}(k[G],R)$ is how the representation works. $k[G]$ is a commutative Hopf algebra. $G$ is finite if $\dim_kk[G]<\infty$.
+\end{rmk}
+
+\begin{defn}
+	\[kG:=k[G]^\vee=\Hom_k(k[G],k)\]
+	is the \textbf{group algebra} corresponding to $G$. This is a finite dimension cocommutative Hopf algebra.
+\end{defn}
+
+\begin{rmk}
+	There is an equivalence of categories between finite group schemes and finite dimensional cocommutative Hopf algebras using $G\mapsto kG$. 
+	Furthermore, the category $\mathbf{Rep}_kG$ is equivalent to $kG$-$\mathbf{Mod}$ (here uppercase will denote non-finite-dimensional), which we will call $G$-$\mathbf{Mod}$.
+\end{rmk}
+
+Then we can define the cohomology for $G$ via the Hochschild cohomology
+\[\Ext_G^\ast(k,k)=H^\ast(G,k)=H^\ast(kG,k)\]
+
+Some examples of these are finite groups, restricted Lie algebras (Lie algebra over fields of positive characteristic that also have a $p^{th}$ power operation). 
+To construct a restricted Lie algebra, One cal let $\calG$ be some algebraic group. Then $\operatorname{Lie}\calG=\frakg$ is a restricted Lie algebra.
+The representation theory of such a $\frakg$ is precisely the representation theory of the (finite-dimensional, cocommutative) Hopf algebra $u(\frakg)$,
+the quotient of the universal enveloping algebra that identifies $p^{th}$ powers (in the PBW basis) with the internal $p^{th}$ powers in $\frakg$.
+
+More generally one can consider \textbf{Frobenius kernels}. Let $F:\calG\to\calG$ be the Frobenius map. Then 
+$\calG_{(1)}=\ker F$ and more generally $\calG_{(r)}=\ker F^(r)$, the $r^{th}$ iteration of $F$. These are connected
+finite group schemes. These things have only a single point! However the group algebra and coordinate algebra really still capture 
+all the representation theory of the original group.
+
+If $\calG$ is an algebraic group, then we can compute $\calG_{(1)}$ and $\operatorname{Lie}\calG$ and 
+\[k\calG_{(1)}\cong u(\operatorname{Lie}(\calG)).\]
+
+When $\calG=\Ga$, then $k[\Ga]=k[T]$ where $\Delta T)=T\otimes 1+1\otimes T$ and 
+\[{\Ga}_{(r)}(R)=\{a\in R|a^{p^r}=0\}.\]
+Now $k[{\Ga}_{(r)}]=k[T]/(T^{p^r})$ and $k{\Ga}_{(r)}=k[u_0\cdots,u_{r-1}]/(u_0^p,\dots,u_{r-1}^p)$
+
+Recall that $\StMod G$ is the category of $G$ representations where homs are considered module factoring through projective objects. This becomes a tensor triangulated category 
+where the triangles comes from short exact sequences in $\Rep G$ and tensor is the usual one. The shift functor is the syzygy functor $\Omega^{-1}$ and the monoidal unit is $k$.
+
+\begin{rmk}
+	We have an exact sequence 
+	\[\D(G)\to \K(\mathbf{Inj}(G))\to\StMod G\]
+	and 
+	\[\Dbperf(G)\to \Db(G)\to\mathbf{stmod} G\cong\Dsing(G).\]
+	so in a way this measures the lack of regularity in the sense of commutative algebra.
+\end{rmk}
+
+Now here we can talk about $\uEnd^\ast(k)$ as well as 
+\[\uHom^\ast(M,N)=\oplus_n\uHom(M,\Omega^{-n}N)\]
+and 
+\[\uEnd^\ast(k)\cong\widehat\Ext_G^\ast(k,k)=\hat H^\ast(G,k)\]
+where the hat denotes Tate cohomology.
+
+Now $\uEnd^\ast(k)$ acts on $\calT$ (on $\calT^c$) by acting on $\uHom^\ast(M,N)$.
+
+THis leads to to Benson-Iyengar-Krause support theory where 
+\[R=H^\ast(G,k)\to\hat H^\ast(G,k)\]
+acts on $\calT$.
+
+We can try setting $X=\Spec R=\Spec H^\ast(G,k)$ for the space where the support lives.
+
+\subsection{\texorpdfstring{$\pi$}{pi}-points and local cohomological functors}
+Recall last time we lookedd at $R=H^\ast(G,k)=\Ext_G^\ast(k,k)$ acting (via $\uEnd^\ast(k)$ on $\StMod G$, where $G$ was a finite group scheme.
+
+For examples we considered $\frakg=\operatorname{Lie}\frakG$ where $\frakG$ is a reducitive algebraic group. Here 
+$H^{odd}(\frakg,k)=0$ and $H^{ev}(\frakg,k)\simeq k[\calN]$ where $\calN$ are the set of nilpotents in $\frakg.$
+
+\begin{thm}
+	When $\frakg$ is a restricted Lie algebra,
+	\[\Spec H^\ast(\frakg,k)=\calN^{[p]}=\{x\in\frakg|x^{[p]}=0\}.\]
+\end{thm}
+\begin{thm}[Suslin-Friedlander-Bendel '97]
+	\[\Spec H^\ast(GL_{n(r)},k)\]
+	is the variety of $r$ duples of $p$-nilpotent commuting matrices.
+\end{thm}
+
+Some facts about cohomology:
+\begin{itemize}
+	\item $H^\ast(G,k)$ is a graded commutative algebra.
+	\item Friedlander and Suslin in '95 proved $H^\ast(G,k)$ is finite generated (has FG).
+\end{itemize}
+
+The idea to develop the support theory is to look in $X=\operatorname{Proj}(R)$ and then proceed via either $\pi$-points or via local cohomological functors (developed by Bens0n, Iyengar, and Krause).
+
+\begin{ex}
+	Another motivational example: let $\frakg$ be a restricted Lie algebra. Define $X=\operatorname{Proj}H^\ast(\frakg,k)\simeq\calN^{[p]}$
+\end{ex}
+
+\begin{rmk}
+	$\frakg_a=\operatorname{Lie}\Ga$ is an algebra that is very small since $u(\frakg_a)=k[x]/x^p$. Now $\StMod k[x]/x^p$ is called a ``tt-field'', and for any $x\in\calN^{[p]}\subseteq\frakg$,
+	setting $\frakg_a=\langle x\rangle$ gives us a functor 
+	\[\calF_x:\StMod\frakg\to\StMod\frakg_a\]
+	induced by inclusion.
+
+	Now $\calF_x$ is a tensor triangulated functor and this functor exists for all $x$ in the nilcone (or its image in the projective closure $X$).
+\end{rmk}
+\begin{defn}
+	Let $M\in\StMod G$. Then the support is 
+	\[\supp M=\{x\in\calN^{[p]}|M|_{\langle x\rangle}=\calF_x(M)\neq 0\}\subseteq X=\operatorname{Proj}\calN^{[p]}\]
+\end{defn}
+
+
+The support satisfies all the good properties. (?)
+
+if $G$ is a finite group scheme then as we have seen $kG$ is a finite dimensional cocommutative Hopf algebra.
+\begin{defn}
+	If $K/k$ is an extension, then 
+	\[\alpha:K[t]/t^p\to KG=kG\otimes_k K\]
+	is a $\pi$-point if it's flat and there is $\calU\subseteq G_K$ such that $\alpha$ factors through $K\calU$ where $\calU$ is 
+	a unipotent abelian subgroup scheme of $G_K$.
+\end{defn}
+
+Given such a map $\alpha:K[t]/t^p\to KG$, we get a functor 
+\[\calF_\alpha:\StMod G\to\StMod K[t]/t^p\]
+where the codomain is a tt-field.
+\begin{rmk}
+	$\calF_\alpha$ is not a tensor functor, but 
+	\[\calF_\alpha(M\otimes N)\cong 0\Leftrightarrow \calF_\alpha(M)\otimes\calF_\alpha(N)\cong 0\]
+	and either of these happen if and only if $\calF_\alpha$ is zero on $M$ or $N$.
+\end{rmk}
+\begin{rmk}
+	Note that this is a place where things break down for quantum groups. We no longer have factoring through an abelian subgroup.
+\end{rmk}
+
+Now return again to $X=\operatorname{Proj}H^\ast(G,k)$. Then given a $\pi$-point $\alpha$, we get maps 
+\[H^\ast(G,k)\xrightarrow{-\otimes_R K}H^\ast(G,K)\xrightarrow{\alpha^\ast}H^\ast(K[t]/t^p,K)\cong K[x]\otimes\bigwedge(\lambda)\]
+and this map gives us $P_\alpha$, which is the radical of the kernel of this map. This gives us a map $\alpha\mapsto P_\alpha\in X$.
+
+The nice property here is that $\pi$-points realize all points on $X$:
+\begin{thm}
+	For all $\p\in X$, there exists an extension $K/k$ and $\pi$-point $\alpha$ such that $P_\alpha=\p$.
+\end{thm}
+
+\begin{defn}
+	Let $M\in\StMod G$. Then the $\pi$ support is 
+	\[\pi-\supp M=\{\p\in X|\calF_{\alpha_\p}(M)=\alpha^\ast_\p(M\otimes_k K)\ne 0\}\]
+	notice that the construction here doesn't depent on choice of $\pi$ point, but that is something to show.
+\end{defn}
+\begin{defn}
+	\[\pi-\operatorname{cosupp}(M)=\{\p\in X|\calF^{\alpha_\p}:=\alpha_\p^\ast(\Hom_k(K,M))\ne 0\}\]
+	where this is computed ve the corestriction functor (this needs clarification).
+\end{defn}
+\begin{thm}
+	$\pi$-$\supp(M\otimes_k N)=\pi$-$\supp(M)\cap\pi$-$\supp(N)$.
+\end{thm}
+\begin{thm}[BKIP `18]
+	$\pi$-$\supp(M)=\varnothing$ if and only if $M=0$.
+\end{thm}
+
+\subsection{Local Cohomology Functors}
+Let's take a moment to talk about the classical definition of support. When $R=H^\ast(G,k)=\Ext^\ast_G(k,k)$, we can act on 
+$\uHom^\ast(M,M)$. When $M\in\stmod G$, we let $I_M=\operatorname{Ann}_R\uHom^\ast(M,M)$. Then $V(I_M)\subseteq X$ is the \textbf{support of 
+$M$,} denoted $\supp M$.
+
+To generalize this, we are going to let $\calT=\StMod G$ and associate to each $\p\in X$ a functor 
+\[\Gamma_\p:\calT\to\calT\]
+which selects the $\p$-local, $\p$-torsion objects.
+\begin{defn}
+	If $M\in\StMod G$, we can define the \textbf{localization map} $M\to M_\p$ where 
+	\[\uHom^\ast(C,M_\p)=\uHom^\ast(C,M)_\p\]
+	for each $C\in\calT^c$. (recall $\calT$ is $R$ linear so hom can be localized regularly.)
+\end{defn}
+\begin{defn}
+	There exists a functorial map 
+	\[\Delta\Gamma_{V(\p)}M\to M\to L_{V(\p)}M\]
+	where the left part is universal $\p$-torsion and the right (I believe) is $\p$-torsion in the usual way (check the paper).
+\end{defn}
+
+Then $\Gamma_\p$ is found by taking the $\p$-local and $\p$-torsion operations in either order.
+
+Now 
+\[\Gamma_\p M:=\Gamma_p k\otimes_k M\]
+and so
+\begin{defn}
+	$\supp_{BIK}M=\{p\in X:\Gamma_\p k\otimes M\ne 0\}$ and $\operatorname{cosupp}_{BIK}=\{\p\in X|\Hom_k(\Gamma_\p k,M)\ne 0\}$
+\end{defn}
+
+And then zooming out, we define 
+\[\Gamma_\p(\calT)=\Gamma_\p(\StMod G)=\{M\in\calT|\supp_{BIK}(M)\subseteq\p\}\]
+
+\begin{prop}
+	\begin{itemize}
+		\item $\pi$-$\supp(\Gamma_\p k)=\p$
+		\item $\pi$-$\supp=\supp_{BIK}$ (formal from detection, tensor product)
+	\end{itemize}
+\end{prop}
+\begin{cor}[Balmer, Friedlander-P]
+	$\SpcBal(\stmod G)\cong\operatorname{Proj}H^\ast(G,k)$ (even on the level of schemes).
+\end{cor}
+
+\subsection{Localizing ideals in \texorpdfstring{$\StMod G$}{StMod G}}
+Here we use the BIK local-global principle: to classify localizing $\otimes$ ideals, we need to know that $\Gamma_\p\calT$ are minimal. The ``wishful thinking''
+here (which we'll flush out next time) is as follows: if we know $\pi$-$\operatorname{cosupp}=\operatorname{cosupp}_{BIK}$,
+then we can use ``Neeman's minimality lemma'' which says that $\calC\subseteq\calT$ is minimal if for all $M$ and $N$ in $\calC$,
+$\Hom^\ast_k(M,N)\ne 0$.
+
+Next time we will see some more and a proof!
+
+\subsection{Day 3}
+Recall the context: we were letting $X=\operatorname{Proj}H^\ast(G,k)$ and $\calT=\StMod G$ and then looking at
+\[\Gamma_p=\{M\in\calT|\supp M\subseteq \p\}\]
+
+\begin{lem}
+	$\m\in X$ is a closed point. Then $\Gamma_\m \calT$ is minimal.
+\end{lem}
+\begin{prf}
+	We begin with a fact: $\m\in\pi$-$\supp M$ if and only if $\m\in \pi$-$\operatorname{cosupp} M$.
+
+	To show that $\Gamma_\m T$ is minimal, it suffices to show that $\Hom_k(M.N)\ne 0$ for all $M$ and $N$. But 
+	\[\pi\text{-}\operatorname{cosupp}\Hom_k(M,N)=\pi\text{-}\supp M\cap \pi\text{-}\operatorname{cosupp}N\]
+	But since the $\pi$ support of $M$ is $\m$ and since $\m$ lies in the $\pi$-cosupport of $N$, then the intersection is nonempty.
+	Thus since the cosupport is nontrivial, the module itself is nontrivial.
+\end{prf}
+
+\subsection{Reduction to closed points}
+We want a Koszul object (in rep theory a Carlsson object): for every $b\in H^d(G,k)\cong\uHom^d(k,\Omega^{-d}k)$, we get an object
+$k//b$ formed by the cone of $b:k\to\Omega^{-d}k$. Then for any sequence $\underline{b}=(b_1,\dots,b_n)$, we set 
+\[k//\underline{b}=k//b_1\otimes\cdots\otimes k//b_n.\]
+
+Now if we have any finite field extension $K/k$ (the idea here is we would like to take $k$ itself, but ), we can choose a $\m\in X_K=\operatorname{Proj}H^\ast(G,K)$ lying over $\p\in H^\ast(G,k)$.
+Then by taking the additional generators for $\m$, we can pick a $\underline b$ such that $\m=\sqrt{\tilde\p+\underline b}$ where $\tilde\p$ is the lifting of $\p$ in the bigger ring.
+
+Then we can consider the (Sylow?) functor for restriction of scalars $\operatorname{Res}^{G_K}_G:\StMod_K G\to \StMod G$
+and look at the image of $\Gamma_\m(K//\underline b)$.
+\begin{lem}
+	$\Gamma_\m(K//\underline b)\downarrow_G\simeq \Gamma_\p k$
+\end{lem}
+\begin{cor}
+	the image $\operatorname{Res}_G^{G_K}$ of $\Gamma_\m\StMod_K G$ in $\Gamma_\p\StMod_k G$ is dense.
+\end{cor}
+\begin{cor}
+	$\Gamma_\p$ is minimal for all $\p$.
+\end{cor}
+
+\subsection{Support theory}
+The following is tied closely to the following results:
+\begin{prop}
+	$\pi$-$\supp M=\varnothing$ if and only if $M\cong 0$.
+
+	That is, the $\pi$ support has sufficient strength to detect things (``detection'').
+\end{prop}
+\begin{prop}
+	For all $\p\in X$ there is an $\alpha$ with $\calF_\alpha$ realizing $\p$.
+\end{prop}
+
+I am unsure about how this fits in, but she also mentioned the detection of nilpotents in $H^\ast(G,k)$.
+\begin{thm}[Quillen '71]
+	If $G$ is a finite group, $g\in H^\ast(G,k)$ is nilpotent if and only if for all elements in an abelian $p$-group $E\subseteq G$,$g\downarrow_E$ is nilpotent.
+\end{thm}
+
+This means $H^\ast(E,k)\cong k[x_1,\dots,x_n]\otimes \bigwedge^\ast(\tau_1,\dots,\tau_n)$
+\begin{thm}[Chouinard '76]
+	if $G$ is a finite group, then $M$ is projective if any only if for all elementary abelian $E\le G$.
+\end{thm}
+
+Though these results we get that Jarrod's work on the lattice of elementary abelian subgroups of specific groups correspond directly to the lattice (modulo conjugacy and some finite 
+group actions) of affine subspaces in spec of the ring.
+
+Now if $\frakg$ is a Lie algebra (say $\frakg=\operatorname{Lie}\calG$ where $\calG$ is a reductive group), 
+$H^\ast(\frakg,k)=k[\calN]$. Then fix some Borel subgroup $\calB\subseteq \calG$. Take any $\lambda\in \calG/\calB$ (which is apparently a flag variety?)
+and extract from this a subalgebra $b_\lambda\subseteq\frakg$. Then extract a functor 
+\[\calF_\lambda:\StMod\frakg\to\StMod b_\lambda\]
+\begin{thm}
+	Then if $M\in\StMod\frakg$, $M\cong 0$ if and only if $\calF_\lambda(M)=0$ for all $\lambda.$
+\end{thm}
+Let $G=\calG_{(r)}.$
+\begin{defn}
+	A \textbf{one-parameter subroup} is
+	\[\bbG_{a_(r)}\to\calG_{(r)}\]
+	where $k\bbG_{a_{(r)}}\cong k[u_0,\dots,u_{r-1}]/(u_0^p,\dots, u_{r-1}^p)$.
+\end{defn}
+\begin{thm}
+	Nilpotence and projectivity are detected on one-parameter subgroups (up to scalar extension).
+\end{thm}
+Here we define the $\pi$-point:
+\[K[t]/t^p\xrightarrow{t\mapsto u_{r-1}} k\bbG_{a_{(r)}}\to K\calG\]
+
+\brk
+
+But then we get an isogeny 
+\[\operatorname{Mor}(\bbG_{a_{(r)}},G)\simeq\operatorname{Spec}H^\ast(G,k)\]
+
+\begin{defn}
+	A finite group scheme is elementary if 
+	\[\calE=\bbG_{a_{(r)}}\times(\bbZ/p)^s\]
+\end{defn}
+\begin{thm}[Suslin '76]
+	$\xi\in H^\ast(G,k)$ is nilpotent if any only if for all $K/k$ and for any elementary abelian subgroup $\calE\subseteq G_K$,
+	the restriction $\xi_K\downarrow_\calE$ is nilpotent.
+\end{thm}
+
+\section{Smoothness and Properness}
+Greg Stevenson gave this series of lectures.
+
+\subsection{Beginning definitions}
+
+Today we will be working up to dg categories. In what follows let $k$ be a fixed base field (although it works without being a field, this 
+is a nice assumption). Recall the definition of a chain complex $\cdots\to X^i\xrightarrow{d^i} X^{i+1}\to\cdots$.
+
+Recall that a chain morphism is a sequence of maps indexed by $\bbZ$ such that the obvious diagrams commute. Denote by $\Ch(k)$ the category of chain complexes of $k$
+vector spaces. We have the \textbf{suspension} or \textbf{shift functor} in this category, denoted $\Sigma$. This is an autoequivalence of $\Ch(k)$.
+
+Given a chain map $f:X\to Y$, we define $H^i(X)=\ker d^i/\Im d^{i-1}$. This gives us a functor $H^i:\Ch(k)\to \Vectk$. We say that $f$ is a quasi-isomorphisms if it induces
+isomorphisms on cohomology.
+
+We can form the mapping cone of $f$, $\cone f$ (think this is kind of a kernel and kind of a cokernel)
+\[\cone(f)=(\Sigma X\oplus U,(\begin{smallmatrix}d_{\Sigma X} & 0\\ f & d_Y\end{smallmatrix}))\]
+
+Recall the definition of acyclic objects. Then 
+\begin{lem}
+	$f:X\to Y$ is a quasi-isomorphism if and only if $\cone(f)$ is acyclic.
+\end{lem}
+\begin{rmk}
+	This supports the idea that this is in fact a kernel and cokernel in a way.
+\end{rmk}
+
+Begin $\Ch(k)$ admits a symmetric monoidal structure from the total complex of the associated double 
+complex (with some signs flipped). This defines a functor $-\otimes -$ into $\Ch(k)$.
+
+We also have internal hom (aka the $\hom$ complex). Here 
+\[\hom(X,Y)^n=\prod_{i\in\bbZ}\Hom_k(X^i,Y^{i+n})\]
+with differential given by the graded commutator:
+\[d(f)=d_Y^{i+n} f^i-(-1)^nf^{i+1}d_X^i\]
+
+\begin{rmk}
+	This is measuring, in a graded way, 
+\end{rmk}
+\begin{ex}
+	$Z^0\hom(X,Y)=\ker d^0_{\hom(X,Y)}=\{\text{degree zero maps} f| fd=df\}$. Then we can compute that 
+	\[H^0\hom(X,Y)\]
+	which is precisely the homotopy classes of maps from $X$ to $Y$.
+\end{ex}
+
+\brk
+
+We have a tensor hom adjunction (from here let $\Ch=\Ch(k)$)
+\[\Ch(X\otimes Y,Z)\cong \Ch(X,\hom(Y,Z))\]
+for all $X,Y,Z$ so we have the counit in the form of coevaluation
+\[\varepsilon:X\otimes\hom(X,Y)\to Y\]
+and given a $Z\in\Ch$, we can consider 
+\[X\otimes\hom(X,Y)\otimes\hom(Y,Z)\xrightarrow{\varepsilon_Y\otimes 1}Y\otimes \hom(Y,Z)\xrightarrow{\varepsilon_Z} Z\]
+and so via the adjunction we get a composition map 
+\[\hom(X,Y)\otimes\hom(Y,Z)\xrightarrow{\circ}\hom(X,Z).\]
+
+This composition map is associative. We also get unit maps $1_X:k\to\hom(X,X)$ determined by the image of $\id_X\in\Ch(X,X)$ in $\hom(X,X)$.
+These maps act as units for $\circ$, using the fact that $k$ is the unit of $\otimes_k$.
+
+So using $1_X$ and $\circ$, we get something that looks like a category! This is the primordial example of a dg-category.
+
+\subsection{Examples and extensions}
+Give $X\in\Ch$, we get a monoid $\hom(X,X)\in\Ch$. What does that mean? Well, we have a map $\hom(X,X)\otimes\hom(X,X)\to\hom(X,X)$
+which is just composition, and a unit $1_X:k\to\hom(X,X)$. This is an example of a differential graded algebra. I.e. we have an algebra $A$ equipped with 
+a degree 1 differential $d$ which is a graded derivation.
+This is also an example of a dg-category.
+
+\subsection{dg-categories}
+\begin{defn}
+	$\calA$ is a dg-category if it is given by a collection of objects along with a complex 
+	$\calA(a,b)\in\Ch$ for each $a,b\in\calA$ as well as unit maps 
+	\[1_a:k\to\calA(a,a)\]
+	and composition maps 
+	\[\circ:A(b,c)\otimes A(a,b)\to A(a,c)\]
+	such that composition is associative and unital with respect to the unit maps.
+\end{defn}
+\begin{rmk}
+	The slick way of saying this is that a dg-category is a category enriched over chain complexes. :)
+\end{rmk}
+
+The $\hom$ complexes make $\Ch$ into a dg-category. I will call this $\scrC$. If $A$ is a dga, consider the dg-cat $BA$, 
+which is the category of a single object with hom set $A$.
+
+If $B$ is any $k$-linear category we can view it as a dg category $\tilde B$ with $\tilde B(b,c)=B(b,c)$ in degree zero.
+
+Given a dg category $\calA$, we can do a couple things to get a boring category: first, you can take the underlying category $Z^0\calA$ that has the same objects 
+and the maps are the zeroth cocycles of $A(a,b)$ for each $a$ and $b$. For example $Z^0\scrC=\Ch$.
+
+We can also compute the homotopy category of $\calA$, denoted $H^0\calA$ which again has teh same objects, but 
+\[H^0\calA(a,b)=H^0(\calA(a,b)).\]
+Now $H^0\scrC=K(k)$, the homotopy category of chain complexes.
+
+\begin{ex}
+	If $R$ is a $k$ algebra, then we get a dg category over $k$ $\scrC(R)$ with objects chain complexes of $R$-modules 
+	and where the hom complexes are $\hom_R(X,Y)$.
+\end{ex}
+
+\subsection{dg modules and derived categories}
+Given a pair of dg categories $\calA$ and $\calB$, a dg functor $F:\calA\to \calB$ consists of an object assignment
+along with a map of $\hom$s that preserve units and composition. There is also a notion of being a dg-natural transformation 
+and dg-equivalence (this is the part of this we will need), and so on. 
+
+Let's finish off today with dg modules. 
+\begin{defn}
+	Given a small dg-category $\calA$ (notice they are always locally small!), a \textbf{right $A$-dg-module} $X$ is 
+	a dg functor $\calA^{op}\to\scrC$.
+
+	Equivalently, for all $a\in\scrA$, $X(a)\in\Ch$ and for every $a,b\in\calA$ a map 
+	\[\calA(a,b)\to\scrC(Xa,Xb)\]
+	which is equivalent via the tensor hom adjunction to a map 
+	\[\calA(b,a)\otimes Xa\to X_b\]
+	which looks a lot more like a module action. :)
+\end{defn}
+Let $\mathbf{Mod}$-$\calA$ be the category of dg modules and dg natural transformations.
+
+\brk
+
+Recall that we had $\mathbf{Mod}$-$\calA=[\calA^{op},\Ch]$. The objects are dg functors and maps are natural transformations with a 
+hexagonal naturality diagram (I don't know what htis is).
+
+This is a honest category, but we can upgrade it to a dg category as follows: for each $X,Y\in\mathbf{Mod}$-$\calA$, we define $\mathscr{M}od\calA(X,Y) = \operatorname{eq}(D)$ where $D$ is the diagram 
+\begin{center}
+	\begin{tikzcd}
+		\prod_{c\in\calA}\Ch(Xc,Yc)\ar[r,"\lambda",bend right]\ar[r,"\rho",swap,bend left]& \prod_{a,b\in\calA}\Ch(\calA(b,a),\scrC(Xa,Xb))
+	\end{tikzcd}
+\end{center}
+
+$\lambda$ is a way to define a right action by precompositon and $\rho$ is the same but right action and postcomposition. So in a way this is saying the two actions are compatible.
+This actually ends up being exactly what we usually ask for when we want naturality.
+
+\begin{rmk}
+	$Z^0\scrM od\calA(X,Y)=\mathbf{Mod}$-$\scrA$.
+\end{rmk}
+\begin{rmk}
+	$\scrM od\calA(X,Y)=\int_{a\in\calA}\Ch(Xa,Ya)$, if the notation suits you.
+\end{rmk}
+
+We can extend notions of cones, suspension, quasi-isomorphisms, etc, pointwise to $\scrM od \calA$. For instance, if $X\in\scrM od\calA$, we define $\Sigma X$ to be the dg functor 
+$A^{op}\xrightarrow{X}\Ch\xrightarrow{\Sigma}\Ch$. Again, just define the cone pointwise and since it is functorial (note: this is not true in the 
+derived theory, but it still is here.)
+
+We will call $X$ in $\scrM od\calA$ \textbf{acyclic} if $X(a)$ is acyclic for all $a$.
+
+\subsection{Some special dg modules}
+Whenever $a\in\calA$, there is a corresponding representable dg module $\hat a=\calA(-,a)$. The dg functor structure here is given by composition.
+In this case we get 
+\begin{lem}[Strong Yoneda]
+	There is a dg functor $\calA\to\scrM od\calA$ sending $a\mapsto \hat a$ which is dg fully faithful. In fact for every $X\in\scrM od\calA$,
+	\[\scrM od\calA(\hat a,X)\cong X(a).\]
+\end{lem}
+
+In particular, $\scrM od\calA(\hat a,-)$ preserves all things defined pointwise (including quasi-isos, acyclics, etc).
+
+\begin{defn}
+	The derived category $\D(\calA)$ is 
+	\[\D(\calA)=\mathbf{Mod}\text{-}\calA[\text{quasi isomorphisms}]^{-1}=H^0\scrM od\calA/{\text{acyclic complexes}}\]
+	which are analogous to what we usually do with abelian categries.
+\end{defn}
+\begin{prop}
+	$\D(\calA)$ is locally small.
+\end{prop}
+
+Inside of $\D(\calA)$ we can consider the images of the representable dg functors $\hat a$. We want to define a thing that sits over this 
+\[\mathbf{Perf}\calA\]
+to be the smallest full dg subcategory of $\scrM od\calA$ containing the image of the Yoneda embedding, closed under cones, suspensions, and homotopy retracts.
+
+\begin{thm}
+	Let $\calA$ be a small dg category. Then $\D(\calA)$ is a compactly generated triangulated category and the compacts are $\D(\calA)^c=H^0\mathbf{Perf}\calA$.
+\end{thm}
+
+In a sense, you want to remember that $\mathbf{Perf}\calA$ determines $\D(\calA)$. In particular, fif $\calA$ and $\calB$ are 
+small dg categories and we have a \textbf{quasi-equivalence} $F:\mathbf{Perf}\calA\to\mathbf{Perf}\calB$ (that is, $F$ induces a quasi-isomorphism on $\scrH om$s)
+and $F$ descends to an essential surjection on the homotopy categories of the $\mathbf{Perf}$ objects, then $\D(\calA)\xrightarrow{\sim}\D(\calB)$.
+
+In such a case we say that $\calA$ and $\calB$ are \textbf{derived Morita equivalent}.
+\begin{ex}
+	Consider the path algebra of the $A_2$ quiver $kA_2\cong (\begin{smallmatrix}
+		k&k\\0&k
+	\end{smallmatrix})$. Then $\mathbf{Perf}kA_2\cong\scrC^b(\operatorname{proj} kA_2)$.
+
+	This is derived Morita equivalent (in fact just equivalent) to $B\cong R\Hom_{kA_2}(S_2\oplus S_2,S_1\oplus S_2)$.
+\end{ex}
+
+In general, if we let $\calK$ be a small triangulated category with $\tilde\calK$ a dg category such that $\calK\cong H^0\tilde\calK$ as triangulated categories 
+where $H^0\tilde\calK$ inherits is triangulated structure from $H^0\scrM od\hat\calK.$ This is called an \textbf{enhancement of $\calK$.}
+
+Call $g\in\calK$ a \textbf{generator} if the smallest thick subcategory containing $g$ in $\calK$ is all of $\calK$. We call $g$ a \textbf{strong generator} if there exists a uniform bound on the number of cones needed to build
+any object (there is a global bound on the number of cones we have to take to build any object). In this latter case we call $\calK$ \textbf{regular} (in the sense of algebraic geometry).
+
+\begin{thm}[Keller]
+	If $g\in\calK$ is a generator, then $\tilde\calK$, an enhancement of $\calK$, is quasi equivalent to $\mathbf{Perf}\tilde\calK(g,g).$
+\end{thm}
+\begin{rmk}
+	What this is saying is that if $\calK$ (i.e. $H^0\tilde\calK$) ahs a generator then $\tilde \calK$ is derived morita equivalent to a dg algebra.
+\end{rmk}
+
+In practice, most triangulated categories we care about (at least the algebraic ones -- the topological ones don't work here) come from dg algebras.
+
+\subsection{Examples, properness, and smoothness}
+\begin{ex}
+	Let $R$ be a finitely generated $k$ algebra viewed as a dg algebra concentrated in degree zero. Then we have 
+	\[\Ch(R)=\scrM od R\supseteq \Ch^{-,b}(\operatorname{proj}R)=\underline\D^b(R)\supseteq \mathbf{Perf} R=\Ch^b(\operatorname{proj} R)\]
+	which is analogous to the inclusion 
+	\[\D(R)\supseteq \D^b(R)\supseteq\Dbperf(R)\]
+\end{ex}
+
+\begin{ex}
+	If $X$ is a scheme of finite tipe over $k$, then we can define $\operatorname{Perf} X$ to be the collection of injective resolutions of chain complexes of 
+	quasicoherent sheaves on $X$ such that these complexes are perfect in $\D_{qc}(X)$. The point here is that 
+	\[H^0\operatorname{Perf}X\cong\Dbperf(X).\]
+\end{ex}
+
+\subsection{Properness}
+Suppose $\Lambda$ is a finite dimensional $k$ algebra. If $M,N\in\mathbf{Perf}\Lambda$, then $\mathbf{Perf}\Lambda(M,N)\in\mathbf{Perf}k$ up to quasi-isomorphism.
+That is $H^\ast\mathbf{Perf}\Lambda(M,N)$ is finite deimensional over $k$.
+
+If $X$ is a proper $k$ scheme, then for $E,F\in\operatorname{Perf}X$, we have $\operatorname{Perf}X(E,F)\in\mathbf{Perf}k$. That is, the cohomology on a proper scheleme is finite dimensional.
+
+\begin{defn}
+	We say that a dg category over $k$ $A$ is \textbf{proper} if for all $a,b\in\calA,$ $\calA(a,b)\in\mathbf{Perf}k$ up to quasi isomorphism.
+\end{defn}
+
+An example of a proper category is $\operatorname{Perf}\Lambda$ where $\Lambda=k[\varepsilon]/\varepsilon^2$. But on the other hand, $\underline\D^b(\Lambda)$ is not proper. For instance,
+notice that a resolution is of $\Lambda$ with $\varepsilon$ maps everywhere, but $\Hom(P,P)$ computes $\Ext^\ast(k,k)$, which in every degree is $k$.
+
+\begin{lem}
+	Properness is a derived Morita invariant. That is a dg category over $k$ $\calA$ is proper if and only if $\operatorname{Perf}\calA$ is proper.
+\end{lem}
+\begin{rmk}
+In partucular an algebra $\Lambda$ is proper (i.e. finite dimensional) if and only if $\operatorname{Perf}\Lambda$ is.
+\end{rmk}
+\begin{thm}[Lipmon?]
+	If $X$ is a scheme of finite type over $k$, then $X$ is proper iff $\operatorname{Perf}X$ is.
+\end{thm}
+
+\subsection{Smoothness}
+Let $L=\bbF_p(t)$ and $R=\bbF_p(t^{1/p})$. Then $R$ is a field so $\gldim R=0$, but 
+$R\otimes_LR$ is nologingler finite global dimension since $t^{1/p}\otimes 1-1\otimes t^{1/p}$ is nilpotent.
+
+\begin{defn}
+	Recall that a $k$ algebra $R$ is \textbf{smooth} if $R\in\operatorname{Perf}R^e$.
+\end{defn}
+\begin{lem}
+	If $R$ is smooth over $k$, then $\gldim R<\infty$.
+\end{lem}
+
+Some geometry: $X$ of finite type over $k$ is smooth if $X\times_k \bar k$ is regular (where $\bar k$ is the algebraic closure of $k$). If $X$ has enough locally free sheaves (resolution property),
+then this is equivalent to 
+\[\Delta_\ast\calO_X\in\operatorname{Perf}(X\times_k X)\]
+where $\Delta$ is the diagonal map $X\to X\times X$.
+
+In an attempt to make a common generalization:
+\begin{defn}
+	Let $\calA$ and $\calB$ to be two dg-categories over $k$. Define $\calA\otimes_k \calB$ to be the category of pairs of 
+	objects from $\calA$ and $\calB$, written $a\otimes b$ and make the maps 
+	\[\calA\otimes \calB(a\otimes b,a'\otimes b')=\calA(a,a')\otimes \calB(b,b').\]
+\end{defn}
+Then we set $\calA^e=\calA^{op}\otimes_k\calA$. Then we consider $\scrM od\calA^e$ to be the categories of $\calA,\calA$-bimodules.
+
+\begin{ex}
+THe diagonal $\calA^e$ modules $\Delta:\calA^e\to\Ch$ is the map $\calA(-,-)$, sending a pair $a\otimes a'$ to $\calA(a,a')$.
+\end{ex}
+\begin{rmk}
+	This gives us another definition: $\calA$ is smooth over $k$ if $\Delta=\calA(-,-)\in\operatorname{Perf}\calA^e$.
+\end{rmk}
+\begin{lem}
+	Smoothness is a derived Morita invariant. Thus it agrees with the notion for algebras.
+\end{lem}
+\begin{thm}[Lunts-Schn\"urer]
+	If $X$ is finite type, separable, and has enough locally free sheaves, then $X$ is smooth iff $\operatorname{Perf}X$ is smooth.
+\end{thm}
+
+There are lots more exotic examples including things you wouldn't really expect to be smooth.
+\begin{thm}[Auslander, Elogin-Lunts-Schn\"urer]
+	If $\Lambda$ is a finite dimensional algebra over $k$ such that $\Lambda/\operatorname{rad}\Lambda$ is separable over $k$ (e.g. when $k$ is algebraically closed), then 
+	$\underline\Db(\mathbf{mod}\,\Lambda)$ is smooth.
+\end{thm}
+\begin{rmk}
+	Notice that by contrast that $\operatorname{Perf}\Lambda$ is smooth if and only if $\Lambda$ is. This is a smaller object, so violates our geometric intuition.
+
+	The upshot here is that we can regard $\operatorname{Perf}\Lambda\hookrightarrow\underline\Db(\Lambda)$ to be a kind of resolution of singularities.
+\end{rmk}
+\begin{thm}[Lunts]
+	If $X$ is a separable scheme of finite type over a perfect field, then $\underline\Db(X)$ is smooth.
+\end{thm}
+By Morita invariance, if $E$ is a dg algebra and $\operatorname{Perf}E$ is smooth, then $E$ is smooth. For instance, take a prime $p\ge 3$, let $k=\bbF_p$
+and consider $\underline\Db(k C_p)\cong\operatorname{Perf}E$ where $E=R\Hom_{kC_p}(k,k)$.
+
+But now notice that
+\[H^\ast(E)=Ext_{k C_p}^\ast(k,k)=H^\ast(C_p,k)=k\langle\tau,\theta\rangle\]
+where $|\tau|=1$ and $|\theta|=2$ and the above is the free graded commutative algebra on these things. Now since $|\tau|=1$, $\tau^2=0$, so $H^\ast E$ has infinite global dimension, so $H^\ast E$ is not smooth.
+
+In general, one can't hope to say much about $H^\ast A$ when $A$ is smooth. However,
+\begin{thm}[Raedschelder-S.]
+	If $A$ is a smooth dg algebra is smooth and connective ($A^{\ge 1}=0$), then $H^0A$ is smooth.
+\end{thm}
+
+\subsection{Regularity and smoothness}
+What exactly does smoothness buy us?
+\begin{thm}
+	If $A$ is a smooth dg algebra then $A$ is regular in the sense that $A$ strongly generates $H^0\operatorname{Perf}A$.
+\end{thm}
+Regularity buys one quite a lot: we get representability results for cohomological (dg) functors. The idea here is that even if we don't have the infinite coproducts we need for Brown,
+but somehow the ``needing uniformly finite cones'' of strong generation takes care of this for us.
+
+\begin{rmk}
+	It is not always true that for any Noetherian scheme that $\Db(X)$ is even regular.
+
+	There are many examples of dg categories that are regular but not smooth. For instance, $\operatorname{Perf}k[[x]]$ is regular, but not smooth.
+\end{rmk}
+
+Smoothness is also a strong finiteness condition on $\calA$. 
+\begin{thm}[To\"en]
+	Let $\calA$ be a smooth dg category. Then there exists a generator $g\in\operatorname{Perf}\calA$ so 
+	$\calA$ is derived Morita equivalent to $\operatorname{Perf}\calA(g,g)$, a dg algebra.
+\end{thm}
+
+\subsection{Ideas for proofs}
+Say $\calA$ is a smooth dg category, so $\Delta\in\operatorname{Perf}\calA^e$. What are the perfects over the enveloping algebra? For $a\otimes b\in \calA^e$, 
+write $\widehat{a\otimes b}$ for $\calA(a,-)\otimes\calA(-,b)\in\operatorname{Perf}\calA$. But then 
+\[\operatorname{Perf}\calA^e=\operatorname{thick}(\widehat{a\otimes b}|a\otimes b\in\calA^e)\]
+then the upshot here is that computing the thick subcategory containing something is built out of finitary pieces. That is, 
+for anything in $\operatorname{Perf}\calA^e$, $\Delta\in\operatorname{thick}_{\calA^e}(\widehat{a_i\otimes b_i}|i\in\calI)$
+where $\calI$ is a finite set.
+
+So if $X\in\operatorname{Perf}\calA$, consider $X_\calA\otimes_\calA {_\calA}\Delta_\calA\cong X\in\scrM od\calA$
+but then 
+\[X=X\otimes_\calA \Delta\in\operatorname{thick}_\calA(X\otimes_\calA \widehat{a_i\otimes b_i}|i\in\calI)\]
+and futhermore 
+\[X\otimes_\calA\widehat{a_i\otimes b_i}= X(a_i)\otimes_k \hat b_i\]
+so this is a big direct sum of shifts of $\calA(-,b_i)$.
+
+Then by Thomason's this implies that $X\in\operatorname{thick}(b_i|i\in\calI)$, so the $b_i's$ genreate $\operatorname{Perf}\calA$, 
+whence $\calA$ is morita equivalent to $\oplus_{i,j\in\calI}\calA(b_i,b_j)$. 
+
+Finally since $\Delta$ can be built in some finite number of cones, $X$ can be build in the same (or fewer) number of cones.
+
+\begin{rmk}
+	In general, smoothness and properness are often dual to one another. That is they often come in pairs. FOr example, if $\Lambda$ is a finite dimensional dg algebra over $k$, then $\operatorname{Perf}\Lambda$ is proper.
+
+	Then $\operatorname{Perf}k$ is the monoidal unit for a closed monoidal structure on a dg category over $k$ $[\operatorname{Perf}\Lambda,\operatorname{Perf}k]=[\Lambda,\operatorname{Perf}k]\cong\underline\Db(\Lambda^{op})$ and the thing on the right is smooth.
+	This is not an exact duality because there are counterexamples but it's mostly correct.
+\end{rmk}
+
+
+
+\section{(Bounded) t-structures and approximable categories}
+Let $R$ be a ring. Consider the category $\D(R)$, the derived category of $R$ modules. This is a triangulated category with 
+coproducts. Write $\Sigma$ for the suspension.
+
+We have two (full) subcategories $\Dpos(R)$ and $\Dneg(R)$, which are elements such that cohomology 
+vanishes below and above zero. Notice that $\Dneg(R)$ is stable under $\Sigma$ and $\Dpos(R)$ is stable 
+under $\Sigma^{-1}$. Sometimes we write $\D^{\ge 1}(R)$ (e.g.).
+
+It is not too hard to check that $\Hom(\Dneg(R),\D^{\ge 1}(R))=0$. For each $x\in\D(R)$, there is 
+a triangle 
+\[Y\to X\to Z\]
+where $Y\in\Dneg(R)$ and $Z\in\D^{\ge 1}(R).$
+
+Finally $\Dneg(R)\cap\Dpos(R)=\Rmod$.
+
+\subsection{t-structures}
+\begin{defn}
+	A \textbf{t-structure} on a triangulated category $\calT$ is a pair of full subcategories $\calT^{\ge 0},\calT^{\le 0}$ satisfying 
+	\begin{itemize}
+		\item $\Sigma\calT^{\le 0}\subset \calT^{\le 0}$
+		\item other stuff I missed.
+	\end{itemize}
+\end{defn}
+
+The \textbf{heart of $\calT$} is $\calT^{\ge 0}\cap\calT^{\le 0}$ which 
+is an abelian subcategory of $\calT.$ We say $\calT^{\le 0}$ and $\calT^{\ge 0}$ are the \textbf{aisle and coaisle} of $\calT$,
+respectively.
+\begin{rmk}
+	The t-structure is determined entirely by the (co) aisle. This is because
+	\[\calT^{\ge 0}=(\calT^{\le 0})^\perp:=\{Y\in\calT|\Hom(\calT^{\le -1})\}\]
+\end{rmk}
+
+We have truncation functors that are right and left adjoints to $\calT^{\le 0}\hookrightarrow\calT$ and $\calT^{\ge 0}\hookrightarrow\calT$, respectively.
+
+\subsection{Aisles vs Pre-Aisles}
+Every aisle $\calT^{\le 0}$ is closed under positive suspensions, taking summands, and extensions. If $\calT$ has coproducts, then $\calT^{\le 0}$ is closed under coproducts.
+\begin{defn}[Keller-Vossieck]
+	A subcategory $\calS\subseteq\calT$ is a \textbf{pre-aisle} if it is closed under extensions, positive suspensions, and taking summands.
+\end{defn}
+
+A question one may ask is when is a pre-aisle an aisle? Keller-Vossieck said that a pre-aisle $\calS\subseteq \calT$ is an aisle if and only if $\calS\hookrightarrow\calT$
+has a right adjoint.
+
+Let $S\subseteq\calT$ be a set of objects. Write 
+\begin{itemize}
+	\item $\langle S\rangle$ to be the smallest thick triangulated subcategory of $\calT$ contatining $S$.
+	\item $\langle\overline{S}\rangle$ is the same as above but closed under coproducts.
+	\item $\langle S\rangle^{(-\infty,0]}$ is the smallest pre-aisle in $\calT$ containing $S$
+	\item $\langle\overline{S}\rangle^{(-\infty,0]}$ is what you'd think.
+\end{itemize}
+
+\begin{thm}[Neeman]
+	Let $\calT$ be a well-generated (whatever that means) category and $S\subseteq\calT$ a set of objects. Then 
+	there exists a t-structure with aisle $\langle \overline{S}\rangle^{(-\infty,0]}$
+\end{thm}
+
+As an example, when $\calT=\D(R)$, then $\calS=\langle \overline{R}\rangle^{(-\infty,0]}$ is the aisle of the standard t-structure.
+
+Another example: Let $\calT=\Db(R)$ where $R$ is Noetherian. Let $S=\langle R\rangle^{(-\infty,0]}=\calT_c^{b\le 0}$ is the aisle of the restricted standard t-structure.
+This structure is bounded. That is, $\calT$ is the intersection of the shifted versions of the usual structures.
+
+Why do we care about bounded t-structures? One reason is that if $\calT$ has a bounded t-structure, then $\calT$ is generated by its heart. Another reason is that 
+it is an ingredient in Bridgeland stability. Finally is something to do with K theory that will show up in David's talk.
+
+\subsection{A nontrivial pre-aisle}
+Bondal found the following example of a pre-aisle which is not an aisle:
+\begin{ex}
+	Let $\calD=\Db_{coh}(\bbP^2(k))$ where $k$ is algebraically closed of characteristic zero. Let 
+	\[D_1^{\le 0}\langle \calO(1),\calO(2)\rangle\]
+	and 
+	\[D_2^{\le 0}=\langle\calO(-1),\calO(-2)\rangle.\]
+
+	These are both aisles as well, but $D_1^{\le 0}\cap D_2^{\le 0}$ is a pre-aisle but it can be shown (though significant computation)
+	to not be an aisle.
+\end{ex}
+
+\subsection{Neeman's Great Idea}
+Let $\calS=\calT^{\le 0}$ for some t-structure on $\calT$. Let $x,y\in\calT$. We get as surjective map 
+\[\left\{x\to x\to y|s\in\calS\right\}\twoheadrightarrow\Hom(x,y^{\le 0})\]
+by virtue of the fact that any map from a truncated thing to an object factors through its truncation. Neeman showed that under 
+a certain equivalence relation we can make this into an isomorphism.
+
+The quotient $H_\calS(x,y)\cong\Hom(x,y^{\le 0})$ can be defined for any pre-aisle $\calS$, so we get a homological functor 
+$H_\calS(-,y):\calT\to\Ab$.
+
+\begin{prop}[Neeman]
+	Let $\calS$ be a pre-aisle. $\calT-\calT^{\le 0}$ for some t-structure on $\calT$ if and only if $H_\calS(-,y)$ is representable for all $y\in\calT$.
+\end{prop}
+\begin{rmk}
+	Notice that here is where we run into set theoretic issues. One must show that such a functor is set-valued to apply Brown representability.
+\end{rmk}
+
+\subsection{Approximating Objects}
+\begin{defn}
+	A \textbf{metric} on a category is a function that assigns a positive real number (length) to every morphism in a way that the triangle inequality is satisfied.
+\end{defn}
+
+Now every t-structure on $|calT$ gives rise to a metric on $\calT$. To understand it, it suffices to specify the balls 
+\[B_n=\{x\in\calS|0\to X\text{ has length}\le 1/n\}\]
+Taking the balls to be $B_n=\calT^{\le -n}$ gives rise to a ``good metric''. I missed the discussion here unfortunately.
+
+Recall the definition of compact generators.
+
+\begin{defn}
+	Let $\calT$ be a triangulated category with coproducts. Then $\calT$ is \textbf{approximable} if there exists a compact 
+	generator $G\in\calT$ and a t-structure and an integer $A>0$ such that 
+	\begin{itemize}
+		\item $G\in T^{\le A}$ and $\Hom(G,T^{\le -A})=0$.
+		\item For every object $y\in\calT^{\le 0}$, there exists a triangle
+		\[x\to y\to x\]
+		with $z\in\calT^{\le -1}$ and $x\in\calT^{\ge 0}$ (I think).
+	\end{itemize}
+\end{defn}
+
+Some examples due to Neeman: $\D(R)$ is approximable. IF $X$ is quasicompact and separated, then $\D_{qc}(X)$ is approximable. Finally the homotopy category of spectra is approximable.
+
+\subsection{\texorpdfstring{$\calT^b_c$}{Tcb}}
+Suppose that $\calT$ has a compact generator $G$. Consider the t-structure generated by $G$ (the aisle is generated by $G$). Call $\calT_c^-$
+the full subcategory of $\calT$ such that for all $n>0$ there exists a triangle $x\to y\to z$ with $x$ compact and $z\in\calT^{\le -n-1}$. That is, $y$ is being approximated by compact objects.
+
+\begin{defn}
+\[\calT_c^b=\calT^b\cap\calT^-c\]
+\end{defn}
+\begin{rmk}
+	The categories above do not depend on the choice of generator.
+\end{rmk}
+\begin{rmk}
+	If $\calT$ is approximable, then $\calT_c^-$ and $\calT_c^b$ are thick.
+\end{rmk}
+
+For some examples, when $\calT=\D(R)$, $\calT^b=\Db(R)$ and $\calT_c^-=\Dneg(R)$. If you look at quasicoherent sheaves you also get something nice.
+
+\section{Cluster tilting modules for mesh algebras}
+
+This talk was given by Sira Gratz in conjunction with Erdmann and Lamberti.
+
+The motivation here is that the clustering aspect comes from combinatorics (e.g. cluster algebras) and the tilting portion 
+refers to tilting theory/modules. 
+
+Thoughout let $\Lambda$ be a finite dimensional algebra over $k$. If $\Lambda$ has a CT-modules, this implies that the representation dimension of $\Lambda$ is less than or equal to three. What does this mean?
+That $\Lambda$ is close to being ``representation finite''. Auslander proved that $\operatorname{repdim} \Lambda =2$ iff it is representation finite.
+
+That is $0\to T''\to T'\to M\to 0$ exists for any $M$, where $T'$ and $T''$ are indecomposibles. So in some way if you understand the indecomposable theory
+you can reconstruct the structure of any module using only two ``layers'' of this information.
+
+\subsection{What are CT-modules?}
+\begin{defn}
+	Let $\calT$ be a triangulated or Abelian category. Then $\calC\subseteq\calT$ is \textbf{cluster tilting}
+	if it is functorially finite (This means you have pre-covers and pre-envelopes for every object in your category -- roughly $\calC$ approximates $\calT$) and the folowing are equivalent for all $M\in\calT$:
+	\begin{itemize}
+		\item $M\in \calC$
+		\item $\Ext^1(C,M)=0$ for all $C\in\calC$
+		\item $\Ext^1(M,C)=0$ for all $C\in\calC$
+	\end{itemize}
+\end{defn}
+
+If $\calT=\mathbf{mod}$-$\Lambda$, then $A$ in this category is a CT-modules if $\operatorname{add}(A)$ is CT.
+A good place to look to start is $\Lambda$ that are self-injective.
+
+\begin{thm}[Erdmann-Holm]
+	If $\Lambda$ is self-injective and has a CT-module, then for all $\Lambda$ modules $M$ have complexity less than 1. 
+\end{thm}
+\begin{rmk}
+	Basically this talks about how quickly the dimension of the elements in a ``minimal'' projective resolution grows. Complexity zero means that a module has finite 
+	projective dimenson and complexity one means that the dimension of the modules in the resolution is bounded.
+\end{rmk}
+
+\subsection{Mesh Algebras (of Dynkin type)}
+The benefit of these algebras is that they have periodic resolutions, so we can apply the previous theorem.
+
+One example comes from the quiver 
+\begin{center}
+	\begin{tikzcd}
+		0\ar[r,"\bar\alpha",bend right,swap] & 0 \ar[l,"\alpha",bend right]\ar[r,"\beta",bend right] & 2 \ar[l,"\bar\beta",bend right,swap]
+	\end{tikzcd}
+\end{center}
+
+The idea here is you look at a Galois cover of this diagram and then use graph automorphisms to introduce a ``twist'' to 
+create a mesh algebra. 
+
+\begin{thm}[Geiss-Leckers-Schr\"oer]
+	Mesh algebras of type $A,D,$ and $E$ have CT-modules.
+\end{thm}
+\begin{thm}[Gratz-Erdmann-Lamberti]
+	All mesh algebras (of Dynkin type) have CT-modules.
+\end{thm}
+
+Another result:
+\begin{thm}[Darpo-Iyama]
+	If $\calC$ is $k$-linear and locally bounded such that $\operatorname{add}(\calC)$ is Krull-Schmidt $G$ admissibly,
+	there is a one-t-one correspondence between $G$-equivariant CT-subacategories of $\calC$ and CT-subcategories of $\calC/G$.
+\end{thm}
+\subsection{Mutation}
+Alnother result from the original group:
+\begin{thm}[GLS]
+	If $\Lambda$ is a mesh algebra of type $A,D,$ or $E$, and $T$ is a CT-module in $\mathbf{mod}$-$\Lambda$. Let $X$ be a non-projective indecomposable 
+	summand  then there exists a unique $Y\not\cong X$ such that $T/X\oplus Y$ is CT. There are also some short exact sequences.
+\end{thm}
+
+The theory here works on the idea that $\Ext^1(X,Y)\cong D\Ext^1(Y,X)$ which is not in general true. But in our case 
+we get that (if $\gamma$ is the automorphism of $\Lambda$ induced by $\sigma$) that $\Ext^1(X,Y)\cong D\Ext^1(Y,{_\gamma}X)$, where 
+${_\gamma}X$ is the twisting of the $\Lambda$ action on $X$ by $\gamma$.
+
+A futher result is that each of the CT modules are $\gamma$-equivariant except in the exception case of $P(G_2)$, the mesh algebra 
+corresponding to $D_4$, that has an order 3 automorphism. In this case, there exists such a CT module, but they are not all (something).
+
+\section{Triangulated Categories (and syzygies) associated to singularities of algebraic varieties.}
+This talk was given by Jesse Burke.
+
+Here let $P=k[x_0,\dots,x_n]$ and let $P_j$ be the homogenous degree $j$ polynomials. An ideal $I$ of $P$ is \textbf{homogeneous} if there 
+exists a set of homogeneous generators. A $P$-module is homogeneous if $M=\oplus M_i$ and $P_j\otimes M_i$ maps to $M_{j+i}$.
+
+Write $P(m)_j=P_{m+j}$.
+
+\subsection{Hilbert and Syzygies}
+Hilbert was one of the first to systematically use syzygies. As an example, let $P=k[x_0,\dots,x_3]$ and let
+\[R=\frac{P}{(x_0x_2-x_1^2,x_0x_3-x_1x_2,x_1x_3-x_2^2)}\]
+which gives us an embedding of $\bbP^1\hookrightarrow\bbP^3$.
+
+A free resolution here is 
+\[0\leftarrow R\leftarrow P^1\leftarrow P(-2)^3\leftarrow P(-3)^2\leftarrow 0\]
+In general it is difficult to look at abunct of equations and talk about what properties a variety has. One thing Hilbert did was 
+write down the Hilbert series $H(R)=\sum_n \dim_k R_nt^n$. Hilbert proved that this is always rational with a particular denominator.
+
+Let $R$ be a graded quotient ring of polynomial ring $P$. A graded free resolution of a graded $R$ module is what you'd expect.
+A graded free resolution is minimal if all differentials have entries in $(x_0,\dots,x_n)$.
+
+\subsection{Examples}
+\begin{ex}
+	Let $R=k[x,y]$ and $M=k=R/(x,y)$, the residue field. Then we have resolution 
+	\[0\to R(-2)\xrightarrow{\binom{-y}{x}} R(-1)^2\xrightarrow{(x,y)} R^1\to k\to 0\]
+	which is the same as the Koszul complex.
+\end{ex}
+\begin{ex}
+	Now let $R=k[x,y]/(x^2)$. Then a resolution of $k$ looks like 
+	\[\cdots R(-3)^2\to R(-2)^2\to R(-1)^2\to R\to k\to 0\]
+	where eventually the maps become periodic (so the syzygies are periodic).
+\end{ex}
+\begin{ex}
+	When $R=k[x,y]/(x^2,y^2)$, the $k^{th}$ syzygy is generated by $k$ elements.
+\end{ex}
+\begin{ex}
+	When $R=k[x,y]/(x^2,xy)$, You get that the rank grows like the Fibonacci numbers.
+\end{ex}
+
+\section{Modular realisations of derived equivalences in representation theory}
+This talk was given by Daniel Chan on work with Tarig Abdelgadir and Boris Lerner.
+
+We always work over an algebraically closed field $k$ of characteristic zero. The motto here is that Moduli stacks are a fruitful way to study a finite dimension algebra because 
+they are essentially a machine to construct functors.
+
+As usualy, we should fix some discrete invariants of a finite dimensional $A$ module. You can start by 
+fixing $\dim M$. Slightly more subtlely, you can fix an idempotent $e$ and fix $\dim Me$.
+
+Recall the path algebra: start with a quiver $Q$ (directed graph) without oriented cycles.
+Let $kQ$ be the path algebra with $k$-basis all paths of length $\ge 0$. Multiplication is concatenation or zero.
+
+For every vertex $v$, there is a path $e_v$ of length zero which is idempotent.
+
+\subsection{King's Interpretation of Beilinson's derived equivalence}
+Let $Q$ be the Kronecker quiver on two vertices with two arrows between them in the same direction. $A=kQ$. Fix the dimension of our modules to be $(1,1)$.
+
+This got pretty interesting but also complicated so I just listened. :) If I ever get into stacks this seems like a good guy to read.
+
+\section{Groups, Spherical Twists and Stability Conditions}
+This was a three-part lecture given by Asilata Bapat, Anand Deopurkar, and Anthony Licata.
+
+The goal of this first talk is to paint a picture of the aim of this ``movement''. More specifically, one goal is to use homological algebra
+to prove some things about groups. This will hopefully cement this theory of a thing that group theorists care about.
+
+\subsection{What kinds of groups?}
+One kind are Artin-Tits braid groups. We will not use full generality but will suffice here. Fix some finite connected graph (no loops) $\Gamma$.
+Then this graph yeilds $B_{r_\Gamma}$, a group given by generators $\sigma_i$ for each vertex. Then we add the relations 
+$\sigma_i\sigma_j=\sigma_j\sigma_i$ if $i$ and $j$ are not connected by an edge and the braid relation $\sigma_i\sigma_j\sigma_i=\sigma_j\sigma_i\sigma_j$ if they are.
+
+Very little is known about these groups. For instance, there are no known solutions to the word problem (when are two words the same) and the conjugacy problem (when are two elements conjugate). 
+People also don't know the what the centers of these groups are or whether they have finite representation dimension.
+
+It is not known whether $B_{r_\Gamma}$ are linear. However, these groups do act on ``nice'' triangulated categories. For example: 
+\begin{ex}
+	Let $\scrP$ denote the $\bbC$-linear additive category generated by $\{P_i\}_{i\in \Gamma_0}$ (indexed by the vertices). Then the hom sets are given by 
+	\[\Hom_\scrP(P_i,P_j)=\left\{\begin{array}{lr}
+		\bbC\cdot 1\oplus \bbC \cdot x_i, & i=j\\
+		\bbC\cdot y_{ij}, & (i,j)\in\Gamma_1\\
+		0, & \text{otherwise}.
+	\end{array}\right.\]
+	To define the composition, one can think of there as being a graded structure on $\Hom^\ast$ given by $\deg(x_i)=2$ and $\deg(y_{ij})=2$ and composition respects grading.
+\end{ex}
+
+Now let $\calT_\Gamma=K^b(\scrP_\Gamma)$. 
+\begin{thm}[Huerfano-Khovanov]
+	$B_{r_\Gamma}$ acts on $\calT_\Gamma$.
+
+	The generator $\sigma_i$ acts by twisting in $P_i$:
+	\[\sigma_i(X):=\cone(P_i\otimes_\bbC \Hom(P_i,X)\xrightarrow{ev}X)\]
+\end{thm}
+
+We have a couple conjectures:
+\begin{conj}
+	The action above is faithful.
+\end{conj}
+and even more strongly (and importantly):
+\begin{conj}
+	The moduli space of Bridgeland stability conditions(this word may be wrong) $\operatorname{Stab}(\calT)$ is contractible.
+\end{conj}
+
+\subsection{What kind of picture are we trying to paint?}
+As a small (seeming) aside: How does one study mapping class groups of surfaces?
+
+Let $\Sigma$ be a surface, possibly with boundary and punctures. Then 
+\[\operatorname{MCG}(\Sigma)=\frac{\operatorname{Diff}_+(\Sigma)}{\operatorname{Diff}_0(\Sigma)}\]
+of oriented diffeomorphisms of the $\Sigma$ to itself modulo the ones isotopic to the identity. As an example, if $\Sigma$ is a disk with 
+$n$ punctures, the mapping class group is the braid group.
+
+Now the MCG of $\Sigma$ acts on:
+\begin{itemize}
+	\item $\operatorname{Teich}(\Sigma)$, the Teichm\"uller space, or the moduli space of hyperbolic metrics on $\Sigma.$
+	\item The isotopy classes of simple closed (multi-)curves on $\Sigma$.
+\end{itemize} 
+
+Thurston explained how to unify these two actions. The first thing to notice is that the Teichm\"uller space comes as a manifold while the other set (call it $S$)
+doesn't have a clear topology. So in unifying the two, Thurston developed a method of understanding it through charts. The charts are ``train tracks'' which are a bit confusing to me.
+They each have three distinguished points and they (through four symmetries) are supposed to categorize each of the possible (maybe simple closed) curve in your space.
+I see there being a problem if the distinguished points are not punctures (e.g. if a curve goes through them).
+
+Then Thurston defined a compactification of the Teichm\"uller space. You can embed them into $\bbR^S$, the (nonzero) maps from $S$ to $\bbR$, which itself embeds (obviously)
+into its projective closure.
+
+Then the closure of $\operatorname{Teich}$ is the closure of its image in $\bbP(\bbR^S)$. It ends up that the interior is precisely Teich, and the 
+boundary has an interpretation as the moduli space of projective measured foliations on $\Sigma.$
+
+So in particular, MCG acts on $\overline{\operatorname{Teich}}=\operatorname{Teich}\sqcup \text{PMF}$. One can show that Teich is homeomorphic to $\bbR^n$ and PMF is homeomorphic to $S^{n-1}$, 
+so the closure of Teich is homeomorphic to the closed Euclidean ball. This gives us solutions to various algorithmic problems.
+
+For instance, each $g\in$MCG$(\Sigma)$ gives rise to a dynamical system by studying repeated action of $g$ on the closed ball. In particular, one is generally interested in fixed points which yields 
+Neelson-Thurston classification of mapping classes into periodic, reduced, and pseudo-Arasov.
+
+\subsection{Chainging gears}
+\textbf{Our goal is to try to recreate this construction using as our group the autoequivalence group of a triangulated category $\Aut(\calT)$.}
+
+We need a bit of a starting point here to even give us reason to believe this is the correct approach. Luckily it becomes clear that (Bridgeland) stability conditions naturally play the role of the Teichm\"uller space.
+So then we need to decide what plays the role of $S$, and here we will use spherical (stable) objects.
+
+That is, we aim to study an action of $\Aut(\calT)$ on a compactification of $\operatorname{Stab}(\calT)$. We will talk about these in more detail in talks 2 and 3.
+In particular, talk two will include some (rather technical) definitions for $\operatorname{Stab}(\calT)$ and the compactification. In talk three, we will 
+describe an example that we understand, fully developed in the world of homological algebra.
+
+\subsection{Definitions and compactification}
+FIx a triangualted category $\calT$. Recall that 
+\begin{defn}
+	A Brigeland stability condition on $\calT$ is $(Z,P)$ where 
+	\[P=\{P(\phi)|\phi\in\bbR\}\]
+	(notice that $P(\phi)$ is a full subcategory of $\calT$) satisfying 
+	\begin{itemize}
+		\item $P(\phi+1)=P(\phi)[1]$
+		\item If $\phi_1>\phi_2$, then $\Hom(P(\phi_1),P(\phi_2))=0$
+		\item If $E\in\calT$ then there exists a unique $\phi_1>\phi_2>\cdots>\phi_n$ and a uniqu fitration 
+		\[0=E_0\to E_1\to\cdots E_n=E\]
+		where each $E_i\to E_{i+1}$ admits $A_{i+1}\in P(\phi_{i+1})$ and maps 
+		\[E_{i+1}\to A_{i+1}\to E_i\]
+		this is called the Harder-Narasimhan filtration.
+	\end{itemize}
+
+	Furthermore $Z:K_0(\calT)\to\bbC$ such that if $A\in P(\phi)$, then $Z(A)=m(A)\cdot e^{i\pi\phi}$ where $m(A)\in\bbR_{>0}.$
+\end{defn}
+
+As a matter of notation:
+\begin{itemize}
+	\item $P$ is called a \textbf{slicing} of $\calT$
+	\item $Z$ is called the \textbf{central charge}
+	\item If $\phi\in\bbR$, the objects of $P(\phi)$ are called \textbf{semistable of phase $\phi$} (simple objects of $P(\phi)$ are called \textbf{stable})
+	\item If $A\in P(\phi)$, then $m(A)$ is called the \textbf{mass} of $A$. In general $m(E):=\sum m(A_i)$ where $A_i$ are as in the filtration.
+\end{itemize} 
+
+A slicing gives a bounded t-structure on $\calT$: for any $\phi\in\bbR$, $(P(\ge\phi),P(<\phi+1))$
+form your t structure whose heardt is $P([\phi,\phi+1])$. Given any (Z,P), we'll say that $P([0,1])$ is the \textbf{standard t-structure for $(Z,P)$.}
+
+\begin{prop}[Bridgeland]
+	Specifing $(Z,P)$ on $\calT$ is equivalent to giving 
+	\begin{itemize}
+		\item A bounded t structure on $\calT$ with heart $\calA$
+		\item Two functions $m:\calA\setminus\{0\}\to \bbR_{\ge 0}$ and $\text{ph}:\calA\setminus\{0\}\to [0,1)$
+		such that $Z(A):= m(A)e^{i\pi\text{ph}(A)}$ is a group homomorphism $K_0(\calA)\to\bbC$.
+		\item (HN Condition) This is automatic if objects of $\calA$ are of finite length.
+	\end{itemize}
+\end{prop}
+\begin{rmk}
+	We can recover $P$ as follows: if $\phi\in[0,1),$ then 
+	\[P(\phi)=\{A\in\calA|\text{ph}(A)=\phi\text{ and } \forall 0\ne B\subseteq A, \text{ph}(B)\le\text{ph}(A)\}\]
+	otherwise if $\phi\in[n,n+1)$, $P(\phi)=P(\phi-n)[n].$
+\end{rmk}
+
+Set the space $\operatorname{Stab}\calT$ to be the set of all stability conditions $(Z,P)$ on $\calT$.
+\begin{thm}[Bridgeland]
+	$\operatorname{Stop}(\calT)$ is a (complex) manifold.
+\end{thm}
+In fact, there is a $\bbC$-action on $\operatorname{Stab}\calT$ where if $w=x+iy$ and if $(Z,P)\in\operatorname{Stab}(\calT)$,
+then $Z\mapsto e^\omega Z$ (``scaling mass'') and $P(\phi)\mapsto P(\phi+\frac{y}{\pi})$ (``rotating phase''). Then we want to look at $\operatorname{Stab}\calT/\bbC.$
+
+\subsection{Plugging things into yesterday's talk}
+We will be replacing Teich with $\operatorname{Stab}\calT/\bbC$, MCG with $\Aut\calT$, and the (honest) sphere with the set of spherical objects of $\calT$ modulo shifts.
+
+\begin{defn}
+	An object $A$ is spherical if
+	\[\Hom^i(A,A)=\left\{\begin{array}{lr}
+		k, & i=0,2\\
+		0,& \text{otherwise}
+	\end{array}\right.\]
+\end{defn}
+
+\subsection{Construction the closure of our space}
+We consider the map $\operatorname{Stab}/\bbC\xrightarrow{\iota} \bbP\bbR^S$ that sends $\tau$ to the map $c\mapsto m_\tau(c)$. We will also use the morphism 
+$S\xrightarrow{\delta} \bbP\bbR^S$ that sends $A\in S$ to the map $B\mapsto \overline\hom^\ast(A,B)$ where the over line denotes we set $\overline\hom(A,A)=0$.
+
+Set $\overline{\operatorname{Stab}/\bbC}$ to be the closure of the image of $\iota$ in $\bbP\bbR^S$.
+
+\subsection{Some conjectures}
+These are pretty loose/wishful thinking. 
+\begin{conj}
+	$\iota$ is an embedding.
+\end{conj}
+\begin{conj}
+	$\delta$ is an embedding.
+\end{conj}
+\begin{conj}
+	If $\overline{\operatorname{Stab}/\bbC}=\operatorname{Stab}\sqcup \text{Bdy}$, then $S$ is in the boundary and is dense in the boundary.
+\end{conj}
+\begin{conj}
+	$\overline{\operatorname{Stab}/\bbC}$ is a closed ball which is the union of an open ball $\operatorname{Stab}/\bbC$ with boundary a sphere.
+\end{conj}
+
+This was really cool. I especially enjoyed the third talk. :)
+
+\section{Bounded t-structures and negative K-theory of stable infinity categories}
+This was given by David Gepner. It is joint work with Ben Antieau and Jeremiah Heller.
+
+We've heard a lot about t structures over this conference. Here we will talk about some obstructions to getting t structures that arise from K theory.
+First some conjectures:
+\begin{conj}[Marco Schlicting]
+	If $\calA$ is a small abelian category then $K_n(\calA)=0$ for $n<0$.
+\end{conj}
+\begin{conj}[A-G-H]
+	If $\calC$ is a small stable $\infty$-category with a bounted t structure, then $K_n(\calC)=0$ for all $n<0$.
+\end{conj}
+\begin{conj}
+	If $\calC$ is a small stable infinity category with bounded t-structure, then $K_n(\calC^\heartsuit)\simeq K_n(\calC)$ is an equivalence for all $n\in\bbZ$.
+\end{conj}
+\begin{rmk}
+	Actually for non-negative $n$, this is the so-called ``theorem of the heart'' that may be due to Neeman. Notice that $K(\calA)=K(\Db(\calA))$ where the bounded 
+	derived category is not the regular category, but the category where we remember the dg structure.
+\end{rmk}
+
+The second conjecture above implies both the first and second.
+\begin{rmk}
+	$K_0$ is an invariant of the triangulated homotopy category of a dg or stable infinity category. That being said, 
+	the entire K theory $K(\calC)$ depends on a dg (or stable) enhancement.
+\end{rmk}
+
+\subsection{Background on (stable) \texorpdfstring{$\infty$}{infty}-categories}
+The idea here is that an $\infty$-category is a category enriched in spaces, where we actually mean that it is enriched up to coherent homotopy.
+So for every $A,B\in\calC$, there is a ``mapping space'' $\operatorname{Map}(A,B)$ with a composition operator that is only well-defined up to homotopy.
+
+\begin{defn}
+	An infinity category $\calC$ is \textbf{stable} if it has finite limits and colimits, a zero object, and a square is a pushout iff it is a pullback.
+\end{defn}
+\begin{rmk}
+	In case you need help wrapping your head around limits in infinity categories, it is useful to remember that $\mathbf{Cat}\hookrightarrow\mathbf{Cat}_\infty$
+	fully faithfully via a map called the \textbf{nerve}. Furthermore this functor commutes with limits and colimits, so these things kind of what you think they should be.
+\end{rmk}
+\begin{rmk}
+	If $\calC$ is stable, then $\operatorname{Ho}(\calC)$ (the ordinary category with the same objects, but $\Hom_{\text{Ho}(\calC)}(A,B)=\pi_0\operatorname{Map}(A,B))$ is canonically triangualted.
+\end{rmk}
+
+You just define $\Sigma A$ to be the pushout of $0\leftarrow A\to 0$ and $\Omega A$ is defined dually. Here distinguished triangles are the ones that come from just doing what you'd hope: compute the cofibration of the 
+map $A\to B$ to get $C=B/A$ and then $C/B$ will be the same as $\Sigma A$.
+
+Then $\calC$ is stable if and only if it has finite limits, colimits, 0 and $\Omega=\Sigma^{-1}$.
+
+\begin{defn}
+	A t-structure on a stable infinity category is jsut a t-structure on Ho$(\calC)$.
+\end{defn}
+\begin{rmk}
+	If $\calC$ is a stable infinity category, then $\calC^\heartsuit$ is already an abelian (1-)category.
+\end{rmk}
+
+\subsection{Alebraic K theory and t-structures}
+K-theory $K:\mathbf{Cat}_\infty^{st}\to\mathbf{Sp}$ is a functor from stable infinity categories with exact functors (ones that preserve finite (co)limits) to spectra (one can 
+also think graded groups, etc.)
+
+There are lots of places that algebraic and geometric objects give rise to stable $\infty$ categories (e.g. $X$, $\operatorname{Perf}X$, $\Db(X)$)
+
+\begin{defn}
+	$K$ is the unit of the convolutional symmetric monoidal structure on the subcollection of $\mathbf{Func}(\mathbf{Cat}_\infty^{st},\mathbf{Sp})$ that are localizing.
+
+	Furthermore, notice that $\mathbf{Cat}_\infty^{st}\hookrightarrow \mathbf{Func}^{loc}(\mathbf{Cat}_\infty^{st},\mathbf{Sp})$ via the Yoneda embedding and K-theory 
+	is corepresented by $\operatorname{Perf}(S)$ (lost me here).
+\end{defn}
+
+Here a functor $F:\mathbf{Cat}_\infty^{st}\to\mathbf{Sp}$ is localizing if, given a Verdier localization sequence 
+\[\calA\hookrightarrow\calB\twoheadrightarrow\calC\cong(\calB/\calA)^{idem}\]
+then $F(\calA)\to F(\calB)\to F(\calC)$ is an exact triangle of spectra (and $F$ preserves filtered colimits).
+
+\begin{thm}[Schlichting]
+	If $\calA$ is a small abelian category, then $K_{-1}\calA=0$ and if $\calA$ is Noetherican, then $K_{-n}\calA=0$ for all $n>0.$
+\end{thm}
+
+\subsection{Results of A-G-H}
+\begin{thm}
+	If $\calC$ is a small, stable $\infty$-category with bounded t-structure, then $K_{-1}(\calC)=0$.
+\end{thm}
+\begin{thm}
+	If $\calC$ is small, stable $\infty$-category with bounded t-structure with Noetherian heart, then $K_{-n}(\calC)=0$ for all $n>0$.
+\end{thm}
+\begin{thm}[Nonconnective theorem of the Noetherian heart]
+	IF $\calC$ is a stable infinty category with bounded t-structure such that $\calC^\heartsuit$ is Noetherian, then $K(\calC^\heartsuit)\simeq K(\calC)$.
+\end{thm}	
+\begin{thm}
+	Let $R$ be a commutative ring and $A$ a (cohomologically) graded dg $R$-algebra such that $H^0(A)$ is semisimple and $H^i(A)$ is finite generated as a right $H^0(A)$-module,
+	then $K_{-n}(A)=0$ for all $n>0$.
+\end{thm}
+\begin{thm}
+	If $i:\calA\to \calB$ is a fully fairthful exact functor of small stable infinity categories equipped with compatible bounded t-structures. Then set $\calC$ to be the Verdier quotient $\calB/\calA$,
+	and $\operatorname{Ind}(\calC)$ inherits a t-structure which restricts to a bounded t-structure on $\calC$ if and only if $\calA^\heartsuit\hookrightarrow \calB^\heartsuit$ is the inclusion of a Serre subcategory.
+\end{thm}
+
+A major question/conjecture: Given an abelian category $\calA$, can one construct an abelian category $\calB$ containing $\calA$ as a Serre subcategory such that $K(\calB)=0$?
+
+A positive answer to this would give tools necessary to answer the conjectures given in the affirmative.
+
+\section{Local duality for Gorenstein algebras}
+This talk was given by Henning Krause on recent work by Benson, Iyengar, and Pevtsova.
+
+Much of Julia's talk sets the scene for this talk! Let $G$ be a finite group, let $k$ be a field. Then if $M$ is a $kG$-module, 
+we can compute $H^\ast(G,M)=\Ext^\ast_{kG}(k,M)$, which is a graded module over $R:=H^\ast(G,k)$ and this is a finitely generated algebra.
+
+Pick any $\p\in\Spec R$ and let $I(\p)$ be an injective envelope of $R/\p$. Then the theorem says 
+\begin{thm}[BIKP, '19]
+	Let $d$ be the Krull dimension of $R/\p$ where $\p\lhd R$ is prime and is not all of $R^{\ge 0}$. Then 
+	\[\Hom_R(H^{\ast-d-i}(G,M),I(\p))\cong\widehat\Ext_{kG}^i(M,\Gamma_\p(k))\]
+	for all $i\in\bbZ$.
+\end{thm}
+
+\subsection{Serre Duality}
+\begin{thm}
+Let $X$ be a projective nonsingular scheme over a field $k$, and let $n=\dim X$. Then 
+\[\Hom_k(H^{n-i}(X,\calF),k)\cong\Ext_X^i(\calF,\omega_X)\]
+for all coherent sheaves $\calF$ on $X$ and $i\ge 0$.
+\end{thm}
+
+A more modern formulation is that $\Db(\operatorname{coh}X)$ has a Serre functor, $F=-\otimes_X^L\omega_X[n]$.
+
+\begin{defn}[Bendal-Kapraha, '89]
+	Let $\calT$ be a $k$-linear triangular category, hom-finite (what does this mean?) $\calF:\calT\to\calT$ is a \textbf{Serre functor}
+	if $D\Hom_\calT(X,Y)\cong \Hom_\calT(Y,\calF(X))$ which is natural for all $X,Y\in\calT$. (here he wrote $D=\Hom_k(-,k)$).
+\end{defn}
+
+Let $T\in\operatorname{coh}X$ be a tilding object and let $\Lambda=\End_X(T)$. Then we have an equivalence 
+\[R\Hom_X(T,-):\Db(\operatorname{coh}X)\xrightarrow{\sim}\Db(\mathbf{mod}\Lambda)\]
+That is, $\Db(\mathbf{mod}\Lambda)$ has a Serre functor.
+
+\begin{thm}[Reiten-van den Bergh '01, Happel '87]
+	Let $\Lambda$ be a finite dimensional $k$ algebra. Then the following are equivalent:
+	\begin{itemize}
+		\item $\Db(\mathbf{mod}\Lambda)$ has a Serre functor
+		\item $\Db(\mathbf{mod}\Lambda)$ has Auslander-Reiten triangles
+		\item $\gldim \Lambda<\infty$.
+	\end{itemize}
+\end{thm}
+\subsection{Gorenstein Algebras}
+\begin{defn}
+	Let $\Lambda$ be a finite dimensional $k$-algebra. Then $\Lambda$ is (Iwanaga) Gorenstein if $\injdim(\Lambda_\Lambda)$ and $\injdim({_\Lambda}\Lambda)$ are both finite.
+\end{defn}
+Some examples of such algebras:
+\begin{itemize}
+	\item If $\gldim \Lambda<\infty$, $\Lambda$ is Gorenstein.
+	\item If $\Lambda$ is self-injective, $\Lambda$ is Gorenstein.
+	\item If $\Lambda$ and $\Gamma$ are both Gorenstein, then $\Lambda\otimes_k\Gamma$ is Gorenstein. For instance the path algebra of a quiver $kQ$ tensored with $k[\varepsilon]$ the ``dual numbers''.
+	The former (usually) has Gorenstein dimension 1 and the latter has Gorenstein dimension 0 (it is self-injective).
+\end{itemize}
+
+Now let $\mathbf{Mod}\Lambda\supset \mathbf{mod}\Lambda\supset \mathbf{proj}\Lambda$ be the $\Lambda$ modules, finitely generated $\Lambda$ modules and finitely-generated projectives, respectively.
+
+Let $\mathbf{GProj}\Lambda=\{X\in\mathbf{Mod}\Lambda|\Ext^i(X,\Lambda)=0\text{ for }i>0\}$ and let $\mathbf{Gproj}\Lambda=\mathbf{GProj}\Lambda\cap\mathbf{mod}\Lambda$.
+
+Finally $\uHom_\Lambda(X,Y)=\Hom_\Lambda(X,Y)/P\Hom_\Lambda(X,Y)$ as usual.
+
+Notice that if $\gldim\Lambda$ is finite, then $\mathbf{GProj\Lambda}=\mathbf{Proj}\Lambda$ and if $\Lambda$ is self-injective, 
+$\mathbf{GProj}\Lambda=\mathbf{Mod}\Lambda$, giving us (in a way) two extremes.
+
+\begin{lem}
+	$\mathbf{GProj}\Lambda$ form a Froebenus category and $\underline{\mathbf{GProj}}\Lambda$ is a compactly generated trianglulated category equivalent to the subcategory of compact objects.
+\end{lem}
+
+Buchwertz and Orlov ('87 and '04) did work to show that $\underline{\mathbf{Gproj}}\Lambda$ was equivalent to the singularity category of finitely generated $\Lambda$ modules.
+
+We have a Nakayama functor $\nu:-\otimes_\Lambda D(\Lambda):\mathbf{mod}\Lambda\to \mathbf{mod}\Lambda$ (it takes projectives to injectives).
+
+\subsection{Auslander-Reiten Duality}
+We have a diagram 
+\begin{center}
+	\begin{tikzcd}
+		\Db(\mathbf{proj}\Lambda)\ar[r,hookrightarrow]\ar[d] & \Db(\mathbf{mod}\Lambda)\ar[d,"\sim"]\ar[r,two heads,"\nu"] & \Dsing(\lambda)\ar[d,"\bar\nu"]\\
+		\Db(\mathbf{proj}\Lambda)\ar[r,hookrightarrow] & \Db(\mathbf{mod}\Lambda)\ar[r,two heads] & \Dsing(\Lambda)
+	\end{tikzcd}
+\end{center}
+\begin{thm}
+	$\nu$ is a Serre functor for $\Db(\mathbf{proj}\Lambda)$ and $\Sigma^{-1}\circ\bar\nu$ is aSerre functor for $\Dsing(\Lambda)$.
+\end{thm}
+\begin{rmk}
+	$\calF:\underline{\mathbf{Gproj}}\Lambda\xrightarrow{\sim}\underline{\mathbf{Gproj}}\Lambda$
+	is an autoequivalence where $\calF$ sends 
+	\[X\mapsto \Omega^{-1}\text{GP}(D\operatorname{Tr}X)\]
+	where GP is the Gorenstein projective approximation functio and $D$Tr is the dual of the transpose. This is suppsoed to explain 
+	how this is a statement of duality.
+\end{rmk}
+
+\subsection{Hochschild cohomology}
+$\HH^\ast(\Lambda)=\Ext^\ast_{\Lambda^e)}(\Lambda,\Lambda)$ is a graded commutative ring.
+Then $\uHom_\Lambda^\ast(X,Y)=\oplus\uHom_\Lambda(X,\Omega^{-i}Y)$ where $X$ and $Y$ are Gorenstein projectives. Then $\HH^\ast(\Lambda)$ acts on $\underline{\mathbf{GProj}}$ 
+via 
+\[\varphi_X:\HH^\ast(\Lambda)\xrightarrow{-\otimes_\Lambda X}\Ext^\ast_\Lambda(X,X)\xrightarrow{tx\to px}\uHom^\ast(X,X)\]
+where I have no idea what that last map was.
+
+Thus $\uHom^\ast(X,Y)$ are graded $\HH^\ast(\Lambda)$-modules for all $X$ and $Y$ in $\underline{\mathbf{GProj}}\Lambda$. As an assumption, 
+fix $R\subseteq\HH^\ast(\Lambda)$ to be a homogeneous $k$ subalgebra such that
+\begin{itemize}
+	\item $R$ is connected ($R^0=k$)
+	\item $R$ is a finitely generated $k$ algebra.
+\end{itemize}
+Then for $\p$ be a homogeneous prime in $R$ and we get an endofunctor $\Gamma_\p$ on $\underline{\mathbf{GProj}}\Lambda$ that extracts the $\p$-local $\p$-torsion.
+\begin{thm}[BIKP, '19]
+	For $X,Y\in\mathbf{GProj}\Lambda$ where $X$ is finite dimensional and $\p$ a homogeneous prime with $R/\p$ of Krull dimension $d$,
+	\[\Hom_R(\Ext_\Lambda^\ast(X,Y),I(\p))\cong\uHom_\Lambda(Y,\Omega^d\,\Gamma_p \,\text{GP}\,\nu(X))\]
+\end{thm}
+\begin{prf}
+	Passage to closed points via $k\subseteq K$, similar to what we saw in Julia's talk.
+\end{prf}
+
+\subsection{Local duality for \texorpdfstring{$\Db(\mathbf{mod}\Lambda)$}{Db(mod Lambda)}}
+Let $\calD:=\Db(\mathbf{mod}\Lambda)$ where $\Lambda$ is Gorenstein, $\p$ is homogenous prime in $R\subseteq\HH^\ast(\Lambda)$. Let $\calD_\p$ be the $\p$-localization
+of $\calD$, whre the objects are the same and $\Hom_{\calD_\p}^\ast(X,Y)=\Hom^\ast_\calD(X,Y)_\p$.
+
+Then the $\p$-localization functor is exact.
+
+Now let
+\[\gamma_\p(\calD):=\{X\in\calD_\p|\End^\ast_{\calD_\p}(X)\text{ is $\p$-torsion}\}\]
+which is a thick subcategory of $\calD_\p$.
+\begin{rmk}
+	if $\calT$ is a compactly generated $R$-linear triangualted category. Then 
+	\[\gamma_\p(\calT)\xrightarrow{\sim}(\Gamma_\p\calT)^c\]
+	and we get from $\nu$ a local Nakayama endofunctor $\nu_\p$ on $\gamma_\p(\calD)$.
+\end{rmk}
+\begin{thm}
+	$\Sigma^{-d}\nu_\p$ is a Serr functor for $\gamma_\p(\calD)$ and $\Hom_{R_\p}(-,I(\p))$ plays the role of duality.
+\end{thm}
+
+For $\m= R^{>0}$ the maximal ideal, $\Db(\mathbf{proj}\Gamma)\subseteq\gamma_\m(\calD)$ with equaility if (FG) holds.
+
+Thus we get Serre duality for $\Db(\mathbf{proj}\Lambda)$ via $\nu_\p$.
+
+\end{document}
