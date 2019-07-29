@@ -1,0 +1,54 @@
+\documentclass[12pt]{article}
+
+\usepackage{setspace}
+
+\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, xcolor, hyperref}
+\usepackage[framed,thmmarks]{ntheorem}
+
+%Replacement for the old geometry package
+\usepackage{fullpage}
+
+%Input my definitions
+\input{./mydefs.tex}
+
+%Shade definitions
+\theoremindent0cm
+\theoremheaderfont{\normalfont\bfseries} 
+\def\theoremframecommand{\colorbox[rgb]{0.9,1,.8}}
+\newshadedtheorem{defn}[thm]{Definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% Customize Below %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%header stuff
+\setlength{\headsep}{24pt}  % space between header and text
+\pagestyle{fancy}     % set pagestyle for document
+\lhead{``Mathematics of Machine Learning'' Notes} % put text in header (left side)
+\rhead{Nico Courts} % put text in header (right side)
+\cfoot{\itshape p. \thepage}
+\setlength{\headheight}{15pt}
+\allowdisplaybreaks
+
+% Document-Specific Macros
+
+
+\begin{document}
+%make the title page
+\title{MSRI's \textit{Mathematics of Machine Learning} Summer School\vspace{-1ex}}
+\author{Nico Courts}
+\date{July 29-Aug 9, 2019}
+\maketitle
+
+\renewcommand{\abstractname}{Introduction}
+\begin{abstract}
+	These notes were the ones I took while attending MSRI's ``Mathematics of Machine Learning'' summer school
+	at the University of Washington during the two weeks above.
+\end{abstract}
+
+\section{Statistical Learning}
+This series of lectures was given by Robert Shapire from Microsoft Research.
+
+
+
+\end{document}
