@@ -31,7 +31,8 @@
 \allowdisplaybreaks
 
 % Document-Specific Macros
-
+\DeclareMathOperator{\err}{err}
+\DeclareMathOperator{\argmin}{argmin}
 
 \begin{document}
 %make the title page
@@ -225,6 +226,133 @@ Another set of hypotheses are the linear threshold functions in $\bbR^n$, and th
 	A good heuristic measure for VC dimension is the number of parameters. There are pathological examples, but they are truly that.
 \end{rmk}
 
+We have a nice little lemma:
+\begin{lem}[Sauer]
+	If $d=\operatorname{VCdim}(\calH)$, then 
+	\[\Pi_\calH(m)\le\sum_0^d\binom{m}{i}.\]
+\end{lem}
+\begin{rmk}
+	A ``nicer'' upper bound leverages
+	\[\sum\binom{m}{i}\le\left(\frac{em}{d}\right)^d\]
+	whenever $m\ge d\ge 1$.
+\end{rmk}
+
+Plugging this into the bound on the error of a hypothesis, we get that (forgetting the relatively small log term) that the VC dimension $d$ gives us
+a complexity measure---that is, it gives a bound on the error of a consistent hypothesis.
+
+\subsection{Non-consistent Hypotheses}
+The results so far have been great, but has always assumed that there is a consistent hypothesis to find. But what if our data is noisy? Then 
+learning the concept is no longer about finding the concept that matches \textit{all} the given data.
+
+Now we consider data $(x,y)\sim D$ to be a pair jointly sampled from some distribution $D$. We do basically the same 
+thing to compute error:
+\[\err_D(h)=\Pr_{(x,y)\sim D}[h(x)\ne y].\]
+We are still trying to minimize the generalization error $\err(h)$ over $\calH$ given some sample $(x_i,y_i)$ sampled from $D$.
+\begin{defn}
+	Write the \textbf{empirical error} as 
+	\[\widehat\err(h)=\frac{1}{m}\sum_1^m\delta_{h(x_i)\ne y_i}\]
+\end{defn}
+And then we can follow the route called \textit{empirical risk minimization} (ERM) that finds an empirical solution:
+\[\hat h=\argmin_{h\in\calH}\widehat\err(h).\]
+
+We want to get to the situation in which, with probability greater than $1-\delta$, for all $h\in\calH$,
+\[|\err(h)=\widehat\err(h)|\le\varepsilon.\]
+This result is a kind of \textbf{uniform convergence result} which is the kind of thing we are after. Obviously this is useful since it allows us 
+to bridge the gap between imperfect information and the true concept.
+
+Now $\delta_{h(x_i)\ne y_i}=1$ with probability $\err(h)$ and zero otherwise.
+
+\begin{ex}
+	A quick aside: Consider IID variables $Z_1,\dots,Z_m$ with $Z_i\in[0,1]$. Let $p=\bbE[Z_i]$ and then 
+	let $\hat p=\frac{1}{m}\sum_i Z_i$ be the empirical mean.
+
+	Then there is a result called \textbf{Hoeffding's inequality}, which claims
+	\[\Pr[\hat p\ge p+\varepsilon]\le e^{-2e\varepsilon^2m}.\]
+
+	Notice that what this says is that the empirical average converges to its expected value. So we can think of this 
+	as a function converging
+	\[f(Z_1,\dots,Z_m)\to\bbE[f(Z_1,\dots,Z_m)].\]
+\end{ex}
+This idea leads us to:
+\begin{lem}[McDiarmid's Inequality]
+	Suppose $f(z_1,\dots,z_m)$ is real valued such that chainging $z_i$ changes $f$ by at most $c_i$, and furthermore the $z_i$ are independent, but not necessarily identically distributed.
+	Then you get a nice bound on the error (I didn't get it in time but I am sure it is online.)
+\end{lem}
+
+So if we let $Z_i=\delta_{h(x_i)\ne y_i}$ and let $p=\bbE Z_i=\err(h)$ and $\hat p=\widehat\err(h)$, then for any particular $h\in\calH$,
+\[\Pr[|\err(h)-\widehat\err(h)|\ge \varepsilon]\le 2e^{-2\varepsilon^2 m}.\]
+So when $\calH$ is finite, we can use the union bound to say 
+\[\Pr[\exists h\in\calH: |\err(h)-\widehat\err(h)|\ge \varepsilon]\le 2|\calH|e^{-2\varepsilon^2 m}\]
+then setting the RHS equal to $\delta$,  we get that with probability $1-\delta$, for all $h\in\calH$,
+\[|\err(h)-\widehat\err(h)|\le\calO\left(\sqrt{\frac{\ln|\calH|+\ln\frac{1}{\delta}}{m}}\right)\]
+or in another (slightly weaker but sometimes more suggestive) form:
+\[\err(h)\le\widehat\err(h)+\calO\left(\sqrt{\frac{\ln|\calH|+\ln\frac{1}{\delta}}{m}}\right)\]
+\begin{rmk}
+	Notice that this really (finally) ties together how several aspects impact learning: it relates the true error to the sample size, the complexity class of the concept, 
+	and the consistency of the hypothesis with the sample data.
+\end{rmk}
+
+\begin{rmk}
+	Notice that as the complexity of your hypotheses increase, we expect the empirical error to decrease, but if we assume that 
+	the above is truly a good bound for $\err(h)$, we would expect that the true error will begin by dropping, but eventually the growth term from $\ln|\calH|$
+	will overtake things and cause the error to rise again.
+
+	This is one way to think about the concept of \textbf{overfitting}: the complexity of your hypothesis functions can incorporate more and more pathological functions that are less likely to be realistic.
+\end{rmk}
+
+\subsection{Another Complexity Measure}
+Suppose we have a labelled sample $S$ consisting of $(x_i,y_i)$, where we can now assume the label space is $\pm 1$.
+Then if we have a hypothesis, we can compute the training error $\widehat\err(h)$:
+\[\widehat\err(h)=\frac{1}{m}\sum_i\delta_{h(x_i)\ne y_i}=\frac{1}{m}\sum_i \frac{1-y_ih(x_i)}{2}=\frac{1}{2}-\frac{1}{2}\left(\frac{1}{m}\sum_i y_ih(x_i)\right)\]
+and the term in parentheses is another quantity we can consider which is just a constant away from training error.
+
+So we can consider computing 
+\[\bbE_{\mathbf\sigma}[\max_{h\in\calH}\sum_i\sigma_ih(x_i)]\]
+where $\sigma_i$ are $\pm 1$ equally likely. In the case that $|\calH|=1$, we get that this value is zero and when $\calH$ shatters $S$ (the set of all $m$-tuples of $\pm 1$), 
+the value is 1. These serve as the two extremes, obviously.
+
+We would like to work with this towards describing convergence (and rates thereof) towards the generalization error.
+To do this, we need to broaden the context slightly. Let $f:Z\to\bbR$ (standing in for the hypothesis), a space $\calF$ ($\calH$), and define the \textbf{(empirical) Rademacher complexity} to be 
+\[\hat R_\scrF(S)=\bbE_\sigma\left[\sup_{f\in\scrF}\frac{1}{m}\sum_i\sigma_if(z_i)\right]\]
+and the expected Rademacher complexity is 
+\[R_\scrF(m)=\bbE_S[\hat R_\scrF(S)]\]
+
+Then we want to show that for all $f\in\scrF$ that $\hat\bbE_S[f]\to\bbE[f]$. Specifically,
+\begin{thm}
+	Let $\scrF$ be a family of functions $f:Z\to[0,1]$ and let $S$ be a collection of $z_i$ where $z_i\sim D$. Then with probability $1-\delta$,
+	and for all $f\in\scrF$,
+	\[\bbE[f]\le\hat\bbE_S[f]+2\cdot\Psi+\calO\left(\sqrt{\frac{\ln(1/\delta)}{m}}\right)\]
+	where $\Psi$ is either $\hat R_\scrF(S)$ or $R_\scrF(m)$.
+\end{thm}
+\begin{prf}
+	Let $\Phi(S)=\sup_{f\in\scrF}(\bbE[f]=\bbE_S[f])$. Then first we show (via McDiarmid) that 
+	\[\Phi(S)\le \bbE_S[]\Phi(S)]+\calO\left(\sqrt{\frac{\ln 1/\delta}{m}}\right).\]
+	So then we have reduced the problem with finding some bound for $\bbE_S[\Phi(S)]$.
+
+	Then let $S'$ to be a hypothetical second sample (called the ``ghost sample''). Compute 
+	\[\bbE_S[\Phi(S)]=\bbE_S[\sup_f(\bbE[f]-\hat\bbE_S[f])]\le \bbE_{S,S'}[\sup(\hat\bbE_{S'}[f]-\hat\bbE_S[f])]\]
+	There is something to prove in the last line there but he didn't show us. He said there was a slide somewhere. :)
+
+	For the next step, go through the two samples $S$ and $S'$ one index at a time and for each $i$ with equal probability either swap $z_i$ and $z_i'$ or do nothing.
+	Call the resulting samples $T$ and $T'$. But then the following two expressions have the same distribution:
+	\[\hat\bbE_{S'}[f]-\hat\bbE_S[f]\quad\text{and}\quad \hat\bbE_{T'}[f]-\hat\bbE_T[f]\]
+	and so if we let $\sigma_i$ denote the random variable for whether we swapped at the $i^{th}$ step ($+1$ if we swapped $z_i$ and $z_i'$ and $-1$ otherwise),
+	the latter is 
+	\[\frac{1}{m}\sum_i\sigma_if(f(z_i')-f(z_i))\]
+	so we get 
+	\[\bbE_{S,S'}[\sup_f(\hat\bbE_{S'}-\hat\bbE_S[f])]=\bbE_{S,S'}\left[\sup_f\left(\frac{1}{m}\sum_i\sigma_if(f(z_i')-f(z_i))\right)\right]\]
+
+	Finally we can show (another slide) that this value is at most $2R_\scrF(m)$ and then use McDiarmid's once more to show that the expected Rademacher complexity is close enough to that of the empirical RC.
+\end{prf}
+
+Now the whole point was to show that $\err(h)\approx \widehat\err(h)$. One can show the empirical Rademacher complexity of the class of loss functions comprised of indicator functions $l(x,y)=\delta_{h(x)\ne y}$ is twice that of $\calH$ itself.
+You can easily plug this in to get $\bbE[l_h]$. Then you can get what you want.
+
+Now if $|\calH|<\infty$, (careful, he made a notation error earlier so I am switching subscripts and arguments in Rademacher complexities--they are still the same)
+\[\hat R_S(\calH)\le\sqrt{\frac{2\ln|\calH|}{m}}.\]
+
+If the space is infinite, then we choose a representative hypothesis for each behavior seen in applying all hypotheses to $S$. Call this space $\calH'$ and notice that $|\calH'|=|\Pi_\calH(S)|.$
+Then one can show that the empirical Rademacher complexity of $\calH'$ is the same as that of $\calH$! 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -319,5 +447,78 @@ The the likelihood of $x\in\{-1,1\}^n$ is given as follows: let $A=(a_{ij})$ be 
 \[\prod_{ij}\left[\frac{1+x_ix_j}{2}\left(pa_{ij}+(1-p)(1-a_{ij})+\frac{1-x_ix_j}{2}(qa_{ij}(1-q)(1-a_{ij}))\right)\right]\]
 this is non-convex! But we can look at a convex upper bound and we're good! Next time we'll talk about gradient descent.
 
+\subsection{Gradient Descent}
+This is the most simple algorithm we will study (also one of the most used ones). It is an iterative method where we define 
+\[x_{t+1}=x_t-\eta\nabla f(x_t)\]
+which dates back to the mid 1800's (likely by Cauchy). Notice that this is similar to Newton's method, but the latter requires inverting an $n\times n$ matrix 
+and this was an attempt to avoid that difficult computation.
+
+Why does this work? By Taylor's theorem, $f(y)\approx f(x)+\nabla f(x)\cdot (y-x)$. The idea here is that the negative $\nabla f(x)$ direction is in the direction of the minimum, so we just follow that.
+
+Now if we have a convex function, where $f(x)-f(y)\le\nabla f(x)\cdot (x-y)$, we can set $y=x^\ast$ and define 
+\[\delta(x):=f(x)=f(x^\ast)\le\nabla f(x)\cdot (x^\ast-x)=-\nabla f(x)\cdot(x^\ast-x)\]
+then the idea is that progress in the $x^\ast-x$ direction (that is towards the target) is bounded below by $\delta(x)$.
+That is to say: \textit{the rate of decrease of the instance to OPT is lower bounded by the suboptimal gap.}
+
+There is a small problem, namely that we also take a (hopefully small) step away from the direct-line path from $x$ to $x^\ast$. To fix this, we
+use continuous time analysis:
+\[\frac{d}{dt}x(t)=-\nabla f(x(t))\]
+which we call the \textbf{gradient flow.} Then 
+\[\frac{d}{dt}\frac{1}{2}\|x(t)-x^\ast\|^2=\left(\frac{d}{dt}(x(t)-x^\ast)\right)\cdot(x(t)=x^\ast)=-\nabla f(x(t))\cdot (x(t)-x^\ast)\le -\delta(x(t))\]
+and integrating over time:
+\[\int_0^\tau \frac{1}{2}\|x(t)-x^\ast\|^2 \mathrm{d}t\le\int_0^\tau \delta(x(t))\mathrm{d}t\]
+and using the FTOC and dropping the $\tau$ term (and normalizing):
+\[\frac{1}{\tau}\int_0^\tau\delta(x(t))\mathrm dt\le \frac{1}{2\tau}\|x(0)-x^\ast\|^2:=\frac{r_0^2}{2\tau}\]
+and so finally
+\[\delta\left(\frac{1}{\tau}\int_0^\tau x(t) \mathrm{d}t\right)\le\frac{r_0^2}{2\tau}.\]
+
+Of course this isn't a discrete process, so it's useless for coding! So we want to run gradient descent with step size $\eta$ for $T$ steps and approximate this integral with a finite sum from $1$ to $T$.
+Then if we further impose that $f$ is Lipshitz ($\|\nabla f(x)\|\le L$) then the error in this approximation is at worst $\eta L^2$.
+So if we are trying to measure the total error of our discretized algorithm from the true value, we get an error bound 
+\[\frac{r_0^2}{T\eta}+\eta L^2\le \frac{r_0L}{\sqrt{T}}\]
+for a ``good'' choice of $\eta=\frac{r_0}{L\sqrt{T}}$.
+\subsubsection{Discrete Time Analysis}
+\begin{thm}
+	Let $g_1,\dots,g_T$ be arbitrary vectors in $\bbR^n$ and that $x_{t+1}=x_t-\eta g_t$. Then for any $x\in\bbR^n$,
+	\[\sum_1^Tg_t(x_t-x)\\le \frac{\|x_1-x\|^2}{2\eta}+\eta\sum_1^T\|g_T\|^2\]
+\end{thm}
+\begin{cor}
+	If $g_t=\nabla f(x_t)$ ($f$ convex) and $\|nabla f(x_t)\|\le L$, then
+	\[f\left(\frac{1}{T}\sum_1^Tx_t\right)-f(x^\ast)\le\frac{1}{T}\sum_1^T(f(x_t)-f(x^\ast))\le\frac{1}{T}\sum \nabla f(x_t)(x_t-x^\ast)\le\frac{r_n^2}{2\eta T}+\eta L^2\] 
+\end{cor}
+The proof here is really just one line of computation but I missed it. Interestingly, the proof gives us \textit{equality} rather than inequality. I suppose that it's nice to use it as if it were a bound.
+
+\subsubsection{Projective Gradient Descent}
+A generalization is optimization with some constraint. So if we have a bounded convex set $K$, we just follow each step in gradient descent with a projection onto the closest point in $K$ (should we leave it).
+This is only better for us since 
+\begin{lem}
+	$\|P_K(x)-z\|\le\| x-z\}$ for any $z\in K$.
+\end{lem}
+\begin{rmk}
+	Notice that we are assuming here that both $K$ and $f$ are convex. Without convexity we definitely don't have this.
+\end{rmk}
+
+\subsection{Stochastic Gradient Descent}
+We begin with a corollary of the theorem we just proved for standard GD:
+\begin{cor}
+	Say that $g_t$ is a random variable such that $\bbE[g_t|x_t]=\nabla x_t$ and that $\bbE[\|g_t\|^2]<B^2$.
+	Then 
+	\[\bbE[f\left(\frac{1}{T}\sum_1^T x_t\right)-f(x^\ast)]\le\frac{r_1^2}{2\eta}+\frac{\eta}{2}TB^2\le\frac{r_1B}{\sqrt{T}}\]
+	given an optimal choice of $\eta$.
+\end{cor}
+
+So then we can use this result to define SGD, Stochastic Gradient Descent. Let $f(x)=\bbE_{(a,y)}l(x,(a,y))$.
+The idea here is that we don't have the actual gradient of the loss function, but we have access (under the statistical learning framework) to a continuous stream of IID data.
+So we define the \textbf{stochastic gradient}:
+\[g_t=\nabla_x l(x_t,(a,t,y_t))\]
+that is, compute the $x$ gradient of $l(x,(a_t,y_t))$ and evaluate at $x_t$. Then basically this pos right into the above corollary.
+
+\begin{rmk}
+	here the notation varies from statistical learning, so think of $x$ as our hypothesis (the thing we're optimizing over) and $(a,y)$ denotes a sample from the dataset.
+\end{rmk}
+
+Note that here you only get one pass on the data (although here you can directly control the generalization error as opposed to bounding it with testing error in the other class).
+
+Instead, we can do multi-pass SGD where at each step we sample uniformly data points from your dataset (possibly having much more steps than there are data points) but then your function converges to an unbiased estimator for the test error rather than the generalization error.
 
 \end{document}
