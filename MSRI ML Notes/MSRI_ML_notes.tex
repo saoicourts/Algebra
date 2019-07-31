@@ -33,6 +33,7 @@
 % Document-Specific Macros
 \DeclareMathOperator{\err}{err}
 \DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
 
 \begin{document}
 %make the title page
@@ -354,6 +355,71 @@ Now if $|\calH|<\infty$, (careful, he made a notation error earlier so I am swit
 If the space is infinite, then we choose a representative hypothesis for each behavior seen in applying all hypotheses to $S$. Call this space $\calH'$ and notice that $|\calH'|=|\Pi_\calH(S)|.$
 Then one can show that the empirical Rademacher complexity of $\calH'$ is the same as that of $\calH$! 
 
+\subsection{Weak Learning}
+At the end of the last lecture we discussed the ideal of weak vs. strong learning. In weak learning, we only require that there is an algorithm yielding a hypothesis $h$ such that $\err_R(h)\le\frac{1}{2}-\gamma$ for some $\gamma>0$.
+But surprise!
+\begin{thm}
+	A class is strongly learnable if and only fif it is weakly learnable.
+\end{thm}
+Today we will discuss why. We want to convert any algorithm that weakly learns a class into one that strongly learns the class. The idea here is that a class $\calC$ is either completely (PAC) learnable or else 
+there is no algorithm that learns the concept any better than random chance.
+
+\subsubsection{The Ada Boost Algorithm}
+We will assume we are given a weak learning algorithm $A$ and data $(x_1,y_1),\dots,(x_m,y_m)\sim\scrD$. We want to find a hypothesis $H$
+whose error $\err_\scrD(H)$ is arbitrarily small.
+\begin{defn}
+	A theorem that can take a weak learning algorithm and convert it into an $\varepsilon$-good hypothesis is called a \textbf{boosting algorithm.}
+\end{defn}
+
+The basic idea is what one would expect; run $A$ a total of $T$ times, extracting weak hypotheses $h_1,\dots,h_T$ and somehow combine these in a way to get a strong hypothesis $H$. There is a problem with just feeding the same data in 
+to $A$ over and over (e.g. $A$ may be deterministic). So instead we need to find a way of creating distributions $D_1,\dots, D_T$ that ``focus in'' on the bad/difficult examples that the weak hypotheses fail on.
+
+\begin{rmk}
+	Notice that the definition of learnability means that there has to be an algorithm that works \textbf{for all true distributions}. So for instance, the fact that 
+	we can learn something about the weather, but can't get it $\varepsilon$-good. This is because our algorithms only work well (enough) on a particular distribution.
+\end{rmk}
+
+Let $\varepsilon_t=\err_{D_t}(h_t)=\frac{1}{2}-\gamma_t$ and notice $\gamma_t\ge\gamma>0$. Then define the following distributions: $D_1$ will be the uniform distribution, so the weight on the $i^{th}$ training 
+datum: $D(i)=\frac{1}{m}$. Then define the rest iteratively:
+\[D_{t+1}(i)=\frac{D_t(i)}{Z_t}\cdot \left\{\begin{array}{lr}e^{-\alpha_t},& h_t(x_i)=y_i\\
+e^{\alpha t}, & \text{otherwise}\end{array}\right.=\frac{D_t(i)e^{-\alpha_ty_ih_t(x_i)}}{Z_t}\]
+where $Z_t$ is a normalization constant and 
+\[\alpha_t=\frac{1}{2}\ln\left(\frac{1-\varepsilon_t}{\varepsilon_t}\right)>0\]
+
+Then we output $H$ which is defined as 
+\[H(x)=\operatorname{sign}\left(\sum_1^T\alpha_t h_t(x)\right).\]
+That is, we let a weighted sum (according to the error on the provided distribution) tells us what to select.
+
+\begin{thm}
+	\[\widehat\err(h)\le \prod_1^T2\sqrt{\varepsilon_t(1-\varepsilon_t)}=\prod\sqrt{1-4\gamma_t^2}\le\exp\left(-2\sum\gamma_t^2\right)\]
+	So if $\gamma_t>\gamma$, we get 
+	\[\widehat\err(h)\le e^{-2\gamma^2T}\]
+\end{thm}
+\begin{prf}
+	He went too fast. Slides are somewhere supposedly.
+\end{prf}
+
+So we get a bound on training error, great! Let's turn it into something about generalization error:
+if $h_t\in\calH$ and $d=\operatorname{VCdim}(\calH)$, then with probability $1-\delta$ (see problem session)
+\[\err(H)\le\widehat\err(H)+\tilde\calO\left(\sqrt{\frac{Td+\ln 1/\delta}{m}}\right)\]
+where $\tilde\calO$ means that we ignore log factors.
+
+Then something that may be surprising is that as $T$ grows, we may expect that eventually we will overfit our training data, but in practice you can often run this very far out and just keeping better results!
+in fact, your output $H$ will continue to get better even after it achieves zero error on the training set (since the underlying $h_t$ are still incorrect).
+
+But this points to the issue: the test error doesn't tell the whole story. Instead we are interested in measuring the \textit{confidence} the algorithm has in the combined classifier. So how do we do that?
+Recall that to determine $H$ we held an ``election'' for the best output. What we are interested in here is the \textbf{margin} (the difference between the fraction of votes for and against an output):
+we call the margin the \textit{weighted fraction of the $h_t$'s correct minus the weighted fraction of the $h_t$'s incorrect.}
+
+Doing some math, you get 
+\[\text{margin}=y\cdot\frac{\sum \alpha_t h_t(x)}{\sum\alpha_t}\]
+
+Since we are about out of time, we are sprinting to the finish line: Doing an analysis, we can show that this algorithm tends to push the margins towards the positive. Then you prove that 
+this phenomenon tends to create better generalization performance. Note that we can actually remove the dependence on $T$ by doing the following:
+\[\err(H)\le S+\tilde\calO\left(\frac{d/\theta^2+\ln 1.\delta}{m}\right)\]
+where $S$ is the fraction of training examples with margin $\le\theta$.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -520,5 +586,120 @@ that is, compute the $x$ gradient of $l(x,(a_t,y_t))$ and evaluate at $x_t$. The
 Note that here you only get one pass on the data (although here you can directly control the generalization error as opposed to bounding it with testing error in the other class).
 
 Instead, we can do multi-pass SGD where at each step we sample uniformly data points from your dataset (possibly having much more steps than there are data points) but then your function converges to an unbiased estimator for the test error rather than the generalization error.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Bandits}
+This series was given by Kevin Jamieson, a professor in the CSE department here at UW.
+
+\subsection{Introduction}
+The core idea here (motivated very well by his description of the WSJ front page (ads, content, etc) and google maps (that does bandit-like testing to find new good routes) that balances
+the exploration (data-gathering) phase and the application phase and the transiton between them. It more resembles a conversation than a one-time transaction.
+
+The name comes from slot machines, obviously. :) We are thinking of these problems as having a slot machine with $n$ ``arms'', which can be pulled to yield some data.
+So the input to the algorithm is the number $n$ and for $t=1,2,\dots$, the algorithm pulls some arm $I_t\in[n]$ and nature reveals a corresponding reward $r_t\sim P_{I_t}$ where 
+$\bbE[r_t|I_t]=\theta_{I_t}^\ast$.
+
+\subsubsection{Regret Minimization}
+We define the \textbf{regret} as follows:
+\begin{defn}
+	After $T$ timesteps, the regret is 
+	\[R_T=\max_i\theta_i^\ast T-\bbE\left[\sum_1^T r_t\right]\]
+\end{defn}
+Then the goal is to achieve ``sublinear regret'', that is get that $R_T\in\mathbf{o}(T)$.
+\begin{lem}
+	\begin{align*}
+		R_T&=\max_i\theta_i^\ast T-\bbE[\sum_1^T\sum_1^n r_t\delta_{I_t=i}]\\
+		&=\max\theta_i^\ast T - \sum_1^n\bbE[\sum+1^T\theta_i^\ast\delta_{I_t=i}]\\
+		&=\max\theta_i^\ast T-\sum_1^n\theta_i^\ast\bbE[T_i]\\
+		&=\sum_2^n(\theta_1^\ast-\theta_i^\ast)\bbE[T_i]\\
+		&=\sum_2^n\Delta_i\bbE[T_i].
+	\end{align*}
+\end{lem}
+
+\subsection{Another game}
+This leads us to the concept of \textbf{best-arm identification}: we fix some $\delta\in(0,1)$ and we identify $\argmax_i\theta_i^\ast$ with probability $1=\delta$ with as few as possible total pulls.
+This time we don't put an upper bound on the time you're given, and instead your job is to identify what the best strategy is.
+
+\begin{defn}
+	A random variable $X$ is \textbf{$R$-sub-Gaussian} if 
+	\[\bbE[\exp(\lambda(x))]\le\exp(\lambda R^2/2)\]
+\end{defn}
+\begin{rmk}
+	Then by Hoeffding, if $X\in[a,b]$  and letting $R^2=\frac{(b-a)^2}{8}$ and notice when $X\sim \calN(0,1)$, we get $R^2=1$.
+\end{rmk}
+
+Then we can develop the Chernoff bound: Suppose $X_i$ are IID and $1$-sub-Gaussian. Then 
+\begin{align*}
+	\bbP(\sum_1^n X_i >\varepsilon)&=\bbP(\exp(\lambda\sum X_i) >\exp(\lambda\varepsilon))\\
+	&\le e^{-\lambda\varepsilon}\bbE[\exp(\lambda\sum X_i)]\\
+	&= e^{-\lambda\varepsilon}\prod\bbE[e^{\lambda X_i}]\\
+	&\le e^{-\lambda\varepsilon}(e^{\lambda^2/2})^n\\
+	&\le e^{-n\varepsilon^2/2}
+\end{align*}
+where the last step ``comes from calculus''. So by letting $\delta=e^{-n\varepsilon^2/2}$, one can solve for epsilon
+and get that with probability $1-\delta$, $\frac{1}{n}\sum X_i\le\sqrt{\frac{2\ln 1/\delta}{n}}$.
+
+If $n=2$, say $\theta_1^\ast\theta_2^\ast$ and $\Delta=\theta_1^\ast-\theta_2^\ast$. If both arms are pulled $\tau$ times, let the event
+\[\calE_i=\left\{\left|\theta_i^\ast-\frac{1}{\tau}\sum_{t=1}^\tau X_{i,t}\right|\le\sqrt{\frac{2\ln (4/\delta)}{\tau}}\right\}\]
+for $i=1,2$ (these are the ``good events''), then $\bbP(\calE_i^C)\le\delta/2$, so 
+\[\bbP(\calE_1^C\cup\calE_2^C)\le\sum\bbP(\calE_i^C)\le\delta.\]
+Then if $\tau=8\Delta^{-2}\ln(4/\delta)$, we can say 
+\[\hat\theta_2-\hat\theta_2=\hat\theta^1-\theta_1^\ast-\hat\theta_2+\theta_2^\ast+\theta_1^\ast-\theta_2^\ast>0\]
+with probability $1-\delta$. This of course means that we have accurately determined which arm to pull.
+
+Now consider the regret:
+\[R_T=\theta_1^\ast t=\bbE[\theta_1^\ast T_1+\theta_2^\ast T_2]=(\theta_1^\ast-\theta_2^\ast)\bbE[T_2]=\Delta\bbE[T_2]\]
+from which we can compute 
+\[\Delta\bbE[T_2]=\Delta\bbE[T_2\delta_{\calE_1\cap\calE_2}+T_2\delta_{\calE_1^C\cup \calE_2^C}]\le\Delta\tau+\Delta T\bbP[\calE_1^C\cup\calE_2^C]\]
+and so if we set $\delta=\frac{1}{T}$,
+\[R_T\le 8\Delta^{-1}\log(8T)+\Delta\]
+But notice that if we just always pick the bad arm, the worst regret we can get is $R_T\le \Delta T$. So 
+\[R_T\le1+\min{8\Delta^{-1}\log(8T),\Delta T}\le 1+\sqrt{8T\ln(8T)}\]
+
+If you were to graph the minimum function we had there, you'd notice that the regret tends towards zero near zero and towards infinity. The idea here is that if there is only a small difference between the optimal and suboptimal choice, 
+then guessing randomly will only incur a tiny regret. Likewise, if the means are very far apart, you will quickly detect this through testing. There is a spike at about $1/\sqrt{T}$ that is the place where both ideas miss the mark.
+
+\subsection{Extending to more Arms}
+We are going to start by writing down an algorithm and then trying to analyze it:
+
+\subsubsection{Algorithm}
+We input $n$ arms and confidence $\delta$. Initialize $\hat X_1=\{1,\dots,n\}.$ Then for $l=1,2,\dots$ we let $\calE_l=2^{-l}$ and 
+\[\tau_l=\left\lceil 2\calE_l^{-2}\ln\frac{4 l^2 n}{\delta}\right\rceil\]
+Then pull each arm in $\hat X_l$ $\tau_l$ times and compute $\hat\theta_{i,l}$. Then define 
+\[\hat X_{l+1}=\hat X_l\setminus\left\{i\in \hat X_l:\max_{j\in\hat X_l}\hat\theta_{j,l}-\hat\theta_{i,l}>2\varepsilon_l\right\}\]
+
+\subsubsection{Analysis}
+Define $\calE_{i,l}=\{|\hat\theta_{i,l}-\theta_i^\ast|\le\varepsilon_l\}$ and let $\calE=\cap_{i,l}\calE_{i,l}$. But then 
+\[\bbP(\calE_{i,l}^C)\le 2\bbP(\hat\theta_{i,l}-\theta_i^\ast>\varepsilon_l)\le 2\exp{-\tau_l\varepsilon^2_l/2)}\le\frac{\delta}{2l^2n}\]
+and so $\bbP(\calE^c)\le\delta.$
+
+\begin{defn}
+	Let $\Delta_i=|\theta_i^\ast-\theta_1^\ast|$ for all $i>1$ and define $\Delta_1=\Delta_2$ (the minimum (nonzero) gap), where we assume for notational simplicity that $1\ge\theta_1^\ast>\theta_2^\ast\ge\cdots\ge\theta_n^\ast\ge 0$.
+\end{defn}
+\begin{lem}
+	With probability greater or equal to $1-\delta$, we have $1\in\hat X_l$ and 
+	\[\max_{i\in\hat X_l}\Delta_i\le 8\varepsilon_l\]
+	for all $l$.
+\end{lem}
+\begin{rmk}
+	The key thing to notice in the proof here is the fact that for any $j\in\hat X_l$,
+	\[\hat\theta_{j,l}-\hat\theta_{1,l}=(\hat\theta_{j,l}-\theta_j^\ast)-(\hat\theta_{1,l}-\theta_1^\ast)-\Delta_j\le 2\varepsilon_l-\Delta_j\le 2\varepsilon_l\]
+\end{rmk}
+
+Now let's talk about regret:
+\[R_T=\bbE\left[\sum_1^n\Delta_i T_i\right]\]
+and so for any $\nu>0$,
+\[\sum_1^n\Delta_iT_i\le \nu T+\sum_{l:8\varepsilon_l\ge \nu}8\varepsilon_l\tau_l|\hat X_l|\le \nu T+\sum_{l-1}^{\lceil\lg\max(\Delta,\nu)^{-1}\rceil}8\varepsilon_l\tau_l\delta_{\Delta_i\le 8\varepsilon_l}\]
+and then doing some more massaging, we get 
+\[\sum\Delta_iT_i\le \nu T+\sum_1^n c(\max(\Delta_i,\nu)^{-1})\log\left(\frac{n\log(\max(\Delta_i,\nu)^{-1})}{\delta}\right)\]
+
+\begin{rmk}
+	Notice there are some serious limitations here. In particular, it requires prior knowledge of $T$, which we don't always have.
+\end{rmk}
 
 \end{document}
