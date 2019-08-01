@@ -32,8 +32,8 @@
 
 % Document-Specific Macros
 \DeclareMathOperator{\err}{err}
-\DeclareMathOperator{\argmin}{argmin}
-\DeclareMathOperator{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
 
 \begin{document}
 %make the title page
@@ -587,6 +587,60 @@ Note that here you only get one pass on the data (although here you can directly
 
 Instead, we can do multi-pass SGD where at each step we sample uniformly data points from your dataset (possibly having much more steps than there are data points) but then your function converges to an unbiased estimator for the test error rather than the generalization error.
 
+\subsection{Optimality}
+Recall that we had two kind of bounds on expectation: $\frac{r_0L}{\sqrt{T}}$ and $\frac{r_0B}{\sqrt{T}}$ where $r_0=\|x_0-x^\ast\|_2$,
+$L=\sup_x\|\nabla f(x)\|$ and $B\ge \bbE[\|g_t\|^2]$ where $g_t$ is an unbiased estimator for $\nabla f(x_t)$, which we think of as a random oracle.
+
+\subsubsection{Basic minimax principle}
+We want to show that for all (possible randomized) algorithms such that there exists a function/oracle such that the error rate of gradient descent is optimal.
+It suffice to find a \textbf{random} function such that any deterministic algorithm on this function has error rate bigger than $\frac{\square}{\sqrt{T}}$ in expectation.
+
+This is a consequence of the fact that $\min\max\ge\max\min$ (these are read in the opposite order than you'd think).
+
+\subsubsection{Random oracle lower bound} 
+Let $K=[-1,1]$ and $f(x)=\xi x$ where $\xi=\pm\varepsilon$ randomly with equal probability.
+Then our random oracle is $g_t\sim \calN(\xi,1)$ (equivalently $g_t=\xi+Z_t$ for $Z_i$ IID $\calN(0,1)$). Intuitively, after $T$ queries the best estimator for $\xi$ is the 
+empirical mean $\frac{1}{T}\sum_1^T g_t\sim\calN(\xi,\frac{1}{T})=\xi+\frac{1}{\sqrt{T}}Z$ where $Z$ is $\calN(0,1)$.
+
+So if $\varepsilon<\frac{1}{\sqrt{T}}$, there is a constant probability to incorrectly estimate the sign of $\xi$. Formally,
+\begin{lem}
+	For any $\Psi:\bbR^T\to [-1,1],$
+	\[\bbP(\operatorname{sign}(\Psi(g_1,\dots,g_T))=\operatorname{sign}(\xi))\le\frac{1}{2}+\sqrt{T\varepsilon^2}\]
+\end{lem}
+
+\subsubsection{Deterministic oracle model} 
+let $v_1,\dots,v_{T+1}\in\bbR^n$ be a random orthonormal set. Let $f(x)=\max_{i\in[T+1]}v_i\cdot x$. We also let $K=\{x\in\bbR^n:\|x\|_2=1\}$. 
+Then $\nabla f(x)=v_i$ for $i=\argmax_{j} v_j\cdot x$ (except for a set of measure zero, where we can use subgradients).
+
+After $T$ queries, one of the $v_i$ remains unknown, say $T+1$. So for any $x, v_1,\dots, v_T$,
+\[\bbE_f[f(x)|v_1,\dots,v_T]\ge\bbE_f[v_{T+1}\cdot x]|v_1,\dots,v_T]=0\]
+And so $f^\ast=\min_{x\in B}f(x)\le-\frac{1}{\sqrt{T+1}}$. 
+\begin{rmk}
+	It is very important that $T<n$, since we are looking for an orthonormal set! But the bound is not dependent on the dimension! So although we got a similar lower bound on $T$, 
+	we still may be able to do better when we have lower dimension.
+\end{rmk}
+
+To see this, we need 
+\begin{prop}[Gr\"unbaum's Inequality]
+Let $K$ be a convex body. For any half-space $H$ that contains the center of gravity of $K$. Then 
+\[\operatorname{vol}(K]\cap M)\ge\frac{1}{e}\operatorname{vol}(K).\]
+\end{prop}
+
+How do we get half spaces by making gradient queries? Well by convexity, $f(x)\ge f(x_t)+\nabla f(x_t)(x-x_t)\ge f(x_t)$ for any $x\in H_t=\{x:\nabla(x_t)\cdot(x-x_t)\ge 0\}$.
+
+Then we have the \textbf{center of gravity algorithm}: let $K_0=K$ and for any $T\ge 0$, $x_t=cg(K_t)$ and set $K_{t+1}=K_t\setminus H_t$. Then by Gr\"unbaum, $\operatorname{vol}(K_t)\le(1-\frac{1}{e})\operatorname{vol}(K_{t-1})\le(1-\frac{1}{e})^t\operatorname{vol}(K)$
+\begin{thm}
+	Say $f:K\to [-1,1]$. After $\calO(n\log(1/\varepsilon))$ steps, $f(x_t)-f(x^\ast)\le\varepsilon$.
+\end{thm}
+\begin{prf}
+	After this many steps, $\operatorname{vol}(K_t)\le\varepsilon^n\operatorname{vol}(K)$. We claim $\exists \Omega\subseteq K$ such that $\forall x\in\Omega$, $f(x)-f(x^\ast)\le\varepsilon$ and $\operatorname{vol}(\Omega)\ge \varepsilon^n$
+\end{prf}
+
+\subsubsection{Beyond \texorpdfstring{$\frac{1}{\sqrt{T}}$}{1/sqrt(T)} in high dimensions}
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -700,6 +754,131 @@ and then doing some more massaging, we get
 
 \begin{rmk}
 	Notice there are some serious limitations here. In particular, it requires prior knowledge of $T$, which we don't always have.
+\end{rmk}
+
+The previous algorithm we described (which one?) we will denote AE1, and we ended up with regret 
+\[R_T\le\sqrt{cnT\log(nT)}\]
+and 
+\[R_T\le c\sum_2^n\Delta_i^{-1}\log(T)\]
+
+One can show that with probability $\ge 1-\delta$, AE1 give us that $\hat X_l=\{1\}$ after at most 
+\[\tau=\sum_2^n c\Delta_i^{-2}\log\left(\frac{n\log(\Delta_i^{-2})}{\delta}\right)\]
+pulls.
+
+\subsection{Theoretical Bounds}
+Then the question one can ask is whether the bounds given are \textit{tight}. A information-theoretic result we will see in the problem session.
+\begin{prop}
+	Suppose $n$ samples are taken from $\calN(\mu,1)$ where $\mu\in\{0,\Delta\}$. To identify if $\mu=0$ or $\Delta$ with probability $1-\delta$,
+	one requires $n\ge 2\Delta^{-2}\log(1/4\delta).$
+\end{prop}
+
+This really hints how difficult the multi-arm bandit problem can be. 
+\begin{thm}
+	Any $\delta$-PAC on $\{P:P_i=\calN(\theta_i,1),\theta\in[0,1]^n\}$ satisfies 
+	\[\bbE[\tau|\theta^\ast]\ge 2\log(1/2\delta)\sum_2^n\Delta_i^{-2}\]
+\end{thm}
+\begin{rmk}
+	This is a result on expectation rather than a high-probability bound, obviously, but under these conditions one can turn this into a lower-bound in the high-probability case 
+	as well (after losing a big constant factor). Going in the other direction is tricky, because there are bad cases in which this algorithm never terminates or outputs the right thing, so the 
+	expectation goes up a bit.
+\end{rmk}
+\begin{rmk}
+	If we take the partial sums $S_T=\sum_{t=1}^T Z_t$ of your random variables, you get the \textit{law of the iterated logarithm}, which 
+	says 
+	\[\limsup_T\frac{S_T}{\sqrt{2T\log\log T}}=1\]
+	so the $\log\log$ factor in the bound we found is actually tight.
+\end{rmk}
+We also get:
+\begin{thm}\label{thm-UCB}
+	Any algorithm satisfying $\bbE[T_i]\le\mathbf o(T^\alpha)$ for all $i\ne 1$ (suboptimal samples) any $\alpha\in(0,1)$ suffers 
+	\[\lim_{T\to\infty}\frac{R_T}{\log(T)}=\sum_2^n\frac{2}{\Delta_i}\]
+\end{thm}
+and a worst-case result:
+\begin{thm}
+	For any $n$ and $T$, there exists an instance ($\theta^\ast$) such that 
+	\[R_T\ge\sqrt{(n-1)T}/27.\]
+\end{thm}
+\subsection{Upper Confidence Bound}
+An algorithm that achieves the bound in thm~\ref{thm-UCB} is as follows. For $t=1,2,\dots$,
+pull $\argmax_i\hat\theta_{c,T_i(t)}+\sqrt{\frac{2\log(t)}{T_i(t)}}$ where $T_i(t)$ is the number of pulls up to $t$.
+
+This leads to a minimization of regret, but notice that this algorithm is suboptimal on the problem of identifying the best arm. But Kevin 
+created an alteration called ``Lil' UCB'' that proceeds similarly but adds in an extra $\frac{1}{\delta}$ factor (as well as some constants) to achieve optimal best arm identification.
+
+These algorithms have this phenomenon where, as time goes on, the likelihood of being selected gradually increases, but then each pull reduces it somewhat. Also notice that this algorithm 
+is very much not optimal for an overall ranking since it will stop pulling arms that have a bad run. 
+
+\subsection{Linear Bandits}
+Notice that so far we still have a dependence on $n$, but if you are running (e.g.) a music recommendation software, you likely have millions of data points to sample.
+Furthermore, songs have tons of features to compare, so we would like to be able to exploit the fact that a person is likely to enjoy music that is ``close'' under some sort of metric (using genre, BPM, etc).
+
+So we develop a \textbf{linear bandits:} For $t=1,2,\dots$, we pull arm $I_t$ and nature reveals $\langle x_{I_t},\theta^\ast\rangle+\xi_t$. 
+Here we say $\xi_t\sim\calN(0,1)$. We take as known $X=\{x_1,\dots,x_n\}\subset \bbR^d$ and $\theta^\ast\in\bbR^d$ is unknown.
+We define the best arm to be $x^\ast=\argmax_{x\in X}\langle x,\theta^\ast\rangle$.
+
+Say we observe some data $\{(x_i,y_i)\}_1^\tau$ where $y_i=\langle x_i,\theta^\ast\rangle+\xi_i$. Then setting 
+\[\hat\theta=\argmin_{\theta\in\bbR^d}\sum_1^\tau(\langle x_i,\theta\rangle-y_i)^2\]
+and then if $X=(x_i^T)^T$ and $Y=(y_i)=X\theta^\ast+\xi$, then 
+\[\hat\theta=(X^TX)^{-1}X^TY.\]
+
+Then unfolding $Y$, we get 
+\[\hat\theta=\theta^\ast+(X^TX)^{-1}X^T\xi\]
+thus $\bbE[\hat\theta]=\theta^\ast$. Computing the standard deviation:
+\[\bbE[(\hat\theta-\theta^\ast)(\hat\theta-\theta^\ast)]=(X^TX)^{-1}\]
+so $\hat\theta-\theta^\ast\sim\calN(0,(X^TX)^{-1})$.
+
+Importantly, notice that the variance of $\hat\theta-\theta^\ast$ depends only on $X$ so we can ``plan ahead'' to control how good we want our estimator $\hat\theta$ to be!
+
+Now notice that for any $z\in\bbR^d$, we have $\langle z,\hat\theta-\theta^\ast\rangle\sim\calN(0,z^T(X^TX)^{-1}z)$. Then if we just call $\sigma^2=z^T(X^TX)^{-1}z$, then 
+\[\bbP\left(\langle z,\hat\theta-\theta^\ast\rangle>\sqrt{2\sigma^2\log(1/\delta)}\right)\le\delta.\]
+Writing this another way, with probability $1-\delta,$
+\[|\langle z,\hat\theta-\theta^\ast\rangle|\le\sqrt{z^T(X^TX)^{-1}z}\cdot\sqrt{2\log(2/\delta)}=\|z\|_{(X^TX)^{-1}}\sqrt{2\log(2/\delta)}\]
+where, as a matter of notation, we write $x^TAx=\|x\|_A^2$.
+
+Somehow the idea here is that you may have data lining up along a certain line, in which case your confidence interval along the line in question goes down.
+
+\brk
+
+For all $X$, there exists $\lambda\in\Delta_x$ such that 
+\[\tau\sum_{x\in X}\lambda_x xx^T=X^TX\]
+and so if we set $A_\lambda=\sum \lambda_xxx^T$, we get a bunch of optimization problems:
+\begin{itemize}
+	\item E-optimal
+	\[\min_\lambda\max_{\|u\|_2\le 1}u^TA^{-1}_\lambda u\]
+	\item A-optimal
+	\[\min_\lambda\operatorname{Tr}(A_\lambda^{-1})\]
+	\item G-optimal
+	\[\min_\lambda\max_{x\in X}x^TA^{-1}_\lambda x\]
+	\item D-optimal
+	\[\max_{\lambda}\log\det(A_\lambda)\]
+\end{itemize}
+\begin{thm}[Kiefer-Wolfowitz]
+	For any $X\in\bbR^d$ (that spans), there is $\lambda^\ast\in\Delta_X$ such that 
+	\begin{enumerate}
+		\item $\max_\lambda g_D(\lambda)=g_D(\lambda^\ast)$
+		\item $\min_\lambda f_G(\lambda)=f_G(\lambda^\ast)$
+		\item $\operatorname{support}(\lambda^\ast)\le\frac{(d+1)d}{2}$
+		\item $f_G(\lambda^\ast)=g_D(\lambda^\ast)=d$
+	\end{enumerate}
+	where $g_D(\lambda)=\log\det(A_\lambda)$ and $f_G(\lambda)=\max_{x\in X}x^TA_\lambda^{-1}x.$
+\end{thm}
+
+\begin{prop}
+	If $\lambda^\ast$ is the $\frac{(d+1)d}2$-sparse $G$-optimal solution and $x$ is pulled $\lceil\lambda_x\tau\rceil$ and we compute $\hat\theta$ (using at most $\frac{(d+1)d}{2}+\tau$ pulls)
+	then with probability $\ge 1-\delta$, for any fixed $x\in X$,
+	\[\langle x,\hat\theta-\theta^\ast\rangle\le\sqrt{\frac{2d\log(1/\delta)}{\tau}}\]
+\end{prop}
+
+\subsection{AE revisited}
+Recall AE1: for $t=1,\dots$, $\hat\lambda_l$ is $G$-optimal for $\hat X_l$ and $\varepsilon_l=2^{-l}$ and $\tau_l=2d\varepsilon_l^{-2}\log\left(\frac{4l^2|x|}{\delta}\right).$
+Then pull arm $x$ $\lceil\tau_l\hat\lambda_l\rceil$ times and construct $\hat\theta_l$. Then let 
+\[\hat X_{l+1}=\hat X_l\setminus\{x\in\hat X_l:\max_{x'\in X}\langle x'-x,\hat\theta_l\rangle>2\varepsilon_l\}\]
+then $\bbP(\cup_l\cup_{x\in X}\calE_{x,l}^c)\le\delta$ where $\calE_{x,l}$ is the event that $\langle x,\hat\theta_l-\theta^\ast\rangle\le\varepsilon_l.$
+
+Going through basically the entire argument from before,
+\[R_T\le c\sqrt{dT\log(|X|T)}.\]
+\begin{rmk}
+	Notice that part of what we wanted in all this was to get rid of dependence on the sides of in the inputs, $|X|$. The upshot is, in many (all?) cases, you can just a kinds of $\varepsilon$-cover of your space, which means we can replace it with a factor of $d$.
 \end{rmk}
 
 \end{document}
