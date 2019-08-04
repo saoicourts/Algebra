@@ -34,6 +34,7 @@
 \DeclareMathOperator{\err}{err}
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\argmax}{argmax}
+\newcommand{\grad}{\nabla}
 
 \begin{document}
 %make the title page
@@ -637,9 +638,150 @@ Then we have the \textbf{center of gravity algorithm}: let $K_0=K$ and for any $
 \end{prf}
 
 \subsubsection{Beyond \texorpdfstring{$\frac{1}{\sqrt{T}}$}{1/sqrt(T)} in high dimensions}
+The best way to get around the lower bounds we've cooked up for ourselves is to put some further restrictions on our functions:
+\begin{defn}
+	A function $f$ is $\alpha$\textbf{-strongly convex} if $f(x)=g(x)+\frac{\alpha}{2}\|x\|_2^2$, where $g$ is convex.
+\end{defn}
+\begin{rmk}
+	This property is equivalent with the fact that 
+	\[f(x)-f(y)\le \nabla f(x)\cdot (x-y)-\frac{\alpha}{2}\|x-y\|_2^2.\]
+	So we have that $f$ curves away from its tangent at that point like a parabola with coefficient $\alpha$.
+\end{rmk}
 
+Let's do the continuous-time analysis of the gradient flow $\frac{d}{dt}x(t)=-\nabla f(x(t))$. Let $r^2(t)=\|x(t)-x^\ast\|^2$ and $\delta(t)=f(x(t))-f(x^\ast)$.
+Then the calculation we get is 
+\begin{align*}
+	\frac{d}{dt} r^2(t)=-\nabla f(x(t))\cdot(x(t)-x^\ast)\\
+	&\le -\delta(t)-\frac{\alpha}{2}\|x(t)-x^\ast\|^2_2.
+\end{align*}
+Thus $\frac{d}{dt}r^2(t)\le -\alpha r^2(t)$ and so $r^2(t)\le r^2(0)e^{-\alpha t}$. All this to say that gradient flow gets to OPT in time $\calO(\frac{1}{\alpha}\log(r_0^2/\varepsilon))$. By comparison with out strong convexity, 
+we had that 
+\[\frac{1}{\tau}\int_0^\tau\delta(t)\mathrm{d}t\le \frac{r^2_0(0)}{\tau}\]
+and so our time is $\calO(r_0(0)/\varepsilon)$.
 
+By switching from gradient flow to gradient descent, we pick up a discretization error! let $\eta L^2$ be the error from gradient flow at $\tau=T\eta$.
+Then through some analysis, we get a $\tilde\calO(L^2/\alpha T)$ rate.
 
+\brk
+
+Next we can talk about \textbf{smoothness}.
+\begin{defn}
+	A function $f$ is $\beta$-smooth if $\nabla f$ is $\beta$-Lipshitz.
+\end{defn}
+Intuitively, we are looking to improve the discretization error. Before we could overshoot our maximum easily because the gradient could change sharply.
+Now, we are forcing it to tend (loosely) to zero as you get closer to the optimum. Notice
+\[\|\nabla f(x+\eta\nabla f(x))-\nabla f(x)\|\le\beta\eta\|\nabla f(x)\|\]
+which suggests that $\eta\propto\frac{1}{\beta}$ is fine for the discretization. In this case we get convergence like $r^2(0)\beta/T$ (roughly $1/\varepsilon$)
+and if we combine both $\alpha$-strong convexity and $\beta$-smoothness, you get a parameter 
+\[\kappa=\frac{\beta}{\alpha}\]
+called the \textbf{Condition number} and we get growth like $\kappa\log(1/\varepsilon)$
+
+\subsubsection{A formal inequality}
+\begin{prop}
+	Let $x^+=x-\frac{1}{\beta}\nabla f(x)$. Then 
+	\[f(x^+)-f(x)\le\frac{-1}{2\beta}\|\nabla f(x)\|_2^2.\]
+\end{prop}
+\begin{prf}
+	We begin by claiming 
+	\[f(x)-f(y)\le\nabla f(y)\cdot(x-y)+\frac{\beta}{2}\|x-y\|_2^2\]
+	which implies that 
+	\[f(x^+)-f(x)\le\grad f(x)\cdot(x^+-x)+\frac{\beta}{2}\|x^+-x\|_2^2\]
+	and unfolding this 
+	\[f(x^+)-f(x)\le-\frac{1}{2\beta}\|\nabla f(x)\|^2.\]
+\end{prf}
+\begin{defn}
+	A point $x$ is called \textbf{$\varepsilon$-stationary point of $f$} if $\|\grad f(x)\|\le \varepsilon$.
+\end{defn}
+\begin{rmk}
+	The above inequality shows that gradient descent on a bounded, smooth, non-convex function finds an $\varepsilon$-stationary point in $1/\varepsilon^2$ steps.
+\end{rmk}
+\begin{ex}
+	Let $f(x)=\frac{1}{2m}\|Ax-b\|^2$ where $A$ is $m\times m$. Then the Hessian is 
+	\[\grad^2 f(x)=\frac{1}{m}A^TA=\frac{1}{m}\sum_1^ma_ia_i^T\]
+	where the $a_i$ should be thought of as feature vectors. Then the above quantity is the sample covariance matrix of the features.
+
+	In this case, $\alpha=\lambda_{min}(\frac{1}{m}A^TA$ and $\beta=\lambda_{max}(\frac{1}{m}A^TA)$, so if $\|a_i\|_2\le 1$ then $\beta\le 1$.
+\end{ex}
+\begin{rmk}
+	It is natural to ask how we can get a better value of $\beta.$ One way is to convolve your function $f$ with some noise $z$: $\hat f(x)=f(x+z)$.
+
+	Sometimes $f$ is nonsmooth, but can be written as $f=g+r$ where $g$ is smooth and $r$ is ``simple''. Typically one takes $r(x)=\|x\|_1$.
+\end{rmk}
+\subsection{Acceleration}
+It turns out that $1/\sqrt{\varepsilon}$ (for smooth) and $\sqrt{\kappa}\log(1/\varepsilon)$ for smooth and strongly convex functions are achievable!
+
+What could be better than gradient descent? Well here's a crazy idea:
+\[x_{t+1}=\argmin_{\operatorname{span}(\grad f(x_0),\dots,\grad f(x_t))}[f(x)]\]
+where $[f(x)]=\sum_{s=1}^t\lambda_s\grad f(x_s)$. THen if $f$ is quadratic, it turns out that $\lambda_s$ has a closed form formula!
+
+\subsubsection{Nemiraski's Acceleration (1982)}
+Let 
+\[x_{t+1}=\argmin_{x\in P_t} f(x)\]
+where $P_t=\operatorname{span}(x_t^+,\sum_1^t \lambda_s\nabla f(x_s))$.
+
+Then doing some analysis, notice
+\[\sum_1^T\lambda_s\delta_s\le\sum_1^T\lambda_s\grad f(x_s)\cdot(x_s-x^\ast)=\sum_1^T\lambda_s\grad f(x_s)\cdot(-x^\ast)\]
+where the last equality follows since $x_s\in P_{s-1}$ implies that $\grad f(x_s)\in P_{s-2}^\perp$. Thus 
+\[\|x^\ast\|\cdot\sqrt{\sum_1^t\lambda_s^2\|\grad f(x_s)\|^2}\]
+since $\grad f(x_{T+1})\perp \sum_1^T\lambda_s\grad f(x_s)$. But then by smoothness, 
+\[\frac{1}{2beta}\|\grad f(x_s)\|^2\le \delta_s-\delta_{s+1}\]
+and so 
+\[\sum_1^R\lambda_s\delta_s\le\|x^\ast\|\cdot\sqrt{2\beta\sum_1^T\lambda_s^2(\delta_s-\delta_{s+1})}.\]
+
+Now pick some $\lambda_s$ such that $2\beta(\lambda_s^2-\lambda_{s-1}^2)=\lambda_s$ and after some juggling things, 
+\[\delta_T\le\frac{\beta\|x^\ast\|^2}{T^2}\]
+and so we get an algorithm that runs in time like $1/\sqrt{\varepsilon}$.
+
+\subsubsection{Nesterov's AGD (1983)}
+The key breakthrough in this algorithm is that all that matters about the past is the momentum.
+\begin{defn}
+	The \textbf{momentum} if an iterative algorithm is 
+	\[d_t:=\gamma_t(x_t-x_{t-1}).\]
+\end{defn}
+
+The began with Polyak's \textit{heavy ball method.} Let $x_{t+1}=x_t^++d_t$. This method alone doesn't accelerate (can be seen on simple quadratic functions).
+Instead, Nestrov's uses
+\[x_{t+1}=(x_t+d_t)^+.\]
+
+Now for some of the analysis. Unfortuately this is notoriously ``magical'', so hold onto your pants. Denote by $g_t=-\frac{1}{\beta}\grad f(x_t+d_t)$. Thus $x_{t+1}=x_t+d_t+g_t.$
+Then 
+\[\delta_{t+1}-\delta_t=f(x_t+d_t)^+)-f(x_t)\le f(x_t+d_t)=\frac{1}{2\beta}\|\grad f(x_t+d_t)\|_2^2-f(x_t)\]
+by the smoothness of $f$. Then by convexity,
+\[\delta_{t+1}-\delta_t\le \grad f(x_t+d_t)\cdot d_t-\frac{1}{2\beta}\|\grad f(x_t+d_t)\|_2^2=-\beta g_t\cdot d_t-\frac{\beta}{2}\|g_t\|_2^2.\]
+
+But notice that 
+\[\delta_{t+1}=f((x_t+d_t)^+)-f(x^\ast)\le=\beta g_t\cdot(x_t+d_t-x^\ast)-\frac{\beta}{2}\|g_t\|_2^2.\]
+And the plan is to take a combination of these two statements to get a weighted sum of the $\delta_i$ on the left and a telescopic sum on the right. It wasn't that bad. Basically just put in some parameters and then choose them to be the ``right ones''.
+THe punchline is approximate convergence like $\delta_{T+1}\le\frac{\beta\|x_1-x^\ast\|^2}{T^2}.$
+
+\subsection{Some variance reduction techniques}
+\subsubsection{The finite sum problem}
+Let's say we have a function $f(x)=\frac{1}{m}\sum_i f_i(x)$ where $f_i$ is $\beta$-smooth (note that in particular this implies $f$ is $\beta$-smooth) and $f$ is $\alpha$-strongly convex.
+Then stochastic gradient descent does $x_{t+1}=x_t-\eta\grad f_{i_t}(x_t)$ which runs like $1/\alpha\varepsilon$ (the number of ``data operations'').
+
+In regular gradient descent, $x_{t+1}=x_t-\frac{\eta}{m}\sum_1^m\grad f_i(x_t)$, which runs with $\kappa\log(1/\varepsilon)$ data operations.
+The differnce here is that SGD has a lot of variance in its estimators, so to be ``safe'' you have to take smaller steps. On the other hand, GD needs much more data but can run with better accuracy.
+So the idea here is to somehow control the variance.
+
+The key idea is that we, from time, to time, compute a full gradient at some point $y$.
+\[g_t:=\grad f_{i_t}(x_t)-\grad f_{i_t}+\grad f(y)\]
+We can see that $g_t$ is un unbiased estimator of $\grad f_{i_t}(x_t)$ with the added bonus that the variance $\bbE[\|g_t\|^2]$ gets smaller when close to the optimum.
+\begin{thm}
+	During an epoch $T$, let $x_1\leftarrow y$ and for $t\ge 2$, $x_{t+1}=x_t-\eta g_t$. Then set $y$ to be $\frac{1}{T}\sum_1^Tx_t$ and recompute $\grad f(y)$.
+	Then by using $\eta=\frac{1}{10\beta}$,
+	\[f(\text{new } y)-f(x^\ast)\le 0.9 (f(y)-f(x^\ast)).\]
+\end{thm}
+
+\subsection{Further Topics}
+\begin{itemize}
+	\item We talked earlier about decomposing functions into smooth and non-smooth (simple) parts. 
+	\item Mini-batch SGD: write $x_{t+1}=x_t-\frac{\eta}{|B|}\sum_B\grad f_i(x)$ where $B$ is a batch. Then we get similar results for convergence up to $b=\sqrt{m}$.
+	\item Bandit convex optimization
+	\item Interior point method: tells you how to handle complicated $K.$
+	\item Constant step size least squares: no $1/\alpha$ in the bound.
+	\item Mirror descent: the equation $x-\grad f(x)$ doesn't actually make sense (one is a column, one is a row). Instead we pick a function $\phi$ and look at 
+	\[\grad\phi^{-1}(\grad\phi(x)-\grad f(x)).\]
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -880,5 +1022,61 @@ Going through basically the entire argument from before,
 \begin{rmk}
 	Notice that part of what we wanted in all this was to get rid of dependence on the sides of in the inputs, $|X|$. The upshot is, in many (all?) cases, you can just a kinds of $\varepsilon$-cover of your space, which means we can replace it with a factor of $d$.
 \end{rmk}
+
+\subsection{Contextual Bandits}
+Another game we can play: for $t=1,\dots$ Nature reveals context $c_t\sim D$ (IID). Then the player chooses $x_t\in X$ and nature reveals the reward (with noise)
+\[r_t=v(v_t,x_t)+\xi_t\]
+where $X$ is known and we know $\bbE[\xi]=0.$
+
+\subsubsection{Linear Contextual Bandits}
+One can actually capture this in the linear bandit framework. Assume there exists a feater map $\Phi:X\times X\to \bbR^d$ and $v(c,x)=(\Phi(c,x),\theta^\ast)$ for some unknown $\theta^\ast$.
+For example, if $x\in\bbR^p$ and $c\in\bbR^q$, we could have $\Phi(c,x)=\operatorname{vec}(xc^T)\in\bbR^{pq}$.
+\begin{rmk}
+	Often one uses as $\Phi$ a deep network. One can train a deep network and then take out the last layer and use it to assign features to your data.
+\end{rmk}
+\subsubsection{General Policies}
+A policy is a map $\pi:\calC\to X$, that is it assigns an action to each observed context. Then the \textbf{value} $V(\pi)$ is 
+\[V(\pi)=\bbE_{c\sim D}[v(c,\pi(c))+\xi].\]
+To define regret, we say 
+\[R_T=T\cdot v(\pi^\ast)-\bbE\left[\sum_1^T v(\pi_t)\right]\]
+where $\pi^\ast=\argmax_{\pi\in\Pi}v(\pi)$.
+\subsubsection{Inverse Propensity Scores}
+We define an estimator for $v(\pi)$ no matter what $\pi$ we have. Suppose we have a distribution $\mu(x|c)\in\bbS^{|X|}$. Then we play action $x_t$ distributed as $\mu(x|c_t)$ for all $t$.
+Build the estimator $\hat v(c_t,x)=r_t\frac{\delta_{x_t=x}}{\mu(x|c_t)}.$ Then we define the estimator 
+\[\hat v_t(\pi)=\frac{1}{t}\sum_{s=1}^t\hat v(c_s,\pi(c_s)).\]
+
+Notice that 
+\begin{align*}
+	\bbE[\hat v_t(c_t,x)|c_t] &= \sum_{x'\in X}\mu(x'|c_t)\bbE\left[\left.r_t\frac{\delta_{x_t=x}}{\mu(x|c_t)}\right| c_t,x_t=x'\right]\\
+	&=\sum_{x'\in X}\mu(x'|c)v(c_t,x')\frac{\delta_{x_t=x}}{\mu(x|c_t)}\\
+	&=v(c_t,x)
+\end{align*}
+So we get that $\hat v(c_t|x)$ is unbiased, but could suffer from very large variance. For instance it is zero unless $x=x_t$!
+Then one can show $\bbE[\hat v_t(\pi)]=v(\pi)$.
+\begin{rmk}
+	To follow this process, you need to record as data $\{(c_t,x_t,r_t,\mu(c_t,x_t))\}$. Most important is the distribution $\mu$! This is a common mistake in practice but is useless without this data.
+\end{rmk}
+
+To compute the variance:
+\[\bbE[(\hat v_t(c_x,x)-\bbE[\cdot])^2|c_t]\le\frac{1}{\mu(x,c_t)}.\]
+
+Now let $Q\in \bbS^{\pi}$ be a distribution over policies. Then we are going to let 
+\[\mu(x|c)=\sum_{\pi\in\Pi:\pi(c)=x}Q(\pi).\]
+Then at round $l$, we choose 
+\[\hat Q_l=\argmin_{Q\in\bbS^{|\hat\Pi_l|}}\max_{\pi\in\hat\Pi_l}\bbE[(\hat v_t(\pi)-v(\pi))^2]\]
+Using this scheme, we can get a regret bound that looks like 
+\[R_T\le\sqrt{T|x|\log(|\pi|T)}\]
+\subsection{Introduction to Adversarial Bandits}
+In this scheme, an adversary chooses $x\in[0,1]^{n\times T}$. Then for $t=1,2,\dots$, the player chooses $I_t\in[n]$, and receives reward $x_{I_t,t}$.
+Then we set the regret to be 
+\[R_T=\max_{i\in[n]}\sum_1^Tx_{i,t}-\bbE\left[\sum_1^t x_{I_t,t}\right]\]
+The twist here is that your adversary will be able to choose $x$ \textit{with full knowledge of your algorithm}. Notice that any deterministic algorithm can be tricked into achieving linear regret. So we need something stochastic.
+
+Let $\hat X_{i,t}=\frac{\delta_{I_t=i}}{P_{i,t}}x_{I_t,t}$ where $I_t\sim P_t\in\bbS^n$. Then $\bbE[\hat X_{i,t}]=x_{i,t}$.
+
+The algorithm we need will be able to deal with the high variance of this estimator. It is called EXP3 (exponential something for exploration and exploitation). Playing this game, you can get 
+\[R_T\le\sqrt{nt\log n}.\]
+
+Some textbooks: Seb has one. Also check out \href{banditalgs.org}{banditalgs.org}.
 
 \end{document}
