@@ -1077,6 +1077,256 @@ Let $\hat X_{i,t}=\frac{\delta_{I_t=i}}{P_{i,t}}x_{I_t,t}$ where $I_t\sim P_t\in
 The algorithm we need will be able to deal with the high variance of this estimator. It is called EXP3 (exponential something for exploration and exploitation). Playing this game, you can get 
 \[R_T\le\sqrt{nt\log n}.\]
 
-Some textbooks: Seb has one. Also check out \href{banditalgs.org}{banditalgs.org}.
+Some textbooks: Seb has one. You can find a preprint on the arXiv. Also check out \href{banditalgs.org}{banditalgs.org}.
+
+\section{Deep Learning}
+This talk was given by Joan Bruna from NYU's Courant Institute.
+\subsection{The Puzzle}
+We are primarily going to be interested in what is called \textit{supervised learning}. Notice that this specifically omits some hot ideas that are currently being developed.
+Throughout the talks, we will be considering $\calX$, a \textit{high-dimensional} space. For instance, if we were working in the domain of computer vision, $\calX$ may be the space of all $d\times d$ images,
+giving us a huge space, potentially.
+
+The next ingredient we have is the \textbf{data distribution} $\nu$ on $\calX$. Importantly, $U$ is \textit{unknown to us}, so we are not allowed to directly access any of its properties. Next, we have a \textbf{target function}
+$f^\ast:\calX\to \bbR$ which we are trying to learn. We also need a loss functional $L(f)=\bbE_\nu[l(f(x),f^\ast(x))].$
+\begin{rmk}
+	In this class, we will almost always restrict to the case when $L$ is given by 
+	\[\|f-f^\ast\|^2_{L^2(\calX,\nu)}\]
+\end{rmk}
+
+Then our goal is to predict $f^\ast$ from a finite IID sample $\{(x_i,f(x_i)\}$, where $x_i\sim \nu$.
+Notice that this is basically the same as a problem we have all done at some point: fit a curve to a finite number of points. But now the dimensionality has exploded.
+\subsubsection{Empirical Risk Minimization}
+Consider a set $\calF\subseteq\{f:\calX\to\bbR\}$, which we call the \textbf{hypothesis class}. This space of functions comes along with a notion of \textit{complexity}.
+We have a value $\gamma(f)$ for each $f\in\calF$, which we call the \textbf{complexity of $f$.} One should think of this like a norm. The upshot here is this gives us a way to ``organize'' $\calF$ in a nice way.
+
+A natural way to proceed is to begin with the norm zero piece and gradually increase to consider more candidate functions.
+\begin{rmk}
+	Careful! Notice that assuming that $\gamma$ is honestly a norm means that such ``balls'' are already convex! In general this will not be true.
+\end{rmk}
+\begin{defn}
+	The \textbf{empirical risk} of a function $f$ is 
+	\[\hat L(f)=\frac{1}{n}\sum_1^n|f(x_i)-f^\ast(x_i)|^2.\]
+\end{defn}
+
+Now if one wants to minimize $\hat L$, there are a couple different ways to do this. The first idea is consider the \textbf{constrained form}:
+\[\min_{f\in\calF^\delta}\hat L(f)\]
+where $\calF^\delta=\{f\in\calF:\lambda(f)\le\delta\}$. This requires a bit more prior knowledge than we generally have, so we sometimes use instead a \textbf{penalized form}:
+\[\min_{f\in\calF}\hat L(f)+\lambda\cdot\gamma(f).\]
+Another idea is called the \textbf{interpolant}:
+\[\min_{f\in\calF} \gamma(f) \text{  such that  }\hat L(f)=0\]
+
+\subsubsection{The Fundamental Theorem of Machine Learning}
+Let us assume for this formulation that we are focusing on the constrained form. This was found in the seminal paper from 2008 by Bolton and Bousquet.
+\begin{thm}[FtoML]
+	Assume that we have $\hat f\in\calF^\delta$ such that $\hat L(\hat f)\le \varepsilon+\inf_{f\in\calF^\delta}\hat L(f).$ Then 
+	\[L(\hat f)-\inf_{f\in \calF}L(f)\le \inf_{f\in\calF^\delta}L(f)-\inf_{f\in\calF}L(f)+2\sup_{f\in\calF^\delta}|L(f)-\hat L(f)|+\varepsilon.\]
+\end{thm}
+\begin{rmk}
+	Here the first two terms on the right constitute an approximation error, the third term is a statistical error, and the $\varepsilon$ comes from our optimization error. 
+
+	Notice that we have a free parameter $\delta$. If $\delta$ is small, then our approximation error gets very bad and the statistical error drops (we are working on a ``smaller'' set in terms of complexity). On the other hand, if $\delta$ is very big, the statistical error blows up.
+\end{rmk}
+\subsection{The Big Questions}
+We have a series of questions we want to answer with this theory:
+\begin{itemize}
+	\item \textbf{[Approx]} How can we design ``good'' spaces $\calF$ to approximate $f^\ast$ in higher dimensions?
+	\item \textbf{[Optimization]} How to design algorithms to solve the problem of empirical risk management in general (gradient descent).
+\end{itemize}
+
+\subsubsection{The Curse of Dimensionality}
+To begin to convince ourselves that dimensionality is troubling, consider the question: How many samples do I need to estimate $f^\ast$ 
+depending on its regularity assumptions?
+
+If we assume that $f^\ast$ is \textit{linear}, then $f^\ast(x)=\langle x,\theta^\ast\rangle$ for some $\theta^\ast\in\bbR^d$. Then $\calF$ is the set of all such functions and we need $d$ samples to get enough equations to solve the corresponding linear equations.
+
+Now assume that $f^\ast$ is ``locally linear'', that is \textit{Lipschitz.} That is, there exists a (minimal) $\beta$ such that 
+\[|f^\ast(x)-f^\ast(y)|\le\beta\|x-y\|.\]
+Then $\calF$ is the space of all Lipschitz functions. Then $\gamma(f)$ is determined by the Lipschitz constant as well as $|f|_\infty$. Now for all $\varepsilon>0$, we want to find $f\in\calF$ such that $\|f-f^\ast\|\le\varepsilon$ 
+from $n$ IID samples. Then in this case, the sample complexity blows up! To get an $\varepsilon$-error, we need $n\sim \varepsilon^{-d}$ samples!
+
+Let's build the upper bound here: given a set of points $(x_i,f^\ast(x_i))$, we want to find 
+\[\hat f=\argmin_f\operatorname{Lip}(f)\text{  such that  }f(x_i)=f^\ast(x_i)\]
+where $\operatorname{Lip}(f)=\min_\beta |f(x)-f(y)|\le\beta\|x-y\|$. To do this, we can, for any $x$, pick the closest data point $x_k$ to $x$ and notice 
+\[|\hat f(x)-f^\ast(x)|\le|\hat f(x)-\hat f(x_k)|+|\hat f(x_k)-f^\ast(x_k)|+|f^\ast(x_k)-f^\ast(x)|\le2\operatorname{Lip}(f^\ast)\|x-x_k\|.\]
+
+But now 
+\[\bbE_{x\sim\nu}|\hat f(x)-f^\ast(x)|^2\le\bbE_{x\sim\nu}\|x-x_k\|^2\approx\varepsilon^2.\]
+
+\begin{defn}
+	The \textbf{maximum discrepancy} of a function class $\calF$ is 
+	\[\tilde R_n(\calF)=\sup_{f\in\calF}\frac{1}{2n}\sum_1^{n/2}f(x_i)-\sum_{n/2+1}^n f(x_i))\]
+\end{defn}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Reinforcement Learning}
+This series of lectures was given by Emma Brunskill from Stanford's CS department.
+
+\subsection{Introduction}
+There is a wide set of backgrounds in this class will start broad and get more focused towards the end. One can think of reinforcement learning as being at the intersection of supervised learning and bandits (and beyond). In a sentence, 
+reinforcement learning is ``learning to make good sequences of decisions under uncertainty.''
+
+\subsubsection{Examples of things you can do}
+The main applications arise in a couple different domains: learning to play games (e.g. Atari games), teaching robots tasks, and in healthcare.
+There are a plethora of applications we will hear about more.
+
+\subsubsection{Tasks}
+There are four main aspects:
+\begin{itemize}
+	\item Optimization
+	\item Generalization
+	\item Exploration 
+	\item Delayed consequences
+\end{itemize}
+
+In general \textbf{AI learning} uses all of these except exploration. Although RL was used in solving go, it wasn't needed.
+
+\textbf{Deep learning} only exploits optimization and generalization. There is also a sense of \textbf{imitation learning}, which also omits exploration.
+
+We will be following the following (rough) plan:
+\begin{enumerate}
+	\item Markov decision processes
+	\item Q-learning
+	\item RL and generalization
+	\item Exploration in sequential domains 
+	\item Batch/counterfactual reinforcement learning
+\end{enumerate}
+
+\subsection{Markov Decision Processes}
+The big idea here is that two entities: the agent and the world. The agent takes an action and the world offers a reward. In the case of bandits, this is where the scenario stops,
+but here in RL, we continue the feedback loop. Our goal here is to maximize the expected discounted sum of rewards.
+
+Some ideas that demonstrate the delayed consequences are as follows: imagine teaching a robot to empty the dishwasher---it only receives a positive reward once its task is complete. 
+
+Now one of the hardest aspects here is coming up with a \textbf{reward function}. That is, a real-valued map $r(s,a)$ given a state and action. Why is this hard?
+Well, imagine you are trying to teach students math and the fact of the matter is that teaching addition is easier than subtraction, and we design our reward to be +1 if the student is correct and -1 if incorrect.
+Then the machine is naturally going to give only additon questions (and infinitely many of them). This is an example of \textit{reward hacking.}
+
+A problem follows \textbf{Markov dynamics} if 
+\[\bbP(s_t|s_{t-1},a_{t-1},s_{t-2},a_{t-2},\cdots)=\bbP(s_t|s_{t-1},a_{t-1}).\]
+\begin{defn}
+	A \textbf{Markov decision process} is a set $\langle S,A,R,T,\gamma\rangle$ where 
+	\begin{itemize}
+		\item $S$ is a set of states,
+		\item $A$ is a discrete action space,
+		\item $R$ is a set of rules of the form $r(s,a)$ or $r(s)$ or $r(s,a,s')$,
+		\item $T$ is a collection of distributions $\bbP(s'|s,a)$ and $\gamma\in(0,1)$ is a parameter.
+	\end{itemize}
+
+	Then we are trying to learn a \textbf{policy} $\pi:S\to A$. Note this could also be stochastic.
+\end{defn}
+
+There are a couple ways to do this: first, is the \textbf{model-based approach}. Here we directly estimate and use $R$ and $T$. Another is \textbf{value-based:}
+here we consider the value function 
+\[V^\pi=\bbE_{s'\sim pi}\left[\sum_0^\infty\gamma^tr_t|s_{t=0}=s_0\right].\]
+Finally we can perform a \textbf{policy-based approach} by computing $\argmax_{\pi\in\Pi}V^\pi$.
+
+Another parameter we have is $H$, the \textbf{time horizon} on the process. This tells us the number of steps that we may take before the system is reset to $s_0$.
+
+Then this process will return
+\[G^\pi=r_{0}+\gamma r_{1}+\gamma^2r_2+\cdots+\gamma^{H-1}r_H.\]
+Notice that in general this is going to be a random variable! That;'s why $V^\pi(s_0)=\bbE[G^\pi|s_0]$.
+
+\subsubsection{Estimation}
+Now say we know all the parameters of our MDP. Then we can use $S$ as a lookup table to approximate $V^\pi$ by ``running simulations.'' That is, we essentially 
+have a black box that outputs specific measurements of $G$. We don't need the Markov assumption here since we aren't touching the distributions directly.
+
+Using the Markov assumption yields additional structure, however. Consider that 
+\[V^\pi(s)= r(s,\pi(s))+\gamma\sum_{s'}p(s|s,\pi(s))V^\pi(s')\]
+giving us our immediate and discounted future rewards.
+
+Now let $V^\ast=\max_{\pi}V^\pi$ and $\pi^\ast=\argmax_\pi V^\pi$. But then using the above equation,
+\[V^\ast(s)=\max_a r(s,a)+\gamma_{s'}p(s'|s,a)V^\ast(s')\]
+which induces a kind of dynamical programming structure on the problem. This is called the \textbf{Bellman equation.}
+
+Then we proceed by a process called \textbf{value iteration}: let $V_0(s)=0$ for all $s$. Then for all $k$, set 
+\[V_k(s)=\max_a r(s,a)+\gamma\sum_{s'}p(s'|s,a)V_{k-1}(s')\]
+Doing this is called a ``Bellman backup.'' Then we break once you converge: $\|V_k-V_{k-1}\|_\infty\le\varepsilon$.
+
+\begin{lem}
+	Assuming all rewards are valued in $[0,1]$, the Bellman backup is a contraction operator as long as the state and action spaces are discrete (i.e. the above process converges).
+\end{lem}
+\begin{prf}
+	Throughout we will be considering $\|V-V'\|_\infty=\max_s|V(s)-V'(s)|$. So we compute 
+	\begin{align*}
+		\|BV_k-BV_j\|&=\|\max_a(r(s,a)+\gamma\sum_{s'}p(s'|s,a)V_{k-1}(s'))-\max_{a'}(r(s,a')\\
+		&\qquad\qquad\qquad\quad +\gamma\sum_{s'}p(s'|a',s)V_{j-1}s)\|\\
+		&\le\|\max_a \gamma\sum p(s'|s,a)\|V_k-V_j\|\\
+		&\le \gamma\|V_k-V_j\|
+	\end{align*}
+	so as long as $\gamma<1$, our functions have gotten closer.
+\end{prf}
+\begin{rmk}
+	Notice this also implies that $V^\ast$ must be unique.
+\end{rmk}
+
+\subsubsection{MDP Policy Iteration}
+Value iteration is great, but we have to consider the set of functions $A^S$, exponential in the set of states. Instead we can do \textbf{Policy Iteration}:
+Set $i=0$ and initialize $\pi_0(s)$ randomly for all states $s$. Then while $i=0$, or $\|\pi_i-\pi_{i-1}\|_1\>0$, set $V^{\pi_i}$, the MDP
+value function policy evaluation of $\pi_i$ and let $\pi_{i+1}$ be the policy improvement.
+
+Note that we can find an analytic solution whenever you have a finite set of states and actions, otherwise you have to do the dynamic programming-type argument using the Bellman operator.
+\begin{defn}
+	The $Q$ value of a policy is 
+	\[Q^\pi(s,a)=r(s,a)+\gamma+\sum_{s'} p(s'|s,a)V^\pi(S')\]
+\end{defn}
+so now that we have computed $V^{\pi_i}$ using analytical or dynamic programming methods, this is a relatively simple step. Then we just pick
+\[\pi_{i+1}(s)=\argmax_aQ^{\pi_i}(s,a).\]
+
+\begin{rmk}
+	It ends up that $V^{\pi_{i+1}}\ge V^{\pi_i}$ with strict inequality whenever $\pi_i$ is suboptimal. Notice that this is not trivial! We are getting better optimization over all time, 
+	but since we are switching policies greedily at each step, there is something to prove.
+\end{rmk}
+
+\subsection{Reinforcement Learning and Q-learning}
+Now we are performing reinforcement learning in a contex where $R$ and $T$ are unknown, but we are still interested in finding $V^\ast$ and $\pi^\ast$.
+
+\subsubsection{Policy Evaluation}
+Here we are given $\pi$ and want to compute $V^\pi$ and $Q^\pi$.
+
+If \textbf{our horizon $H$ is finite}, then we can do \textbf{Monte Carlo Evaluation}. If we let (again)
+\[G^i=r_1+\gamma r^2+\cdots\]
+where $s,r\sim \pi$ starting with $s_0$. Then the value is 
+\[V^\pi(s_0)=\bbE_{s\sim \pi}[G|s_0]\]
+where the above does not require the Markov assumption and doesn't use the ``bootstrapping'' of MDP value iteration (where make incremental improvements to an imperfect hypothesis).
+Then the average of all runs acts as our estimator. This is unbiased but has high variance (although it converges by the law of large numbers).
+
+\subsubsection{Temporal Difference Learning}
+This is called ``model free'' in the sense that we are not directly estimating the dynamics and reward models. This combined ideas in Monte carlo and dynamic programming.
+It is episodic (finite horizon) or infinite $H$. Then each tuple $(s,a,r,s')$ can update $\hat V^\pi$ (instead of having to wait for an entire run).
+
+The MC estimator updates at each $s_0$:
+\[\hat V(s_0)+\alpha(G^i-\hat V^\ast(s_0))\]
+where $\alpha\in(0,1)$ is a learning rate. Then the idea we do here is 
+\[\hat V_{k+1}(s)=r(s,\pi(s))+\gamma\hat V_k(s')\]
+Notice that this uses bootstrapping  of $\hat V$ as well as doing a sampling MC to get the data to update with.
+This new estimator will be biased, but wil have lower variance of what we did before.
+
+So overall the TD learning we are doing looks like what follows:
+\[\hat V^\pi(s)=\hat V^\pi(s)+\alpha\left[r+\gamma\hat V^\pi(s')-\hat V^\pi(s)\right]\]
+where $r+\gamma\hat V^\pi(s')$ is called the \textbf{TD target} and this quantity minus $\hat V^\pi(s)$ is called the \textbf{TD error.}
+
+For mean estimation, let $X\in[0,1]$ is a random variable and let 
+\begin{thm}
+	Assume that $\alpha_n\in[0,1]$ and $\sum \alpha_i=\infty$ and $\sum \alpha_i^2<\infty$, and let $X_0,x_1,\dots$ be iid samples of $X$. THen define $\mu_n$ for each $n\in\bbN$ such that 
+	\[\mu_0=X_0,\quad \mu_{m+1}=(1-\alpha_m)\mu_m+\alpha_mx_m\]
+	then $\mu_m$ almost surely approaches $\bbE[X]$.
+\end{thm}
+\begin{rmk}
+	I can't really read and my probability isn't strong enough to figure out what she meant.
+\end{rmk}
+
+\subsubsection{Control}
+Compute $\pi^\ast$ and $V^\ast$.
+
+\subsection{Reinforcement Learning and Generalization}
+
+\subsection{Exploration in Sequential Domains}
+
+\subsection{Batch/Counterfactual RL}
 
 \end{document}
