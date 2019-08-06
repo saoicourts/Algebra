@@ -2,7 +2,7 @@
 
 \usepackage{setspace}
 
-\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, xcolor, hyperref}
+\usepackage{amsmath, amsfonts, amssymb, graphicx, color, fancyhdr, lipsum, scalerel, stackengine, mathrsfs, tikz-cd, mdframed, enumitem, framed, adjustbox, bm, upgreek, xcolor, hyperref,bbm}
 \usepackage[framed,thmmarks]{ntheorem}
 
 %Replacement for the old geometry package
@@ -1157,6 +1157,121 @@ But now
 	\[\tilde R_n(\calF)=\sup_{f\in\calF}\frac{1}{2n}\sum_1^{n/2}f(x_i)-\sum_{n/2+1}^n f(x_i))\]
 \end{defn}
 
+\subsection{Approximation}
+Now we ask ourselves: How can we disgn notions of regulatity that enable learning with $n<<\varepsilon^{-d}$?
+
+\subsubsection{Invariance/Symmetry}
+One of the key properties of these functions that helps us towards answering this questions are invariance and symmetry. Notice that for all $x$,
+\[|f^\ast(x)-f^\ast(x+\delta)\le\beta\|\delta\|\]
+since $f$ is assumed to be Lipschitz. But then if we let $T_\delta(x)=x+\delta$, this gets us that 
+\[f^\ast\approx f^\ast\circ T_\delta.\]
+This gets us a kind of stability under additive noise. 
+
+Let $f^\ast:\calX\to\bbR$ where $\calX$ is ahigh dimensional space. Usually this is $\bbR^d$, but what about $L^2(\Omega)$? If we are considering the space of all images, we have things like translation in the (now two dimensional!) space. These don't require working in the high-dimensional system to understand.
+Some examples of transformations on a 2-D image are:
+\begin{itemize}
+	\item Translation
+	\item Rotation
+	\item other things
+\end{itemize}
+Then we can think of each $x\in\calX$ as a function of a simple variable $u$ and then $Tx(u)=x(tu).$ Of course these transformations come together to form groups in different ways:
+we have the translation group, for instance.
+
+Notice that for a well-chosen $x$, we can get that $\|x-Tx\|$ is on the order of $\|x\|$. So this is adding something that we didn't consider with Lipschitz functions. But if you do some dimensional analysis, you can see 
+that really this gives us (at most) a 6-dimensional surface (affine transformations) of our high-dimensional space under which our objects should be stable. 
+
+Instead we can sonsider non-rigid motions (non-affine) that should still preserve the meaning of the image. So we could define $x_\tau(u):=x(u-\tau(u))$
+under a reasonably nice tau. Define $\|\tau\|=\sup_u|\nabla\tau(u)|$ to be the \textbf{cost} of a deformation.
+\begin{defn}
+	A function $f^\ast$ is said to be \textbf{geometrically stable} if 
+	\[|f^\ast(x)=f^\ast(x_\tau)\le \|\tau\|\]
+	where the inequality above is approximate (omitting a constant perhaps).
+\end{defn}
+\begin{rmk}
+	The idea here is that for ``reasonably small'' deformations, the value of $f^\ast$ shouldn't change too much.
+\end{rmk}
+Something to take away: it is not the case that all problems we want to slolve are local ones. But if we expect that our functios are geometrically stable, it is more likely that a point's neighbors are closely related to it than arbitrary long-range ones.
+This notion is called \textbf{scale separation.} 
+
+Then we can ask: \textit{How can we leverage geometric stability?} One (empirical) answer is to use something like a \textbf{convolutional neural network}. Here we take an element $x\in L^2(\Omega)$ and an $h\in L^2(\Omega)$ with local support. Then we compute the convolution:
+\[(x\ast h)(u)=\int_\Omega x(v)\cdot h(u-v)dv\]
+For instance, if $h$ is zero everywhere except a circle where it is 1, the convolution $x\ast h$ looks like the same image as $x$ except it has been ``smeared out'' in a circle of every point.
+
+Then if we have a series of filters $h_1,\dots,h_k$, we can define $y^i=\sigma(x\ast h_i(u))$ for all $i$ and for some activation function $\sigma$. This forms a single layer.
+Then by composing these into (say) $L$ layers, we get a neural net with parameters $h^1_1,\dots,h^1_k,h^2_1,\dots$.
+
+It ends up that these do a very nice job at detecting things that are similar under geometric transformations. But they are not provably so.
+
+\subsubsection{Convolutional Kernel Networks}
+Mairal, Harchasomi(?) and Bietti developed another method of doing this: we want to develop a kernel $K(x,x')$ such that $K(x,Tx)$ and $K(x,x-\tau)$ is large.
+See the paper for more details there.
+
+\subsubsection{Scattering Representation}
+B. and Mallat basically created a CNN with wavelet filters, which are objects from functional analysis. Wavelets are related to, but not the same as, Fourier transforms of functions.
+
+\subsection{Single Hidden Layer Neural Nets}
+Now we start with a vector $x\in\bbR^d$ and a $K$-dimensional hidden layer. Then we define 
+\[f_\theta(x):=\sum_{k=1}^Kc_k\sigma(\langle x,a_k\rangle+b_k)\]
+where $a_k\in\bbR^d$ and $b_k,c_k\in\bbR$ and $\sigma:\bbR\to \bbR$ is the activation function and the set of parameters is $\theta=(a_k,b_k,c_k)$.
+
+Define $H_\sigma=\{f_\theta\}\subseteq\{f:\bbR^d\to\bbR\}$. One may ask how expressive this set is, and the universal approximation theorem tells us that $H_\sigma$ is dense in the class of continuous functions as soon as $\sigma$ is not polynomial.
+The idea is as follows. Let $g_k(\langle x,a_k\rangle)$ be the $k^{th}$ summand in $f_\theta$ above. Such a function $\bbR^d\to\bbR$ that operates on a projection is called a \textbf{ridge function} (it dies off as you get farther away from the direction of $x$).
+Now if we let $\sigma(z)=e^{iz}$, then $g_k(x_=e^{i\langle x,a_k\rangle})$ is an element of the Fourier basis. Then we can write 
+\[f(x)=\sum_\xi \hat f(\xi)e^{i\langle x,\xi\rangle}\]
+where $\hat f(\xi)=\langle f,g_\xi\rangle$. The upshot here is that when $f$ is continuous we get that the higher weights $\hat f(\xi)$ for large $|\xi|$ die off,
+so we can take an approximation by truncation. Then one continues to approximate $\sigma_f$ with $\sigma$.
+
+\begin{rmk}
+	This is in a way a not very informative result in that it is not terribly surprising that we should be able to approximate continuous functions with finitely many parts. And really this doesn't answer questions about the amount of space or time we need to do such a thing practically.
+\end{rmk}
+
+\subsection{Reproducting Kernel Hilbert Spaces and Neural Networks}
+We are getting rather low on time here, so we will be doing a high-level approach to this topic.
+
+Consider $\phi(x,\theta)=\sigma(\langle x,a\rangle+b)$ to be a \textbf{neuron} where $\theta\in\nu$, a compact space. Let $\tau$ be a probability measure on $\nu$. Then define the set 
+\[\calF=\left\{f:\bbR^d\to\bbR:f(x)=\int_\nu\phi(x,v)\cdot p(v)\cdot\tau(dv)\right\}\]
+with $p\in L^2(\nu,dt).$ That is $\int_\nu |p(v)|^2\tau(dv)<\infty$.
+\begin{prop}[Bach '17]
+	$\calF$ above is a reproducting kernel Hilbert space with kernel 
+	\[K(x,x')=\int_\nu\phi(x,v)\phi(x',v)\tau(dv)\]
+\end{prop}
+\begin{defn}
+	A reproducting kernel Hilbert space is a functional space $\calF:X\to\bbR$ where function evaluation for $f\in\calF$ and $x\in X$ is 
+	\[f(x)=\langle f,\Phi_x\rangle\]
+	and the kernel $K(x,x')=\langle\Phi_x,\Phi_{x'}\rangle.$
+\end{defn}
+\subsubsection{Defining Complexity}
+We would like to get a notion of complexity for $f\in \calF$. One (natural) choice is to define 
+\[\gamma(f)^2=\inf\left\{\|p\|^2_{L^2}\text{ such that } f(x)=\int \phi(x,v)p(v)\tau(dv)\right\}\]
+
+Then Rahini and Recht (in 2008) showed that if $v_1,\dots,v_K$ are sampled iid from $\tau$, then we can adjust our model to look at functions of the form 
+$f(x)=\sum_1^Kc_i\phi(x,v_i)$ and the resulting function can be sucessfully used to approximate functions of this type.
+
+\subsubsection{Changing the scenario}
+Now consider the set of function on the $d$-sphere $\bbS^d$ and let $\sigma$ be ReLU ($\max(0,z)$) and let $\tau$ be the uniform distribution. Then 
+$G_2$ is the set of functions $f:S^d\to\bbR$ with $f(x)=\int_{\bbS^d}p(v)\sigma(\langle v,x\rangle)\tau(dv)$ where $p$ is $L^2$. Then we can write the kernel explicitly (Le Roux et al or Bach 17).
+
+Alternatively, we caon consider the functions that can be written as $\int\sigma \mu(dv)$ for any random measure with finite total variance ($\|\mu\|_{TV}=\sup_{\|\phi\|\le 1}\int\phi(v)\mu(dv))$. Then we can define the complexity $\gamma_1(f)$ to be the $\inf$ of $\|\mu\|_{TV}$ for all such ways to write $f$.
+Notice the first scenario is a subclass of this one.
+
+Consider the function $f(x)=\sigma(\langle x,w\rangle)$ for some fixed $w$. Notice that this function can't be found in the first scenario, since we don't allow point masses. That's why we need the flexibility of the latter case. More on this can be found in Bach's 2017 paper ``Breaking the curese of dimensionality with convex neural networks''.
+That opens us up to asking which questions actually require this depth.
+
+\subsubsection{When we need depth}
+In the literature, this is known as the \textit{depth separation problem}. In particular, the issue which is addressed is to find $f$ such that 
+\begin{enumerate}
+	\item $f$ cannot be well-approximated by by a shallow network with polynomial in $d$ nodes.
+	\item $f$ can be approximated by a deeper network with poly(d) nodes.
+\end{enumerate}
+
+Some of the main papers that address this question are: (Eldan and Shamir), (Safran and Shamir), (Telgarski), and (Daniely). We already know that if the information that is low-energy (in terms of the Fourier atoms with high coefficients) then 
+the universal approximation theorem says that we can learn it with a shallow network. So the idea is to write a function $f(x)=g(\|x\|)$, which is not very illuminating practically.
+
+This question is not new. If we were to replace continuous functions with boolean functions on $\{0,1\}^d$, this question is related to the ``circuit lower bound'', 
+studied by Shannon, Alon, and Hastad. One of the current progras of research is translating results from one to the other.
+
+Finally, an answer to the question of depth separation could be related to adding a time parameter.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1312,18 +1427,102 @@ where $r+\gamma\hat V^\pi(s')$ is called the \textbf{TD target} and this quantit
 
 For mean estimation, let $X\in[0,1]$ is a random variable and let 
 \begin{thm}
-	Assume that $\alpha_n\in[0,1]$ and $\sum \alpha_i=\infty$ and $\sum \alpha_i^2<\infty$, and let $X_0,x_1,\dots$ be iid samples of $X$. THen define $\mu_n$ for each $n\in\bbN$ such that 
+	Assume that $\alpha_n\in[0,1]$ and $\sum \alpha_i=\infty$ and $\sum \alpha_i^2<\infty$, and let $X_0,x_1,\dots$ be iid samples of $X$. Then define $\mu_n$ for each $n\in\bbN$ such that 
 	\[\mu_0=X_0,\quad \mu_{m+1}=(1-\alpha_m)\mu_m+\alpha_mx_m\]
 	then $\mu_m$ almost surely approaches $\bbE[X]$.
 \end{thm}
-\begin{rmk}
-	I can't really read and my probability isn't strong enough to figure out what she meant.
-\end{rmk}
+
 
 \subsubsection{Control}
-Compute $\pi^\ast$ and $V^\ast$.
+Now our goal is to compute $\pi^\ast$ and $V^\ast$ and then act according to our optimal policy. Note that algorithms for learning $\pi^\ast$ do not necessarily require a person to act according to that policy.
+This is called \textbf{off-policy learning}: learning about $V^{\pi_1}$ while acting using $\pi_2\ne\pi_1$.
 
+\begin{defn}
+	The process of \textbf{Q-learning} is as follows: set $Q(s,a)=0$ for all $s$ and $a$ and let $s_0$ be our initial state. Then for $t\in\bbN$,
+	select an action $a$ for the current state $s$. Then sample a reward $r\leftarrow r(s,a)$ and a new state $s'\sim p(s'|s,a)$ and then perform the ``update operation''
+	\[Q(s,a)\leftarrow Q(s,a)+\alpha(s,a)[r+\gamma\max_{a'}Q(s',a')-Q(s,a)].\]
+	Finally set $s$ to be $s'$.
+\end{defn}
+\begin{rmk}
+	$\alpha(s,a)$ is the \textbf{learning rate} and we allow this to depend on the current state and action.
+\end{rmk}
+\begin{rmk}
+	The whole goal here is to show that $Q(s,a)$ converges eventually to $Q^\ast(s,a)$. The fact that we use an approximation for $Q^\ast$ and that we sample instead of computing the expectation above shows that this is a stochasitic optimization problem.
+\end{rmk}
+
+In the field of stochastic optimization, we are trying to find stable points $H(x)=x$ where $H(x)$ can't be directly computed, but we have iid samples of $m$ noisy observations $H(x_i)+\omega_i$ with $\bbE[\omega_i]=0$.
+
+In \textit{The Foundations of Machine Learning}, we have the following theorem:
+\begin{thm}[FoML thm 17.17]
+	Let $H$ be a mapping $\bbR^N\to \bbR^N$. Let $\omega_t$ be a sequence of random variables in $\bbR^N$ and $\alpha_t$ a sequence of real numbers and $x_t$ a sequence defined by 
+	\[\forall s, 1\le s\le N:\quad x_{t+1}(s)=s_t(s)+\alpha_t(s)[H(x_t)(s)-x_t(s)+\omega_t(s)]\]
+	for some $x_0\in \bbR^N$. 
+
+	Then define $\calF_t$ to be $\{(x_{t'})_{t'\le t},(\omega_{t'})_{t'\le t-1}, (\alpha_{t'})_{t'\le t}\}$.
+
+	Assume there are $K_1,K_2\in\bbR$ such that 
+	\[\bbE[\|\omega_t\|^2(s)|\calF_t]\le K_1+K_2\|x_t\|^2\]
+	for some $\|\cdot\|$ and that $\bbE[\omega_t|\calF_t]=0$ and for all $s\in[N]$ $\sum_{t=0}^\infty \alpha_t(s)=\infty$ and $\sum_0^\infty \alpha_t^2(s)<\infty$ and finally that $H$ is a $\|\cdot\|_\infty$ contraction with fixed point $X^\ast$.
+
+	Then $X_t\to X^\ast$ almost surely.
+\end{thm}
+They do not offer a proof of this in the book although it does exist out there. However we also have the next theorem:
+\begin{thm}[FoML thm 17.18]
+	Consider a finte MDP. Assum that for all $s,a$ $\sum_0^\infty \alpha(s,a)=\infty$ and $\sum_0^\infty \alpha_t(s,a)^2<\infty$. Then $Q$ learning converges to $Q^\ast$ with probability 1.
+\end{thm}
+\begin{rmk}
+	Notice that this is only a sufficient condition for convergence, but in this case the condition on the $\alpha_t(s,a)$ imply that you must ``visit'' each state-action pair infinitely often (even though you may know it is a bad action).
+	In practice you often don't do this.
+\end{rmk}
+
+So this is great---we can learn about the optimal policy without actually exploiting it, but how to we get to using $\pi^\ast$? Here we use Greedy in the Limit of Infinite Exploration (GLIE): say
+\[\lim_{i\to\infty}N_i(s,a)\to\infty\]
+where $N_i(s,a)$ is the number of visits to $(s,a)$ by time $i$ (this is baked into the above theorem). Then the behavior we want is a sequence of policies $\pi_i$ such that
+\[\lim_{i\to\infty}\pi_i(a|s)\to\argmax_aQ(s,a).\]
+
+We usually do this with a $\varepsilon$-greedy algorithm: with probability $1-\varepsilon$, set $\pi_i(a|s)=\argmax_aQ(s,a)$ and otherwise choose $a$ randomly. The $\varepsilon$-greedy is GLIE if we use $\varepsilon_i=\frac{1}{i}.$
+
+\subsubsection{Making Q-learning better}
+Notice that we ahve a small problem: $Q$ learning only updates $Q$ for the previous state, so propagating these changes back through a long string of decisions requires runing over the data several times.
+
+Say we have data $(s,a,r,s')$ for $i\in[n]$. Then set $y_i=r_i+\gamma\max_{a_i}\hat Q_{k-1}(s_i',a_i)\approx[B\hat Q_{k-1}](s_i,a_i).$
+Then if we say $D=[(s_i,a_i),y_i]$ and we can fit $Q_k(\theta)$ to minimize the loss on this dataset.
+
+The nice thing here is we can use linear regression or a deep network to fit this function to the data, but the problem is you lose convergence guarantees. This dissuaded people from using this technique in the past, but it has been shown in practice that this often gets you a decent approximation (e.g. Atari).
 \subsection{Reinforcement Learning and Generalization}
+We define PAC RL to be the case where for some $\varepsilon$ and $\delta$,
+\[\bbP(\sum_t \mathbbm{1}(V^{\pi_t}(s_t)<V^\ast(s_t)-\varepsilon)\le F(\delta, S, A, T))\ge 1-\delta\]
+for some bounding function $F$. 
+
+In RL, regret is computed via
+\[\sum_t r(s_t,\pi^\ast(s_t))-\sum_tr(s_t,\pi_t(s_t))\]
+which we also would want to say is bounded by $F(\delta,S,A,T)$ with high probability.
+
+Now for \textbf{tabular episodic RL} we want to say that our state and action spaces are finite and we are operating for some time horizon $H$ and running one epsiode at a time (think doing one trial on each patient).
+
+\subsubsection{Model Based Interval Estimation}
+This was developed first by Strohl and Littman in 08. Then given $\varepsilon, S,$ and $m$. Then initialize $n(s,a,s')=0$ for all $s,a,s'$ and set $\hat r(s,a)=0$ and $\tilde Q(s,a)=\frac{1}{1-\gamma}$ for all $s,a,$.
+Finally let $s_t=s_0$. Then for $t\in\bbN$, set $a_t=\argmax \tilde Q(s_t,a).$ Then observe $r_t$ and $s_{t+1}$. Then set 
+\[\hat r(s,a)=\frac{1}{\sum_{s'}n(s,a,s')+1}\left(r_t+\sum_{s'}n(s,a,s')\hat r(s,a)\right)\]
+to be our empirical $r$. Finally we compute the empirical dynamics:
+\[\hat p(s'|s,a)=\frac{n(s,a,s')}{\sum_{s'}n(s,a,s')}.\]
+Then while we haven't converged, update 
+\[\tilde Q(s,a)=\hat r(s,a)+\gamma\sum_{s'}\hat p(s'|s,a)\max_{a'}\tilde Q(s,a')+\frac{\beta}{\sqrt{\sum_{s'}n(s,a,s')}}\]
+
+Here $\beta=\frac{1}{1-\gamma}\sqrt{(1/2)\ln(|S||A|m^2/\delta)}$. So the last term artificially inflates $\tilde Q$ if we haven't visited the state many times to encourage intelligent exploration.
+
+What are sufficient set of conditionf for PAC RL? Well,
+\begin{itemize}
+	\item \textbf{Optimism:} $\tilde Q_t(s,a)\ge Q^\ast(s,a)-\varepsilon$ for all $s,a,t$.
+	\item \textbf{Accuracy:} $V^{\pi_t}(s)=V_M^{\pi_t}(s)\le \varepsilon$ where $M$ is an MDP we'll talk about below.
+	\item \textbf{Bounded Learning Complexity:} We bound the total number of updates to $Q$ and the number of times we visit an ``unknown'' $(s,a)$ pair (bounded by $\theta(\varepsilon,\delta)$).
+\end{itemize}
+In the case that all three of these hold, then an RL algorithm that is executed on any MDP will follow an $\calO(\varepsilon)$-optimal on all but 
+\[\calO\left(\frac{\theta(\varepsilon,\delta)}{\varepsilon(1-\gamma)^2}\ln\frac{1}{\delta}\ln\frac{1}{\varepsilon(1-\gamma)}\right)\]
+steps with probability at least $1-2\delta$.
+
+The last item above has largely been removed in a lot of cases because they are pretty restrictive although they make the analysis significantly easier.
+
 
 \subsection{Exploration in Sequential Domains}
 
