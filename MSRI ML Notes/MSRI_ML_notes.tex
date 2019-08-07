@@ -424,6 +424,7 @@ where $S$ is the fraction of training examples with margin $\le\theta$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
 
 \section{Convex Optimization}
 This series was given by Sebastien Bubeck from Microsoft Research.
@@ -787,7 +788,7 @@ We can see that $g_t$ is un unbiased estimator of $\grad f_{i_t}(x_t)$ with the 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\pagebreak
 
 \section{Bandits}
 This series was given by Kevin Jamieson, a professor in the CSE department here at UW.
@@ -1272,11 +1273,155 @@ studied by Shannon, Alon, and Hastad. One of the current progras of research is 
 
 Finally, an answer to the question of depth separation could be related to adding a time parameter.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Optimization}
+Let $L$ be aloss function. Then if we construct our neurons $\phi_i$ and compose them to a neural net $\Phi$, $L\circ\Phi$ is a map from the space of inputs to $\bbR$ and we can solve the empirical regret minimization problem.
+\[\min_{\theta\in\Theta}E(\theta):=L(\phi|\theta)\]
+where $E=L\circ \Phi$.
 
+When $\Phi$ is linear, we are doing least squares in a functional space so we can just do kernel learning (we are in the convex scenario). What about when $\Phi$ is nonlinear? Generaically we have a non-convex problem---unlike in the convex setting, the result is now dependent on the starting state. Overall the results are brittle. Saddle points and poor local minima are in our way now.
+
+The rest of the section (and of today's lecture) will be focused on gradient descent. We will not spend time here focusing on the step size we need to take for good convergence. 
+\[\theta_{k+1}=\theta_k-\eta\nabla_\theta E(\theta_k)\]
+where here we are allowing this to be pretty general: this could be SGD and $E$ could be $\hat E_k$, a noisy version of loss. Recall from the convex optimization talks that as $\eta\to 0,$ we transition from gradient descent to gradient flow. To leverage the intuition in the continuous case, we are going to be assuming the learning rate $\eta$ is very small.
+
+Let $\Phi:\Theta\to \calF$ be a function from parameter space to function space. Say $\dot \theta(t)=-\nabla_\theta E(\theta(t))$. Then if $\phi(t)= \phi(\theta(t))$, we can write 
+\[\frac{d}{dt} \phi(t)=-D\phi^T|_{\theta(t)}\cdot D\phi|_{\theta(t)}\cdot L'(\phi(t))\]
+and our kernel is $k_t(x,x')=\langle\nabla_\theta\phi(\theta)(t),x),\nabla_\theta \phi(\theta(t),x')\rangle$. We can call this the \textbf{tangent kernel.}
+
+\subsubsection{Overparameterized Regimes}
+One case where we simplify our job is in a so-called overparameterized regime. Here we have a single hidden layer NN with neurons 
+\[\phi(\theta x)=\frac{1}{\sqrt{m}}\sum_1^m g(\theta_i,x)\]
+where $\theta_i$ is sampled iid from some $\mu_0$. Then we are considering when $m$ grows: If we compute the kernel:
+\[\langle \nabla\phi(\theta,x),\nabla\phi(\theta,x')\rangle=\frac{1}{m}\sum_1^m\nabla_\theta g(\theta_i,x)\cdot\nabla_\theta g(\theta_i,x')\]
+which is a random variable (due to $\theta_i$), but as $m\to\infty$ we get that this converges in expectation:
+\[K_\infty(x,x')=\bbE_{\mu_0}[\langle \nabla\phi(\theta,x),\nabla\phi(\theta,x')\rangle]\]
+and the analysis here was done by Rahimi and Recht in '08 as well as Bach in '17 in \textit{On the equivalence between random kernel expansions and quadrature rules.}
+
+\begin{thm}[Jacot, Ouglen, Wycot '18]
+	For all $T>0$ as $m\to\infty$, 
+	\[k_t(x,x')=\langle \nabla\phi(\theta(t),x),\nabla\phi(\theta(t),x')\rangle\to K_\infty(x,x')\]
+	uniformly on compact sets.
+\end{thm}
+\begin{rmk}
+	The surprising observation here is that something that is ostensibly time-dependent eventually forgets about time.
+\end{rmk}
+\begin{rmk}
+	The consequence here is that under the ``$1/\sqrt{m}$'' scaling, $\phi(\theta)$ behaves like a linear model.
+\end{rmk}
+An important consequence comes from injecting this observation back into gradient descent:
+\[\dot\phi(t)=-K\cdot(\phi(t)-f^\ast)\]
+and so by making sure our $K$ is nonsingular we can get something like linear convergence. We can make the kernel nonsingular by increasing the amount of data we use.
+This makes deep learning look easy!
+
+In a paper by Chizat, Oyallon, and Bach in `19, they defined what is called a \textbf{lazy training regime}: we take our function $\phi(\theta)$ (a non-linear model) and let $\theta_0$ be some initial condition. Then the \textbf{linearlized tangent model} is
+\[\bar\phi(\theta,x)=\phi(\theta_0,x)+\langle\theta-\theta_0,\nabla_\theta\phi(\theta_0,x)\rangle\]
+and we want to ask ourselves when these two models are similar.
+
+Let $E(\phi)=L(\phi(\theta))$. Assume that $E(\theta_0)>0$. Then a gradient step will give 
+\[\theta_1=\theta_0=\eta\nabla E(\theta_0)\]
+and then we want to compare the change in the objective relative to that in the linear model. In our case, we have 
+\[\Delta(E)=\frac{E(\theta_1)-E(\theta_0)}{E(\theta_0)}\approx \eta\langle\nabla E(\theta_0),\nabla E(\theta_1)\rangle\]
+using Taylor approximations.
+
+The relative change in the tangent model is computed as
+\[\Delta (D\phi)=\frac{\|D\phi(\theta_1)-D\phi(\theta_0)\|}{\|D\phi(\theta_0)\|}\le\approx \frac{\eta\|D^2\phi(\theta_0)\|\|\nabla E(\theta_0\|)}{\|D\phi(\theta_0)}\|\]
+and so 
+\[\Delta(D\phi)<<\Delta(E)\quad\Leftrightarrow\quad \frac{\|D^2\phi(\theta_0)}{\|D\phi(\theta_0)\|} << \frac{\|\nabla E(\theta_0)\|}{E(\theta_0)}.\]
+
+In particular when $L(f)=\|f-f^\ast\|^2$, we get that $\|\nabla E(\theta_0)\|\approx \|\phi(\theta_0)-f^\ast\|\cdot\|D\phi(\theta_0)\|$.
+
+\begin{defn}
+	Then the \textbf{relative scale of $\phi$ at $\theta$} is 
+	\[\kappa_\phi(\theta)=\|\phi(\theta)-f^\ast\|\cdot\frac{\|D^2\phi(\theta_0)\|}{\|\phi(\theta_0)\|^2}\]
+\end{defn}
+and then we are in the lazy regime if and only if $\kappa_\phi(\theta_0)<< 1.$
+
+\subsection{Mean Field and Beyond}
+From the last section (and lecture) we saw that were likely to see good results from the lazy regime in the case that this relative scale of $\phi$ was very small. In fact,
+\begin{thm}[Chizat O B `19 thm 2.3]
+	Assume that $\phi$ and $D\phi$ are Lipshitz around the initialization $\theta_0$. Let $\theta(t)$ be the trajectory of the nonlinear model and $\bar\theta(t)$ be the trajectory for the linearized model $\bar\phi(\theta)$.
+	Then for $t<c_\phi$, the following holds:
+	\[\frac{\|\phi(\theta(t))-\bar\phi(\bar\theta(t))\|}{\|\phi(\theta_0)-f^\ast\|}\le\approx t^2\cdot \kappa_\phi(\theta_0)\]
+\end{thm}
+\begin{rmk}
+	One thing we get from this is that the trajectory of the nonlinear model closely tracks that of the linearized model. And we get linear convergence in the latter, so this tells us something globally:
+\end{rmk}
+\begin{thm}[Ibid 2.4]
+	In the overparameterized regime, this can be made to be uniform over time.
+\end{thm}
+
+Define the neurons
+\[\phi_m(\theta,x)=\alpha(m)\sum_{i=1}^mg(\theta_i,x)\]
+where $\theta_i\sim  \mu_0$ are iid and $\bbE_{\mu_0}g(\theta)=0$. Set $\kappa_m=\bbE_\theta[\kappa_{\phi_m}(\theta)]$.
+
+Then we have some observations:
+\begin{itemize}
+	\item $\|\phi_m(\theta_0)-f^\ast\|\to\|f^\ast\|$
+	\item $\|D\phi_m(\theta)\|^2\simeq \alpha(m)^2\cdot m\bbE_\theta\|Dg(\theta)\|^2$
+	\item $\|D^2\phi_m(\theta)\|\simeq \alpha_m\bbE_\theta\|D^2 g(\theta)\|$
+\end{itemize}
+Using this, we see that $\kappa_m$ grows roughly like $\frac{1}{\alpha(m)\cdot m}\kappa_g$. Thus if $\alpha(m)=\frac{1}{m}$, we get back to the lazy regime. Notice a problem with this, however: 
+in practice when we train an NN we see that the features change a lot in the process. But this is not accounted for in the lazy regime.
+
+\subsubsection{Mean Field Model}
+Now we write 
+\[\phi(\theta)=\frac{1}{m}\sum_1^mg(\theta_i)\]
+where $\theta=(\theta_i)\in D^m$ is the set of parameters. In general, $L(\phi(\theta))$ has poor local minima for only finite $m$. Furthermore arriving at such poor local minima has nontrivial probability.
+But now we can ask what happens in the ``typical'' case when $m$ is sufficiently large. 
+
+Let $L(f)=\|f-f^\ast\|^2$ and say $f$ is as above. Then 
+\[E(\theta_1,\dots,\theta_m)=\|f\|^2-\frac{2}{m}\sum_{i=1}^m\langle f(\theta_i),f^\ast\rangle +\frac{1}{m^2}\sum_{i,j}\langle g(\theta_i),g(\theta_j)\rangle\]
+where $\langle f,g\rangle=\bbE_{x\sim D}[f(x)\cdot g(x)]$. THen calling $F(\theta)=\langle g(\theta), f^\ast\rangle$,
+\[E(\theta_i)= C_{f^\ast}-\frac{2}{m}\sum_1^m f(\theta_i)+\frac{1}{m^2}\sum_{i.j}\kappa(\theta_i,\theta_j)\]
+
+Then there is an interesting paradigm shift where we can think of neurons $g(\theta)$ as particles $\theta\in D$. In this way we can think of us having particles in our parameter space $D$
+and look at their interactions using statistical physics!
+
+Define the measure on $D$: $\hat\mu_m=\frac{1}{m}\sum_1^n\delta_{\theta_i}$, just a sum of point masses. Then we can write 
+\[\phi(\theta,x)=\int g(\theta,x)\hat\mu_m(d\theta)\]
+but we can generalize this by picking any $\mu$ in the space of measures on $D$:
+\[f(x)=\int g(\theta,x)\mu(d\theta)\]
+and then $E[\mu]=L(f)=\|f-f^\ast\|^2$, but then 
+\[E[\mu]=C_f-2\int F(\theta)\mu(d\theta)+\iint\kappa(\theta,\theta')\mu(d\theta)\mu(d\theta')\]
+Notice that this looks like a nice convex function, but the problem is that we actually need to work with a metric that is non-Euclidean, and so this will still be non-convex in general.
+
+\subsubsection{Dynamics}
+Now we can think of the ``particle'' gradient via the Lagrangian:
+\[\dot\theta_i(t)=-\nabla_{\theta_i}E(\theta_1,\dots,\theta_m)\]
+From the Eulerian(?) perspective, 
+\[\frac{m}{2}\nabla_{\theta_i}E(\theta_1,\dots,\theta_m)=\nabla V(\theta_i;\mu_m)\]
+where $V$ is a potential field defined by 
+\[V(\theta;\mu)=-F(\theta)+\int\kappa(\theta,\theta')\mu(d\theta').\]
+
+Then a classical question in physics is to ask about what happens as the measure $\mu$ evolves under a time-varying velocity filed $\nabla V$. This is governed by the \textit{coninuity equation:}
+\[\partial_t\mu_t=\operatorname{div}(\nabla V(\theta;\mu_t)\mu_t)\]
+We can think of this as an incarnation of the divergence theorem. [Mei, Montamari, Nguyen] and [Chizat, Bach] and [Sirignan, Spilopoulos] all discussed this using 
+what is known as the \textbf{Wasserstein gradient flow.} \textit{Is the Wasserstein metric a solution to the above PDE?}
+
+\subsubsection{Final Questions}
+Finally we ask ourselves a few more questions. First, do we get convergence of the above PDE to global minimizers of $E$? 
+\begin{thm}[CB, REVE]
+	If $\mu_0$ is sufficiently smooth/diverse and $\mu_t\to \mu_\infty$, then $\mu_\infty$ is a global minimizer of $E$.
+\end{thm}
+Now notice that if we sample $\mu_0$ and get $m$ iid samples and construct $\hat\mu_{0,m}$ and then run time for both, getting $\mu_t$ from the continuity equation and doing the same for the empirical mean.
+But we should not expect in general that sampling from $\mu_t$ will get us the same thing (that is, the diagram doesn't necessarily commute).
+
+However, there is a well-studied phenomenon in molecular dynamics which says, in essense, the diagram \textit{does} commute! That is,
+\begin{thm}[CB, MMN]
+	In the limit $m,t\to\infty$, under the previous assumptions,
+	\[E[\hat\mu_{t,m}]\to \min_{\mu}E[\mu].\]
+\end{thm}
+
+\subsubsection{Takeaways}
+THe big thing to notice here is that the mean-field framework more closely mirrors what we see in real learning. The features are tuned during learning, the relative scales is large, etc.
+So one current topic of research is how to extend mean field to deeper networks. Also people are interesed in understanding the cause in overfitting, and in particular investigating what the impact of overparameterization is.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
 
 \section{Reinforcement Learning}
 This series of lectures was given by Emma Brunskill from Stanford's CS department.
@@ -1523,9 +1668,89 @@ steps with probability at least $1-2\delta$.
 
 The last item above has largely been removed in a lot of cases because they are pretty restrictive although they make the analysis significantly easier.
 
+\subsection{Counterfactual/Batch Reinforcement Learning}
+In this scenario, we say we have as data a set of $n$ trajectories, where the steps are taken according to some (unknown) probability distribution. 
+There has been a lot more intersection between the causal inference community and machine learnin community and this is an exciting application for such a thing!
 
-\subsection{Exploration in Sequential Domains}
+Then we can define \textbf{batch policy optimization} (finding a good policy that will perform well in the future): we solve the problem
+\[\argmax_{\pi\in\calH_i}\max_{\calH_i\in\{\calH_1,\calH_2,\dots\}}\int_{s\in S_0}\hat V^\pi(s,\calD)ds\]
+where the integral in the right comes from policy evaluation (e.g. Q-learning) and the left is optimizing the policy.
+Notice we could define our hypothesis space in a lot of different ways, so this is part of the difficulty.
 
-\subsection{Batch/Counterfactual RL}
+\subsubsection{Policy Evaluation}
+If we can get ghighly accurate estimates of the true value of $\pi$ ($V^\pi$), then this would help us greatly with our policy optimization.
+
+Most of the current literature focuses on a (single) binary decision. Here we are studying heterogeneous treatment effects, which we can think of as a two-armed bandit kind of problem.
+
+In MBIE(-EB), we computed estimators for reward and the distributions for state change. We then tried to go on to estimate the optimal policy, but we could use these kinds of methods to estimate the parameters of the problem.
+Unfortunately, these estimators could be biased and may be asymptotically biased.
+\[V^\pi\approx (1-\gamma\hat P^\pi)^{-1}\hat R^\pi\]
+
+We alsoe discussed model-free value function approximation, e.g. TD learning for the tabular cases or fitted $Q$ iteration. Here we set 
+\[\tilde Q^\pi(s_i,a_i)=r_i+\gamma V_\theta^\pi(s_{i+1})\]
+but unfortunately this has convergence issues although hthere have been some nice results in practice.
+
+Recall the idea of \textbf{importance sampling}: 
+\[\bbE_p[r]=\sum_x p(x)r(x)=\sum_x\frac{p(x)q(x)}{q(x)}r(x)\approx\frac{1}{N}\sum_{i=1,x\sim q}^N\frac{p(x_i)}{q(x_i)}r(x_i)\]
+and then applying this to RL, we want to evaluate
+\[V^\pi(s)=\sum_\tau p(\tau|\pi,s) \sum_1^H r_\tau(t)=\sum_\tau p(\tau|\pi,s)R(\tau)\]
+where $r_\tau(t)$ is the reward earned on the trajectory $\tau$ at the $t^{th}$ step. Then applying the above analysis to this problem, we get 
+\[V^\pi(s)\approx\frac{1}{N}\sum_{\tau\sim \pi_b}\frac{p(\tau|\pi,s)}{p(\tau|\pi_b,s)}R(\tau)=\frac{1}{N}\sum_{\tau\sim\pi_b}\frac{\prod_1^{H-1}p(s_{t+1}|s_t,a_t)p(a_t|\pi,s)}{\prod_1^{H-1}p(s_{t+1}|s_t,a_t)p(a_t|\pi_b,s)}R(\tau)\]
+and then some terms cancel! So adding in inticies more carefully:
+\[V^\pi(s)\approx \frac{1}{N}\sum_{i=1}^N\prod_{t=1}^{H-1}\frac{p(a^i_t|\pi, s^i)}{p(a^i_t|\pi_b,s^i)}R(\tau^i)\]
+\begin{rmk}
+	Notice that we have dropped any knowledge about the state changes and furthermore makes no use of the Markov assumption, so can be used more generally!
+\end{rmk}
+
+We can also consider \textbf{stationary importance sampling}: 
+\[V^\pi(s_0)=\int_{(s,a)}d_\pi(s,a)r(s,a)\]
+where $d_\pi$ is some stationary distribution over $(s,a)$ for the Markov chain induced by $\pi$ (of course now we need the Markov assumption). But then doing a similar trick,
+\[V^\pi(s_0)\approx\frac{1}{N}\sum_{s,a\sim\pi_b}\frac{d_\pi(s,a)}{d_{\pi_b}(s,a)}r(s,a)\]
+
+The problems of variance and bias discussed above can be remidated by taking a blend of these techinques, called \textbf{Doubly Robust (DR) estimation.} Here we take a model and IS-based estimator  of the form 
+\[V_{DR}\hat V(s)=\rho(r-\hat R(s,a))\]
+where $\hat R$ is a model for the reward, $r$ is the reward received, and $\rho$ is $\frac{\pi_1(a|s)}{\pi_0(a|s)}$, the important sampling parameter. And of course 
+\[\hat V(s):=\sum_a\pi_1(a|s)\hat R(s,a).\]
+
+Relatively recently this was transplanted to RL by introducing a ``covariant term.''
+\[DR(D):=\sum_{i=1}^n\sum_{t=0}^\infty \gamma^tw_t^i R_t^{H_i}-\sum_{1}^n\sum_0^\infty\gamma^t(w_t^i\hat q^{\pi_i}(S_t^{H^i},A_t^{H_i})-w_{t-1}^i\hat v^{\pi_e})\]
+I think I missed a term at the end but you can look it up in a paper by Brunskill in 2016.
+
+Things are speeding up at the end so this is becoming less and less reasonable to keep up. :)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Presentation}
+Our group (Angel, Ashwin, and I) are presenting on the last day of class on the paper \textit{Learnability Can Be Undecidable} by S. Ben-David, P. Hrube\v s, S. Moran, A. Shpilka, A. Yehudayoff. I will begin 
+by introducing the concept of EMX learning, (monotone) compression schemes, and dimension and discuss the main result and its connection to the continuum hypothesis. After that, Angel will prove that weak 
+EMX learning is equivalent to there being a weak compression scheme. Finally Ashwin will bring us home by discussing the connection between monotone compression and cardinality and discuss why there is no
+good\footnote{i.e. gives a criteria for ability to learn like VC dimension in PAC learning.} notion of dimension that holds for all modes of learning.
+
+\subsection{Introduction and Overview}
+This work makes connections between certain modes of learnability and cardinalities in order to leverage the undecidability of the continuum hypothesis in order to show that 
+there is some amount of uncertainty inherent in whether a specific problem is able to be suitably learned. The main result of this paper is as follows:
+\begin{thm}[BHMSY 19]
+	The EMX learnability of the family $\calF^\ast$ with respect to $\calP^\ast$ is independent of ZFC.
+\end{thm}
+\begin{rmk}
+	The definitions of EMX learnability, $\calF^\ast$ and $\calP^\ast$ are all below.
+\end{rmk}
+
+Furthermore, the authors investigate the idea of ``dimensions for learning''. 
+\begin{defn}
+	A function $D:\calF\to\bbN\cup\{\infty\}$ is a \textbf{dimension for learning} if it satisfies both of the following:
+	\begin{enumerate}
+		\item[1.] \textbf{Characterizes Learnability:} $\calF$ is learnable if and only if $D(\calF)<\infty$.
+		\item[2.] \textbf{Of finite character:} For every $d\in\bbN$ and $\calF$, $D(\calF)\ge d$ can be demonstrated by finitely many $f\in\calF$ and finitely many domain points.  
+	\end{enumerate}
+\end{defn}
+\begin{rmk}
+	Every known notion of dimension for learning (e.g. VC dimension) satsifies these conditions.
+\end{rmk}
+
 
 \end{document}
