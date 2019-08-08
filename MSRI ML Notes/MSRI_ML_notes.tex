@@ -1722,7 +1722,7 @@ Things are speeding up at the end so this is becoming less and less reasonable t
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\pagebreak
 
 \section{Presentation}
 Our group (Angel, Ashwin, and I) are presenting on the last day of class on the paper \textit{Learnability Can Be Undecidable} by S. Ben-David, P. Hrube\v s, S. Moran, A. Shpilka, A. Yehudayoff. I will begin 
@@ -1730,7 +1730,7 @@ by introducing the concept of EMX learning, (monotone) compression schemes, and 
 EMX learning is equivalent to there being a weak compression scheme. Finally Ashwin will bring us home by discussing the connection between monotone compression and cardinality and discuss why there is no
 good\footnote{i.e. gives a criteria for ability to learn like VC dimension in PAC learning.} notion of dimension that holds for all modes of learning.
 
-\subsection{Introduction and Overview}
+\subsection{Overview of Results}
 This work makes connections between certain modes of learnability and cardinalities in order to leverage the undecidability of the continuum hypothesis in order to show that 
 there is some amount of uncertainty inherent in whether a specific problem is able to be suitably learned. The main result of this paper is as follows:
 \begin{thm}[BHMSY 19]
@@ -1752,5 +1752,43 @@ Furthermore, the authors investigate the idea of ``dimensions for learning''.
 	Every known notion of dimension for learning (e.g. VC dimension) satsifies these conditions.
 \end{rmk}
 
+\subsection{Definitions and Preliminaries}
+To motivate and enable the discussion that follows, we need to remind you of/introduce you to some of the concepts we will be using.
+Recall that $\aleph_0$ is the cardinality of the integers and $\aleph_1$ is the next-largest cardinality. Furthermore, it can be shown that the powerset $2^{\aleph_0}$ is the cardinality of the reals. The \textbf{continuum hypothesis} states that 
+\[2^{\aleph_0}=\aleph_1\]
+G\"odel and Cohen showed that the continuum hypothesis was \textit{independent of ZFC}, and therefore became one of the most well-known examples of 
+a problem that is \textbf{undecidable} (assuming that ZFC is consistent).
+
+\subsubsection{Our Toy Problem}
+We will work with a specific problem to generate our proofs. Throughout the rest of the discussion, let $X$ be some domain set and let $\calF^\ast:X\to\{0,1\}$ be a family of functions with finite support. Note that we can (and often will) leverage the 
+equivalence between functions $X\to\{0,1\}$ and finite subsets of $X$. 
+\begin{rmk}
+	In all that follows one can use the family $\calF$ of (not-necessarily-finitely-supported) functions $X\to\{0,1\}$, but we will be using $\calF^\ast$ for our arguments in the next parts, so we might as well restrict our attention now.
+\end{rmk}
+\begin{defn}
+	A \textbf{learner} on $\calF^\ast$ is a function $G:\cup_1^\infty X^i\to \calF$ that outputs a set in $X$ given a finite sequence of points in $X$.
+\end{defn}
+Then the goal of our game is to find a learner that takes an iid sample of points from our data distribution and returns a set that maximizes mass under this distribution.
+That is, we are looking to find $\operatorname{Opt}_P(\calF^\ast)=\sup_{f\in\calF^\ast}\bbE_P(f)$.
+\begin{rmk}
+	Notice that here we have to assume that all our distibutions are finitely-supported in order for this to make sense for a finite set.
+\end{rmk}
+\begin{defn}
+	We say $\calF^\ast$ is \textbf{$(\varepsilon,\delta)$-EMX-learnable} if there exists a learner $G$ that is an \textbf{$(\varepsilon,\delta)$-EMX-learner} for $\calF^\ast$; that is, such that 
+	for some $d=d(\varepsilon,\delta)$
+	\[\operatorname*{Pr}_{S\sim P^d}[\bbE_P(G(S))\le\mathrm{Opt}_P(\calF^\ast)-\varepsilon]\le\delta\]
+	for every (finitely-supported) distribution $P$ on $X$.
+\end{defn}
+
+\subsubsection{Monotone Compression Schemes}
+Compression schemes have long been studied in relation to learnability, and the results in this paper leverages that significantly.
+The intuition for a compression scheme is to find maps $\kappa$ and $\eta$, the first of which downsamples a sequence of data and the latter of which reconstructs the label for any point in the original sample.
+
+In this we restrict our attention here to \textbf{monotone compression schemes:}
+\begin{defn}
+	An $m\to d$ monotone compression scheme for $\calF^\ast$ is a function $\eta:X^d\to\calF^\ast$ such that for every $f\in\calF$ and $x_1,\dots,x_m$ there exists 
+	a subset $x_{i_1},\dots,x_{i_d}$ such that 
+	\[\{x_1,\dots,x_m\}\subseteq \eta(x_{i_1},\dots,x_{i_d})\]
+\end{defn}
 
 \end{document}
