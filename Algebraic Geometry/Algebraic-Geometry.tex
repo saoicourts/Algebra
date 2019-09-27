@@ -31,8 +31,8 @@
 %header stuff
 \setlength{\headsep}{24pt}  % space between header and text
 \pagestyle{fancy}     % set pagestyle for document
-\lhead{Notes on the Schur-Weyl Functor} % put text in header (left side)
-\rhead{Nico Courts} % put text in header (right side)
+\lhead{Algebraic Geometry} % put text in header (left side)
+\rhead{Notes by Nico Courts} % put text in header (right side)
 \cfoot{\itshape p. \thepage}
 \setlength{\headheight}{15pt}
 %\allowdisplaybreaks
@@ -89,7 +89,7 @@ So then the idea we are talking away here is that \textit{geometry is in the fun
 
 Fix a field $k$. 
 \begin{defn}
-	A \textbf{space with functions} is a topological spae $X$ along with a collection (a $k$-algebra!) $\calO(U)$ of maps $U\to k$ for each open 
+	A \textbf{space with functions} is a topological space $X$ along with a collection (a $k$-algebra!) $\calO(U)$ of maps $U\to k$ for each open 
 	$U\subseteq X$. 
 
 	$\calO(U)$ are called \textbf{regular functions} and must satisfy:
@@ -100,6 +100,77 @@ Fix a field $k$.
 \end{defn}
 
 For the next time, try to think of as many examples of this as you can. Next time will be a mind blowing example of a variety.
+
+\section{September 27, 2019}
+\begin{prob}
+	Do all the exercises in Kempf chapter 1!
+\end{prob}
+
+For now we assume that $k$ is algebraically closed.
+
+\subsection{Examples of spaces with functions}
+There were lots of suggestions, but here are a couple:
+\begin{ex}
+	Let $X=\bbS^2$ and let $\calO_X^{cts}$ be the continuous $\bbC$-valued functions. Alternatively
+	we could consider a different sheaf $\calO_X^{an}$, the holomorphic functions. Or we could 
+	consider $\calO_X^\infty$, the $C^\infty$ functions (under some smooth structure).
+\end{ex}
+
+\begin{defn}
+	A \textbf{morphism} of spaces with functions between $(X,\calO_X)$ and $(Y,\calO_Y)$ is a continuous map 
+	$\varphi:X\to Y$ such that for all $U\subseteq Y$ open and $f\in\calO_Y(U)$, the function 
+	\[\phi^\ast f=f\circ\phi|_{\phi^{-1}(U)}:\phi^{-1}(U)\to k\in \calO_X(\phi^{-1}(U))\]
+
+	In other words, a morphism of spaces with functions is a map of spaces that \textit{respects the regular functions.}
+\end{defn}
+\begin{ex}
+	Let $X,Y$ be topological spaces and let $\calO_X$ and $\calO_Y$ be the continuous functions. Then morphisms are just continuous maps.
+\end{ex}
+\begin{ex}
+	When $X$ and $Y$ are manifolds and $\calO_\bullet$ are complex-valued functions, then the maorphisms are maps 
+	of manifolds.
+\end{ex}
+
+So now we return to the examples we saw before: $(\bbS^2,\calO^\infty)$, $(\bbS^2,\calO^{cts})$, and $(\bbS^2,\calO^{an})$.
+A natural question to ask is when we have morphisms between these spaces to see if there exist ones that are the identity on $\bbS^2$.
+
+Consider the identity map from the continuous to the analytic functions. Then take any map $f\in\calO^{an}$ and consider that 
+\[f=f\circ id_{id^{-1}(U)}:U\to k\in\calO^{cts}(U)\]
+and there is no map in the other direction.
+\begin{rmk}
+	Notice that since we are pulling functions back, the maps go in the opposite direction as you may think at first.
+\end{rmk}
+
+We can also talk about \textbf{open subspaces}. If $V\subseteq X$ is an open subset, we can let the induced space with functions 
+be $(V,\calO_V)$ where if $U\subseteq V$ then $\calO_V(U):=\calO_X(U)$.
+
+\subsection{Varieties}
+\begin{defn}
+	An \textbf{affine $k$-variety} is a space with functions $(Y,\calO_Y)$ such that for every space with functions $(X,\calO_X)$,
+	the natural map 
+	\[\Hom((X,\calO_X),(Y,\calO_Y))\to\Hom_{\Alg}(\calO_Y(Y),\calO_X(X))\]
+	is a bijection and furthermore $\calO_Y(Y)=:k[Y]$ is a finitely generated $k$-algebra.
+\end{defn}
+\begin{rmk}
+	The idea here is that the algebra maps (on the right) are precisely the same as the geometry maps (on the left).
+	Algebraic geometry, baby.
+\end{rmk}
+So then this leads to a very simple (loose) definition:
+\begin{defn}
+	A \textbf{variety} is something that is covered by affine varieties.
+\end{defn}
+
+\begin{ex}
+	$\bbA^1=k$. Give this space the cofinite topology. Then if we have $U=k\setminus\{x_1,\dots,x_n\}\subset \bbA^1$,
+	\[\calO_{\bbA^1}(U)=\{f(t)\in k(t)| \text{poles are in }\{x_i\}\}\]
+\end{ex}
+\begin{prob}
+	Show that $\bbA^1$ is an affine variety!
+\end{prob}
+\begin{rmk}
+	Notice that this staetment is equivalent to saying that any morphism of spaces with functions gives us a regular map $X\to k$.
+\end{rmk}
+
 
 
 \end{document}

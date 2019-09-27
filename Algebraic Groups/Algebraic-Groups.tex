@@ -41,11 +41,12 @@
 \DeclareMathOperator{\1}{\mathbbm{1}}
 \DeclareMathOperator{\GL}{GL}
 \DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\Spec}{Spec}
 
 \begin{document}
 %make the title page
 \title{Algebraic Groups\vspace{-1ex}}
-\author{A course by Jarrod Alper and Julia Pevtsova\\
+\author{A course by Jarod Alper and Julia Pevtsova\\
 Notes by Nico Courts}
 \date{Autumn 2019/ Winter and Spring 2020}
 \maketitle
@@ -114,7 +115,7 @@ If we had to write down five results that we'd like to get out of this class:
 \begin{prop}
 	Every affine group scheme of finite type over a field embeds into $GL_n$ as a closed subgroup.
 \end{prop}
-\begin{thm}[Cheballey's Theorem]
+\begin{thm}[Chevalley's Theorem]
 	Let $G$ be a finite type group scheme over a field. Then it factors as 
 	\[1\to H\to G\to A\to 1\]
 	where $A$ is abelian and $H$ is affine (linear algebraic).
@@ -129,4 +130,77 @@ If we had to write down five results that we'd like to get out of this class:
 \end{prop}
 Finally we want to talk about Tanakka duality and how the representations of $G$ define $G$ itself.
 
+\section{September 27th, 2019}
+Last time we defined a group scheme (a group object in the category of schemes over a base scheme). We also mentioned that 
+You could define it as a map $h_G:\mathbf{Sch}/S\to \mathbf{Set}$ along with a factorization through $\mathbf{Grp}$.
+
+We defined an \textbf{algebraic group} over $k$ as a group scheme over $\operatorname{Spec} k$ of finite type and a \textbf{linear algebraic group}
+to be an \textit{affine} group scheme over $k$ of finite type.
+
+\subsection{Hopf Algebras}
+Let $G=\Spec A$ be a linear algebraic group over $k$. I have seen most of these before (see Waterhouse or my Hopf algebra notes)
+\begin{rmk}
+	One think I haven't seen explicitly before: Notice that the augmentation ideal $\ker \varepsilon$, where $\varepsilon$ is the counit,
+	is the (maximal!) ideal corresponding in the algebro-geometric sense to the identity element in $G$.
+\end{rmk}
+\begin{defn}
+	A \textbf{Hopf algebra} is ...
+\end{defn}
+\begin{defn}
+	Let $G$ be an algebraic group over $k$. Then if $h_G$ factors through $\Ab$, $G$ is called \textbf{commutative.}
+\end{defn}
+
+\subsection{Some Examples}
+\begin{rmk}
+	Note that to define a functor from schemes over $k$, is suffices to define it on affine schemes, thereby defining 
+	the (Zariski) local behavior of any such map. Thus we really only need to consider maps in $\Alg$.
+\end{rmk}
+\begin{itemize}
+	\item $\bbG_a$. Here we can define it as a functor that sends $S\mapsto\Gamma(S,\calO_S)$. Geometrically, $\bbG_a=\bbA^1$ where the multiplication is addition, inverses send $x\mapsto -x$ and the unit is the zero map.
+	The Hopf algebraic picture is the usual dual thing.
+	\item $\bbG_m$ as a scheme isthe map $S\mapsto \Gamma(S,\calO_S)^\ast$. In the geometric picture, $\bbA^1\setminus\{0\}$ and the algebra structure comes from multiplciation. Hopf is pretty easy.
+	\item $\GL_n$ is a scheme that sends
+	\[S\mapsto \left\{A=(a_{ij}): a_{ij}\in\Gamma(S,\calO_S), \det(A)\in\Gamma(S,\calO_S)^\ast\right\}\]
+	the algebra is $\bbA^{n\times n}\setminus \{\det = 0\}$ with the usual multiplication. The coalgebra structure can be seen in the book.
+\end{itemize}
+This one requires some more explaination so I am setting it apart.
+\begin{ex}
+	Let $V$ be a finite dimensionatl vector space over $k$. Then we can define the algebraic group $V_a$ which sends 
+	\[S\mapsto \Gamma(S,\calO_S)\otimes_k V.\]
+	Geometrically we are looking at $\bbA(V)=\Spec\Sym ^\ast V^\vee\simeq \Spec k[x_1,\dots,x_n]$ where $n=\dim V$.
+\end{ex}
+
+What about finite groups? As a scheme, we want $G=\sqcup_{g\in G}\Spec k$. The functor sends $S\mapsto \operatorname{Mor}_{\operatorname{Set}}(\pi_0(S),G)$,
+or maps from the connected components into $G$.
+
+\begin{ex}
+	Now consider the $n^{th}$ roots of unity: as a scheme, $\mu_n=\Spec k[t]/(t^n-1)\subseteq \bbG_m$.
+	If both $k=\bar k$ and $\ch k\nmid n$, then $\mu_n\cong\bbZ/n\bbZ$.
+
+	But if (e.g.) $k=\bbQ$, then $\mu_3$ is $\bbQ[t]/(t^3-1)=\Spec\bbQ\sqcup \Spec\bbQ(\xi)$ where $\xi$ is a primitive third root of unity.
+
+	If, on the other hand, $k=\bar \bbF_3$ and consider $\mu_3$, we get a single point with residye field $\bar\bbF_3$.
+\end{ex}
+
+\begin{ex}
+	If we are in the case of positive characteristic, then we get an algebraic group $\alpha_p$. Here the scheme is $\Spec k[x]/x^p$ and functorially it 
+	is the map $S\mapsto \{F\in\Gamma(S,\calO_S)|f^p=0\}$.
+\end{ex}
+
+\subsection{Matrix Groups}
+We already defined $\GL_n$, but we can also define 
+\[\operatorname{SL}_n:S\mapsto\{A=(a_{ij})|\det A=1\}\]
+with scheme $\Spec k[x_{ij}]/(\det-1)$.
+
+We also have the (upper) triangular matrices $T_n$ and unitary group $U_n$ and diagonal group $D_n$
+
+\begin{defn}
+	Let $G$ be a linear algebraic group. Then 
+	\begin{itemize}
+		\item $G$ is a \textbf{vector group} if $G\cong V_a$ for some finite dimensional $V$.
+		\item $G$ is a \textbf{split torus} if $G\cong \bbG_m^n$.
+		\item $G$ is a \textbf{torus} if there is a field extention $k\to k'$ such that 
+		\[G\times_{\Spec k}\Spec k'\cong \bbG^n_{m,k'}\]
+	\end{itemize}
+\end{defn}
 \end{document}
