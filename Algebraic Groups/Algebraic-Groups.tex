@@ -203,4 +203,119 @@ We also have the (upper) triangular matrices $T_n$ and unitary group $U_n$ and d
 		\[G\times_{\Spec k}\Spec k'\cong \bbG^n_{m,k'}\]
 	\end{itemize}
 \end{defn}
+
+\section{September 30th, 2019}
+Another example to consider:
+\begin{ex}
+	Let $G=\operatorname{PGL}_n$, the projective linear group. Recall we want to define this as $\GL_n/k^\ast$ (from group theory). To do this for algebraic groups,
+	we define 
+	\[\operatorname{PGL}_n=\operatorname{Proj}k[x_{ij}]_{det}:= \Spec (k[x_{ij}]_{det})_0\]
+
+	The geometric picture is difficult since we haven't yet defined quotients, but as a functor we say $\operatorname{PGL}_n$ 
+	is $\Aut(\bbP^n)$, the functor that sends $S\mapsto \Aut(\bbP_S^n)$ where $\bbP^n_S=\bbP_k^n\times_{\Spec k} S$.
+\end{ex}
+
+\subsection{Non-affine group schemes}
+\begin{ex}
+	Let $\lambda\ne 0,1$ be an element in $k$. Then we can define the elliptic curve 
+	\[E_\lambda=V(y^2z-x(x-z)(x-\lambda z))\subset \bbP^2\]
+	Which gives us a double cover over $(0,1)$ and $(\lambda,\infty)$ with singleton fiber (ramified) over $0,1,$ and $\lambda$.
+
+	Then for any $\lambda\ne 0,1$, $E_\lambda$ is a \textbf{projective} group scheme.
+\end{ex}
+\begin{rmk}
+	If you look at the $\bbC$-points, you get $E_\lambda(\bbC)=\Lambda_\lambda$, giving you a torus. Recall (from e.g. complex analysis) that the 
+	moduli here is $\operatorname{SL}_2(\bbZ)$ of all elliptic curves.
+\end{rmk}
+
+\subsection{Abelian Varieties}
+\begin{defn}
+	An \textbf{abelian variety over $k$} is asmooth, geometrically connected ($A\times_{\Spec k}\Spec\bar k$ is connected), proper group scheme $A$ over $k$.
+\end{defn}
+\begin{ex}
+	Over $\bbC$, $\bbC^g/\Lambda$ where $\Lambda\cong \bbZ^{2g}\subseteq \bbC^g$ gives us a genus $g$ example.
+\end{ex}
+\begin{thm}
+	Any abelian variety over $k$ is commutative and projective.
+\end{thm}
+\begin{thm}[Chevalley]
+	If $G$ is any group scheme, then the sequence 
+	\[1\to H\to G\to A\to 1\]
+	is exact, where $H$ is a linear algebraic group (affine!) and $A$ is an abelian variety.
+\end{thm}
+\begin{ex}
+	Let $X\to \Spec k$ be a geometrically integral projective scheme (proper may suffice). The idea here is that over $\bbC$
+	the rings over every open set are integral domains.
+
+	Now consider the \textbf{Picard functor} $\operatorname{Pic}_X:\operatorname{Pic}:\mathbf{Sch/k}\to \Grp$ sending 
+	\[S\mapsto \operatorname{Pic}(X_S=X\times_k S)/p^k\operatorname{Pic(S)}\]
+\end{ex}
+\begin{thm}
+	$\operatorname{Pic}_X$ is represented by a scheme locally of finite type, thus $\operatorname{Pic}_X^0$, the connected 
+	component of the identity in $[\calO_X]\in\operatorname{Pic}_X$ is an abelian variety.
+\end{thm}
+\subsection{Relative Group Schemes}
+\begin{ex}
+	Consider $\bbG_{m,\bbZ}=\Spec \bbZ[t]_t$. Then $G_{m,S}=\bbG_{m,\bbZ}\times_{\Spec \bbZ}S$. 
+	In the case that $S=\Spec R$, $\bbG_{m,S}=\Spec R[t]_t$.
+\end{ex}
+
+\begin{ex}
+	Let $\bbA^1=\Spec k[x]$ and define $G=\Spec k[x,y]_{xy+1}\subseteq\bbA^2$. Notice this is the plane minus a hyperbola.
+
+	Define $\cdot:G\times_{\bbA^1}G\to G$ to be given by 
+	\[(x,y)\cdot(x,y')=(x,xyy'+y+y')\]
+
+	Then the thing here is the fiber (think vertical line in the plane!) over 0 is $\bbG_a$ and is isomorphic to $\bbG_m$ otherwise.
+\end{ex}
+
+\begin{ex}
+	Let $\calE_\lambda=V(y^2z-x(x-z)(x-\lambda z))$ over $\Spec k[\lambda]$. Then when $\lambda=0$, we get the nodal cubic given by 
+	$y^2z-x^2(x-z)$ (node at the origin). 
+
+	Now if you look at the connected component around 0 of $\Aut(\calE_\lambda)/\bbA_\lambda$, you actually find (when $\lambda=0$) 
+	that $\bbG_m\cong\Aut(\calE_0)^0$.
+\end{ex}
+
+\subsection{Some definitions}
+\begin{defn}
+	A \textbf{homomorphism} $\phi:G\to G$ of group schemes over $S$ is a map $\phi:H\to G$ of schemes such that 
+	\begin{center}
+		\begin{tikzcd}
+			H\times_S H\ar[r,"m_H"]\ar[d,"\phi\times\phi"] & H\ar[d]\ar[d,"\phi"]\\
+			G\times_S G\ar[r,"m_G"] & G
+		\end{tikzcd}
+	\end{center}
+\end{defn}
+\begin{prob}
+	Show that this automoatically imples that the identity and inversion maps are respected as well (automatically).
+\end{prob}
+
+\begin{defn}
+	A \textbf{subgroup of $G\to S$} is a subscheme $H\subseteq G$ such that $H(T)\le G(T)$ for all $T$ over $S$.
+\end{defn}
+\begin{prob}
+	Show that $\ker(\phi)\subseteq H$ is a subgroup.
+\end{prob}
+\begin{rmk}
+	This gives you a nice way to construct new group schemes. For example, the following are exact:
+	\[1\to \operatorname{SL}_n\to GL_n\xrightarrow{\det} \bbG_m\to 1\]
+	and 
+	\[1\to \bbG_m\to \GL_n\to \operatorname{PGL}_n\to 1\]
+\end{rmk}
+
+\begin{prop}
+	Let $G\to S$ be a group scheme. Then $G\to S$ is separated if andy only if $e:S\to G$ is a closed immersion.
+\end{prop}
+\begin{prf}
+	The idea here is that $S\to G$ is a closed immersion. Then we consider the map $m\circ(\id,S):G\times_SG\to G$
+	and consider this along with the diagonal map $\Delta:G\to G\times_S G$ and this is a pullback square!
+\end{prf}
+\begin{cor}
+	Any group scheme over $k$ is separated.
+\end{cor}
+The idea is going to be that if $X$ is any scheme over $k$, then any point $X\in X(k)$ is closed.
+
+
+
 \end{document}

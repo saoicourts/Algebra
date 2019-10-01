@@ -41,6 +41,12 @@
 \DeclareMathOperator{\1}{\mathbbm{1}}
 \DeclareMathOperator{\GL}{GL}
 \DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\Spec}{Spec}
+\let\O\relax
+\newcommand*{\O}{\calO}
+\newcommand{\A}[1]{\bbA^{#1}}
+\let\P\relax
+\newcommand{\P}[1]{\bbP^{#1}}
 
 \begin{document}
 %make the title page
@@ -170,6 +176,47 @@ So then this leads to a very simple (loose) definition:
 \begin{rmk}
 	Notice that this staetment is equivalent to saying that any morphism of spaces with functions gives us a regular map $X\to k$.
 \end{rmk}
+
+\section{September 30th, 2019}
+One question that was asked: if we have fixed the underlying topological space in a space with functions, must there be a morphism 
+between them somehow? Might there instead be a common cover of the two?
+
+\begin{ex}
+	Let $k$ be a field with some topology on it such that every point is closed (you could do the discrete topology).
+	Let $\tilde\O(U)$ be the continuous funcitons $U\to k$. In other words, these functions are locally constant.
+
+	Locally constant functions behave nicely under restrictions to opens, of course. The other axioms are also great.
+
+	Have we really found an initial object in our category? This would be enough to establish a ``tent'' (as in 
+	localization of categories). Try this out and see what happens!
+\end{ex}
+
+\subsection{The question of affine space}
+Recall the question about whether $\A 1$ is an affine variety. The idea here is that $\phi:X\to k$ is a morphism of 
+spaces with functions if and only if it is regular (that is, in $\O_{\A 1}$).
+
+One direction is tautological (a morphism to $\A1$ has a polynomial underlying it), so let $\phi$ be regular. Then to see that $\phi$ is continuous 
+can be checked by pulling back all closed sets. The important observation is that $D(f-a)=X\setminus\phi^{-1}(a)$, which is closed (an axiom for spaces with functions).
+
+The last thing to check is where $\phi$ pulls back regular functions to regular functions. This relies on the facts that $\O_X$ is a $k$-algebra and that 
+$\phi(x)-b_j$ is regular on $U$ when $b_j\notin U$.
+
+\subsection{Algebra maps}
+Notice that since we have a condition that $\O_X(X)$ must be finitely generated as a $k$-algebra, this means that 
+\[\Hom(X,Y)=\Hom_k(\O_Y(Y),\O_X(X))=\Hom_k(k[x_1,\dots,x_n]/(f_1,\dots,f_m),O_X(X))\]
+and
+\[\Hom(X,Y)=\{(\gamma_1,\dots,\gamma_n)\in(\O_X(X))^n:f_j(\gamma_i)=0,\forall j=1,\dots,m\}\]
+In other words, we are looking at maps that factor through $Z$:
+\begin{center}
+	\begin{tikzcd}
+		(\gamma_1,\dots,\gamma_n):X\ar[r]\ar[dr] & k^n\\
+		& Z=Z(f_i)\ar[u,hook]
+	\end{tikzcd}
+\end{center}
+Now what we want to say is that $Y=Z$. That is, \textit{affine varieties are closed subsets of affine spaces.}
+
+Now this is all good, but the problem is that we had to \textit{choose} a presentation of $\O_Y(Y)$ to get this picture.
+of course we want something more canonical! We will see in this class (and in Kempf) that this can be done.
 
 
 
