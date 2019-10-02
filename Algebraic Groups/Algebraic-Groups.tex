@@ -316,6 +316,97 @@ Another example to consider:
 \end{cor}
 The idea is going to be that if $X$ is any scheme over $k$, then any point $X\in X(k)$ is closed.
 
+\section{October 2, 2019}
+Notice that a \textbf{relative group scheme} (referred to in last lecture) refers to a groups scheme over an arbitrary 
+base scheme $S$.
 
+\subsection{Properties of schemes}
+Today we are going to be talking about reducedness, connectedness, irreduciblility, regularity, and smoothness.
+
+Recall that a scheme $X$ is \textbf{reduced} if and only if $\forall x\in X$, $\calO_{X,x}$ is reduced. An example of a non-reduced 
+scheme is $\Spec k[x]/(x^2)$.
+\begin{defn}
+	We say a scheme $X$ over $k$ is \textbf{geometrically reduced} if for all field extensions $k'/k$,
+	\[X_{k'}=X\times_{\Spec k}\Spec k'\]
+	is reduced.
+\end{defn}
+\begin{rmk}
+	It is equivalent that $X_{\bar k}$ is reduced if and only if every $k'/k$ is purely inseperable (I think).
+\end{rmk}
+\begin{rmk}
+	If $k$ is perfect, then $X$ is reduced if and only if $X$ is geometrically reduced.
+\end{rmk}
+\begin{defn}
+	A local ring $(A,\frakm)$ is \textbf{regular} if $\dim _{\text{Krull}}A=\dim_{A/\frakm} \frakm/\frakm^2$
+\end{defn}
+\begin{defn}
+	A scheme $X$ is regular if for all $x\in X$, $\calO_{X,x}$ is regular.
+\end{defn}
+\begin{rmk}
+	If $X\to \Spec k$ and $x\in X(k)$, the tangent space at $x$ is 
+	\[T_{X,x}=(\frakm/\frakm^2)^\vee=\{f:\Spec k[\varepsilon]/\varepsilon^2\to X|0\mapsto x\}\]
+\end{rmk}
+\begin{rmk}
+	Notice that if $X\to \Spec k$ is regular and $k'/k$ is a field extension, then $X_{k'}$ is not necessarily regular.
+\end{rmk}
+
+\begin{defn} 
+	A Scheme $X\to \Spec k$ of finite type is \textbf{smooth} if $X_{\bar k}$ is regular.
+\end{defn}
+
+\subsection{Facts about algebraic groups}
+Then we can return to the proposition we want to prove:
+\begin{prop}
+	Let $G\to \Spec k$ be an algebraic group. Then $G$ is geometrically reduced if and only if $G$ is smooth over $\Spec k$.
+\end{prop}
+\begin{prf}
+	Smoothness over $k$ implies reducedness. Now since we are only interested in the algebraic closure of $k$, we can say $k=\bar k$. Because $G$ 
+	is reduced, there exists a nonempty open $U\subseteq G$ that is smooth. Then since $G(k)\subseteq |G|$ is dense in $G$ (as a topological space) 
+	and Then $G=\cup_{g\in G(k)}m_g(U)$ for our smooth $U$, and this gives us a smooth cover of $G$.
+\end{prf}
+
+We will see next itme that all linear algebraic groups over $k$ where $\ch k=0$ are all 
+geometrically reduced (and thus smooth).
+
+\subsection{Connectedness}
+Let $G$ be an algebraic group over $k$. Then we have our maps $e:\Spec k\to G$, so consider it as $e\in G(k)$.
+Let $G^0\subseteq G$ be the connected component of $e$. It is both open and closed.
+\begin{rmk}
+	If $X\to \Spec k$ is of finite type and $x\in X(k)$, then $X$ being connected implies that $X$ is geometrically connected.
+\end{rmk}
+This establishes that $G^0$ is actually geometrically connected! We actually will see
+\begin{prop}
+	$G^0\subseteq G$ is an (open and closed) algebraic subgroup.
+\end{prop}
+The idea here is that $G^0\times G^0$ is connected, so the image of the multipication map on this set lands in a connected component (since it is connected).
+Since $e\in G^0$, and $m(e,e)=e\in G^0$, this shows that the multiplication map restricts to a well-defined map $G^0\times G^0\to G^0$. A similar argument 
+goes through for the inverset map, etc.
+
+The upshot here is that if $G$ is an algebraic group, then there exists a factorization 
+\[1\to G^0\to G\to \pi_0(G)\to 1\]
+where $\pi_0(G)$ is given the structure of a discrete group.
+\begin{rmk}
+	Now we also have that $(G^0)_{k'}=(G_{k'})^0$ for all $k'/k$. The idea is to get a map of of one into the other and then use clopenness and connectedness 
+	to show they are equal.
+\end{rmk}
+
+\begin{prop}
+	A connected algebraic group over $k$ is irreducible.
+\end{prop}
+\begin{prf}
+	We can assume $k=\bar k$. Suppose $G= X\cup Y$, where both are closed, $X$ is irreducible, 
+	and $X\cap Y\ne\varnothing$. Thus there exists an element $g\in X\setminus Y$. That is, $g$ lies in a single irreducible component.
+
+	But then using the multiplication by $h$ map on $G$, we get to every other point in $G$, so every point 
+	is in a single irreducible component. But the intersection was nontrivial! Or something.
+\end{prf}
+
+\begin{prop}
+	If $G_{\text{red}}$ is geometrically connected, then $G_{\text{red}}\subseteq G$ is a subgroup. In particular, 
+	if $k$ is perfect, then $G_{\text{red}}$ is a subgroup of $G$.
+\end{prop}
+\begin{rmk}
+	$X$ is geometrically reduced implies that $X\times X$ is geometrically reduced.
+\end{rmk}
 
 \end{document}
