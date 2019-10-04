@@ -42,6 +42,7 @@
 \DeclareMathOperator{\GL}{GL}
 \DeclareMathOperator{\Sym}{Sym}
 \DeclareMathOperator{\Spec}{Spec}
+\newcommand{\red}[1]{{#1}_{\text{red.}}}
 
 \begin{document}
 %make the title page
@@ -408,5 +409,78 @@ where $\pi_0(G)$ is given the structure of a discrete group.
 \begin{rmk}
 	$X$ is geometrically reduced implies that $X\times X$ is geometrically reduced.
 \end{rmk}
+
+\section{October 4, 2019}
+Some review. Let $G$ be an algebraic group and denote $e:\Spec k\to G$ be the identity. We saw a lot of propositions last time.
+
+Now let $k$ be a nonperfect field and take $t\in k\setminus k^p$. Then define 
+\[G\eqdef V(x^{p^2}-tx^p)\subseteq \bbG_a\]
+which Milne claims is not reduced. We can see why it's not geometrically reduced, but we're missing the details here.
+
+\subsection{Another special case}
+\begin{thm}
+	When $k=\bar k$, $G$ is smooth if and only if 
+	\[\dim T_e \red G=\dim T_e G.\]
+\end{thm}
+\begin{rmk}
+	When $G$ is smooth, it is reduced, so the equality is clear. For the other direction, we get that $k$ is pefect, so $\red G$
+	which is geoemetrically reduced if and only if $G$ is smooth. But 
+	\[\dim G\le \dim T_e G=\dim T_e\red G=\dim \red G=\dim G\]
+\end{rmk}
+\begin{thm}
+	If $G$ is a linear algebraic group over $k$ and $\ch k=0$, $G$ is smooth,
+\end{thm}
+\begin{prf}
+	We can assume $k=\bar k$. Then set $G=\Spec A$ where $A$ is a Hopf algebra. THen we get Hopf algebra maps $m^\ast$ and $e^\ast$.
+	Notice that the augmentation ideal $\frakm=\ker(e^\ast)$ is a maximal ideal.
+
+	Then we want to prove 
+	\begin{enumerate}
+		\item $A\cong\frakm\oplus k$ as a $k$-vector space (obvious).
+		\item $\forall a\in\frakm$, $m^\ast(a)-a\otimes 1-1\otimes a\in \frakm\otimes \frakm.$
+	\end{enumerate}
+	To see the second, notice that $m^\ast(a)-a\otimes 1-1\otimes a$ is in the kernel of 
+	\[e^\ast\otimes \id:A\otimes A\to k\otimes A.\]
+	This is clear from the commutative diagram
+	\begin{center}
+		\begin{tikzcd}
+			k\otimes A & A\otimes A\ar[l,"e^\ast\otimes\id"] \\
+			& A\ar[ul,"\sim"]\ar[u,"m^\ast"]
+		\end{tikzcd}
+	\end{center}
+	Then we conclude $f\in \ker(e^\ast\otimes\id)\cap\ker(\id\otimes e^\ast)=A\otimes\frakm\cap\frakm\otimes A$ by a symmetric argument.
+	Finally we notice that $A\otimes\frakm\cap\frakm\otimes A=\frakm\otimes\frakm$, and so $f$ lies in this ideal.
+
+	Now we want to show that $\dim T_e G=\dim_k\frakm/\frakm^2=\dim_k\frakm/(\sqrt{0}+\frakm^2)=\dim T_e\red G$. It suffices to show that 
+	for all $a\in\sqrt{0}$, $a\in \frakm^2$. Suppose the opposite--so let $a\in\sqrt{0}\setminus \frakm^2$. Consider the diagram 
+	\begin{center}
+		\begin{tikzcd}
+			A\ar[r]\ar[d] &A_\frakm\ar[d]\\
+			A/\frakm^2\ar[r,"\sim"] & A_\frakm/(\frakm A_\frakm)^2
+		\end{tikzcd}
+	\end{center}
+	Now the image of $a$ in $A_\frakm$ is nonzero, so there exists $n>0$ such that $a^n\in A_\frakm$ but $a^{n-1}\ne 0$ in $A_\frakm$.
+	Thus there exists $f\notin \frakm$ such that $a^nf=0\in A$. Subsititute $af$ for $a$, and thus there is an $a\in\sqrt{0}$ such that $a^n=0$ in $A$ but $a^{n-1}\ne 0$ in $A_\frakm$.
+
+	Then by fact 2,
+	\[m^\ast(a)=1\otimes a+a\otimes 1+r,\quad r\in\frakm\otimes\frakm\]
+	and since $m^\ast$ is a ring homomorphism, 
+	\[0=m^\ast(a^n)=(m^\ast(a))^n=(a\otimes 1+(1\otimes a+r))^n=a^n\otimes 1+n(a^{n-1}\otimes a+(a^{n-1}\otimes 1)r)+X\]
+	where $X\in A\otimes\frakm^2$. But since $a^n=0$, we get 
+	\[n(a^{n-1}\otimes a+(a^{n-1}\otimes 1)r)\in A\otimes \frakm^2\]
+
+	Now since $(a^{n-1}\otimes 1)r\in (a^{n-1})\frakm\otimes A$, so 
+	\[n(a^{n-1}\otimes a)\in (a^{n-1})\frakm\otimes A+A\otimes\frakm^2\]
+	and since $\ch k=0$, we get that $n$ is a unit, so 
+	\[a^{n-1}\otimes a\in (a^{n-1})\frakm\otimes A+A\otimes\frakm^2\]
+
+	Now since this lives in $A\otimes A$, consider the image of the quotient map $A\otimes A\to A\otimes A/\frakm^2$. Then 
+	\[a^{n-1}\otimes\bar a\in (a^{n-1})\frakm\otimes A/\frakm^2\subseteq A\otimes A/\frakm^2\]
+	And note that $a^{n-1}\notin a^{n-1}\frakm$ because otherwise $a^{n-1}=a^{n-1}q$ for $q\in \frakm$.
+	Then $a^{n-1}(1-q)=0\in A_\frakm$, which implies that $a^{n-1}=0\in A_\frakm$ (since $1-q$ is a unit here).
+
+	Then somehow we get that $\bar a=0\in A/\frakm^2$, so $a\in \frakm^2$.
+\end{prf}
+
 
 \end{document}
