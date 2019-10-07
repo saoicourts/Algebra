@@ -38,16 +38,7 @@
 %\allowdisplaybreaks
 
 % Document-Specific Macros
-\DeclareMathOperator{\1}{\mathbbm{1}}
-\DeclareMathOperator{\GL}{GL}
-\DeclareMathOperator{\Sym}{Sym}
-\DeclareMathOperator{\Spec}{Spec}
-\let\O\relax
-\newcommand*{\O}{\calO}
-\newcommand{\A}[1]{\bbA^{#1}}
-\let\P\relax
-\newcommand{\P}[1]{\bbP^{#1}}
-\newcommand{\eqdef}{\stackrel{\text{def}}{=}}
+
 
 \begin{document}
 %make the title page
@@ -327,7 +318,7 @@ this will gives us the function structure on an affine variety.
 	$D(g)\subseteq k^n$. Then the map 
 	\[k[x_i][1/g]\to \Hom(D(g),k)\]
 	via the map 
-	\[\frac{f}{g^N}\mapsto \left(x\mapsto \frac{f(x)}{g(x)^n}\right)\]
+	\[\frac{f}{g^N}\mapsto \left(x\mapsto \frac{f(x)}{g(x)^N}\right)\]
 	is injective.
 \end{cor}
 
@@ -344,5 +335,67 @@ Then, for example,
 	$\phi$ is a morphis if and only if the $\phi_i$ are regular. One direction is not too bad since coordinate functions 
 	are regular by the axioms of morphisms. The other direction needs to be completed! DO IT!
 \end{prf}
+
+\section{October 7th, 2019}
+\subsection{Questions/Discussions}
+\subsubsection{Initial and final objects}
+We asked before whether the space with functions $(X,\O^{\text{loc. constant}})$ is an initial or terminal 
+object. Adam asserts that it is a final object in the category of spaces with functions where the underlying space is $X$ (I believe this 
+is sheaves over $X$). 
+
+Notice we can't use all continus maps where $k$ has the discrete topology, since $0\in k$ is not closed. 
+
+\subsubsection{Subalgebras and rings of functions}
+Assume that $f:B\to A$. This gives us a nice map $\tilde f:\Spec A\to \Spec B$. One question we may have is 
+``if $f$ is injective, does this imply that $\tilde f$ is surjective?''
+
+Consider an example: Say $B=k[t]\hookrightarrow k[s,t]=A$. Then any function on $A$ looks like $(s-a,t-b)$
+and the map induced on functions is just projection, so this gives us the map $(t-b)$, which is all the maps on $B$.
+
+Another example: consider the map $\bbC[t]\to\bbC[s]$ sending $t\to s^2$. Then this induces a map $z\to z^2$ from $\bbC\to \bbC$ (why?)
+which is again surjective.
+
+Next consider $k[x,u]/(xy-1)=k[x][1/x]=A$, which is a hyperbola over $\bbR$. Then the localization map $B=k[x]\hookrightarrow A$
+induces a map that is basically the identity everywhere \textit{except zero}. So it is \textbf{not surjective.}
+
+\brk
+
+Some properties to notice: examples one and two are \textit{flat} extensions. The second is a \textbf{finite} extension. The 
+third is neither. We will investigate what is going on further later on.
+
+One idea: consider whether the map $X=\Spec B\to \A 2\setminus(\A1\setminus\{0\})$ exists. One of the things that he keeps questioning is 
+whether the target spaces is open or closed as a subset of affine space. (Note that a map is proper if it sends closed to closed).
+
+\subsection{Back to affine varieties}
+Continuing our proof/discussion from last time, we were considering $\varphi:X\to\A n$ which we said was a morphism iff each coordinate $\phi_i:X\to k$ is regualr.
+(This basically follow since $\varphi$ is continuous and sends regular functions to regular functions.
+
+For the regularity, consider $U\subseteq\A n$. Then $U$ admits a cover of $D(g)$, so it suffices to check where $\phi$
+pulls back regular maps on $D(g)$. Of course this is $k[x_1,\dots,x_n][1/g]$! So consider the image of 
+\[\frac{1}{g^N}\sum a_ix^i\]
+and its image in $\phi^{-1}(D(g))=D(\phi^\ast(g))$ is 
+\[\frac{\sum a_i(\phi^\ast x)^i}{(\phi^\ast g)^N}\]
+
+\begin{rmk}
+	Big idea: We started with the ``dream'': that there is a correspondence between the algebra and the geometry. This is 
+	our main guiding principle, so we know we've found the ``right'' topology when we have found one that supports this dream.
+	This is an answer to the question ``why is the Zariski topology not just a degenerate case?''
+\end{rmk}
+
+\subsubsection{Affine varieties in general}
+Let $J\subseteq k[x_1,\dots,x_n]$ be a radical ideal. We know this corresponds (uniquely!) 
+to a subset $Z\subseteq \A n$. Here we can consider $(Z,\O_Z)$ where $Z$ is a subspace of $\A n$.
+
+Then take any closed $W\subseteq Z$, which is the intersection (by definition of the topology)
+\[\cap_{i\in I}Z(f_i)\quad f_i\in h[x_i]/J\]
+and then $\O_Z(D(g))=\frac{k[x_i]}{J}[1/g]$ (note we used the nullstellensatz here!).
+
+So then we claim that $Z$ is an affine variety. To see this, consider a map $\varphi:X\to Z$ and the composition
+\[X\xrightarrow{\varphi} Z\hookrightarrow \A n\]
+so topologically $X$ cfactors through $Z$ if and only if $J\subseteq \O^{\A n}(\A n)$ maps to zero in $\O_X(X)$.
+
+The takeaway here is that a morphism $X\to\A n$ factors through $Z$ topologically if and only if it factors in the categorification of 
+spaces with functions.
+
 
 \end{document}

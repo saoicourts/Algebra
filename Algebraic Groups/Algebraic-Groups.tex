@@ -38,11 +38,7 @@
 %\allowdisplaybreaks
 
 % Document-Specific Macros
-\DeclareMathOperator{\1}{\mathbbm{1}}
-\DeclareMathOperator{\GL}{GL}
-\DeclareMathOperator{\Sym}{Sym}
-\DeclareMathOperator{\Spec}{Spec}
-\newcommand{\red}[1]{{#1}_{\text{red.}}}
+
 
 \begin{document}
 %make the title page
@@ -482,5 +478,108 @@ which Milne claims is not reduced. We can see why it's not geometrically reduced
 	Then somehow we get that $\bar a=0\in A/\frakm^2$, so $a\in \frakm^2$.
 \end{prf}
 
+\section{October 7, 2019}
+Today we will be primarly concerned with 
+\subsection{Group actions}
+Let $G$ be an algebraic group over $k$. 
+\begin{defn}
+	A \textbf{group action} of $G$ on a scheme $X$ over $k$ is the data of a morphism
+	\[\mu:G\times X\to X\]
+	such that the usual axioms hold. That is,
+	\begin{center}
+		\begin{tikzcd}
+			G\times G\times X\ar[r,"m\times\id"]\ar[d,"\id\times \mu"] & G\times X\ar[d,"\mu"]\\
+			G\times X\ar[r,"\mu"] & X
+		\end{tikzcd}
+		\begin{tikzcd}
+			\Spec k\times x\ar[r,"e\times\id"]\ar[rd,"\sim"] & G\times X\ar[d,"\mu"]\\
+			& X
+		\end{tikzcd}
+	\end{center}
+\end{defn}
+\begin{rmk}
+	Apparently it was an exercise already to show that this is equivalent to an action of $h_G$ on $h_X$.
+\end{rmk}
+\begin{rmk}
+	The map $(g,x)\mapsto(g,gx)$ is an automorphism of $G\times X$, so if $p_2:G\times X\to X$ is projection,
+	\begin{center}
+		\begin{tikzcd}
+			G\times X\ar[rr,"\sim"] \ar[dr,"\mu"] & & G\times X\ar[dl,"p_2"]\\
+			& X &
+		\end{tikzcd}
+	\end{center}
+	commutes.
+\end{rmk}
+\begin{defn}
+	Let $X$ and $Y$ be schemes over $k$ with a $G$ action. Then a \textbf{$G$-equivariant morphism} $f:X\to Y$ 
+	is one such that for all $g\in G$, the following commutes:
+	\begin{center}
+		\begin{tikzcd}
+			G\times X\ar[r,"\id\times f"]\ar[d,"\mu_X"] &G\times Y \ar[d,"\mu_Y"]\\
+			X\ar[r,"f"] & Y
+		\end{tikzcd}
+	\end{center}
+\end{defn}
+\subsubsection{Some examples}
+\begin{itemize}
+	\item $G$ actions on itself by multiplication or conjugation.
+	\item $\Gm$ acts on $\A1$. Geometrically, we are just looking at $k^\ast$ acting on $k$ by scaling.
+	Algebraically, we want a map $\mu\Gm\times\A1\to\A1$ given by the map of algebras:
+	\[k[x]\xrightarrow{\mu^\ast}k[t]_t\otimes k[x]\quad\text{via}\quad x\mapsto tx\]
+	Functorially, if $S$ is a scheme over $k$, then $\Gm(S)=\Gamma(S,\O_S)^\ast$ which acts on $\A1(S)=\Gamma(S,\O_S)$,
+	again by scaling.
+	\item You can consider $\GL_n$ action on $\A n$ by multiplicaiton or on $\A{n\times n}$ via multiplication or conjugation.
+\end{itemize}
+\subsubsection{Orbits and Stabilizers}
+Let $G$ be an algebraic group over $k$ action on a scheme $X$ over $k$. Let $x\in X(k)$. Then we have a map
+\[\mu_x:G\times \Spec k\xrightarrow{\id\times x}G\times X\xrightarrow{\mu}X\]
+where 
+\[g\mapsto (g,x)\mapsto gx.\]
+\begin{defn}
+	The \textbf{orbit of $x$} is $Gx=\mu_x(G)\subseteq |X|$ set-theoretically. The \textbf{stabilizer of $x$ in $G$} 
+	is $G_x=\mu_x^{-1}(x)\subseteq G$. 
+\end{defn}
+\begin{rmk}
+	$G_x$ is always a closed algebraic subgroup of $G$.
+\end{rmk}
+\begin{prop}
+	$\mu_x(G)$ is open in its closure in $|X|$.
+\end{prop}
+Recall first the following:
+\begin{thm}[Chevalley's Theorem (different?)]
+	If $f:X\to Y$ is a map of schemes of finite type over $k$, then $f(X)\subseteq Y$ is contstructible (i.e. 
+	is a disjoint union of finitely many locally closed subsets).
+
+	\noindent\textit{Recall that locally closed means closed in an open subspace.}
+\end{thm}
+\begin{cor}
+	\textit{Maybe a definition:} The orbit $Gx\subseteq \operatorname{im}(\mu_x)\subseteq X$. If 
+	$G$ is reduced, then $Gx$ is reduced.
+\end{cor}
+
+\subsubsection{Applications}
+Say that $\ch k=p$. Then $\mu_p$ acts on $\Gm$ by multiplication.
+
+\brk 
+
+$\Gm$ acts on $\A1$ with two orbits: $\Gm\cdot 1=\{x\ne 0\}$ and $\Gm\cdot 0=\{0\}$. The stabilizers are 
+$G_1=1$ and $G_0\cong\Gm$.
+
+\brk
+
+Consider $G$ acting on $\A2$ via $t(x,y)=(tx,t^{-1}y)$. Then the orbits are hyperbolas! There is also a notion of closed 
+orbits that I didn't quite catch. Also apparently the orbit-stabilizer statement is easy to see in geometry via 
+a fiber bundle $G$ over $Gx$ where the fiber over $x$ is $G_x$.
+
+\begin{prop}
+	If $\phi:G\to H$ is a homomorphism of algebraic groups, then $\phi(G)\subseteq |H|$ is closed.
+\end{prop}
+\begin{rmk}
+	The proof included reducing first to $k=\bar k$. The trick here is to consider the group action induced by $\phi$
+	and then consider the map $\mu_{e_H}$ of this action. Then $\mu_{e_H}(G)=\phi(G)$ and one can prove that this is closed.
+\end{rmk}
+
+In particular, we have that \textbf{subgroups of an algebraic group are always closed.} Note that this stands in stark contrast 
+to Lie theory where you get 
 
 \end{document}
