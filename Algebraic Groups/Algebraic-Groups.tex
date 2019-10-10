@@ -580,6 +580,77 @@ a fiber bundle $G$ over $Gx$ where the fiber over $x$ is $G_x$.
 \end{rmk}
 
 In particular, we have that \textbf{subgroups of an algebraic group are always closed.} Note that this stands in stark contrast 
-to Lie theory where you get 
+to Lie theory where you get non-closed subgroups.
+
+\section{October 9, 2019}
+Recall that last time we were considering actions of algebraic groups on schemes of finite type over $k$. We discussed the orbit and stabilizer 
+of an element $x\in X$ and showed that $G\cdot x$ is open in its closure. We also saw that $G_x$ is a closed subgroup.
+
+We also say that $\phi(H)$ (as a set) is always closed! None of these facts are true for Lie groups or relative group schemes 
+(the base scheme is not $\Spec k$ for $k$ a field).
+
+\subsection{Cartier Duality}
+Let $G\to\Spec k$ be a \textbf{finite} group scheme (so $G=\Spec A$ and $A$ is a finite dimensional Hopf algebra).
+Some examples of finite group schemes are:
+\begin{itemize}
+	\item $G$ a finite group. Then $G=\sqcup_{g\in G}\Spec k=\Spec\left(\prod_{g\in G}k\right)$
+	\item $\mu_n=\Spec k[t]/(t^n-1)$
+	\item $\ch k=p$ and $\alpha_p=\Spec k[t]/t^p$
+\end{itemize}
+\begin{rmk}
+	Recall all the maps and diagrams that $A$ has as a Hopf algebra.
+\end{rmk}
+A question one may ask: what if we apply the idea of dualizing $(-)^\vee=\Hom_\Alg(-,k)$ to $A$?
+Do we get another Hopf algebra?
+
+The short and sweet of it is yes! But notice that we are coming from the commutative world, so we expect 
+$A$ to be commutative. But in general, $A$ is not cocommutative (in fact, it is if and only if $G$ itself was commutative as a group).
+
+Thus $A^\vee$ is indeed a (cocommutative) Hopf algebra, and when $G$ is commutative, $A^\vee$ is as well. So
+\begin{prop}
+	If $G=\Spec A$ is a commutative group scheme, then the Cartier dual $G^D=\Spec A^\vee$ is a commutative group scheme as well.
+\end{prop}
+\begin{rmk}
+	The above observations gives us an anti-autoequivalence of the category of commutative affine group schemes. Furthermore $(G^D)^D=G$.
+\end{rmk}
+\begin{ex}
+	Consider $\mu_n=\Spec A-\Spec \oplus_0^{n-1}k\cdot t^i$. So then if we let $\{e_i\}$ be the basis for $A^\vee$ dual 
+	to $\{t_i\}$. we can compute comultiplication 
+	\[e_i\mapsto \sum_{j=0}^{n-1}e_j\otimes e_{i-j}\]
+	and multipication
+	\[e_i\otimes e_j\mapsto \delta_{ij}e_i\]
+
+	Then it can be shown that $G^D\cong\bbZ/n\bbZ$.
+\end{ex}
+
+Now given $G$, an algebraic group over $k$, define 
+\[\underline\Hom(G,\Gm):\mathbf{Sch}/k\to\Set\]
+which takes 
+\[T\mapsto \Hom_{\mathbf{AlgGrp}}(G_T,{\Gm}_T).\]
+\begin{thm}\label{thm:cartier}
+	If $G$ is a commutative finite group scheme over $k$, then 
+	\[G^D\cong\uHom(G,\Gm)\]
+\end{thm}
+Let $H=\Spec B\to \Spec R$ be a group scheme. Then 
+\[H_{\mathbf{GrpSch}/R}(H,{\Gm}_R)\subseteq\operatorname{Mor}_{\mathbf{Sch}/R}(H,{\Gm}_R)\]
+But the left hand side is equivalent to the grouplike elements of $B$ and the right hand side is equivalent
+to $\Hom_{\Alg_R}(R[t]_t,B)$.
+
+This leads to a proof of thm.~\ref{thm:cartier}:
+\begin{prf}
+	Let $G=\Spec A$ and $G^D=\Spec A^\vee$. First look at the $k$-points:
+	\begin{align*}
+		G^D(k)&= \Mor_{\Sch/k}(\Spec k, G^D)\\
+		&=\Hom_{\Alg_k}(A^\vee,k)=\{f\in A|m^\ast(f)=f\otimes f\}\hookrightarrow \Hom_{k}A^\vee,k)\\
+		&=\Hom(G,\Gm)\\
+		&=\uHom(G,\Gm)(k)
+	\end{align*}
+
+	If we then look at $R$ points for a general $R$, most things just change over, but we see 
+	\[\{f\in A\otimes R|m_R^\ast(f)=R\otimes R\}=\Hom_{\Alg_k}(A^\vee,R)=\Hom(G_R,\Gm)\]
+	and the rest follows.
+\end{prf}
+A question one may ask: what is $\Hom_\AlgGrp(\Gm,\Gm)$? It ends up it is $\bbZ$. You can send $t\mapsto t^n$ for all $n\in\bbZ$.
+But then $\uHom(\Gm,\Gm)$ is $\bbZ$ as a group scheme over $k$, which is not quasicompact. There was more but I am le tired.
 
 \end{document}
