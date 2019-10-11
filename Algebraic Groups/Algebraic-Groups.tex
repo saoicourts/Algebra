@@ -653,4 +653,42 @@ This leads to a proof of thm.~\ref{thm:cartier}:
 A question one may ask: what is $\Hom_\AlgGrp(\Gm,\Gm)$? It ends up it is $\bbZ$. You can send $t\mapsto t^n$ for all $n\in\bbZ$.
 But then $\uHom(\Gm,\Gm)$ is $\bbZ$ as a group scheme over $k$, which is not quasicompact. There was more but I am le tired.
 
+\section{October 11, 2019}
+Today we're doing problems and stuff. Forgot about that.
+
+\subsection{Casey's Presentation}
+Let $G$ and $H$ be objects in a category $\calC$ with finite products. Let $h:H\to G$ be a group homomorphism. That is,
+
+Then we get similar diagrams for the identity and inverse maps (they are respected by $h$). 
+Then there is a bunch of diagram work. It's too hard to do a diagram without knowing the shape ahead of time.
+
+Oh hey I used Adam's site! 
+\begin{center}
+	\begin{tikzcd}
+		\ast \arrow[rd, "{(e,e,e)}"]               &                                                                                                                                                  &                                                                                        &                                                                        &                                                                           \\
+												   & H\times H\times H \arrow[r, "(i_g\circ h)\times h\times h"] \arrow[d, "1\times m_H"']                                                            & G\times G\times G \arrow[d, "1\times m_g"]                                             &                                                                        &                                                                           \\
+												   & H\times H \arrow[r, "(i_G\circ h)\times h"]                                                                                                      & G\times G \arrow[rd, "m_G"]                                                            &                                                                        &                                                                           \\
+												   &                                                                                                                                                  &                                                                                        & G                                                                      &                                                                           \\
+	\end{tikzcd}
+\end{center}
+\begin{center}
+	\begin{tikzcd}												   & \ast \arrow[r, "e"] \arrow[rd, "{(e,e,e)}"] \arrow[rdddd, "he"', bend right=49]                                                                   & H \arrow[rd, "{(h,h)}"]                                                                &                                                                        &                                                                           \\
+												   & &H\times H\times H \arrow[d, "(i_g\circ h)\times h\times h"']                                                                                                                                                                         & G\times G \arrow[rd, "\ast\times 1"] \arrow[ld, "{(\ast,1)\times 1}"',swap] &                                                                           \\
+												   &                                                                                                                                                  & G\times G\times G \arrow[d, "1\times m"'] \arrow[rd, "m\times 1"]                      &                                                                        & \ast\times G \arrow[ld, "e\times 1"'] \arrow[lldd, "\pi_1", bend left=49] \\
+												   &                                                                                                                                                  & G\times G \arrow[d, "m"']                                                              & G\times G \arrow[ld, "m"]                                              &                                                                           \\
+												   &                                                                                                                                                  & G                                                                                      &                                                                        &                                                                           \\
+	\end{tikzcd}
+\end{center}
+\begin{center}
+	\begin{tikzcd}
+												   & \ast \arrow[rd, "he"', dashed,swap] \arrow[r, "\ast", bend left] \arrow[d, "{(e,e,1)}"'] \arrow[ld, "{(e,e,e)}"'] \arrow[dd, "{(e,e)}", bend left=60] & \ast \arrow[r, "e"]                                                                    & G                                                                      &                                                                           \\
+		H\times H\times H \arrow[rd, "1\times m"'] & H\times H\times\ast \arrow[d, "1\times \pi_2"'] \arrow[l, "1\times 1\times e"']                                                                  & G \arrow[u, "\ast"'] \arrow[d, "{(1,1)}"'] \arrow[rd, "{(i,1)}", bend left] &                                                                        &                                                                           \\
+												   & H\times H \arrow[r, "h\times h"] \arrow[rr, "(ih)\times h", bend right]                                                                          & G\times G \arrow[r, "i\times 1"]                                                       & G\times G \arrow[uu, "m"]                                              &                                                                          
+		\end{tikzcd}
+\end{center}
+\begin{rmk}
+	The idea above is we want to show the first diagram commutes. That is captured in the paths of the second diagram which commutes by 
+	the axioms of a group object. The third diagram shows a similar commutativity for the unit $e$.
+\end{rmk}
+
 \end{document}

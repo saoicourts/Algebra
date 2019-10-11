@@ -397,5 +397,51 @@ so topologically $X$ cfactors through $Z$ if and only if $J\subseteq \O^{\A n}(\
 The takeaway here is that a morphism $X\to\A n$ factors through $Z$ topologically if and only if it factors in the categorification of 
 spaces with functions.
 
+\section{October 11, 2019}
+Today we are going to talk some more about varieties. Coming up on the horizon is a discussion of 
+the functor-of-points perspective and we'll talk about Yoneda.
+
+\subsection{Questions/Discussion}
+A group of students met up on Wednesday (which we skipped for Yom Kippur) and were talking about 
+how to prove the statement: ``points in an affine variety are closed.''
+
+The Nullstellensatz gives us that a point $(x_1,\dots,x_n)\in X$ correspinds to the vanishing locus of $(x_i-a_i)$. 
+What if we use the definition in the book, though? If $X=\Spec A=\Hom_{\Alg_k}(A,k)$ (where $A$ is a reduced finitely generated 
+$k$-algebra). But then the points are the maximal ideals $\frakm\in k[X]=A$, which are exactly the points we want!
+
+\subsection{Back to Varieties}
+Recall the definition of a variety: we are considering $(X,\O_X)$ is a space of functions. Then the idea we want is that we want to say 
+that this thing is locally affine. But if you consider infinitely many copies of $\A1$ intersecting pairwise, there is 
+an obvious cover by (affine) $\A1$'s. This shouldn't be affine. It doesn't embed in an affine space, for example.
+
+So the definition we used (and the one in Kempf) is that we must have a \textit{finite} cover by affine spaces. We wanted to discuss some examples.
+\begin{itemize}
+	\item Clearly all affine varieties are varieties.
+	\item $\P1$ is our first nontriial example. As a space it is the one-point compactification of $\A1$. The functions 
+	$\O_X(U)$ are the rational functions in $t$ with poles not in $U$. You can also construct it by taking the morphism 
+	\[\Gm\xrightarrow{t\mapsto 1/t}\Gm\]
+	and gluing along this morphism to get a copy of $\P1$! We've already shown in Kempf that it is not affine. 
+	What happens if we were to pick the identity above?! We get the line with two origins. It's a variety! But notice that 
+	(under the Euclidean topology) the space isn't Hausdorff! 
+\end{itemize}
+\begin{prob}
+	If $X$ and $Y$ are affine varieties, is $X\sqcup Y$ affine?
+\end{prob}
+\begin{prob}
+	How can we expresse the non-Hausdorffness of the line/plane with two origins in the Zariski topology?!
+\end{prob}
+
+\subsection{Varieties Glue}
+We've been throwing things around, but this is important to write down: Start with $U_i, i\in I$, where $I$ is finite 
+(although we could drop finiteness if we don't care about the thing being a variety). For all $i,j$, we have open subsets 
+$V_{ij}\subseteq U$ such that $V_{ii}=U_i$ and isomorphisms $\varphi_{ij}:V_{ij}\xrightarrow{\sim}V_{ji}$ of varieties such that 
+\begin{enumerate}
+	\item $\phi_{ii}=\id$
+	\item $\varphi_{ij}(V_{ik}\cap V_{ij})=V_{ji}\cap V_{jk}$
+	\item $\forall i,j,k,\, \varphi_{jk}\circ\varphi_{ij}=\varphi_{ik}$ on $V_{ij}\cap V_{ik}$
+\end{enumerate}
+then there exists a unique package $(X,\iota_i:U_i\hookrightarrow X)$ where $XS$ is a variety and each $\iota_i$ is an open embedding.
+
+One idea is you can rephrase this in categorical language as the colimit of a diagram in a category. Hmmm
 
 \end{document}
