@@ -691,4 +691,114 @@ Oh hey I used Adam's site!
 	the axioms of a group object. The third diagram shows a similar commutativity for the unit $e$.
 \end{rmk}
 
+\section{October 14th, 2019}
+Let $G$ be a finite group. Recall the definiton of a \textbf{representation} (a linear action of $G$ on a vector space $V/k$).
+This is the same data as a group homomorphism to $\GL(V)$.
+
+\subsection{Representations of Algebraic Groups}
+
+Now what if $G$ is an algebraic group over $k$? Now we have some exra structure of $G$ as a variety.
+\begin{defn}
+	A (finite dimensional) \textbf{representation} of an algebraic group $G/k$ is a homomorphism $\rho:G\to \GL(V)$ of algebraic groups.
+\end{defn}
+\begin{rmk}
+	Notice that when $V$ is infinite-dimensional, $\GL(V)$ is no longer of finite type, so we have to let $\rho$ be a 
+	morphism of group schemes.
+\end{rmk}
+We have the standard representation of $\GL_n$ acting on $k^n$ in the natural way. We also have the regular representation 
+$G$ action on $\Gamma(G,\O_G)$. When $G=\Gm$, we get over $\bbC$ an action of $\Gm$ on $\GL(V)$ in the usual way (scaling by $\bbC^\ast$).
+
+Observe that 
+\[\rho:G\to \GL(V)=\Spec(\operatorname{Sym}^\ast(V\otimes V^\vee))_{\det}\]
+corresponds to a ring morphism 
+\[\Sym^\ast(V\otimes V^\vee)_{\det}\to \Gamma(G,\O_G)\eqdef \Gamma(G)\]
+which corresponds to a map 
+\[V\otimes V^\vee\to \Gamma(G)\]
+and then tensoring with $V$, this gives us a map
+\[V\xrightarrow{\sigma}\Gamma(G)\otimes V\]
+
+So any group action gives us a \textbf{coaction} of $\Gamma(G)$ on $V$.
+\begin{defn}
+	A representation of $G$ is a $k$-vector space $V$ along with a coaction 
+	\[\sigma:V\to \Gamma(G)\otimes V\]
+	satisfying the usual dual diagrams to actions.
+\end{defn}
+
+\begin{rmk}
+	As a matter of notation, recall that if $G=\Spec A$, then $A$ is a Hopf algebra. So we call $V$ an $A$-comodule.
+\end{rmk}
+
+\subsection{Reps of diagonalizable group schemes}
+Let $k$ be a field (or even a ring!) and let $A$ be a finitely-generated abelian group. Define $D(A)$ to be 
+\[D(A)=\oplus_{a\in A}k\cdot t^a\eqdef \Spec R\]
+Then we get a multiplication 
+\[R\otimes R\to R\qquad t^a\otimes t^b\mapsto t^{a+b}\]
+and comultiplication
+\[R\to R\otimes R\qquad t^a\to t^a\otimes t^a\]
+and counit $\varepsilon$ sending $t^a\to 1$ (all $t^a$ are primitive).
+\begin{prop}
+	$R$ is a Hopf algebra. In particular, $D(A)\to \Spec k$ is a linear algebraic group.
+\end{prop}
+
+As an example, consider $A=\bbZ$. Then $R\cong k[t]_t$. Thus $D(A)=\Gm$. 
+
+If instead $A=\bbZ/n$, then $R\cong l[t]/(t^n-1)$, so $D(A)\cong\mu_n$.
+
+Finally when $A\cong \bbZ^r\oplus\bbZ/n_1\oplus\cdots\oplus \bbZ/n_k$, then 
+\[D(A)=\Gm^r\times\mu_{n_1}\times\cdots\times \mu_{n_k}\]
+
+\begin{defn}
+	An algebraic group over $k$ is \textbf{diagonalizable} if $G\cong D(A)$ for some $A$.
+\end{defn}
+Recall the definiton of irreduciblility.
+\begin{thm}
+	Let $A$ be af initely generated abelian group and $G=D(A)$. Then 
+	\begin{itemize}
+		\item Every irreducible representation of $G$ is one-dimensional and isomorphic to $I_a$, 
+		corresponding to $k\to \Gamma(G)\otimes k$ where $1\mapsto t^a\otimes 1$ for some $a\in A$.
+		\item Every representation decomposes as a direct sum of irreducibles.
+	\end{itemize}
+\end{thm}
+\begin{prf}
+	Let $\sigma:V\to \Gamma(G)\otimes V$ be a representation of a diagonalizable group. For $a\in A$, define 
+	\[V_a\eqdef\{v\in V|\sigma(v)=t^a\otimes v\}\subseteq V\]
+	Now the claim is that $V_a\cap V_b=0$ if $a\ne b$ and furthermore $\sum V_a=V$. The first isn't too hard to see.
+
+	The second follows by considering $v\in V$ and looking at the image of it under $\sigma$. That is, 
+	\[\sigma(v)=\sum_1^Nt^{\alpha_i}\otimes v_i\]
+	where $\alpha_i\in A$ and $v_i\in V$. Then a very simple argument shows $v=\sum v_i$ (using linearity).
+	Then it remains to show that $v_i\in V_{a_i}$, but this will make things work. (use the other axiom of a coaction).
+\end{prf}
+\begin{rmk}
+	When $A=\bbZ$, $G=D(\bbZ)=\Gm$, which tells us that representations of $\Gm$ are in bijection with $\bbZ$-gradings 
+	of $V\cong\oplus_{n\in\bbZ}V_n$!
+\end{rmk}
+\begin{defn}
+	A linear algebraic group $G\to\Spec k$ is called \textbf{linear reductive} if every representation decomposes as a direc sum of irreducibles.
+\end{defn}
+\begin{prob}
+	Show the above is equivalent to the statements
+	\begin{itemize}
+		\item for each $G$-representations $W\subseteq V$, there exists $W'\subseteq V$ subrepresentations such that $V\cong W\oplus W'$.
+		\item $0\to W\to V\to W'\to 0$ is exact.
+	\end{itemize} 
+\end{prob}
+\begin{rmk}
+	Notice that this says that $D(A)$ is linear reducible. In particular, $\Gm$ and $|mu_n$ are in \textbf{any characteristic}. This runs counter to Maschke in 
+	finite groups.
+\end{rmk}
+
+Consider $\bbZ/p$ in $\ch p$. We get an action $\bbZ/p$ on $k^2$ via 
+\[1\cdot(x,y)=(x+y,y).\]
+But notice that $k\stackrel{\hookrightarrow}{y=0}k^2$ is a subrepresentation, but has no complement! Thus this group is not linearly reductive!
+
+\brk
+
+As another example, consider
+\[\Ga\cong\left\{\begin{pmatrix}
+	1 & \alpha \\ 0 & 1
+\end{pmatrix}\right\}
+\subset\GL_2(k)\]
+where $\Ga$ acts on $k^2$ by $\alpha(x,y)=(a+\alpha y,y)$. Then it can be easily seen not to be alinear representation.
+
 \end{document}

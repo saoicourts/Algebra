@@ -444,4 +444,58 @@ then there exists a unique package $(X,\iota_i:U_i\hookrightarrow X)$ where $XS$
 
 One idea is you can rephrase this in categorical language as the colimit of a diagram in a category. Hmmm
 
+\section{October 14th, 2019}
+We're going off-book a bit to talk about 
+\subsection{Yoneda Lemma}
+Recall that we said that $Y$ was affine if 
+\[\Hom(X,Y)\cong \Hom_k(\O_Y(Y),\O_X(X)).\]
+Now wer are going to take some time to put this into a broader context. Let $\calC$ be a category. We get naturally two functors 
+\[h_a:\calC^{op}\to\Set\qquad h^a:\calC\to\Set\]
+where 
+\[h_a(b)=\Hom_\calC(b,a)\qquad h^a(b)=\Hom(a,b).\]
+
+Now given a map $f:a\to a'$, we get natural transformations $f\circ -:h_a\to h_{a'}$ and $-\circ f:h^{a'}\to h^a$. Now notice that 
+if $\ast$ is a one-point variety, then $h_X(\ast)=|X|$, the underlying point set of $X$. Notice that in a similar way 
+$h_X(\A1)$ is something like the ``line space'' of $X$.
+
+Notice that we then get a functor
+\[h_{(-)}:\calC\to\mathbf{Func}(\calC^{op},\Set)\]
+and we should \textbf{think} that a functor $\calC^{op}\to\Set$ is a \textbf{space over $\calC$}. That is, we can think of 
+$\calC$ as the category of open sets of a topological space. We can say 
+\[\Hom(U,V)=\left\{\begin{array}{lr}
+	\varnothing, & U\not\subset V\\
+	\{\varnothing\}, & \text{otherwise}.
+\end{array}\right.\]
+
+Notice the category $\mathbf{Open}(X)$ gives us a functor $\phi:\mathbf{Open}(X)^{op}\to\Set$ where we map 
+an open $U\subseteq X$ to $\phi(U)$. For instance if $F$ is a vector bundle over $X$, we can define
+\[\phi_F(U)\]
+to be the sections over $U$ of the covering map. Cool.
+
+So we're working with the slice category $\mathbf{Top}/X=\{X\to Y,\text{cts}\}$. Here morphisms are maps $Y\to X$ satisfying 
+\begin{center}
+	\begin{tikzcd}
+		Y\ar[rr]\ar[rd] & &Z\ar[ld]\\
+		& X &
+	\end{tikzcd}
+\end{center}
+
+So now fix $F\to X$. Then the map $\phi_F(Y\to X)$ which is the collection of of diagrams of the form above ($Z=F$).
+
+Then if we look at points $x\hookrightarrow X$, we get that $\phi_F(x\to X)$ is the fiber of $F$ over $x$. One ould hole that somehow 
+you could recover all of $F$ from these maps, and that is precisely the content of 
+\begin{lem}[Yoneda]
+	The functor $h:\calC\to\mathbf{Func}(\calC^{op},\Set)$ is fully faithful.
+\end{lem}
+\begin{rmk}
+	That is, 
+	\[\Hom_\calC(a,a')\to\Hom_{\mathbf{Func}(\calC^{op},\Set)}(h_a,h_{a'})\]
+	is a bijection.
+\end{rmk}
+\begin{prf}
+	This proof is so tautological it is sometimes confusing to prove. We can look it up in any of our old notes or books but the idea is 
+	to look at the image of the identity map.
+\end{prf}
+Next time we will see a bunch of examples and exercises.
+
 \end{document}
