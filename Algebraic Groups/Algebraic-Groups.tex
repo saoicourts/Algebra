@@ -774,7 +774,7 @@ Recall the definiton of irreduciblility.
 	of $V\cong\oplus_{n\in\bbZ}V_n$!
 \end{rmk}
 \begin{defn}
-	A linear algebraic group $G\to\Spec k$ is called \textbf{linear reductive} if every representation decomposes as a direc sum of irreducibles.
+	A linear algebraic group $G\to\Spec k$ is called \textbf{linear reductive} if every representation decomposes as a direct sum of irreducibles.
 \end{defn}
 \begin{prob}
 	Show the above is equivalent to the statements
@@ -799,6 +799,109 @@ As another example, consider
 	1 & \alpha \\ 0 & 1
 \end{pmatrix}\right\}
 \subset\GL_2(k)\]
-where $\Ga$ acts on $k^2$ by $\alpha(x,y)=(a+\alpha y,y)$. Then it can be easily seen not to be alinear representation.
+where $\Ga$ acts on $k^2$ by $\alpha(x,y)=(a+\alpha y,y)$. Then it can be easily seen not to be a linear representation.
+
+\section{October 16th, 2019}
+Last time we talked about representations! Woot.
+
+Notice that if $G$ is linear (i.e. affine), then the multiplication map induces comultiplication 
+\[\Gamma(G)\to \Gamma(G)\otimes\Gamma(G)\]
+so $\Gamma(G)$ is the \textbf{regular} representation with coaction given by multiplication.
+
+We also saw some equivalent contitions similar to Machke for linear reductive groups. Finally we say some examples and diagonalizable groups.
+
+\subsection{New Stuff}
+Given a $G$-representation $V$, let $V^G$ be 
+\[\{v\in V|\sigma(v)=1\otimes v\}=\operatorname{Eq}\{V\stackrel{\xrightarrow{1\otimes -}}{\xrightarrow{\sigma}}\Gamma(G)\otimes V\}=\Hom^G(k,V)\subseteq V.\]
+\begin{rmk}
+	I need to figure out the \TeX for equalizers/parallel maps.
+\end{rmk}
+\begin{ex}
+	Given the representation $\Gm$ action on $V=\oplus V_d$, $V^G=V_0$.
+\end{ex}
+\begin{prob}
+	If $G(k)$ is dense in $G$, then $V^G=V^{G(k)}$.
+\end{prob}
+\begin{prop}
+	A linear algebraic group $G$ over $k$ is linearly reductive if and only if the functor from $G$-representations to 
+	$k$-vector spaces given by $V\mapsto V^G$ is exact.
+\end{prop}
+\begin{prf}
+	If $V\cong W\oplus W'\twoheadrightarrow W$ is a $G$ representation, then 
+	\[W^G\oplus(W')^G=V^G\twoheadrightarrow W^G\]
+	is also surjective.
+
+	Suppose that we have a short exact sequence 
+	\[0\to W'\to V\to W\to 0\]
+	and that this functor is exact. Then we want to show we get a section $\sigma:W\to V$. To do this, consider the functor 
+	$\Hom^G(W,-)=\Hom^G(k,W^\vee\otimes -)=(W^\vee\otimes -)^G$, so by the assumption this is exact and we can lift the identity on $W$ 
+	to a map in $\Hom^G(W,V)$, giving us our section.
+\end{prf}
+\begin{prop}
+	Let $G$ be a linear algebraic group over $k$ and $V$ a $G$-representation. Let $W\subseteq V$ be a finite dimensional $k$-subspace (not 
+	necessarily $G$-invariant). Then there exists $W\subseteq W'\subseteq V$ such that $W'$ is a finite dimensional representation of $G$.
+\end{prop}
+\begin{prf}
+	We can assume that $W=\langle w\rangle$ for $w\in V$. Apply $\sigma:V\to \Gamma(G)\otimes V$. Then if $\{t_i\}$ is a 
+	basis for $\Gamma(G)$, we get 
+	\[w\mapsto\sum t_i\otimes w_i.\]
+	Then we claim that $w\in\langle w_i\rangle$ and $\langle w_i\rangle\subseteq V$ is a subrepresentation.
+
+	For the first, consider the diagrams:
+	\begin{center}
+		\begin{tikzcd}
+			k\otimes V & \Gamma(G)\otimes V\ar[l,swap,"e^\ast\otimes\id"]\\
+			& V\ar[ul,"\sim"]\ar[u,"\sigma",swap]
+		\end{tikzcd}
+		\begin{tikzcd}
+			\sum e^\ast(t_i) w_i & \sum t_i\otimes w_i\ar[l]\\
+			& w\ar[u]
+		\end{tikzcd}
+	\end{center}
+	so $w$ is in the span of the $w_i$.
+
+	For the second claim, we need to show that 
+	\[\sigma(w_i)\in\Gamma(G)\otimes\langle w_i\rangle.\]
+	To see this consider the diagram 
+	\begin{center}
+		\begin{tikzcd}
+			\Gamma(G)\otimes\Gamma(G)\otimes V & \Gamma(G)\otimes V\ar[l,"m^\ast\otimes\id"]\\
+			\Gamma(G)\otimes V\ar[u,"\id\otimes\sigma"] & V\ar[l,"\sigma"]\ar[u,"\sigma"]
+		\end{tikzcd}
+	\end{center}
+	And tracing through $w\in V$, we get that 
+	\[\sum t_i\otimes\sigma(w_i)=\sum_{i,j,k}\alpha_{i,j,k}t_i\otimes t_j'\otimes w_k\]
+	and so by looking at coefficients of $t_i\otimes \Gamma(G)\otimes V=\sigma(w_i)$ (look closer here), we see it is 
+	\[\sum_{j,k}\alpha_{i,j,k}t_j'\otimes w-k\in\Gamma(G)\otimes\langle w_i\rangle.\]
+\end{prf}
+\begin{cor}
+	If $V$ is a $G$ representation, then 
+	\[W=\bigcup_{W\subset V}W\]
+	where the union is over all finite dimensional subgroups.
+\end{cor}
+\begin{cor}
+		If $G$ is a linear algebraic group (affine finite type over $k$), then for some $n$ $G\subseteq \GL_n$ is a closed subgroup.
+		In other workds, there exists a faithful representation $V$ of $G$.
+\end{cor}
+
+Now consider the regular representation $\Gamma(G)\to \Gamma(G)\otimes \Gamma(G)$. Notice that $\Gamma(G)$ is 
+a $k$-algebra of finite type. Choose generators $g_1,\dots,g_n$ for $\Gamma(G)$. Take a subrepresentation of $\Gamma(G)$
+spanned by $\langle h_1,\dots,h_N\rangle$ containing the span of the $g_i$.
+
+We have a map $G\to \GL(W)$ where $W=\langle h_i\rangle$ and we aske whether the induced map 
+\[\Sym^\ast(W\otimes W^\vee)_{\det}\]
+is surjective.
+
+Let's say that $h_i\mapsto \sum_j\gamma_{i,j}\otimes h_j$ under $\sigma$. Then using this map and the natural pairing between $W$ and $W^\vee$, we get a map 
+\[\Sym^\ast(W\otimes W^\vee)\supset W\otimes W^\vee\to\Gamma(G)\otimes W\otimes W^\vee\to \Gamma(G)\]
+where we send 
+\[h_i\otimes h_j^\ast\mapsto \gamma_{i,j}\]
+So using the counit identiy we can write 
+\[h_i=\sum_j e^\ast(\gamma_{i,j})h_j\]
+but we really want to write $h_i$ as a linear combination of the $\gamma_{i,j}$ (since we have shown they all lie in the image of this map).
+We don't know how to finish up.
+
+
+
 
 \end{document}
