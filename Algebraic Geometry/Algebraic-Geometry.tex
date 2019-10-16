@@ -38,7 +38,7 @@
 %\allowdisplaybreaks
 
 % Document-Specific Macros
-
+\newcommand{\SpcFun}{\mathbf{SpcFun}}
 
 \begin{document}
 %make the title page
@@ -497,5 +497,55 @@ you could recover all of $F$ from these maps, and that is precisely the content 
 	to look at the image of the identity map.
 \end{prf}
 Next time we will see a bunch of examples and exercises.
+
+\section{October 16}
+We're going to finish up with with Yoneda! The milestone for the next week or so: we should have seen and digested some of the 
+algebra in the early sections of chapter 2. Max will assume we'll have seen it already starting Friday(ish). We should shoot for having all the problems 
+in chapter 2 done by a week from Friday (or so).
+
+\subsection{Old Questions} 
+We spoke a bit about lines glued together and the automorphisms of one of the lines that extend to the entire space. 
+This necessitates talking about what the automorphisms of $\A1$ are.
+
+We also talked about whether the coordinate axes in $\A3$ are isomorphic as varieties to the projection 
+of these axes onto a plane. We discussed that this must induce an isomorphism between the coordinate algebras since they are affine.
+
+\subsection{Back to Yoneda}
+Some useful notation for encoding Yoneda: given a functor $F:\calC^{op}\to\Set$, we say that an object $a\in\calC$
+\textit{represents} $F$ if $h_a\simeq F$. Then another formulation of Yoneda says that a representing object of a representable functor is unique up to isomorphism of
+representing objects.
+\begin{center}
+	\begin{tikzcd}
+		h_a\ar[r,"\sim"]\ar[rr,bend right,"\sim"] & F & h_{a'}\ar[l,"\sim",swap]\\
+		& & \\
+		& a\to a'&
+	\end{tikzcd}
+\end{center}
+\begin{rmk}
+	$h_a$ is called the \textit{functor of points of $a$.}
+\end{rmk}
+\begin{ex}
+Given $f_1\dots,f_n\in k[x_i]$, consider the $k$-algebra $k[x_i]/(f_i)$. Then Yoneda gives us that $A$ is uniquely
+determined by the functor 
+\[h^A:\Alg_k\to\Set\]
+via
+\[B\mapsto \Hom(A,B)=\{(b_1,\dots,b_n)\in B^n|f_i(b_1,\dots,b_n)=0\}.\]
+\end{ex}
+\begin{ex}
+	The functor $h_{\P n}:\Alg_k\to\Set$ is 
+	\[A\mapsto \{A\twoheadrightarrow L| L\text{ invertible $A$-module}\}/\cong\]
+	This is appartently very important.
+\end{ex}
+
+\subsection{Representable or not?}
+\begin{itemize}
+	\item $\Ga$ as a functor from $\SpcFun^{op}\to\Set$ is represented by $\A1$.
+	\item $\Gm$ as a functor from $\SpcFun^{op}\to\Set$ is represented by $\A1\setminus\{0\}$.
+	\item $\GL_n:\SpcFun^{op}\to\Set$
+	\item $|\cdot|:\SpcFun\to\Set$ underlying set 
+	\item $\varnothing:\SpcFun^{op}\to\Set$ sending $X\mapsto\varnothing$
+	\item $\{\varnothing\}:\SpcFun^{op}\to\Set$ sending $X\mapsto\{\varnothing\}$.
+\end{itemize}
+
 
 \end{document}
