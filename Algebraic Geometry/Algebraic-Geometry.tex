@@ -541,11 +541,108 @@ via
 \begin{itemize}
 	\item $\Ga$ as a functor from $\SpcFun^{op}\to\Set$ is represented by $\A1$.
 	\item $\Gm$ as a functor from $\SpcFun^{op}\to\Set$ is represented by $\A1\setminus\{0\}$.
-	\item $\GL_n:\SpcFun^{op}\to\Set$
-	\item $|\cdot|:\SpcFun\to\Set$ underlying set 
-	\item $\varnothing:\SpcFun^{op}\to\Set$ sending $X\mapsto\varnothing$
-	\item $\{\varnothing\}:\SpcFun^{op}\to\Set$ sending $X\mapsto\{\varnothing\}$.
+	\item $\GL_n:\SpcFun^{op}\to\Set$ which is represented by $\Spec k[x_{ij}]_{\det}$
+	\item $|\cdot|:\SpcFun\to\Set$ underlying set represented by $\ast$
+	\item $\varnothing:\SpcFun^{op}\to\Set$ sending $X\mapsto\varnothing$. Not representable!
+	\item $\{\varnothing\}:\SpcFun^{op}\to\Set$ sending $X\mapsto\{\varnothing\}$. Representable by $\ast$.
+	\item $\mu_n:\SpcFun^{op}\to\Set$ sending $X\mapsto\{f\in\O_X(X)|f^n=1\}$ represented by $\Spec k[t](t^n-1)$
 \end{itemize}
 
+\section{October 18th, 2019}
+This is something that Max just mentioned: what is $\O_X(\varnothing)?$ There is a single map here! 
+
+\subsection{Old Questions}
+Is $U=\A2\setminus (0,0)$ affine? Well first notice 
+\[\O_{U}(U)\subseteq \bigcap_{f\in k[x,y]\text{ irred}}k[x,y][1/f]=k[x,y]\]
+\textbf{Why is the last equality true?! We're working over a UFD.} But then of course 
+$U$ can't be affine since $U\ne \A2=\Spec k[U].$ Another way to think of this is that every isomorphism of 
+coordinate rings yields an isomorphism of spaces!
+
+\subsection{Back (again) to affine varieties}
+\begin{thm}
+	\begin{itemize}
+		\item Let $\calA\subseteq\Alg_k$ be the subcategory of finitely-generated, reduced $k$-algebras. Then $\Spec$ defines an equivalence of categories
+		\[\Spec:\calA^{op}\to \mathbf{Aff}\]
+		\item The functor
+		\[X\mapsto\Spec \O_X(X):\SpcFun^\ast\to\mathbf{Aff}\]
+		is left adjoint to the canonical inclusion $\mathbf{Aff}\subseteq\SpcFun^\ast$, where $\SpcFun^\ast$
+		is the subcategory of $\SpcFun$ such that the global sections are finitely generated.
+
+		Thus $X\to\Spec \O_X(X)$ is universal for maps to affine varieties.
+	\end{itemize}	
+\end{thm}
+\begin{prob}
+	The last thing is saying that every morphism $X\to \Spec A$ factors (uniquely) through $X\to\Spec \O_X(X)$. Show this!
+\end{prob}
+
+\section{October 21st, 2019}
+Today we are moving on from Yoneda to speak a bit about the topological properties of algebraic varieties.
+
+Later we will do a lot more examples with the functor of points perspective, but for now the idea to keep around 
+is that this enables us to study something \textit{in relation to something else}.
+
+\subsection{Questions}
+We thought about $\mu_n:\SpcFun^{op}\to\Set$. Notice that (at least when $\ch k\nmid n$), we get that 
+$k[t]/(t^n-1)$, the representing algebra, is $\prod_{\zeta\in\mu_n(k)}k$. Probably the best way to understand 
+this is that it is $n$ points, but moreso that it is embedded in a natural way in $\Gm$ via the SES:
+\[\mu_n\hookrightarrow\Ga\to\Gm\]
+
+\subsection{Topological properties of varieties}
+\begin{defn}
+	A topological space $X$ is \textbf{quasi-compact} if every open cover has a finite subcover.
+\end{defn}
+\begin{rmk}
+	In France, compactness requires a space be Hausdorff. Thus in the development of AG we used the French 
+	definition and it stuck!
+\end{rmk}
+\begin{lem}
+	An affine variety is quasi-compact.
+\end{lem}
+\begin{prf}
+	The idea was that if $X=\cup U_i$, then since $D(f)$ generate the topology for $X$, we can refine
+	the cover so that $U_i=D(f_i)$. By the Nullstellensatz, $X=\cup D(f_i)$, we know that $(f_i)\lhd \O_X(X)$
+	is the whole ring!
+
+	But then $1=\sum_{j=1}^n a_jf_{i_j}$, so we can restrict to a finite cover!
+\end{prf}
+But note that we didn't need that our ring was Noetherian! So the exact same proof shows that $\Spec \bbC[x_1,x_2,\dots]$ is 
+quasi-compact! But $\Spec \bbC[x_i]/(x_1,\dots,x_n,\dots)$ is not quasi-compact!!!
+
+\begin{rmk}
+	A very cool (``AMAZING'' according to Max) fact is the following: if $U\subset X$ is any open in an affine space, then $U$ is quasi-compact.
+	Compare a similar idea in Hausdorff spaces, where this is actually false.
+\end{rmk}
+
+Let $X=\Spec A$ where $A=k[x_1,\dots,x_n]/(f_1,\dots,f_m)$, which is Noetherian by Hilbert basis and correspondence theorem.
+Now we have an anti-isomorphism of lattices between the radical ideals in $A$ and the closed sets in $X$.
+Thus 
+\begin{defn}
+	A topological space $X$ is Noetherian if any \textbf{descending} chain of closed subspaces stabilizes.
+\end{defn}
+\begin{rmk}
+	Assuming the axiom of choice, this is equivalent to the statement ``A non-empty set of closed subsets in $X$ has 
+	a minimal element.''
+\end{rmk}
+\begin{rmk}
+	Note that $\Spec A$ is Noetherian for any (finitely-generated) $k$-algebra.
+\end{rmk}
+So let $X$ be a Noetherian topological space.
+\begin{lem}
+	$Z\subseteq X$ is closed implies that $Z$ is Noetherian and quasi-compact.
+\end{lem}
+\begin{rmk}
+	The Noetherian bit is pretty clear! The quasi-compact part needs a bit of arguing. Use the definition that $X$ is quasi-compact 
+	if and only if $\cap Z_i=\varnothing\twoheadrightarrow \cap_{j=1}^n Z_{i_j}=\varnothing$ for some $i_j$.
+
+	Then using choice and the contrapositive it falls out!
+\end{rmk}
+\begin{defn}
+	A topological space $X$ is \textbf{irreducible} if $X\ne\varnothing$ and if $X=X_1\cup X_2$ where 
+	the $X_i$ are both closed imples that either $X=X_1$ or $X=X_2$.
+\end{defn}
+\begin{rmk}
+	Equivalently, if $U_1$ and $U_2$ are open and nonempty then $U_1\cap U_2\ne\varnothing$.
+	We also have that any non-empty open set is dense.
+\end{rmk}
 
 \end{document}

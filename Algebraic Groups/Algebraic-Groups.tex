@@ -38,6 +38,7 @@
 %\allowdisplaybreaks
 
 % Document-Specific Macros
+\DeclareMathOperator{\SL}{SL}
 
 
 \begin{document}
@@ -901,8 +902,170 @@ So using the counit identiy we can write
 but we really want to write $h_i$ as a linear combination of the $\gamma_{i,j}$ (since we have shown they all lie in the image of this map).
 We don't know how to finish up.
 
+\section{October 18th, 2019}
+Last time we say that any linear algebraic group $G$ embeds into $\GL_n$. The argument was basically that you look at the global functions 
+$\Gamma(G)$ and doing cool stuff. Right at the end Taffy and Tuomas figured out that we just needed to use the other ``side'' of the counit diagram.
 
+\subsection{An example}
+Consider 
+\[\operatorname{PGL}_2=(\operatorname{Proj} k[a,b,c,d])_{ad-bc]}=\Spec(k[a,b,c,d]_{\det})_0\]
+Then consider the representation spanned by 
+\[\left\langle\frac{a^2}{\det},\frac{ab}{\det},\dots,\frac{d^2}{\det}\right\rangle\]
+which has dimension 10 in $\Gamma(\operatorname{PGL}_2)$.
 
+Thus we have a representation $\operatorname{PGL}_2\to\GL_{10}$. We can compute the matrix representing a matrix (whose determinant
+can be assumed to be 1 since we are modding out by scalars).
+\begin{prob}
+	Do this! In Sage or something.
+\end{prob}
+\subsection{Special Linear Groups}
+Lets discuss $\SL_2$. 
+\begin{thm}
+	If $\ch k=0$, then 
+	\begin{itemize}
+		\item $\SL_2$ is linearly reductive.
+		\item Every irreducible representation of $\SL_2$ is isomorphic to $\Sym^d k^2$ for some $d$.
+	\end{itemize}
+	where $k^2$ is the standard representation of $\SL_2$.
+\end{thm}
+\begin{prf}
+	\textit{Sketch:} Recall that in the proof of Maschke one takes a surjection $V\twoheadrightarrow W$ 
+	of $G$ representations and we want to show it has a section. We pick a section $s$ in terms of vector spaces and then ``average''
+	it:
+	\[\tilde s:W\to V\qquad w\mapsto\frac{1}{|G|}\sum_{g\in G}g\cdot s(g^{-1}w)\]
+	which is our section.
+
+	Then using the Harr measure on the group, we get from the inclusion of (compact) $\operatorname{SU}_2$ in $\SL_2$ with quotient $\bbC$
+	and we can construct the section via 
+	\[w\mapsto \int_Gg\cdot s(g^{-1}w)\,\mathrm{d}g\]
+	and we get $T_e\SL_2=(T_e\operatorname{SU}_2\otimes_\bbR\bbC)$ and then there is a bit more Lie theory needed to show this makes full sense over $\bbC$.
+\end{prf}
+
+Now consider $\Sym^d(k^2)^\vee$, the degree $d$ polynomials on two variables. Then we get an action of $\SL_2$ via 
+\[g\cdot f(x,y)=f(g^{-1}\binom{x}{y})-f(dx-by,-cx+ay)\]
+Then, as many arguments in linear algebraic groups, we can reduce to a so-called \textit{maximal torus} 
+of matrices $(\begin{smallmatrix}a & 0\\0 & a^{-1}\end{smallmatrix})\cong\Gm$. Then we can use techniques on the lie algebra 
+$T_e\SL_2=\sl_2$.
+
+Whoa coool. The short exact sequence 
+\[1\to \SL_2\to \GL_n\xrightarrow{\det}\Gm\to 1\]
+gives us that any representation of $\SL_2$ lifts via $-\otimes \det^i$ to a representation of $\GL_2$.
+Sean asked whether this actually gets all the representations or just the polynomial ones. I feel like I should know the 
+answer to this. Jarod seems to think this is all of them. I think \href{https://math.stackexchange.com/questions/694001/non-polynomial-representations-of-gl-n}{this stack post}
+says something about that.
+
+\textit{I got caught up in thinking and googling and missed an example.}
+
+Let $\ch k=p$ and let $\alpha\in k^\times$. Then define $\alpha\cdot f=\alpha^pf$. This gives us a map 
+\[\Sym^d k^n\to \Sym^{dp}k^n\]
+that is additive taking $p^{th}$ powers.
+
+So then $\Sym^N k^n$ is \textbf{not simple} if $p|N$.
+
+\section{October 21st, 2019}
+Recall that we had that any linear algebraic group over a field $k$ injects into $\GL_n$ as a closed subgroup for some $n$.
+
+An open question is as follows: if $G\to\Spec k[\varepsilon]/\varepsilon^2$ is flat affine group scheme of finite type
+Then is $G\subseteq\GL_{n,k[\varepsilon]}$ for some $n?$ This question was asked (as far as Jarod knows) by Brian Conrad on Stack Overflow 
+and is still open.
+
+Our goal is to answer the following: if $\phi:H\to H$ then $K=\ker\varphi=H\times_G\Spec k\subseteq H$ is a closed subgroup. What about its image $H/K$?
+
+\subsection{Torsors}
+Today we are going to be talking about $G$-torsors.
+\begin{defn}
+	If $G$ is a group, a \textbf{torsor under $G$} is a set $P$ with a free and transitive group action.
+\end{defn}
+\begin{rmk}
+	So then by fixing a point $p\in P$, we get $G\xrightarrow{\sim}P$ by sending $g\mapsto pg$. In this way, it is like thinking about 
+	a group without the identity.
+\end{rmk}
+An example is by taking a Galois extension $K(\alpha)/K$ with minimal polynomial $f$ of $\alpha$. Then $G=\operatorname{Gal}(K(\alpha)/K)$ acts on 
+$\{x|f(x)=0\}$, which is a $G$-torsor.
+\begin{defn}
+	A \textbf{$G$-torsor over a set $S$} is a set $P$ with a free right $G$-action such that $P\to S$ is $G$-invariant and $S\cong P/G$.
+\end{defn}
+\begin{rmk}
+	Notice that a torsor under $G$ is a specialization of this definition by requiring that $S=\{\ast\}$, the singleton set.
+\end{rmk}
+\begin{ex}
+	Let $H\subseteq G$. THen $H$ acting on $H\to H\setminus G$ (left cosets $gH$ of $H$) is an $H$-torsor.
+\end{ex}
+\subsection{Flatness}
+\begin{defn}
+	A map of rings $A\to B$ is \textbf{flat} if $-\otimes_A B$ is exact.
+\end{defn}
+\begin{rmk}
+	Equivalently: for all $p\in \Spec A$, $A_p\to B_p$ is flat. Also: for all $q\in\Spec B$. $A_{\phi^{-1}(q)}\to B_q$ is flat.
+\end{rmk}
+\begin{defn}
+	$A\to B$ is \textbf{faithfully flat} if and only if $-\otimes_AB$ is \textbf{faithfully exact} (exactness and its converse).
+\end{defn}
+\begin{rmk}
+	Other equivalence to faithful flatness: $A\to B$ is flat and $\Spec B\twoheadrightarrow\Spec A$; or $A\to B$ 
+	is flat and for any $A$-module $M$, $M=0\leftrightarrow m\otimes_AB=0$.
+\end{rmk}
+\begin{rmk}
+	If $\Spec B\twoheadrightarrow\Spec A$ is faithfully flat and finite presented, then $\Spec A$ has the quotient topology.
+\end{rmk}
+
+\begin{prop}
+	Let $S=\Spec A$ be Noetherian. Let $G\to S$ be an affine group scheme of flat and finite type over $S$. Let $P\to S$ 
+	be a scheme over $S$ with a right $G$-action $P\times_SG\xrightarrow{\sigma}P$. Then the following are equivalent:
+	\begin{enumerate}
+		\item $P\to S$ is affine, (faithfully?)\footnote{We tried to prove this in class and it seemed not to be true if we don't say this}
+		flat, finite type and $(\sigma,\pi_P):(p,g)\mapsto (pg,p)$ is an isomorphism.
+		\item There exists a faithfully flat $S'$ such that 
+		\begin{center}
+			\begin{tikzcd}
+				P_{S'}\ar[r]\ar[d] & P\ar[d]\\
+				S'\ar[r,"\sigma"] &S
+			\end{tikzcd}
+		\end{center}
+		And $P_{S'}\cong G_{S'}$ as $G_{S'}$-modules.
+	\end{enumerate}
+\end{prop}
+\begin{rmk}
+	Note that the above says exactly that $P$ is a $G$-torsor. Another name that has been mentioned and Jarod seems to 
+	like is \textbf{principal $G$ bundle.}
+\end{rmk}
+
+\subsection{Descent}
+Along the way of proving the above propositon, we use the idea of descent.
+\begin{lem}
+	Consider $X'=\Spec B'\stackrel{\text{f.flat, f.type}}{\twoheadrightarrow}X=\Spec B\to Y=\Spec A$
+	where $X',X,$ and $Y$ are Noetherian. Then 
+	\begin{enumerate}
+		\item $X'\to Y$ is flat implies that $X\to Y$ is flat.
+		\item $X'\to Y$ is faithfully flat implies that $X\to Y$ is faithfully flat.
+		\item $X'\to Y$ is finite type implies that $X\to Y$ is.
+	\end{enumerate}
+\end{lem}
+\begin{rmk}
+	The idea for the first two is just looking at the functors using that $B\to B'$ is faithfully flat. For the third, if $B=\cup_\lambda B_\lambda$,
+	then $A\to B_\lambda$ is finitely generated. Then tensoring over $B$ with $B'$ gets us $B'=\cup_\lambda B_\lambda\otimes_B B'$.
+
+	But since $A$ is finitely generated over $B_\lambda$< eventually $B_\lambda\otimes_BB'=B'$. Then 
+	consider
+	\[0\to B_\lambda\to B\to B/B_\lambda.\]
+	After tensoring with (faithfully flat!) $B'$ over $B$, since for some $\lambda$
+	\[0\to B_\lambda\otimes_B B'\xrightarrow{\sim}B'\to B/B_\lambda\otimes_BB'\to 0\]
+	is exact, forcing the rightmost term to be zero. But by faithfulness this implies $B/B_\lambda=0$ and we are done.
+\end{rmk}
+\begin{prop}
+	Consider
+	\begin{center}
+		\begin{tikzcd}
+			X'\ar[r]\ar[d] & X\ar[d]\\
+			S'=\Spec A'\ar[r,"\text{f.type, f.flat}",two heads,swap] & S=\Spec A
+		\end{tikzcd}
+	\end{center}
+	which is a Cartesian square. Then 
+	\begin{enumerate}
+		\item $X'\to S'$ is an isomorphism iff $X\to S$ is.
+		\item $X'\to S'$ is affine iff $X\to S$ is.
+	\end{enumerate}
+\end{prop}
 
 
 \end{document}
