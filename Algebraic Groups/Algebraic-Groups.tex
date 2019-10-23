@@ -1067,5 +1067,78 @@ Along the way of proving the above propositon, we use the idea of descent.
 	\end{enumerate}
 \end{prop}
 
+\section{October 23rd, 2019}
+Recall the following definition/proposition:
+\begin{defn}
+	Let $S=\Spec R$ be Noetherian. Let $G\to S$ be an affine group scheme that is flat and of finite type. Let $G$ be a scheme over $S$ with a right $G$-action.
+
+	Then the following are equiavlent:
+	\begin{itemize}
+		\item $P\to S$ is a \textbf{$G$-torsor}
+		\item $P\to S$ is faithfully flat and of finite type and $P\times_SG\xrightarrow{(\sigma,\pi_1}P\times_S P$ is an isomorphism.
+		\item There exists $S'\twoheadrightarrow S$ faithfully flat such that 
+		\begin{center}
+			\begin{tikzcd}
+				G\times_S S'\cong P\times_S S'\ar[r]\ar[d] & P\ar[d]\\
+				S'\ar[r] & S
+			\end{tikzcd}
+		\end{center}
+		commutes (where the isomorphism shown is $G\times_SS'$-equivariant.)
+	\end{itemize}
+\end{defn}
+
+\subsection{Some Examples}
+We have the trival torsor $P=G\to S$. It is a propositoon that $P\to S$ is trivial iff there exists a section $s:S\to P$.
+
+Let $L/K$ be a finite Galois extension. Then we get $\operatorname{Gal}(L/K)$ acting on $P=\Spec L\to \Spec K$ is a $G=\operatorname{Gal}(L/K)$-torsor.
+Then in the diagram in the definition above, $\Spec L$ plays the part of $S'$. Then we get that $L\otimes L\cong L[x]/f\cong \prod_{g\in G}L$ and 
+\[G\times_{\Spec K}\Spec L\cong \Spec(L\otimes L)\cong \sqcup_{g\in G}\Spec L.\]
+
+\brk
+
+Now let $X$ be a scheme and let $\Gm$ act on a line bundle $L\to X$ with section $o:X\to L$. Then $(L\setminus o(X))\to X$ is a $\Gm$ torsor.
+It is a result, although we don't have the machinery yet, that 
+\begin{prop}
+	There is a bijection between line bundles on $X$ and $\Gm$-torsors.
+\end{prop}
+\begin{rmk}
+	We can do womething similar with any vector bundle over $X$: if $V\to X$ is one, then $V_x$ over $x\in X$ is a vector space. 
+	We just send $V$ to $\operatorname{Frame}(V)$, which over any $x\in X$ we have the set of orderd bases of $V_x$. This gives us a $\GL_n$-torsor.
+\end{rmk}
+
+\brk
+
+If we have a subgroup (say of an algebraic group) $H\subseteq G$, recall that we wanted to show the existence of an $H$-torsor $G\to G/H$.
+
+We begin by talking about \textit{abstract groups}. Assume we have an exact sequence 
+\[1\to K\to G\xrightarrow{\pi}Q.\]
+Then $G\times K\xrightarrow{\sim}G\times_QG$ via the map $(g,k)\mapsto(g, gk)$. The proof isn't too bad.
+
+So now consider a geometric group. If we have the same exact sequence of \textit{algebraic groups over $k$}, we get $K=G\times_Q\Spec k$(??)
+and then evaluating at any scheme $S$, we get 
+\[1\to K(S)\to G(S)\to Q(S)\]
+and consider the map $G(S)\times K(S)\to G(S)\times_{Q(S)}G(S)$ as above. Then by Yoneda we get an isomorphism $G\times K\cong G\times_Q G$ of schemes.
+
+\begin{cor}
+	If $\pi:G\to Q$ is a faithfully flat map of linear algebraic groups over $k$, then $G\to Q$ is a torsor under $K=\ker\pi$
+\end{cor}
+Let's do even better!
+\begin{cor}
+	Let $\pi:G\to Q$ be dominant (i.e. the image is dense in $Q$) and furthermore that $Q$ is reduced. Then $G\to Q$ is faithfully flat and in particular $G\to Q$ is a $K$-torsor.
+\end{cor}
+
+\begin{prf}
+	(Of the second corollary): We use the idea of ``generic flatness''. That is there exists a $U\subseteq Q$ such that $\pi^{-1}(U)\to U$ is flat. Then we can translate this by 
+	the $G$-action (after passing to the algebraic closure of $k$ so that the points are dense) and then flat descent gives us the result we want. :)
+\end{prf}
+
+\begin{thm}
+	Let $G$ be alinearly algebraic group over $k$. Let $X$ be a scheme over $k$ of finite type.
+	Then
+	\[\{G\text{-bundles on $X$}\}\cong H_{fl}^1(X,G)\]
+	where $H_{fl}$ is flat cohomology.
+\end{thm}
+The idea here is clear when $G=\Gm$: you get connections between line bundles on $X$ (i.e. the Picard group of $X$) and $\Gm$-torsors and similarly between the line bundles and $H_{Zar}^1(X,\O_X^\times)$, 
+using the (usual) Zariski sheaf cohomology.
 
 \end{document}

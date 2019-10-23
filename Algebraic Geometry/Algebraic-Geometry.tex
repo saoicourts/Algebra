@@ -645,4 +645,56 @@ So let $X$ be a Noetherian topological space.
 	We also have that any non-empty open set is dense.
 \end{rmk}
 
+\section{October 23rd, 2019}
+The plan moving forward: we are going to talk about some more ideas not from the book about topology and other topics.
+Then we will rejoin the book with chapter three (skipping the discussion of dimension theory).
+
+Here's where we're aiming: last time we talked about what it meant for a Noetherian topological space (or variety) to be irreducible.
+In particular for any Noetherian topological space.
+\begin{thm}\label{thm:decomp}
+	$X$ admits a decomposition 
+	\[X=X_1\cup\cdots\cup X_n\]
+	with each $X_i$ irreducible and for all $i\ne j$, $X_i\not\subseteq X_j$. 
+
+	Furthermore, given two such decompositions 
+	\[X=X_1\cup\cdots\cup X_n=Y_1\cup\cdots\cup Y_m\]
+	then there exists a function $\iota:[n]\to[m]$ such that $X_i=Y_{\iota(i)}$.
+\end{thm}
+Recall that when $X=\Spec A$, the irreducible components $X_i$ of $X$ correspond precisely to the minimal primes $\frakp\lhd A$.
+
+\subsection{Noetherian Induction}
+Let $X$ be a Noetherian topological space and let $P$ be a set of closed subsets of $X$. Suppose that for all $Y\subseteq X$ closed, if 
+\[\text{for all closed $Z\subsetneq Y$, $Z\in P$ implies that $Y\in P$ }\]
+Then $X\in P$
+\begin{prf}
+	By contrapositive: assume that $X\in P^c.$ But now we can use axiom of choice: there exists a minimal $W\in P^c$. 
+	But then for any closed $Z\subsetneq P$, we have $Z\in P$, so $W\in P$, a contradiction. But then $P^c=\varnothing=X$.
+\end{prf}
+
+Now we can prove theorem~\ref{thm:decomp}
+\begin{prf}
+	$\varnothing$ has the empty decomposition. Thus $\varnothing\in P$. Now if $Y\subset X$ is closed, then either $Y$ is irreducible and $Y\in P$ 
+	(``admits a decomposition'') or else $Y=Z\cup W$ and assuming each are in $P$ we get that $Y\in P$ by concatenating (and eliminating). Thus by Noetherian induction we get our decomposition.
+
+	To get the last bit, take two decompositions. Then consider 
+	\[X_1=X_1\cap X=(Y_1\cap X_1)\cup\cdots\cup(Y_m\cap X_1).\]
+	Then since $X_1$ is irreducible, $X_1\subseteq X_1\cap Y_j$ for some $j$ and thus $X_1\subseteq Y_j$. But then similarly $Y_j\subseteq X_i$ for some $i$.
+	But by assumption on the $X_k$, $X_1=Y_j=X_i$, giving us our $\iota$.
+\end{prf}
+
+\subsection{Important Morphisms}
+\begin{defn}
+	A morphism $f:X\to Y$ of varieties is 
+	\begin{itemize}
+		\item \textbf{affine} if there exists an affine covering $U_i\subseteq Y$ such that $f^{-1}(U_i)\subseteq X$ is affine.
+		\item \textbf{finite} if there exists an affine covering $U_i\subseteq Y$ such that $f^{-1}(U_i)$ is affine and 
+		\[\O_Y(U_i)\to\O_X(f^{-1}(U_i))\]
+		is a finite ring extension.
+	\end{itemize}
+\end{defn}
+\begin{prop}
+	$f:X\to Y$ is affine (resp. finite) if and only if for all $U\subseteq Y$ affine, $f^{-1}(U)$ is affine (resp. $f^{-1}(U)$ is affine 
+	and $\O_X(U)\to \O_X(f^{-1}(U))$ is finite).
+\end{prop}
+
 \end{document}
