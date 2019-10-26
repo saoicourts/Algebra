@@ -1141,4 +1141,47 @@ Let's do even better!
 The idea here is clear when $G=\Gm$: you get connections between line bundles on $X$ (i.e. the Picard group of $X$) and $\Gm$-torsors and similarly between the line bundles and $H_{Zar}^1(X,\O_X^\times)$, 
 using the (usual) Zariski sheaf cohomology.
 
+\section{October 25th, 2019}
+We are going to deviate slightly from the result promised last time, because we want to talk first a bit about 
+\subsection{Descent}
+Recall that we had two results before about descent involving faithfully flat morphisms of finite type (where the schemes are Noetherian).
+
+\begin{ex}Let $X=\Spec B$ and let $U_i$ be a Zariski-open cover. Then the map 
+\[\sqcup U_i\to X\]
+is faithfully flat and of finite type.
+\end{ex}
+So then one idea is that if we have a nice Zariski cover of $X$, flatness, faithful flatness, and finite type are all ``local on the source''
+in that you just have to check the property locally on $X$.
+
+\brk
+
+\begin{prop}
+	Let $A\to B$ be a faithfully flat ring homomorphism. Then 
+	\begin{center}
+		\begin{tikzcd}
+			A\ar[r] & B\ar[r,shift left=0.75ex, "p_1"]\ar[r,shift right=0.75ex,"p_2",swap] & B\otimes _AB
+		\end{tikzcd}
+	\end{center}
+	where $p_1(b)=b\otimes 1$ and $p_2(b)=1\otimes b$ is an exact sequence. More generally, 
+	\begin{center}
+		\begin{tikzcd}
+			M\ar[r] & M\otimes_A B\ar[r,shift left=0.75ex,"\id\otimes p_1"]\ar[r,shift right=0.75ex,swap,"\id\otimes p_2"] & M\otimes_A B\otimes_A B
+		\end{tikzcd}
+	\end{center}
+	is exact.
+\end{prop}
+
+There is some geometry that lost me a bit. Sorry. :(
+\begin{prop}
+	If $A\to B$ is faithfully flat, then the map $\rmod A\to\{(N,\alpha)|N\in\lmod B, \alpha:p_1^\ast N\cong p_2^\ast N, P(\alpha)\}$ 
+	sending
+	\[M\mapsto(M_B=M\otimes_AB,\alpha_{can})\]
+	is 
+	an equivalence of categories where $P(\alpha)$ means that $\alpha$ satisfies a cocyle condition. 
+\end{prop}
+\begin{rmk}
+	The canonical isomorphism above is 
+	\[\alpha_{can}:M_B\otimes_{B,p_1}(B\otimes_AB)\to M_B\otimes_{B,p_2}(B\otimes_A B)\]
+\end{rmk}
+
 \end{document}

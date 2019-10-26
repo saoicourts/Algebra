@@ -689,12 +689,49 @@ Now we can prove theorem~\ref{thm:decomp}
 		\item \textbf{affine} if there exists an affine covering $U_i\subseteq Y$ such that $f^{-1}(U_i)\subseteq X$ is affine.
 		\item \textbf{finite} if there exists an affine covering $U_i\subseteq Y$ such that $f^{-1}(U_i)$ is affine and 
 		\[\O_Y(U_i)\to\O_X(f^{-1}(U_i))\]
-		is a finite ring extension.
+		is a finite ring extension (finitely generated as a module over the base).
 	\end{itemize}
 \end{defn}
 \begin{prop}
 	$f:X\to Y$ is affine (resp. finite) if and only if for all $U\subseteq Y$ affine, $f^{-1}(U)$ is affine (resp. $f^{-1}(U)$ is affine 
 	and $\O_X(U)\to \O_X(f^{-1}(U))$ is finite).
 \end{prop}
+
+\section{October 25th, 2019}
+Another takeaway from this class: \textit{algebraic geometry is relative and not absolute.} One way we are starting to dip our toes into this idea 
+is via the definition of affine and finite morphisms. Notice that the definition of finite is a bit clunky because it requires us 
+to restate the definition of affine withing the definiton of a finite morphism. Gross. We should be able to write it as \textit{``affine + $\square$.''}
+
+For some examples, let $Y=\Spec k$. Then $X\to \Spec k$ is affine if and only if $X$ is affine. So when is $X\to\Spec k$ finite? Well since $X$ is affine, $X=\Spec A$ 
+where each $A$ is a finite dimensional (reduced!) $k$-algebra. Therefore it is Artinian and we get a decomposition 
+\[A=A_1\times\cdots\times A_n\]
+where each $A_i$ are finite dimensional local rings with maximals $\frakm_i\subset A_i$ that are nilpotent (use Nakayama!). So by this theorem (since $A$ is reduced),
+we get $A_i=k$, so 
+\[A\cong k\times\cdots\times k.\]
+So then $\Spec A=\sqcup \Spec k$, just a handful of points!
+
+Let's look at another example we saw on the first day: $k[x]\to k[t]$ sending $x\mapsto t^2$. This corresponds to a map $\A1\to\A1$, 
+and we can talk about the fibers of this morphism. They are all (well, almost all) of size two. But they are definitely finite! Similarly if 
+we have a finite map $A\to B$, we can ask if it has finite fibers. Here if $\varphi:A\to B$ is our morphism and $f:\Spec B\to\Spec A$ is the map of rings,
+then since
+\[f^{-1}(\frakm)=\{\frakn\subseteq B|\varphi(n)=m\}\]
+we get a lemma 
+\begin{lem}
+	Given a map $f:\Spec B\to \Spec A$ and $\frakm\in\Spec A$, 
+	\[f^{-1}(\frakm)=\{\frakn\subseteq B/\frakm B,\text{ maximal}\}\]
+\end{lem}
+And so (think this through) the answer is \textbf{yes, the fibers are finite.}
+
+A natural question involves the following 
+\begin{defn}
+	A morphism $f:X\to Y$ is \textbf{quasi-finite} if for all $y\in U$, $f^{-1}(y)$ is finite.
+\end{defn}
+and we ask: is this equivalent to finiteness? The answer is no. Consider the map $\A1\setminus 0\hookrightarrow\A1$. Both of these are affine, so the map is affine. 
+But definitely the $k[t]\to k[t,t^{-1}]$ is not finite!
+
+\begin{prop}
+	Let $X\to Y$ be finite and $Z\subseteq X$ clsoed. Then $f(Z)\subseteq Y$ closed.
+\end{prop}
+Try it!
 
 \end{document}
