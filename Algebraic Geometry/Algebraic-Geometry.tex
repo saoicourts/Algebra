@@ -734,4 +734,63 @@ But definitely the $k[t]\to k[t,t^{-1}]$ is not finite!
 \end{prop}
 Try it!
 
+\section{October 28th, 2019}
+Max heard some things from the feedback: he is interested in seeing if he can't help us 
+put things together at the end of class. That should help!
+
+\subsection{Products}
+Today we are going to be talking about products (and fiber products) in the category of varieties. 
+\begin{defn}
+	Let $\calC$ be a category and $X,Y\in\calC$. Then the product is the usual thing with the usual universal property.
+	\begin{center}
+		\begin{tikzcd}
+			& X\prod Y\ar[dl,"\pi_X"]\ar[dr,"\pi_Y"] &\\
+			X & & Y\\
+			& A\ar[ul]\ar[ur]\ar[dashed,uu] &
+		\end{tikzcd}
+	\end{center}
+\end{defn}
+\begin{rmk}
+	Notice that we can also ``think in terms of functors.'' THen we can define the product of $h_X$ and $h_Y$ as $h_X\times h_Y$ 
+	in terms of the (Cartesian) product of sets.
+\end{rmk}
+Also recall the definition of a fiber product. Notice that if we translate back to functors, we are again trying to figure out what to 
+make of the set 
+\[h_X\times_{h_Z}h_Y.\]
+If $f$ and $g$ are maps from $h_X$ and $h_Y$, respectively, into $h_Z$, then the fiber over $x\in h_Z$ in $h_X\times_{h_Z}h_Y$
+is precisely the product of the fibers (whhaaaaat \textit{like a fibered product}) in $f$ and $g$.
+
+\begin{prob}
+	If $\calC$ has a final object $\Omega$, then $X\times Y=X\times_\Omega Y$. THink about this.
+\end{prob}
+\begin{thm}
+	Fiber products exist in the category of varieties.
+\end{thm}
+Today we are going to be discussing the affine case: given $X\to Z\leftarrow Y$ of affines, constructing 
+$X\times_Z Y$. To start, let $Z=\Spec k$. We are looking to study the functor $h_X\times h_Y$ and then show representability.
+
+Let's look at this pointwise: let $X=\Spec A$ and $Y=\Spec B$. Then
+\[h_X(S)\times h_Y(S)=\Hom(S,X)\times \Hom(S,Y)=\Hom(A,\O_S)\times\Hom(B,\O_S)=\Hom(A\otimes B,\O_S)=h_{\Spec A\otimes B}(S)\]
+\begin{prob}
+	Show that the coproduct in $\Alg_k$ is the tensor product.
+\end{prob}
+\begin{rmk}
+	For the above problem, notice that $A\otimes B$ is odd notation because it is not just the underlying vector space, but carries with it 
+	an algebra structure.
+\end{rmk}
+\begin{prob}
+	Is the tensor product of a finitely-generated algebra finitely generated? Can you do it without coordinates?
+\end{prob}
+
+But notice for what we wrote above to be ``okay'' we need that $A\otimes_k B$ is a reduced finitely generated $k$-algebra. The finite generation 
+isn't too hard to see. The reducedness comes from the following (in Kempf):
+
+We ahve a map $A\otimes B\to \{|\Spec A|\times |\Spec B|\to k\}$ as set of functions. The claim is that this map is injective.
+The idea is that if $\sum_i f_i\otimes g_i\mapsto 0$, we can assume that the $f_i$ and $g_i$ are linearly independent.
+
+But then for all $x,$ we get $\sum_i f_i(x)g_i=0:\Spec B\to k$. But then since the $g_i$ are linearly independent,
+this means the $f_i(x)$ are all zero. Thus the nullstellensatz tells us that all $f_i=0$.
+
+
+
 \end{document}
