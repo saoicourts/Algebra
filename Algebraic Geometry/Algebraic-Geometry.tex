@@ -791,6 +791,88 @@ The idea is that if $\sum_i f_i\otimes g_i\mapsto 0$, we can assume that the $f_
 But then for all $x,$ we get $\sum_i f_i(x)g_i=0:\Spec B\to k$. But then since the $g_i$ are linearly independent,
 this means the $f_i(x)$ are all zero. Thus the nullstellensatz tells us that all $f_i=0$.
 
+\section{October 30th, 2019}
+Let's start by discussing the idea that for any final object $\Omega$, $X\times_\Omega Y\cong X\times Y$. One way to do this 
+is to show that $X\times Y$ also has the universal property corresponding to the limit of $X\to \Omega\leftarrow Y$. But we can 
+also do things functorially! Notice that we have a map 
+\[h_{X\times_\Omega Y}=h_X\times_{h_\Omega}h_Y\xrightarrow{\cong}h_X\times h_Y=h_{X\times Y}\]
+where we can show the isomorphism of these things on points.
 
+Let's talk about the fiber product 
+\[\Spec A\times_{\Spec C}\Spec B\]
+which intuitively should be something like $\Spec A\otimes_C B$. But is this going to be reduced still? Let's do an example. Consider $A=k[t]$ and $C=k[x]$ 
+and consider the map $x\mapsto t^2$ as a map $C\to A$. Then let $B=k$ with the map that sends $x\mapsto 0$. Then $A\otimes_C B\cong k[\varepsilon]/\varepsilon^2$.
+
+The takeaway here is that the tensor product is sometimes non-reduced! It ends up that if we take $(A\otimes_C B)_{red}$ is the algebra we want, which is the 
+appropriate object \textit{in the category of reduced $k$-algebras.}
+\begin{prob}
+	Consider the maps $\Spec(-)$ and $\O(-)$, between the categories $\Alg_k^{op}$ and varieties. These form an adjoint pair! Which object is 
+	left adjoint? Do left adjoints commute with limits? colimits?
+\end{prob}
+
+\subsection{A series of fun exercises}
+Here's some work to do!
+\begin{thm}
+	Fiber products exist in the category of varieties.
+\end{thm}
+\begin{rmk}
+	You should prove this! We will discuss the idea here. The only thing we know how to do is do this with affines! 
+	reduce to the affine case (for all three) and glue!
+	\begin{itemize}
+		\item Begin by showing: Suppose $U\subseteq Z$ is open and $X\times_Z Y$ exists. Then we can look at 
+		\begin{center}
+			\begin{tikzcd}
+				(X\times_ZY)_U\ar[d]\ar[r,hookrightarrow]& X\times_Z Y\ar[d]\\
+				U\ar[r,hookrightarrow] & Z
+			\end{tikzcd}
+		\end{center}
+		and we claim that $(X\times_ZY)_U$ representas $h_{X_u}\times_{h_u}h_{Y_u}$. This gives us a way to shrink over the base.
+		\item Now suppose $W\subseteq Y$ is open. Then looking at a similar diagram, we want to show that $(X\times_ZY)_W$ represents $h_X\times_{h_Z}h_W$. The same thing can be done with a subset of $X$.
+	\end{itemize}
+	Now we want to reduce to $Z$ being affine, then reduce to $Y$ is affine, then $X$. Then we are golden.
+	For the first, assume it holds when $Z$ is affine and then show it works for arbitrary $Z$: pick a covering $U_i$ of $Z$ by affines. Consider $U_i$ and $U_j$:
+	
+	Each $(X_{U_i}\times_{U_i}Y_{U_i})_{U_i\cap U_j}\cong (X_{U_j}\times_{U_j}Y_{U_j})_{U_i\cap U_j}$ via a canonical isomorphism $\phi_{ij}$. This is the crux of it. THINK. :)
+\end{rmk}
+
+\section{November 1st, 2019}
+Let's look at some examples of things. $\A1\times\A1=\Spec k[x]\otimes k[y]\cong\Spec k[x,y]\cong \A2$. Another way to see this 
+is to think about the functors:
+\[\Hom(X,\A1\times\A1)\cong\Hom(X,\A1)\times\Hom(X,\A1)=\Hom(k[s,t],\O(X))=\Hom(X,\A2).\]
+Similarly you can do something along these lines with $\A n$.
+
+What about $\P1\times\P1$? It's not $\P2$. Why? Because there are curves $C_1$ and $C_2$ in the product that do not intersect.
+But Bezout's theorem says that any two curves in $\P2$ intersect!
+
+The problem with solving the above problem is that we really need sheaf theory to solve the above problem. 
+We will circle back around to this.
+
+Question: Is the zariski topology on $X\times Y$ the product topology? NO! For instance $\A2$: the product topology is not the cofinite one!
+
+\subsection{Projective spaces}
+\begin{defn}
+	A variety is \textbf{projective} if there exists a closed immersion $X\hookrightarrow \P n$.
+\end{defn}
+\begin{prop}
+	Products of projective varieties are projective.
+\end{prop}
+\begin{prob}
+	Classify all projective objects in the category of varieties! You can do it. :)
+\end{prob}
+\begin{rmk}
+	Notice that right now we are working in the \textit{Italian} projective space. This is the usual $\A n\setminus\{0\}$.
+	Then we say that $Z$ is closed if the closure of its inverse image in $\A n\setminus \{0\}$ is invariant under scaling.
+\end{rmk}
+Now think about the functions on $\P n$. There is a ring $R\subseteq k(x_0,\dots,x_n)$ called the field of homogeneous rational functions. These are the 
+ratio of homogeneous polynomials of the same degree. It's a field baby. Then 
+\[\O_{\P n}(U)=\{\phi\in R|\operatorname{poles}(\phi)\subseteq\P n\setminus U\}.\]
+
+\subsection{The Point}
+There is a famous map called the Segre embedding. We get a map 
+\[\P n\times\P m\hookrightarrow \P {(n+1)(m+1)}\]
+where we can just imagine taking $(v_i)$ and $(w_i)$ and map it to $\mathbf{v}\mathbf{w}^T$.
+
+This is just the projectivization of a matrix! It dends up that it identifies the product with a closed subvariety equal to \textbf{the set of matrices of rank 1.}
+There was something at the end about $2\times 2$ subdeterminants!
 
 \end{document}
