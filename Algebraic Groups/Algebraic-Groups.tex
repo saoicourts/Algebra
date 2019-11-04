@@ -1184,4 +1184,95 @@ There is some geometry that lost me a bit. Sorry. :(
 	\[\alpha_{can}:M_B\otimes_{B,p_1}(B\otimes_AB)\to M_B\otimes_{B,p_2}(B\otimes_A B)\]
 \end{rmk}
 
+\section{November 4th, 2019}
+Today we are going to do a bit of review as well as do a little more work with $G$-torsors.
+
+\subsection{Review}
+Recall the following setup: $S=\Spec A$ is Noetherian. Then let $G\to S$ be an affine group scheme of finite type over $S$. Let $P\to S$ 
+be a scheme with a right $G$-action:
+\[P\times_S G\xrightarrow{\sigma}P.\]
+\begin{defn}\label{defn:torsor}
+	Then $P\to S$ is a \textbf{$G$-torsor} if either of the following hold:
+	\begin{itemize}
+		\item $P\to S$ is affine, surjective, of finite type, and furthermore transitive (that is $P\times_S G\xrightarrow{(\sigma,\pi_1)}P\times_SP$ is an isomoporphism).
+		\item There exists a faithfully flat $S'\to S$ with $P\times_S S'\cong G\times_S S'$ withere this isomorphism is $G\times_S S'$-equivariant.
+	\end{itemize}
+\end{defn}
+\begin{rmk}
+	If $G$ is a linear algebraic gorup over $k$ and $S$ is defined over $k$, then we say $P\to S$ is a $G$-torsor if it is a torsor under $G\times_k S$.
+\end{rmk}
+
+Now a \textbf{trivial $G$-torsor} over $S$ is $S\times G\to S$ if and only if $P\to S$ has a section. 
+
+Some examples:
+\begin{itemize}
+	\item The $\Gm$ torsors over $S$ are in bijection with the line bundles over $S$.
+	\item The $\GL_n$ torsors over $S$ are in bijection with the vector bundles over $S$.
+\end{itemize}
+Since line and vector bundles are tivialized in the Zariski topology, we see that the second condition in definition~\ref{defn:torsor} can be replaced with: 
+There exists an open cover $\{S_i\}$ such that $P|_{S_i}\cong S_i\times G$.
+
+\brk
+
+We proved some stuff with descent. Look at it.
+\begin{cor}
+There exists an equivalence between $\Alg_A$ and the category of $B$ algebras $C$ along with isomorphisms $\alpha:p_1^\ast C\to p_2^\ast C$ along with the cocyle condition.
+\end{cor}
+\begin{rmk}
+	To prove this, we descend a $(B,\alpha)$ to an $A$-module and show that the multiplication on $B$ descends nicely to $A$.
+\end{rmk}
+\begin{cor}
+	We can also descend $G$-torsors. That is, we have an equivalence between $G$-torsors $P\to S$ and $G$-torsors $P'\to S'$ with isomorphisms and the cocycle condition.
+\end{cor}
+This last result takes quite a bit of doing although we have all the machinery we need. This is the 
+one we're going to be using.
+
+\subsection{New Stuff}
+Let $X$ be a scheme. Then $\operatorname{Pic}(X)$ is the group of line bundles, or equivalently $\Gm$-torsors on $X$.
+\begin{thm}
+	$\operatorname{Pic}(X)=H^1(X,\O_X^\times)=H^1(X,\Gm)$.
+\end{thm}
+Notice that $\O_X^\times$ is a sheaf assigning to each $U$ $\O_X(U)^\times$. On Zariski opens, this is the same as $\Gm(U)$.
+
+To prove the above result, we need to discuss 
+\subsection{\texorpdfstring{\v C}{C}ech Cohomology}
+Assume $X$ is separated. Let $\calU=\{U_i\}$ be an affine covering where $U_i\cap U_j$ is also affine. Then considering the complex 
+\[\sqcup U_i\cap U_j\cap U_k\to \sqcup U_i\cap U_j\to \sqcup U_i\to X\]
+where we have several a parallel maps for each $n-1$-tuple of intersections in the previous term. Then we can applie $\O_X^\times$:
+\[\prod \O_X(U_i)^\times\to \prod\O_X(U_i\cap U_j)^\times\to\cdots\]
+where, for instance, the first map above sends a product of maps $(s_i)$ to $(s_i|_{U_i\cap U_j}-s_j|_{U_i\cap U_j})$.
+
+\begin{defn}
+	$\hat H_\calU^i(X,\O_X^\times)$ is the $i^{th}$ cohomoogy of the above complex.
+\end{defn}
+Then it can be shown that $\hat H_\calU^i(X,\O_X^\times)$ is independent of cover if the $U_i$ are affine.
+
+So what is $H^1(X,\O_X^\times)$? It is the $s_{i,j}in\O_X^\times(U_i\cap U_j)$ modulo the cocycle condition.
+
+\subsection{A new result}
+\begin{thm}
+	$H^1(X,G)$ is identified with $G$-torsors.
+\end{thm}
+What is $H^1(X,G)$? We are going to try to recover \v Cech cohomology. Let $X$ be quasi-compact and let $\cup_1^n U_i\to X$ be 
+faithfully flat. The seperatedness gets us the intersections are affine.
+
+Then we can play the same game, but this time applying $G$: (notice that $U_i\cap U_j=U_i\times_X U_j$)
+\[\prod G(U_i)\to \prod G(U_i\times_X U_j)\to\cdots\]
+where (notice now $G$ may be nonabelian!) we map 
+\[(s_i)\mapsto (s_i|_{U_i\times_X U_j}\cdot s_j|_{U_i\times_X U_j}^{-1})_{i,j}\]
+and 
+\[(s_{i,j})\mapsto (s_{i,j}\cdot s_{j,k}\cdot s_{i,k}^{-1})\]
+where each $s$ is restricted to $U_i\times_XU_j\times_X U_k$.
+
+Then we can define $\hat H_\calU^1(X,G)$ to be the first cohomology of the above chain. Then 
+\begin{defn}
+	The \textbf{flat cohomology} is 
+	\[H^1_\text{flat}(X,G)=\operatorname{colim}_\calU H^1_\calU(X,G).\]
+\end{defn}
+
+The overall result here is 
+\begin{thm}
+	The $G$-torsors on $X$ in bijection with the elements of $H^1_\text{flat}(X,G)$.
+\end{thm}
+
 \end{document}
