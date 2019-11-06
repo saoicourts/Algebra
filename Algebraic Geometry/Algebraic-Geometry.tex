@@ -901,11 +901,42 @@ $Z(I)$ makes sense and furthermore $Z((f_1,\dots,f_k))=\cap_i Z(f_i)$. It ends u
 \subsection{Homogenization/dehomogenization}
 Given a homogenous polynomial $f(x_0,\dots,x_n)$ of degree $d$, we can \textit{dehomogenize} things by setting $x_0=1$. For instance $x_0^2+x_1^2+x_2^2\mapsto 1+x_1^2+x_2^2$.
 Given a polynomial $g(x_1,\dots,x_n)$, we just look at 
-\[\tilde g(x_0,\dots,x_n)=x^{\deg g}g(x_1/x_0,\dots,x_n/x_0).\]
+\[\tilde g(x_0,\dots,x_n)=x_0^{\deg g}g(x_1/x_0,\dots,x_n/x_0).\]
 One can see relatively easily that $\tilde g$ is a homogeneous polynomial of degree $d$.
 
 \begin{prob}
 	What happens when you homogenize then dehomogenize? How about the other way around?
 \end{prob}
 
+\section{November 6, 2019}
+Today we are going to focus on the pickles and not the meat. Go Max.
+
+\subsection{Questions and Thoughts}
+First things first, we wanted to talk about the problem above. It is easy to see that homogenizing and then dehomongenizing gives you the same polynomial.
+For the other direction, it seems that a (homogeneous) polynomial comes back to itself if it is not divisible by a power of $x_0$.
+
+What is happening geometrically? Dehomogenizing is intersecting with an open affine subset. Homogenizing is taking the closure.
+\begin{rmk}
+	The idea came up that taking the closure might be the same as taking the cone containing the original thing. But consider 
+	the hyperbola $xy-1$ and its homogenization $xy-z^2$. Now $Z=Z(xy-z^2)$ is closed and contains $H=Z(xy-1)$, so it contains $\bar H$.
+
+	Conjecture: $Z\cong \P1\subseteq\P2$ as a conic. How can we realize this as a map from $\P1$ to $\P2$? Well,
+	we need a map 
+	\[(x_0,x_1)\mapsto(f_0(x_i),f_1(x_i),f_2(x_i))\]
+	where the $f_i$ are homogeneous of the same degree and have no common zeros in $\P1$.
+\end{rmk}
+\begin{rmk}
+	More generally, given varieties $X$ and $Y$, a \textbf{rational map} from $X$ to $Y$ $f:X\dashrightarrow Y$ is an equivalence class of morphisms $U\to Y$ where $U$ is open in $X$ 
+	and $U\xrightarrow{\alpha} Y$ and $V\xrightarrow{\beta}X$ are equvialent if $\alpha|_{U\cap V}=\beta|_{U\cap V}$.
+
+	Then we can choose $f_0,\dots,f_m\in k[x_0,\dots,x_n]$ that are homogeneous of degree $d$ and these coordinate functions give us a rational map (in fact, all the rational maps) from $\P n$ to $\P m$.
+\end{rmk}
+\begin{prob}
+	Find a morphism $f:\P1\to\P2$ whose image is $Z(xy-z^2)$.
+\end{prob}
+I am thinking $x_0^2$, $x_1^2$, and $x_0x_1$.
+\begin{prob}
+	Suppsoe that $Q$ is a non-singular quadratic form in three variables, so $Z(Q)\subseteq \P2$. Then show that $Z(Q)\cong \P1$.
+	\textit{Hint: Linear changes of coordinates are algebraic!}
+\end{prob}
 \end{document}

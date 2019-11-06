@@ -1275,4 +1275,78 @@ The overall result here is
 	The $G$-torsors on $X$ in bijection with the elements of $H^1_\text{flat}(X,G)$.
 \end{thm}
 
+\section{November 6th, 2019}
+Today we are going to prove some more things about representation theory. Down the pipe somewhere we will hope to talk about Tanakka duality, 
+which gives us that Morita equivalence (is this still what it's called?) of two algebraic groups gives us the groups are isomorphic.
+
+Given an algebraic group $G/k$, we could consider representations, which were either a group scheme morphism $G\to \GL(V)$ or else a coaction $V\xrightarrow{\sigma} \Gamma(G)\otimes_k V$.
+Then we said that $G$ was linear reductive if and only if every representation is completely reducible,
+
+\begin{ex}
+	If $G=\Gm$, then every irreducible representation is one-dimensional: $\Gm\to\Gm$ sends $t\mapsto t^\alpha$.
+\end{ex}
+A natural question one may ask: what can we say in general?
+\subsection{The regular representation}
+The regular representation is $\Gamma(G)$ with coaction given by comultiplicaton.
+\begin{prop}
+	And finite dimentional representation $V$ of $G$ embeds $V\subseteq \Gamma(G)^{\oplus n}$.
+\end{prop}
+\begin{prf}
+	The coaction gives us a map 
+	\[V\xrightarrow{\sigma}\Gamma(G)\otimes V=\Gamma(G)\otimes_k V_{\text{vs}}\cong \Gamma(G)^{\oplus\dim V}\]
+	where $V_{vs}$ is the underlying vector space of $V$. Then the claim is that the overall map is injective and that it is a map of $G$-reps.
+
+	The latter property is almost tautological by the property of a coaction. Injectivity follows from the fact that 
+	\[(e^\ast\otimes\id)\circ\sigma\]
+	is an isomorphism $V\to k\otimes V$ (again by one of the coaction axioms), so $\sigma$ is injective.
+\end{prf}
+\begin{prop}
+	If $V$ is a finite dimensional faithful representation, then every other finite-dimensional representation can be obtained from $V$ by direct sums, tensors, duals, subrepresentations, and quotients.
+\end{prop}
+\begin{rmk}
+	More precisely, $W\subseteq (V\oplus V^\vee)^{\otimes n}$.
+\end{rmk}
+\begin{prf}
+	$G\subseteq\GL(V)$ is a closed subgroup. Notice that since we have an injective map into $\GL(V)$, $G$ is already a linear algebraic group.
+\end{prf}
+\begin{thm}[Peter-Weyl]
+	If $G$ is linear reductive, then 
+	\[\Gamma(G)=\oplus_{\text{irr $V$}}(V\otimes V^\vee)\]
+\end{thm}
+\begin{rmk}
+	Notice that this is as two-sided representations, but if we only want to look at (say) left representations, we give $V^\vee$ the trivial 
+	representation structure and we get the more familiar 
+	\[\Gamma(G)=\oplus_{\text{irr $V$}} V^{\oplus\dim V}\]
+	and then the formula from finite groups:
+	\[|G|=\sum_{\text{irr $V$}} (\dim V)^2\]
+\end{rmk}
+As an example, consider $\Gm=\Spec k[t]_t$ and $k[t]_t=\oplus_{n\in\bbZ}k\langle t^n\rangle$. As an exercise, thing about what happens for $\SL_2$.
+
+\subsection{Stabilizers of subspaces}
+If $G$ is an algebraic group over $k$ and $V$ is a $G$ representation, let $W\subseteq V$ be a subspace. We want a subgroup $G_W$ which plays a similar role as the stabilizer in group theory.
+
+Consider $G$ as a functor from $\Alg_k\subseteq \Sch/k\to\Grp$ taking $T\mapsto\Hom(T,G)$. Then for a $k$-algebra $R,$ $G(R)$
+acts on $V_R=V\otimes R$.
+\begin{prop}
+	The functor $\Alg_k\to\Grp$ sending 
+	\[R\mapsto \{g\in G(R)|gW_R=W_R\}\]
+	is representable by a subgroup of $G$, which we will denote $G_W$.
+\end{prop}
+\begin{rmk}
+	The idea here is to fix a basis $e_i$ of $W$ and complete them to a basis of $V$ by appending $f_i$. Then take the coaction $V\to\Gamma(G)\otimes V$ and consider the image 
+	\[f_k\mapsto \sum_{i\in I}a_{ki}\otimes e_i+\sum_{j\in J}a_{kj}\otimes f_j\]
+	suppose we ahve $g\in G(R)=\Hom(\Spec R, G)$. This gives us a map in $\Hom(\Gamma(G),R)$. Then using the action on $V\otimes R$:
+	\[g\cdot(f_k\otimes 1)=\sum g(a_{ki})\otimes e_i+\sum g(a_{kj})\otimes f_j\in V_R\]
+	and we see that this is actually in $W_R$ exactly when $g(a_{kj})=0$ for all $j$.
+
+	But then this means that $g$ lands in $V(a_{kj})$, the vanishing of the functions $a_{kj}\otimes 1\in\Gamma(G)_R$, so we get that 
+	the closed subscheme $V(a_{kj})$ represents the functor $G_W$.
+\end{rmk}
+
+For the converse, let $G$ be an algebraic group over $k$ and let $H\subseteq G$ be a subgroup. Then there exists a finite dimensional representation $V$ of $G$ and 
+a $L\subseteq V$ a one-dimensional subspace such that $H=G_L$.
+
+As an example, look at $G=\SL_2$ acting on $k^2$. Let $L=\langle 1,0\rangle$. We can see easily that $L$ is preserved by $g\in G$ if and only if the lower-left coordinate of $g$ is zero.
+Now if we take $\Gm=\operatorname{diag}(t,t^{-1})\subseteq\SL_2$, consider the representation $\langle xy\rangle\subseteq \operatorname{Sym}^2k^2$. This isn't quite it but maybe you can work it out!
+
 \end{document}
