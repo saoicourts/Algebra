@@ -1349,4 +1349,70 @@ a $L\subseteq V$ a one-dimensional subspace such that $H=G_L$.
 As an example, look at $G=\SL_2$ acting on $k^2$. Let $L=\langle 1,0\rangle$. We can see easily that $L$ is preserved by $g\in G$ if and only if the lower-left coordinate of $g$ is zero.
 Now if we take $\Gm=\operatorname{diag}(t,t^{-1})\subseteq\SL_2$, consider the representation $\langle xy\rangle\subseteq \operatorname{Sym}^2k^2$. This isn't quite it but maybe you can work it out!
 
+\section{November 8th, 2019}
+We started by talking elections. Go Andrew Lewis. You can do it.
+
+Recall that last time we had a result that said that we had an analog of the stabilizer $G_W\subseteq G$ 
+representing the functor 
+\[R\mapsto \{g\in G(R)|gW_R=W_R\}.\]
+The idea was to take a basis for $W$ and complete it to one of $V$ and then to find a group that fixes $W$. We found 
+that $G_W=V(\{a_{kj}\})$.
+\begin{thm}[Chevalley]
+	If $H\subseteq G$ is a subgroup of an algebraic group over $k$, then there exists a $G$ representation $V$ and a line $L\subseteq V$ such that $H=G_L$.
+\end{thm}
+\begin{prf}
+	Let $\pi:\Gamma(G)\twoheadrightarrow\Gamma(H)$ be the map induced by $H\hookrightarrow G$. Let $q_1,\dots,q_n$ be
+	generators of $\ker\pi=I\subseteq\Gamma(G)$, the regular representation. Take a finite dimensional representation $V$ containing $I$ in $\Gamma(G)$
+	and pick a basis $e_1,\dots,e_s$ of $W=V\cap I$. Extend this basis to one of $V$ with the additional vectors denoted $f_1,\dots,f_t$.
+
+	Now the image of the coaction gives us 
+	\[e_i\mapsto\sum_k a_{ik}\otimes e_k+\sum_k b_{jk}\otimes f_k\]
+	and let $I'=(b_{jk})$. We claim that $I=I'$. If this is true, then $H=G_W$ and $W\subseteq V$, so we set
+	\[L=\bigwedge^{\dim W}W\subseteq \bigwedge^{\dim W}V\]
+	and now $H= G_L$.
+
+	To see the claim, consider that since $e_i\in I$, we get $\sum_ka_{ik}\otimes e_i\in \Gamma(G)\otimes I$.
+	But then the comultiplication on $\Gamma(G)$ gives us that 
+	\[m^\ast(I)\subseteq I\otimes \Gamma(G)+\Gamma(G)\otimes I\subseteq \Gamma(G)\otimes\Gamma(G)\]
+	so we get that 
+	\[\sum b_{ik}\otimes f_k\in I\otimes \Gamma(G)+\Gamma(G)\otimes I\]
+	but since $f_{ij}\notin I$, this forces $b_{ik}\in I$. Thus $I'\subseteq I$.
+
+	For the other containment I got behind.
+\end{prf}
+\subsection{Quotients}
+Let $H\subseteq G$ be normal. Now the goal is to construct $G/H$ as an algebraic group. As a preview, we are going to use the last theorem 
+to get a representation $V$ of $G$ such that $H=G_L$ such that $G\to \GL(V)$ descends to a representation $G\to \GL(V^H)$. Then $G/H$ will be the image of this map in $\GL(V^H)$.
+
+\begin{defn}
+	A subgroup $H\subseteq G$ of an algebraic group over $k$ is \textbf{normal} if for all $k$-schemes $S$, $H(S)\le G(S)$ is anormal subgroup.
+\end{defn}
+\begin{rmk}
+	As an exercise one can show that if $G(k)\subseteq G$, then $H\subseteq G$ is normal if and only if for all $g\in G(k)$, $gHg^{-1}\subseteq H$.
+\end{rmk}
+\begin{lem}
+	If $\pi:H\to G$ is a homomorphism of algebraic groups, then $\ker\pi\subseteq H$ is normal.
+\end{lem}
+To see the above, consider the kernel is the pullback:
+\begin{center}
+	\begin{tikzcd}
+		S\ar[dr,dashed]\ar[drr,bend left]\ar[ddr,bend right] & &\\
+		& \ker\pi\ar[r]\ar[d] & \Spec k\ar[d,"e_G"]\\
+		& H\ar[r,"\pi"] & G
+	\end{tikzcd}
+\end{center}
+And then the kernel $\ker \pi(S)=K(S)$ is normal in $H$. Think about this one some more.
+\begin{defn}
+	A homomorphism of algebraic groups $G\to Q$ is a \textbf{quotient map} if $G\to Q$ is faithfully flat.
+\end{defn}
+\begin{prop}
+	A quotient map of linear algebraic groups $\pi:G\to Q$ satisfies the universal property: for all $f:G\to H$,
+	\begin{center}
+		\begin{tikzcd}
+			K=\ker\pi\ar[r]\ar[rd,"0"] & G\ar[r,"\pi"]\ar[d,"f"] & Q\ar[dl,dashed,"!"]\\
+			& H &
+		\end{tikzcd}
+	\end{center}
+\end{prop}
+
 \end{document}

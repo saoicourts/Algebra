@@ -939,4 +939,52 @@ I am thinking $x_0^2$, $x_1^2$, and $x_0x_1$.
 	Suppsoe that $Q$ is a non-singular quadratic form in three variables, so $Z(Q)\subseteq \P2$. Then show that $Z(Q)\cong \P1$.
 	\textit{Hint: Linear changes of coordinates are algebraic!}
 \end{prob}
+
+\section{November 8th, 2019}
+Last time we were thinking about conic curves in $\P2$, that is $Z(Q)$ where $Q$ is a nondegenerate quadratic form in $x_0,x_1,x_2$. One thing that people tried 
+was to classify the ways that $C=Z(Q)$ intersects with copies of $\A2$. Then using these options, you can proceed. This leverages automorphisms of 
+$\P2$ to reduce everything to a very finite set of cases.
+
+Another idea was to do a linear change of coordinates that takes $C$ to $Z(xy-z^2)$. This amounts to doing some work on the matrix representing $Q$. Then answer it for a hyperbola. 
+
+For the other question, we were trying to find a good morphism $\P1\to\P2$ with image the hyperbola. The idea was the one I said. It can be seen relatively easily to be bijective.
+\begin{rmk}
+	Is a bijective morphism an isomorphism?! (No) The idea to consider is $R=k[x,y]/(y^2-x^3)\to k[t]$ where $k[t]$ is the normal closure of the former. Then if we are looking at the fiber over $0$, 
+	we compute $R/(x,y)\cong k\to k[t]/(t^2,t^3)\cong k[t]/t^2$
+\end{rmk}
+\begin{rmk}
+	Another idea that came up: if we are thinking about the geometry behind the homogenization/dehomogenization maps, notice that this tells us something about how 
+	dehomogenizing is not a unique process!
+\end{rmk}
+
+\subsection{The Veronese Embedding}
+Given $n$ and $d$, there is a (somewhat) canonical map 
+\[\P n\to \P{\binom{n+d}{d}-1}\]
+where the coordinate functions are the degree $d$ monomials in $x_0,\dots, x_n$. The image here is ``cut out by quadrics.'' These quadrics 
+come from $MN=PQ$ for (not necessarily distinct) coordinate functions.
+
+Recall the Segre embedding. When $n=m=1$, we get an embedding 
+\[\P1\times \P1\to\P3\]
+where 
+\[(x_0:x_1),(y_0,y_1)\mapsto (x_0y_0,x_0y_1,x_1y_0,x_1y_1)=(z_0,z_1,z_2,z_3).\]
+Here the relation is $z_0z_3=z_1z_2$.
+
+Some problems:
+\begin{prob}
+	Show that the image of $\P1\times\P1$ in $\P3$ above is $Z(z_0z_3=z_1z_2)$.
+\end{prob}
+\begin{prob}
+		Show that $\P1\times \P1\not\cong \P2$.
+\end{prob}
+\begin{prob}
+	For any non-degenerate quadratic form $z_0,\dots,z_3$, do we have that $Z(Q)\cong \P1\times\P1$?
+\end{prob}
+\begin{prob}
+	Are all the smooth quadratic hypersurfaces of a fixed dimension isomorphic? Are they all isomorphic to $(\P1)^d$?
+\end{prob}
+\begin{prob}
+	What about cubic hypersurfaces?
+\end{prob}
+
+
 \end{document}
