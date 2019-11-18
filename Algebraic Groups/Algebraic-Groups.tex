@@ -46,7 +46,7 @@
 \title{Algebraic Groups\vspace{-1ex}}
 \author{A course by Jarod Alper and Julia Pevtsova\\
 Notes by Nico Courts}
-\date{Autumn 2019/ Winter and Spring 2020}
+\date{Autumn 2019/ Winter 2020}
 \maketitle
 
 \begin{abstract}
@@ -1289,7 +1289,7 @@ A natural question one may ask: what can we say in general?
 \subsection{The regular representation}
 The regular representation is $\Gamma(G)$ with coaction given by comultiplicaton.
 \begin{prop}
-	And finite dimentional representation $V$ of $G$ embeds $V\subseteq \Gamma(G)^{\oplus n}$.
+	And finite dimensional representation $V$ of $G$ embeds $V\subseteq \Gamma(G)^{\oplus n}$.
 \end{prop}
 \begin{prf}
 	The coaction gives us a map 
@@ -1414,5 +1414,180 @@ And then the kernel $\ker \pi(S)=K(S)$ is normal in $H$. Think about this one so
 		\end{tikzcd}
 	\end{center}
 \end{prop}
+
+\section{November 13, 2019}
+The big theorem here:
+\begin{thm}
+	Let $G$ be an algebraic group over $k$. Let $H\subseteq G$ be an algebraic subgroup (over $k$). Then the
+	quotient $G/H$ exists as a quasi-projective scheme over $k$.
+
+	Moreover if $H\subseteq G$ is normal, then $G/H$ is also an algebraic group.
+\end{thm}
+
+Today we are going to prove/see the case when $G$ is a linear algebraic group and smooth (reduced) and that $H\subseteq G$ is normal and $k=\bar k$.
+The closedness of $k$ and the smoothness can be dropped at the expense of a couple extra lectures, probably.
+
+\begin{defn}
+	A map $G\xrightarrow{\pi} Q$ of algebraic groups over $k$ is a \textbf{quotient} if $\pi$ is faithfully flat.
+\end{defn}
+
+Using descent, we showed 
+\begin{prop}
+	If $G\xrightarrow{\pi} Q$ is a quotient, then  if we have another map $G\xrightarrow{\phi} P$ and furthermore that $\ker\pi\subseteq \ker\phi$,
+	then we get a (unique) factorization $Q\to P$.
+\end{prop}
+
+We also have
+\begin{prop}
+	Any map of linear algebrai groups $G\xrightarrow{\phi} H$ factors as $G\to Q\hookrightarrow H$ where $G\to Q$ is the quotient map.
+\end{prop}
+\begin{prf}
+	In the case that $G$ is reduced, we get a surjection onto $\Im\phi^\ast$ of $\Gamma(H)$, and $Q=\Spec\Im(\phi^\ast)$.
+	Then it just takes showing that the surjection $\Gamma(H)\twoheadrightarrow \Im(\phi^\ast)$ induces a closed immersion of $Q$ in $H$.
+	
+	We also need a lemma that I missed but it can be found both in Milne and Waterhouse. This is where the heavy lifting is done.
+\end{prf}
+\section{November 15th, 2019}
+Today we are going to be talking about properties of algebraic groups as well as properties of lements of $g\in G$. Today, we will be focusing on 
+$g\in \GL(V)$, so essentially talking linear algebra.
+
+\begin{defn}
+	Let $V$ be a finite dimensional vector space over any field $k$. Let $g\in \GL(V)(k)$. Then $g$ is
+	\begin{itemize}
+		\item \textbf{diagonalizable} if there exists a basis of eigenvectors.
+		\item \textbf{semisimple} if there exsits an extension $k'/k$ such that $g\otimes\id\in\GL(V\otimes_kk')$ is diagonalizable.
+		\item \textbf{unipotent} if $g-\id$ is nilpotent.
+		\item \textbf{triagonalizable} if there exists a basis so that $g$ is upper triangular.
+	\end{itemize}
+\end{defn}
+
+Let $P_g\in k[T]$ be the characteristic polynomial for $g$. We say the \textit{eigenvalues of $g$ are in $k$} if $P_g$ splits over $k$. Thus if $g$ is diagonalizable, 
+the eigenvalues are in $k$ and this is exactly equivalent to $g$ being triagonalizable. Furthermore $g$ is unipotent if and only if 
+all of its eigenvalues are 1 or 0 (in $k$).
+\begin{prop}
+	If the eigenvalues $\lambda_i$ are in $k$, then 
+	\[V\cong \oplus\ker(g-\lambda_i\id)^{a_i})\]]
+	which gives us our Jordan decomposition in terms of generalized eigenspaces.
+\end{prop}
+
+\subsection{Jordan Decomposition}
+\begin{thm}
+	Let $k$ be perfect and let $g\in\GL(V)$ with $V$ finite dimensional over $k$. Then there exist unique $g_s$ and $g_u$ in $\GL(V)$ such that 
+	\begin{itemize}
+		\item $g=g_sg_u=g_ug_s$
+		\item $g_s$ is semisimple and $g_u$ is unipotent.
+	\end{itemize}
+	Moreover, $g_s$ and $g_u$ are polynomials in $g$.
+\end{thm}
+\begin{prf}
+	Assume first that $P_g(T)$ splits over $k$. Thus we can decompose 
+	\[V\cong V_{\lambda_i}\]
+	where $V_{\lambda_i}=\ker((g-\lambda_i\id)^{a_i})$.
+	This gives us a Jordan decomposition of $g$ as a matrix with eigenvalues on the diagonal and is upper triangular. Take $g_s$ to be $\diag(\lambda_1,\cdots,\lambda_1,\dots,\lambda_s)$, 
+	the diagonal of the matrix in this form. This is invertible (since $g\in\GL(V)$) so we set $g_u=g_s^{-1}g$. It is clear from this that these matrices commute and that they are 
+	semisimple and unipotent, respectively.
+
+	To get that these are polynomials in $g$, you go through an argument I missed. The uniqueness comes from looking at 
+	\[g=g_sg_u=h_sh_u\]
+	and taking 
+	\[h_s^{-1}g_s=h_ug_u^{-1}\]
+	and since everything commutes (check this), you get that these two elements are both semisimple and unipotent. But then they are diagonalizable with all 
+	eigenvalues 1, so they are the identity and we are done.
+
+	For the more general case, choose a finite extension $k'/k$ such that $P_g$ splits. Since $k$ is perfect, this is seperable. So we can assume it is Galois and 
+	set $G=\Gal(k'/k)$. So $g\otimes \id\in\GL(V\otimes_k k')$ factors uniquely as $g\otimes \id=g_ug_s$ with $g_u,g_s\in\GL(V)(k')$.
+
+	But then using the action of $G$ on $\GL(V)(k')$, by uniqueness of this decomposition $\sigma g_s=g_s$ and $\sigma g_u=g_u$ for all $\sigma\in G$ so 
+	the elements are in fact in the field fixed by $G$ (i.e. $k$). Similarly $G$ acts on $Q(T)\in k'[T]$ but must fix the polynomials describing the factors as polynomials in $g$.
+\end{prf}
+
+As an example, consider a field $k$ of characteristic 2 and pick $\alpha\in k/k^2$ (obviously $k$ is not perfect). Then the matrix $g=(\begin{smallmatrix}
+	0& 1\\\alpha,0
+\end{smallmatrix})$ has polynomial $T^2-\alpha$, so with a single repeated eigenvalue $\sqrt a\notin k$.
+
+\subsection{A broader context}
+So then if $\iota:G\hookrightarrow\GL(V)$ is inclusion (faithful representation) we can decompose $\iota(g)=g_ug_s$ using the above results. Some properties of this phenomenon:
+\begin{prop}
+	If $L:V\to W$ is a linear transformation and $g\in\GL(V)$ and $h\in\GL(W)$ such that $L\circ g=h\circ L$,
+	then $L\circ g_\ast=h_\ast\circ L$ for $\ast=u,s$.
+\end{prop}
+\begin{prop}
+	\begin{align*}
+		(g\oplus h)_\ast&=g_\ast\oplus h_\ast\\
+		(g\otimes h)_\ast&=g_\ast\otimes h_\ast
+	\end{align*}
+	for $\ast=s,u$.
+\end{prop}
+\begin{prop}
+	If $\rho:\GL(V)\to \GL(W)$ is a representation, then $\rho(g)_\ast=\rho(g_\ast)$.
+\end{prop}
+
+\begin{defn}
+	For $g\in G(k)$, $g$ is \textbf{semisimple (resp. unipotent)} if for all representations $\rho:G\to \GL(V)$,
+	$\rho(g)$ is semisimple (resp. unipotent).
+\end{defn}
+
+\section{November 18th, 2019}
+\subsection{Generalizing the Jordan decomposition}
+The further generalization of the Jordan decomposition we saw last time is
+\begin{thm}
+	If $k$ is perfect and $G$ is a linear algebraic group over $k$, then for any $g\in G(k)$, there exist unique $g_s,g_u\in G(k)$ such that 
+	\begin{itemize}
+		\item $g=g_sg_u=g_ug_s$
+		\item $g_s$ is semisimple and $g_u$ is unipotent.
+		\item $g_s$ and $g_u$ are polynomials in $g$.
+	\end{itemize}
+\end{thm}
+Last time we proved this for $G=\GL(V)$. Then we saw a collection of propositions that gave us that semisimplicity and unipotence act nicely 
+with respect to direct sum, tensor, and representations. This allowed us to define what semisimple and unipotent objects are in $G(k)$. This gave us 
+a result which I think I botched last time:
+\begin{prop}
+	If $G$ is alinear algebraic group and $V$ is a faithful finite dimentional representation ($G\hookrightarrow \GL(V)$ is a closed embedding), then eery representation 
+	of $G$ is obtained from $V$ using sums, tensors, subrepresentations, and quotients.
+\end{prop}
+\begin{rmk}
+	An aside: what does it mean for a subspace $W\subset V$ to be fixed by $g\in G$ ($V\in \lmod G$)? If $V$ is finite-dimensional, then one can just take the image of $G$ in $\GL(V)$
+	and ask whether $gW\subseteq W$.
+
+	More generally since $g$ is a $k$-point, there is a maximal ideal $\frakm_g\lhd \Gamma(G)$ such that 
+	\[\Gamma(G)/\frakm_g\cong k\] 
+	with quotient map $q$. Then this gives us a map $\Gamma(G)\otimes V\xrightarrow{q\otimes\id} k\otimes V\cong V$ which, when composed with the coaction $V\to\Gamma(G)\otimes V$,
+	gives us a map $m_g:V\to V$. Then we can say that $W$ is fixed by $g$ if $m_g(W)\subseteq W$.
+\end{rmk}
+\begin{prf}[in general]
+	Since $G$ is linear algebraic, we can embed $G\hookrightarrow\GL_n$ for some $n$. This gives us a way to decompose $g=g_sg_u$, but the question is 
+	whether $g_s$ and $g_u$ actually lie in (the image of) $G$. Thus for every representation $\rho:G\to \GL(W)$, we get a pair of elements $\rho(g)_s$ and $\rho(g)_u$. Due to the properties we saw before, 
+	these are nice.
+
+	The idea here is that one representation we have at our disposal is the regular representation. In general this is large, but it recovers our group $G$ in some way and this will be key to our discussion.
+	Let $V=\Gamma(\GL_n)$, the regular representation of $\GL_n$. Then we get maps 
+	\[G\hookrightarrow\GL_n\to\GL(V)\]
+	and we have an ideal $I\subseteq \Gamma(GL_n)$ where $I$ is the ideal defining $G$. Then the claim is that $g\in G(k)$ stabilizes $I$. This is in Waterhouse chapter 9.
+\end{prf}
+
+\subsection{Group properties}
+This enables us to make more classifications of groups:
+\begin{prop}
+	We say that $G$ is \textbf{diagonalizable} if there is a faithful representation $G\hookrightarrow\GL_n$ that factors through the 
+	diagonal matrices in $\GL_n$.
+\end{prop}
+\begin{rmk}
+	This is equivalent to the earlier definition of there being a closed embedding of $G\hookrightarrow\Gm^n$.
+\end{rmk}
+\begin{defn}
+	We say that $G$ is of \textbf{multiplicative type} if $G\times_k\bar k$ is diagonalizable.
+\end{defn}
+
+\begin{prop}
+	If $G$ is a commutative linear algebraic group over $K$ and all elements $g\in G(k')$ for $k\to k'$ a field extension are semisimple, then $G$ is of multiplicative type.
+\end{prop}
+\begin{prf}
+	We can assume that $k=\bar k$ and we know that all $g\in G(k)$ are diagonalizable. Then we use the fact that commuting diagonalizable 
+	matrices are simultaneously diagonalizable. The result follows.
+\end{prf}
+\begin{rmk}
+	The proof of the linear algebra fact above comes from taking your commuting diagonalizable elements $g$ and $h$ and showing that each 
+	$\lambda$ eigenspace of $g$ is fixed by $h$ and vice versa, giving us the same number and dimension of eigenspaces.
+\end{rmk}
 
 \end{document}

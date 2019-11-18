@@ -986,5 +986,77 @@ Some problems:
 	What about cubic hypersurfaces?
 \end{prob}
 
+\section{November 15th, 2019}
+Thinking about quadradic forms (avoiding characteristic 2 for a moment): Any quadratif form $Q(x_0,\dots,x_n)$ is equivalent
+(via a linear change of coordinates) to $x_0^2+\cdots+x_m^2$ (when $k=\bar k$) for some $0\le m\le n$. Thus $Q$ is nondegenerate 
+if and only if $m=n$.
+
+Think about the rational map $\pi:\P n\dashrightarrow \P m$ sending $(x_0:\cdots:x_n)\mapsto (x_0:\cdots:x_m)$. Notice this is not 
+defined at $x_0=\cdots=x_m=0$, a linear subspace $L\subseteq \P n$ called the \textit{center of $\pi$}.
+For instance, the map $\P3\dashrightarrow\P2$ is not defined at $(0:0:0:1)$. In affine coordinates $\A3\subseteq \P3$, 
+where we set $x_3=1$. Here we think of setting $z=1$ (since we want to send $(x,y,z)\mapsto(x/z,y/z)=(x:y:z)$).
+
+Looking at where points go in the plane $\A2\subseteq \A3\subseteq \P3$, we see that it is somehow mapped via the line through the origin. 
+This is a ``pinhole camera'' projection of $\P3$ onto $\P2$.
+\begin{prob}
+	Given $\A3\to\A2$ via the map $(x,y,z)\mapsto (x,y)$, can this be recognized as the restiction of a projective morphism?
+\end{prob}
+
+Notice that given $\pi:\P3\dashrightarrow\P2$, the center is a conic given by $x_0^2+x_1^2+x_2^2=0$. This is a cone! Sweet!
+
+Check this out: If we have the affine map $\A3\to\A1$ with the quadratic form $(x/y)^2+1=0$, consider the pullback 
+under this map: the solutions to this in $\bbC$ are $x=\pm iy$, and for each of these points $\alpha$, the point $(x/y)-\alpha=0$ 
+pulls back to $x-\alpha y=0$, a plane! But we get two roots, so two planes in $\P3\supset \A3$. What is the intersection of these? The center!
+
+\subsection{Cremona}
+We have the Cremona map $\P2\dashrightarrow\P2$ sending $(x,y,z)\mapsto(1/x,1/y,1/z)$. This is ``obviously'' a birational involution. 
+At least involutivity is apparent.
+
+But we can scale by $xyz$ and get the map $(x,y,z)\mapsto(yz,xz,xy)$. Notice it is undefined at $(1,0,0),(0,1,0)$, and $(0,0,1)$.
+Now notice that the original map wasn't defined where \textit{any of the coordinates were zero} while the latter only requires that no more 
+than two are zero. Why is this kosher?!
+
+The idea here is that each of the lines $x=0$, etc are sent to POINTS $(1,0,0)$, which are then not in the domain of the cremona map.
+Thus the idea of involution is no longer meaningful!
+
+\begin{prob}
+	Consider the form $Q=xy-zw$ and its zero set in $\P3$. Then look at its image under the map $(x,y,z,w)\mapsto(y,z,w)$. SHow $\pi$ is birational and write down an 
+	inverse then compute $\pi\circ \pi^{-1}$ using cremona.
+\end{prob}
+
+\section{November 18th, 2019}
+Apparently Hitler loved cake.
+
+Today we are going to do some more examples. However, first we will consider 
+\subsection{Last week's problems}
+Consider the standard projection $\A3\to\A2$. We wanted to think of it as a linear map on projective spaces. Recall 
+\begin{defn}
+	A \textbf{rational map} $f:X\dashrightarrow Y$ is an equivalence of morphisms $f_U:U\to Y$ where $\varnothing\ne U\subseteq X$ is open. The equivalence 
+	relation is that $f_U=f_V$ if $f_U|_{U\cap V}=f_V|_{U\cap V}$.
+\end{defn}
+What does it mean for a map to be birational? One idea could be
+\begin{prob}
+	Make a category $\mathbf{Bir}$ of irreducbile varieties with mapes being rational maps (eq. classes). Try to think about inverses in this category.
+\end{prob}
+\begin{defn}
+	A rational map $f:X\dashrightarrow Y$ is \textbf{birational} if there exists a $g:Y\dashrightarrow X$ such that 
+	\[fg=\id_Y\qquad gf =\id_X\]
+	
+	$f$ is \textbf{dominant} if there exists an open $V\subseteq Y$ that is contained in $\Im \tilde f$ for some representative $\tilde f$ of $f$.
+\end{defn}
+\begin{prob}
+	Show that if $f:X\dashrightarrow Y$ is birational then there exist nonempty opens $U$ and $V$ in $X$ and $Y$, respectively such that $f$ induces an isomorphism $U\xrightarrow{\sim} V$ of varieties.
+\end{prob}
+\begin{defn}
+	An irreducible variety is \textbf{rational} if it is birational to $\P n$ for some $n$.
+\end{defn}
+\begin{rmk}
+	Roughly speaking, we think that ``most of $X$ can be uniquely described by $n$ algebraic parameters.'' Try to look at some examples! The points where this doesn't make sense is jsut the 
+\end{rmk}
+\begin{prob}
+	I am repeating some of the old problems to refresh their importance: try figuring out how a quadric projects from $\P2$ to $\P1$ by the usual projection map. There is actually an isomorphism!
+\end{prob}
+We've been sniffing around the idea that any non-degenerate quadric $Q\subseteq \P n$ is rational. What about cublics? WHich are rational? The cubic curves (defined by cubic equations in $\P2$)
+are genus one and NOT rational. The cubic surfaces (those in $\P3$) are apparently.
 
 \end{document}
