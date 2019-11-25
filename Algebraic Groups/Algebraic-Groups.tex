@@ -1590,4 +1590,121 @@ This enables us to make more classifications of groups:
 	$\lambda$ eigenspace of $g$ is fixed by $h$ and vice versa, giving us the same number and dimension of eigenspaces.
 \end{rmk}
 
+\section{November 22, 2019}
+From last time (which I missed): we had
+\begin{prop}
+	Let $G$ be a linear algebraic group over $k$. Then the following are equivalent:
+	\begin{itemize}
+		\item $G$ is diagonalizable (i.e. $G=D(A)$ for some finitely generated abelian group $A$)
+		\item There exists a faithful representation $G\to \GL(V)\cong \GL_n$ which maps into the diagonal matrices.
+		\item $\Gamma(G)$ is spanned by grouplike elements.
+		\item (Discussed below) All $G$ representations are direct sums of one-dimensional ones.
+	\end{itemize}
+\end{prop}
+Earlier this quarter we saw:
+\begin{prop}
+	If $G=D(A)$, then any $G$ representation $V$ can be decomposed as 
+	\[V=\oplus_{a\in A V_a}\]
+	where 
+	\[V_a=\{v\in V|\sigma^\ast(v)=t^a\otimes v\}\]
+\end{prop}
+\begin{rmk}
+	Here we used the fact (shown yesterday?) that the characters of an abelian group are in bijection with elements.
+\end{rmk}
+Note that if $k_a$ is the one-dimensional representation $k_a\to\Gamma(G)\otimes k_a$ via $1\mapsto t^1\otimes 1$. One can 
+quickly show that $V_a\cong k_a$, so we get that every representation decomposes as a direct sum of one-dimensional subgroups. In particular, 
+$G=D(A)$ are \textit{linearly reductive}.
+
+\subsection{Other properties of diagonalizable groups}
+First of all, these groups are commutative. That is, $Hom_\AlgGrp(G,\Gm)\cong A$.
+
+Next, we claim that $\Hom_\AlgGrp(G,\Ga)=0$. To see this, assume that $f:G\to \Ga$ is such a map and consider the 
+induced map $f^\ast:k[x]\to k[A]$. Then following through the commutative diagram for comultiplication, we get
+\[f^\ast(x)\otimes f^\ast(x)=f^\ast(x)\otimes 1+1\otimes f^\ast(x)\]
+by the diagonalizability of $G$ and the fact that $\Ga$ is ``infinitesimal'' (I forget the actual term from Hopf algebras.)
+
+\begin{defn}
+	A linear algebraic group $G$ over $k$ is \textbf{of multiplicative type} if there exists a finite extension $k'/k$ such that $G_{k}=G\times_{\Spec k}\Spec k'$ is diagonaliable.
+\end{defn}
+\begin{rmk}
+	This is equivalent to $G_{\bar k}$ being diagonalizable. One direction is obvious. For the other direction, Supposed we ahve a faithful 
+	representation $\bar V$ of $\bar G=G_{\bar k}$ by using some descent ideas.
+\end{rmk}
+
+\begin{thm}
+	Let $G$ be an algebraic group over $k$. Then the following are equivalent:
+	\begin{itemize}
+		\item $G$ is of multiplicative type.
+		\item $G$ is commutative and $\Hom(G,\Ga)=0$.
+		\item $G$ is commutative and $\Gamma(G)$ is co\'etale.
+		\item $G_{k^s}$ is diagonalizable. That is, there exists $k'/k$ that is finite and seperable such that $G_{k'}$ is seperable.
+	\end{itemize}
+\end{thm}
+What does that mean?
+\begin{defn}
+	Let $(C,\Delta,\varepsilon)$ be a coalgebra. Let $A=C^\vee$ be the $k$-linear dual. This gives us (using that $C^\vee\otimes C^\vee\hookrightarrow (C\otimes C)^\vee$)
+	an algebra. Then 
+	\begin{itemize}
+		\item If $C$ is finite dimensional, we say that $C$ is \textbf{co\'etale} if $A$ is commutative and if $A=C^\vee$ is \'etale. That is 
+		$A=\prod_{i=1}^n k_i'$ where $k_i'/k$ are all finite and seperable extensions.
+		\item If $C$ is infinite dimensional, then $C$ is \textbf{co\'etale} if it is a union of finite dimensional co\'etales.
+	\end{itemize}
+\end{defn}
+\begin{ex}
+	$G=\Gm$, $\Gamma(G)=k[t]_t$. Then let $C=k\langle t^d\rangle\subseteq \Gamma(G)$. Then $A=C^\vee$ is just $k$, so it is co\'etale.
+	Furthermore $k\langle t^{-d},\dots,t,\dots,t^d\rangle$ has that $C^\vee\cong \prod k$, so is as well.
+
+	Finally this gives us that $\Gamma(\Gm)$ is co\'etale since it is a union of these things.
+\end{ex}
+As an aside, if $V\to \Gamma(G)\otimes V$ is a representation, then $\Im(V\otimes V^\vee\to \Gamma(G))$ is a coalgebra.
+
+\section{November 25th, 2019}
+Today we finish our discussion of group schemes of multiplicative type. There was one implication we skipped in Friday's discussion:
+that if $G$ is commutative then $\Hom(G,\Ga)=0$ implies that $\Gamma(G)$ is co\'etale.
+\subsection{Continuing from last time}
+\begin{prf}[cont.]
+	Assume that $k=\bar k$ and let $C\subseteq\Gamma(G)$ be a subcoalgebra of finite dimension. Let $A=C^\vee$ and $\langle\cdot,\cdot\rangle$ be 
+	the natural pairing $C\times A\to k$. If $A$ is not \'etale, then since $A$ is finite dimensional,
+	\[A=A_1\times A_n\]
+	where the $A_i$ are local Artinian $k$-algebras.
+
+	So there exists a projection map $\pi:A\to k[\varepsilon]/\varepsilon^2\cong k\oplus k\varepsilon$ that sends 
+	\[x\mapsto \langle x,c\rangle+\varepsilon\langle x,d\rangle\]
+	for some $c,d\in C$.
+	Then a subclaim is to prove that
+	\begin{itemize}
+		\item $\Delta(c)=c\otimes c$
+		\item $\Delta(d)=c\otimes d+d\otimes c$
+		\item $\varepsilon(c)=1$
+	\end{itemize}
+	Then by also showing that $c$ is invertible, one can compute 
+	\[\Delta(dc^{-1})=1\otimes c^{-1}d+c^{-1}d\otimes 1\]
+	which then gives us a (nontrivial!) map $G\to \Ga$, which contradicts the assumption.
+\end{prf}
+\begin{ex}[Non co\'etale example]
+	Consider $\Ga=\Spec k[x]$ with $\delta(x)=x\otimes 1+1\otimes x$. Then consider th subcoalgebra spanned by $\langle 1,\dots,x^{n-1}\rangle$
+	and the dual algebra $A=C^\vee$ spanned by $e_i$. One can compute that 
+	\[e_i\cdot e_j=\binom{i+j}{i}e_{i+j}\]
+	if $i+j\le n-1$ and it is zero otherwise. But then in particular $e_{n-1}^2=0$, so $A$ isn't even reduced! 
+	
+	One could ask whether this still holds for any choice of subcoalgebra, but we aren't doing that.
+\end{ex}
+\begin{cor}
+	Let $G$ be a linear algebraic group over $k$. Assume that $G$ is commutative (and maybe smooth). Then $G$ is of multiplicative type 
+	if and only if $G(\bar k)$ consists purely of semisimple elements.
+\end{cor}
+\begin{cor}
+	Let 
+	\[1\to G'\to G\to G''\to 1\]
+	be a short exact sequence. If $G$ is commutative, then $G$ is of multiplciative type if and only if both $G'$ and $G''$ are.
+\end{cor}
+\begin{rmk}
+	That subgroups and quotients of multiplicative type group schemes are multiplicative type is not hard to see. To see this, apply $\Hom(-,\Ga)$ to the sequence and notice that quotients and subgroups 
+	of commutative groups are commutative.
+	
+	The nontrivial direction is that the collection of multiplicative type groups is closed under extension. 
+\end{rmk}
+
+
+
 \end{document}
