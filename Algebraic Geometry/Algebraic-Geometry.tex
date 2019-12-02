@@ -1071,4 +1071,41 @@ a plane: $\P2\hookrightarrow\P3$ via $(x_0:x_1:x_2)\mapsto(L_0:L_1:L_2:L_3)$ whe
 we can consider the slice by this plane: $F(L_0,\dots,L_3)=G(x_0,\dots,x_3)$. For next time: what if the center $l\subseteq S$ (the center of projection is in $S$). One question:
 does the intersection $G$ of a plane containing such a line factor as a product of a quadric and a linear factor?
 
+\section{December 2nd, 2019}
+Today (and through the rest of the week) we are going to talk about sheaves! Woot.
+
+We're going to have a long time in between our last class this week and our first class in January. Here's a tidbit to tide you over:
+\begin{prob}
+	Homework for the break: Do all the problems in section 1 of chapter II of Hartshorne.
+\end{prob}
+\subsection{Sheaves}
+There is a mantra! \textit{Sheaves are a geometric manifestation of the flow of information from local to global.}
+\begin{ex}
+	Let $X\in\SpcFun$. Then $\O$ is the sheaf of regular functions on $X$.
+\end{ex}
+\begin{rmk}
+	Recall that we had that $\O(U)$ was defined for every open $U$ and that regulartity was preserved by 
+	restrictions and finally that regularity is local (it glues). These give us the ideas we will use to define a sheaf.
+\end{rmk}
+I love this little gluing diagram: given an open covering $U_i$ of $U$,
+\begin{center}
+	\begin{tikzcd}
+		\O(U)\ar[r] & \prod_i \O(U_i)\ar[r,shift left]\ar[r,shift right] & \prod_{i,j}\O(U_i\cap U_j)
+	\end{tikzcd}
+\end{center}
+where the top map sends
+\[(\varphi_i)_i\mapsto (\varphi_i|_{U_i\cap U_j})_{(i,j)}\]
+and the bottom does 
+\[(\varphi_i)_i\mapsto (\varphi_j|_{U_i\cap U_j})_{(i,j)}.\]
+That is, $\O(U)$ is the equalizer of these maps.
+
+We took some time to talk about limits as (right) adjoints to the constant diagram functor. Hadn't seen that before.
+We concluded with a bunch of cateory theory, which was really fun. Ind and Pro categories.
+\subsection{More examples}
+Let either
+\begin{itemize}
+	\item $X$ and $Y$ be spaces
+	\item $h_Y:U\mapsto h_Y(U)$ is a sheaf on $X$ for all open $U$ in $X$.
+\end{itemize}
+
 \end{document}
