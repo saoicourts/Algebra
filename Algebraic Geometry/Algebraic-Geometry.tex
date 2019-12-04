@@ -1102,10 +1102,60 @@ That is, $\O(U)$ is the equalizer of these maps.
 We took some time to talk about limits as (right) adjoints to the constant diagram functor. Hadn't seen that before.
 We concluded with a bunch of cateory theory, which was really fun. Ind and Pro categories.
 \subsection{More examples}
-Let either
 \begin{itemize}
-	\item $X$ and $Y$ be spaces
+	\item Let $X$ and $Y$ be spaces
 	\item $h_Y:U\mapsto h_Y(U)$ is a sheaf on $X$ for all open $U$ in $X$.
+	\item If $X$ is a manifold and $V\to X$ is a vector bundle over $X$, then you get a variety of sheaves (discrete, cts, flat, holomorphic sections).
 \end{itemize}
+
+\section{December 4th, 2019}
+Let $\calC$ be a category (think of $\Set$).
+\subsection{More Sheafiness}
+\begin{defn}
+	A \textbf{presheaf} with values in $\calC$ on $X$ is an $\calF$ such that 
+	\begin{itemize}
+		\item $\forall U\subseteq X$ (open) we have $\calF(U)\in\calC$
+		\item $\forall V\subseteq U\subseteq X$, we get a restriction map $\rho_{VU}:F(U)\to F(V)$ which composes with other restrictions.
+		\item $\rho_{UU}=\id_{F(U)}$
+	\end{itemize}
+\end{defn}
+\begin{rmk}
+	Of course this is all equivalent to saying a presheaf is a functor 
+	\[\calF:\mathbf{Open}(X)^{op}\to \calC.\]
+\end{rmk}
+
+Now let's say that $\calC$ has products (including the empty product/final object). Then definitely the sheaf condition makes sense. 
+We get the coordinate kind of definition if we imaging $\calC$ is $\Set$ (or at least concrete).
+\begin{defn}
+	A \textbf{sheaf} is a presheaf that satisfies the sheaf condition for all open coverings of all open sets.
+\end{defn}
+Some examples:
+\begin{itemize}
+	\item $\O=h_{\A1}$
+	\item $h_Y$ is a sheaf on $X$ as we saw above.
+\end{itemize}
+\begin{rmk}
+	There are two categories:
+	\[\PreSh=\Func(\Open(X)\op,\calC)\]
+	and a full subcaltegory $\Sh$ of sheaves.
+\end{rmk}
+\subsection{Stalks}
+\begin{defn}
+	Given a $p\in X$W and $\calC\in \PreSh(X)$, the \textbf{stalk of $\calF$ at $p$} is
+	\[\calF_p=\colim_{p\in U}\calF(U)\]
+\end{defn}
+\begin{rmk}
+	If $\calC$ is $\Set$, then we can realize this as $\sqcup_{p\in U}\calF(U)$ modulo the relation that two maps are the same
+	if they agree on a small neighborhood of $p$.
+\end{rmk}
+As a matter of notation, we say that if $p\in V$ and $f\in\calF(V)$, then there is a value $f_p\in \calF_p$,
+called the \textbf{germ of $f$ at $p$.}
+
+\begin{thm}[Basic]
+	A map of sheaves $\calF\to \calG$ is an isomorphism (resp. mono/epi) if and only if for all $p\in X$ the induced map $\calF_p\to\calG_p$ is an iso (resp. mono, epi).
+\end{thm}
+\begin{prob}
+	For next time: Classify all (pre)sheaves on the space with two points $x$ and $y$ with topology $\{\varnothing,\{x\},\{x,y\}\}$. Also think about monos, epis, and isos of (pre)sheaves).
+\end{prob}
 
 \end{document}
