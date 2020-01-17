@@ -55,6 +55,7 @@ Notes by Nico Courts}
 	Riemann-Roch theorem; and related topics. 
 \end{abstract}
 
+\part{Quarter 1: Spaces with functions}
 \section{September 25, 2019}
 The first thing that one asks is ``what is geometry?'' One needs to be able to answer this 
 question before they define AG. One idea is that geometry is topology + structure.
@@ -1157,5 +1158,52 @@ called the \textbf{germ of $f$ at $p$.}
 \begin{prob}
 	For next time: Classify all (pre)sheaves on the space with two points $x$ and $y$ with topology $\{\varnothing,\{x\},\{x,y\}\}$. Also think about monos, epis, and isos of (pre)sheaves).
 \end{prob}
+
+\part{Quarter 2: Sheaves and Schemes}
+I missed the first five lectures of this quarter because I was travelling for a conference. Sorry about that!
+
+\section{January 17th, 2020}
+\subsection{SCHEMES}
+Let's just dive right in. Last time they were talking about things:
+\begin{itemize}
+	\item Is the category of spaces with functions a full subcategory of locally ringed spaces?
+	\item Thinking about $\Hom(\Spec A,\O_A),(\Spec B,\O_B))$
+\end{itemize}
+In the later case, we noticed that if we had a pair of maps $(f,f^\sharp)$ between $\Spec$s and the structure sheafs. Then $\Gamma(f^\sharp):B\to A$
+gives us a local condition: if $\varphi=\Gamma(f^\sharp)$, $f$ must be the map induced by $\varphi$.
+
+\subsection{Talking about affine schemes}
+Let $A$ be a (commutative unital) ring. Define a locally ringed space $\Spec A$ where 
+\begin{itemize}
+	\item The underlying space $|\Spec A|$ is the set of prime ideals of the ring.
+	\begin{itemize}	
+		\item Notice before we used the maximals but getting all the primes gives us something extra...
+		\item The topology is the Zariski topology.
+		\item This looks like a closed point for every prime in $\bbZ$ as well as the dense generic point $(0)$. This is the French model for the Italian idea of a ``general point.''
+		\item A basis for this topology is $D(f)\subseteq |\Spec A|$ defined as the nonvanishing locus:
+		\[D(f)=\{\frakp|f\notin\frakp\}\]
+		or in other words, $f(\frakp)\ne 0$.
+	\end{itemize}
+	\item We want 
+	\[\Gamma(|\Spec A|,\O)=\O(|\Spec A|)=A.\]
+	as well as $\O(D(f))=A_f$, the localization. We know that $D(f)$ defines a basis for the topology for $\Spec A$, so this implies
+	this gives us a way to define the sheaf locally.
+
+	So it suffices to show that $\O:\calB\op\to\Ring$ forms a sheaf (satisfies the sheaf condition). Here's the (``bestest'') proof:
+	\begin{prf}[Bestest]
+		Algebraic formulation: Begin by reducing to $U=|\Spec A|$. Then take an open cover $U_i$ of $U$. Look at descent theory! It's also in SGA.
+	\end{prf}
+\end{itemize}
+\begin{rmk}
+	We can think of the value of $f$ at a prime $\frakp$ as follows: $f\in A$ is an element of a ring and 
+	\[f(\frakp)\eqdef \bar f\in \kappa(A/\frakp)\]
+	the residue field.
+\end{rmk}
+\begin{rmk}
+	To see why it suffices to define the sheaf on a basis: let $\calB$ be a basis for a topological space $X$. Then let $F:\calB\op\to \Ab$ be a sheaf 
+	on $\calB$. Then there is some work to do, but the statement is that the category of sheaves on $X$ is equivalent to the category of sheaves on $\calB$.
+
+	The idea is as follows: to get essential surjectivity, you take a sheaf on $\calB$ and take the sheafification to get a sheaf on $X$. 
+\end{rmk}
 
 \end{document}

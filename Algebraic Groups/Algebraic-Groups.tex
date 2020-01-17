@@ -57,6 +57,7 @@ Notes by Nico Courts}
 	The classical view of an algebraic group as a variety will come up as a special case of a smooth algebraic group scheme. Our algebraic approach will be independent (even complementary) to the analytic approach taken in the course on Lie groups.
 \end{abstract}
 
+\part{Quarter 1: Structure Theory}
 \section{September 25, 2019}
 \subsection{Group objects}
 Let $\calC$ be a category with a final object and finite products.
@@ -1814,5 +1815,93 @@ Let $H\to G$ be a linear algebraic group homomorphism. Then we have a functor
 that is defined via 
 \[\operatorname{Ind}_H^G(V)=\Mor_{\Sch/k}^H(G,\bbA(V))=\{G\to \bbA(V)|\text{$H$ invariant}\}=(\Gamma(G)\otimes_k V)^H\]
 Notice that the inclusion functor $f:\mathbf{B}H\to\mathbf{B}G$ gives us two maps, $f_\ast$ (induction) and $f^\ast$ (forgetful).
+
+\part{Quarter 2: Representation Theory}
+\section{January 17th, 2020}
+\subsection{Recap}
+Let $T\subseteq B\subseteq G$ be a maximal torus, Borel, and semisimple algebraic group. Then we talked about:
+\begin{itemize}
+	\item The infinitesimal theory by studying $\Lie G$
+	\item Borel subgroups, parabolic subgroups, and the flag variety $G/B$.
+	\item We also saw the categorization of split connected semisimple algebraic groups according to their root data:
+	This is either given by $(X,R,X^\vee,R^\vee)$ of a group $X$ and a root system $R$ and their duals or equivalently a 
+	weight lattice $\Lambda$ and root latice $\Lambda_r=\bbZ R$. Then we can define 
+	\[Z/\bbZ R\cong \Lambda/\Lambda_r\]
+	to be the \textbf{fundamental group.}
+	\item Representation theory: $\Rep G$ is what is called a \textbf{highest weight category.} Let $\Lambda=X$. Then 
+	we have the \textbf{dominant roots}
+	\[\Lambda_+=\{\lambda\in\Lambda|\langle\lambda,\alpha^\vee\rangle\ge 0,\alpha\in R^+\}\]
+	and for every dominant root $\lambda$, we have the \textbf{(co)standard} modules $\Delta(\lambda)$ and $\nabla(\lambda)$.
+\end{itemize}
+\begin{defn}
+	Let $\lambda\in\Lambda=\Hom(T,\Gm)$. Define the $T$-module $\calR_\lambda$ by 
+	\[t\cdot 1\eqdef \lambda(t)1.\]
+	Then $T(k)=(k^\times)^\Gamma$ gives us $\lambda(t)\in k^\times$.
+\end{defn}
+
+\begin{ex}
+	Let $G=\GL_n$ and $B$ the upper triangular matrices and $T$ the diagonal ones. Then the unipotent matrices $\calU$ of upper triangulars with ones on the diagonal 
+	include into $B$ and we have a section $T\to B$ giving us $B=T\rtimes U$.
+
+	Then we consider $k_\lambda$ as a representation of $B$ by having $\calU$ act trivially. Then we define 
+	\[\nabla(\lambda)=\Ind_B^G k_\lambda\]
+	where $\Ind_B^G$ is the right adjoint to the restriction functor $\Res^G_B$.
+\end{ex}
+\begin{rmk}
+	The induction functor always exists, but the \textit{left} adjoint to $\Res$ doesn't. When it does, it is called \textbf{coinduction.}
+\end{rmk}
+
+\subsection{The Associated Sheaf}
+Given $H\subseteq G$, there is a functor
+\[\calF:\Rep H\to \Sch G/H.\]
+this leads to a fact:
+\begin{prop}
+	\[\Ind_B^G k_\lambda=\nabla(\lambda)\cong H^0(G/B,\calF_{G/B}(k_\lambda))\]
+\end{prop}
+
+The standard module $\Delta(\lambda)$ is essentially the dual (after applying an element of the Weyl group of longest length).
+\begin{thm}
+	Let $\lambda\in\Lambda_+$. Then $\nabla(\lambda)$ has a simple socle, denoted $L(\lambda)$. Furthermore, $\{L(\lambda)|\lambda\in\Lambda_+\}$ is a complete set of $G$-modules.
+\end{thm}
+
+\subsection{Other things to focus on:}
+Look at Humphreys' \textit{Linear Algebraic Groups}. There is an appendix on root systems that is 
+
+\subsection{Examples}
+Let $k=\bar k$ and $G=G(\bar k)$. For type $A_{n+1}$, we have $\SL_n$ as well as $\operatorname{PGL}_n$. In the former case, $\Lambda/\Lambda_r=\bbZ/n\bbZ$ and in the latter this quotient is trivial.
+
+For type $C_n$, we get $\operatorname{Sp}_{2n}$. Let $\Sigma$ be the matrix given by $-1$s and 1s on the antidiagonal and zeros elsewhere (negative in the ``third quadrant.'')
+Then the matrices in this are those preserving the associated form: that is 
+\[A^T\Sigma A=\Sigma\]
+
+For type $B_n$, we look at the $2n+1$ square matrix $\Sigma$ that is block diagonal with blocks $(1)$ and the previous matrix. Then $\operatorname{SO}(2n+1,k)$ are the matrices preserving $\Sigma$.
+The type $D_n$ matrices are the ones preserving the matrix given by (positive) ones on the antidiagonal.
+
+\subsection{More Generally...}
+Let $A$ be a separable associative unital algebra over $k$. (That is, $A_{\bar k}$ is a product of simple algebras). Fix an involution $\sigma:A\to A$ 
+($\sigma^2=\id$). There is always an associated bilinear form for these involutions, which can be symmetric or skew-symmetric. It either preserves the base field or else 
+it descends to an involution of this field. 
+
+\begin{defn}
+	$\GL_{1,A}$ is a group scheme whose $R$-points ($R$ a ring) are given by 
+	\[\GL_{1,A}(R)=\left((A\otimes_k R)^\times\right)^k\]
+	which contains a subgroup scheme 
+	\[\operatorname{Iso}(A,\sigma)(R)\eqdef \{a\in(A\otimes_k R)^\times|a\cdot\sigma_R(a)=1\}\]
+
+	We also have $\Aut(A,\sigma)\subset \Aut(A)$ defined as 
+	\[\Aut(A,\sigma)(R)\eqdef\{\alpha\in\Aut_R(A_R)|\alpha\circ\sigma_R=\sigma_R\circ\alpha\}\]
+
+	And finally,
+	\[\operatorname{Sim}(A,\sigma)\eqdef \{a\in A_R^\times|a\cdot\sigma_R(a)\in k_R^\times\}\]
+\end{defn}
+
+Now if $A$ is a central simple algebra and $\sigma$ is a symplectic form, then 
+\begin{itemize}
+	\item $\operatorname{Sp}(A,\sigma)=\operatorname{Iso}(A,\sigma)$
+	\item $\operatorname{GSp}(A,\sigma)=\operatorname{Sim}(A,\sigma)$
+	\item $\operatorname{PGSp}(A,\sigma)=\Aut(A,\sigma)$
+\end{itemize}
+
+Want to know more? Look at \textit{The Book of Involutions.}
 
 \end{document}
