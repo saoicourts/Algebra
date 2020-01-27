@@ -1309,4 +1309,41 @@ Our main result:
 \end{thm}
 Another example: consider $\bbP_\bbZ^n=\Proj\bbZ[x_0,\dots,x_n]$.
 
+\section{January 27th, 2020}
+
+\subsection{Absolute properties of schemes}
+\begin{defn}
+	A schemes is:
+	\begin{enumerate}
+		\item \textbf{connected} (resp. \textbf{irreducible}) if the topological space $|X|$ is.
+		\item \textbf{reduced} if for all $U\subseteq X$ $\O_X(U)$ is reduced.
+		\item \textbf{integral} if for all $U\subseteq X$ $\O_X(U)$ is an integral domain (iff $X$ is reduced and irreducible).
+		\item \textbf{quasicompact} if $|X|$ is quasicompact.
+		\item \textbf{locally Noetherian} if there is an open cover $\Spec A_i=U_i\subseteq X$ with $A_i$ Noetherian.
+		\item \textbf{Noetherian} if $X$ is locally Noetherian and quasicompact (iff there is a finite Noetherian open cover).
+		\item \textbf{normal} if there is an open cover $\Spec A_i=U_i\subseteq X$ with $A_i$ normal (integrally closed domain).
+	\end{enumerate}
+\end{defn}
+
+A question: if $\Spec A$ is locally Noetherian, is $A$ Noetherian? The answer is yes! We need a sublemma:
+\begin{lem}
+	Suppose that $\Spec B\subseteq \Spec A$ is open with $f\in A$ such that $D(f)\subseteq\Spec B$. Then $D(f)=D(g)$
+	where $g=f|_{\Spec B}\in\O(\Spec B)=B.$
+\end{lem}
+Then we may replace the $\Spec A_i$ by $\Spec A_{f_i}$ such that $A_{f_i}$ is Noetherian. But then $A\to \prod_1^n A_{f_i}$ is a faithfully flat 
+extension of a Noetherian ring, so it follows from the following:
+\begin{lem}
+	Let $A\to B$ be faithfully flat. Then $B$ being Noetherian implies $A$ is.
+\end{lem}
+You can see this by tensoring up a chain $I_\bullet$ in $A$ to a sequence $I_\bullet\otimes B\cong (I_iB)_{i\in\bbN}$. This is a sequence in $B$.
+
+\subsection{Examples}
+Consider $f\in k[x,y]$. THen $\Spec k[x,y]/(f)$ is integral.
+Consider $n$ copies of $\A1$ glued along $\A1\setminus 0$. This is also integral.
+
+Think about $\Spec k[x,y]/(xy)$. Draw a picture. Is it reduced/ireducible/connected?
+
+
+
+
 \end{document}

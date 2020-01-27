@@ -2085,4 +2085,93 @@ We want to show that, in characteristic zero, any algebraic group scheme is redu
 	\[\varepsilon D_i(a)=\sum \varepsilon(a') d_i(\pi(a''))=d_i(\pi(\sum\varepsilon(a')a''))=d_i(\pi(a))=d_i(\pi(x_j))=\delta_{ij}\]
 \end{prf}
 
+\section{January 27. 2020}
+We'll pick back up with proving that a finitely generated Hopf algebra in characterisitc zero is reduced.
+
+\subsection{The result}
+\begin{thm}
+	Let $A$ be a finitely generated Hopf algebra over $k$ with $\ch k=0$. THen $A$ is reduced.
+\end{thm}
+\begin{prf}
+	Let $Y\in I$ be a nilpotent with $y^m=0$. We want to show that $y=0$. It sufficies to show this for $m=2$.
+	We claim that $y\in \cap_{n\ge 1}I^n$. To see this, suppose that $y\in I^n\setminus I^{n+1}$.
+	then we can write 
+	\[y=\sum_{\sum m_i=n}a_{\underline m}x^{\underline m}+I^{n+1}\]
+	by the previous lemma. Then consider 
+	\[y^2=p(x_1,\dots,x_\Gamma)+I^{2n+1}\]
+	where $p$ is some monomial of degree $2n$ with some nonzero coefficient. Hence $y^2$ is nonzero mod $I^{2n+1}$, a contradiction!
+	Hence $y\in\cap I^n$.
+
+	We actually need that $k=\bar k$. Let $g:A\to k$ be a point in $G_A$. Then define the translation map
+	\[T_g:A\xrightarrow{\Delta}A\otimes A\xrightarrow{g\otimes \id}k\otimes A\simeq A\]
+	which is a map of algebras and is, in fact, invertible.
+
+	Define $\frakm_g=\ker g$ (think this is the maximal corresponding to the point $g$ in the spectrum). Then we claim that $T_g(I)=\frakm_g$.
+	If $y\in I$ then $y\in \frakm_G$ (since it's nilpotent it lies in every maximal). Thus 
+	by the previous claim $y\in\cap_{n\ge 1} \frakm_g^n$ and by the Krull intersection theorem, $y=0$ in $A_{\frakm_g}$ for all $\frakm_g$,
+	whence $y=0.$
+\end{prf}
+
+\subsection{Properties of \texorpdfstring{$\Omega_A$}{Omega A}}
+\begin{itemize}
+	\item $\Omega_{A\times B}\cong\Omega_A\times\Omega_B$
+	\item Let $S$ be a multiplicative system in $A$. Then  
+	\[\Omega_{S^{-1}A}\cong \Omega_A\otimes_A S^{-1}A\]
+	and in particular if $A$ is an integral domain, let $K=\operatorname{Frac}(A).$ Then 
+	\[\Omega_{K/k}\cong \Omega_A\otimes_A K.\]
+	\item Let $L/k$ be a finitely generated seperable field extension. That is we have 
+	\[L\supset E=k(x_1,\dots,x_\Gamma)\supset k\]
+	where $L/E$ is finite. Then $\dim_L\Omega_{L/k}=\operatorname{trdeg}_k L$ and $dx_1,\dots,dx_\Gamma$ forma a basis for $\Omega_{L/k}$.
+	\item Let $G$ be an algebraic group scheme. Maybe assume $k=\bar k$. Assume that $k[G]$ is an integral domain. Let $K=\operatorname{Frac}(k[G])$. Then 
+	\[\rank\Omega_{k[G]}=\operatorname{trdeg}_k K\]
+\end{itemize}
+The last item merits some discussion:
+\begin{prf}
+	By the third item above, we get 
+	\[\Omega_{K/k}=\Omega_{k[G]}\otimes_{k[G]}K\]
+	so 
+	\[\operatorname{trdeg}_k K=\dim_K\Omega_{K/k}=\rank \Omega_{k[G]}\]
+\end{prf}
+\begin{defn}
+	Let $G$ be an algebraic group scheme over $k$. Then $G$ is smooth if 
+	\[\dim G=\Omega_{k[G]}\]
+	where $\dim G=\dim_{\text{Krull}} k[G]$.
+\end{defn}
+\begin{thm}\label{thm:smoothgrps}
+	Let $G$ be an algebraic group scheme over $k$. Then if
+	\[\bar k[G]=k[G]\otimes_k \bar k\]
+	is reduced, $G$ is smooth.
+\end{thm}
+\begin{cor}
+	In characteristic zero, all algebraic group schemes are smooth.
+\end{cor}
+\begin{rmk}
+	Smoothness is independent of extending scalars (as the rank and dimension in the definition are), but 
+	you do need to extend scalars enough so that the nilpotents aren't ``hiding''. Thus it suffices to only extend to 
+	the seperable closure of $k$ or any perfect field $L/k$.
+\end{rmk}
+The following discussion and proof can be found in section 14 (and partially 6.6) of Waterhouse.
+\begin{prf}[of thm.~\ref{thm:smoothgrps}]
+	First extend scalars up to $\bar k$. Second recall (from section 6.6) that for $A=k[G]$, the following are equivalent:
+	\begin{itemize}
+		\item $\pi_0(A)$ is trivial
+		\item $\Spec A$ is connected
+		\item $\Spec A$ is irreducible
+		\item $A/\operatorname{Nil}(A)$ is an integral domain.
+	\end{itemize}
+	The second two are actually a statement about algebraic geometry (recall the geometry doesn't see the nilradical).
+
+	Assume that $k[G]$ is reduced. THen we can assume that $G=G^0$ is connected since 
+	\[k[G]\simeq k[G^0]\times\cdots\times k[G^0]\]
+	where we have $|\pi_0(k[G])|$ copies in the product. Then we use the first property in the last section.
+
+	For $G^0$ connected, the general properties in the last section imply that $k[G^0]$ is irreducible implies that $k[G^0]/\operatorname{Nil}(k[G^0])$ is 
+	an integral gdomain. By assumption, the nilradical is trivial, so $k[G^0]$ itself is an integral domain.
+
+	Let $K=\operatorname{Frac}(k[G^0])$. Then
+	\[\dim G^0=\dim k[G^0]\stackrel{\text{AG}}{=}\operatorname{trdeg}_kK=\rank \Omega_{k[G^0]}\]
+	where the $AG$ referenced above is essentially the Noether normalization lemma.
+\end{prf}
+
+
 \end{document}
