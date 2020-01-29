@@ -1338,12 +1338,58 @@ extension of a Noetherian ring, so it follows from the following:
 You can see this by tensoring up a chain $I_\bullet$ in $A$ to a sequence $I_\bullet\otimes B\cong (I_iB)_{i\in\bbN}$. This is a sequence in $B$.
 
 \subsection{Examples}
-Consider $f\in k[x,y]$. THen $\Spec k[x,y]/(f)$ is integral.
+Consider $f\in k[x,y]$. Then $\Spec k[x,y]/(f)$ is integral.
 Consider $n$ copies of $\A1$ glued along $\A1\setminus 0$. This is also integral.
 
 Think about $\Spec k[x,y]/(xy)$. Draw a picture. Is it reduced/ireducible/connected?
 
+\section{January 29th, 2020}
+\subsection{Example}
+Consdier the tangent space (the $\Hom$ from $\Spec k[\varepsilon]/(\varepsilon^2)$) to the space $\Spec k[x,y]/(xy)$ (the axes in $\bbR^2$).
 
+Looking at the algebra maps, you can map $x$ and $y$ freely to multiples of $\varepsilon$, giving us a two dimensional thing! Otherwise you can compute you only have one 
+degree of freedom. It is (locally) Noetherian, reducible, integral, and other stuff.
 
+You can do this with higher-order vectors as well! Think about what it means to map $\Spec k[\varepsilon]/(\varepsilon^n)$ into a scheme.
+
+\brk
+
+Think more about the countable number of lines glued together in a criss-cross. This is a scheme! It is locally Noetherian but not Noetherian. Also think about the line with infinitely many origins.
+
+\subsection{AG is relative}
+\begin{defn}
+	A \textbf{morphism $f:X\to Y$ of schemes} is 
+	\begin{itemize}
+		\item \textbf{quasicompact} if there is an open cover $U_i\subseteq Y$ with $U_i$ and $f^{-1}(U_i)$ quasicompact.
+		\item \textbf{locally of finite type} if there exists an open cover $\Spec A_i=U_i\subseteq Y$ such that each $f^{-1}(U_i)$ has an open cover $\Spec B_{ij}$ such that each map $A_i\to B_{ij}$ 
+		makes $B_{ij}$ into a finitely generated $A_i$ algebra.
+		\item \textbf{of finite type} if $f$ is locally of finite type and quasicompact.
+		\item \textbf{affine} if there exists an open covering $\Spec A\subseteq Y$ such that $f^{-1}(U_i)$ is affine.
+		\item \textbf{finite} if it is affine and there is an open cover $\Spec A_i\subseteq Y$ such that $f^{-1}(U_i)=\Spec B_i\to \Spec A_i$ is (module-)finite.
+		\item \textbf{quasifinite} if the map of topological spaces has finite fibers.
+		\item \textbf{locally quasifinite} if there exists a cover $U_i\subseteq Y$ and $V_{ij}\subseteq X$ such that $V_{ij}\to U_i$ is quasifinite.
+	\end{itemize}
+\end{defn}
+
+This is a theorem with a thousand different formulations so you may not find this one online:
+\begin{thm}[Zariski's Main Theorem]
+	Finite morphisms are precisely the proper and quasifinite ones.
+\end{thm}
+
+\subsection{An observation}
+Let $X$ a variety. Then how do we understand this in the language of schemes? It is an \textit{integral} $k$-scheme such that the map 
+$X\to \Spec k$ is
+\begin{itemize}
+	\item of finite type,
+	\item and separated (will see this later).
+\end{itemize}
+So finite type is aprt of ``relative variety.'' We can imagine a family of varieties given by the zero sets 
+of $y^^2=x^3+tx+4$ and consider this as a closed subvariety in $\A 2$ over $\A1$. Then we could specialize at any prime and recover a variety in $\A2_\bbZ$.
+Furthermore varying $4$ can get us more.
+
+\subsection{Another observation}
+If $f:X\to Y$ is finite, then $f$ is quasifinite. To see this, let $y\in \Spec A\subset Y$. Then since $f$ is finite,
+$f^{-1}(\Spec A)=\Spec B$ and $A\to B$ is a finite ring map (some ordering needs to be fixed there on choosing $A$ and $B$).
+Thus without loss of generality, we can assume $X=\Spec A$ and $Y=\Spec B$. So then $y\in Y$ if and only if $p\lhd A$ is prime.
 
 \end{document}

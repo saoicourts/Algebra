@@ -2173,5 +2173,55 @@ The following discussion and proof can be found in section 14 (and partially 6.6
 	where the $AG$ referenced above is essentially the Noether normalization lemma.
 \end{prf}
 
+\section{January 29th, 2020}
+As a reminder: we are not having classes February 10-14. The following Monday is president's day. So keep that in mind. :)
+
+\subsection{Lie algebras for \texorpdfstring{$G$}{G}}
+\begin{defn}
+	If $G$ is an algebraic group scheme over $k$, then $\Lie G$ is the space of left-invariant derivations $D:k[G]\to k[G]$.
+\end{defn}
+What is a left-invariant derivation? Let $A=k[G]=k^G$. The Yoneda lemma allows us to identify this with $\Hom(G,\A1)$.
+But given $f:G\to k$, we get an action 
+\[g\cdot f(-)=(T_g f)(-)=f(g-)\]
+Note that this actually defines a \textit{right action}, but the left and right invariant derivations are canonically isomorphic and this 
+will help us with the Lie algebra case.
+
+Now let $x\in G$ and by abuse of notation let $x=\operatorname{ev}_x:A\to k$ be the evaluation map. This gives us a diagram:
+\begin{figure}[h]
+	\begin{tikzcd}
+		A\ar[r,"\Delta"]\ar[d,"T_g"] & A\otimes A\ar[r,"(g;\operatorname{id})"] & A\ar[d,"x"]\\
+		A\ar[rr,"x"] & & k
+	\end{tikzcd}
+\end{figure}
+
+Let $T:A\to A$ be a $k$ map. THen $T$ is left invariant if $T_g\circ T=T\circ T_g$ for all $G$. 
+I wrote some notes in my digital pad. We did some computation. The result is that it is equivalent to having $\Delta\circ T=(\id\otimes T\circ \Delta)$.
+
+Thus we can restate the definition of $\Lie G$ as 
+\[\Lie G=\{D\in\Der_k(A,A)|\Delta\circ D=(\id\otimes D)\circ \Delta\}.\]
+\begin{lem}
+	$\Lie G$ has the structure of a Lie algebra with bracket 
+	\[[D_1,D_2]=D_1\circ D_2-D_2\circ D_1\]
+\end{lem}
+To prove that this we need to show the three things for the Lie bracket hold! The $k$ bilinearity and $[D,D]=0$ (careful! We want to consider characteristic 2!)
+are easy to show but the Jacobi identity requires some work.
+
+Notice that it is equivalent to saying that the operator $\ad D$ is a derivation:
+\[\ad D([D_1,D_2])=[\ad D(D_1),D_2]+[D_1,\ad D(D_2)]\]
+and one can check this. It has nothing to do with left invariance!
+
+\subsection{Another way to think of this algebra}
+\begin{lem}
+	There are natural bijections between 
+	\begin{enumerate}
+		\item $\Lie G$ (the left invariant derivations on $k[G]$)
+		\item $\Der_\varepsilon(k[G],k)$
+		\item $\ker (G(k[\tau]/(\tau^2))\to G(k))$ where the map is induced from the projection onto the constants in $k[\tau]/(\tau^2)$.
+	\end{enumerate}
+\end{lem}
+\begin{prf}
+	We can use that $G(k[\tau]/(\tau^2))=\Hom(A,k\oplus k\tau$ and then study the kernel.
+\end{prf}
+
 
 \end{document}
