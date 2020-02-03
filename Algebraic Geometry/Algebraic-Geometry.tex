@@ -1392,4 +1392,92 @@ If $f:X\to Y$ is finite, then $f$ is quasifinite. To see this, let $y\in \Spec A
 $f^{-1}(\Spec A)=\Spec B$ and $A\to B$ is a finite ring map (some ordering needs to be fixed there on choosing $A$ and $B$).
 Thus without loss of generality, we can assume $X=\Spec A$ and $Y=\Spec B$. So then $y\in Y$ if and only if $p\lhd A$ is prime.
 
+\section{January 31, 2020}
+Today we are going to talk about fiber products. Max thinks they should be ``fibered products'' but he's wrong.
+
+\subsection{Fiber products are real good}
+\begin{defn}
+	A fiber product $X\times_Z Y$ is the limit of $X\to Z\leftarrow Y$.
+	You know the drill.
+\end{defn}
+Equivalently the fiber product of schemes is the fiber product of the functor $\Sch\op\to \Set$ that it represents.
+The reason this is worth mentioning is that one can use the fuctor of points perspective to define this as a fiber product 
+on sets! 
+
+\begin{thm}
+	Fiber products exist in $\Sch$.
+\end{thm}
+\begin{prf}
+	We gonna do this.
+	\begin{defn}
+		A functor $\calF:\Sch\op\to\Set$ is a \textbf{sheaf} if for all $W\in\Sch$, the induced functor 
+		$\calF_W:\mathbf{Open}(W)\op\to\Set$ is a sheaf.
+	\end{defn}
+	Kinda obvious. Then the idea here is that the Yoneda embedding actually maps into sheaves on schemes (not just presheaves). Furthermore 
+	since the category of sheaves has all limits (CHECK THIS! It's easy), this means we are just trying to show that the sheaf $h_X\times_{h_Y}h_Z$ is representable 
+	by a scheme.
+
+	\begin{defn}
+		A natural transformation $\calG\to \calF$ in $\Func(\Sch\op,\Set)$ is an \textbf{open subfunctor} if, 
+		for all schemes $W$ and all $h_W\to F$, the pullback $G\times_F h_W\to h_W$ is representable by 
+		an open immersion $h_U\to h_W$ ($U\subseteq W$ open).
+	\end{defn}
+	We're trying to define a thing like a topology on the category of schemes.
+	\begin{defn}
+		Given a fucntor $\calF\in\PreSh(\Sch)$, an \textbf{open covering} is a collection of open 
+		subfunctors $\calG_i\hookrightarrow\calF$ such that for all $W\in\Sch$ $h_{U_i}=\calG_i\times\calF h_W\to h_W$.
+	\end{defn}
+	\begin{prop}
+		A sheaf $\calF:\PreSh(\Sch)$ is representable by a scheme if and only if $\calF$ admits an open covering by functors 
+		representable by affine schemes.
+	\end{prop}
+	You can try to prove it! It also is done in Demazure and Gabriel although I am pretty sure that is in French and/or inscrutable. 
+	Max says it's not too hard, though. You can kinda follow the argument in Hartshorne for the analogous thought coming from the category of locally ringed spaces.
+
+	\begin{lem}
+		Let $U,V,W$ be opens in $X,Y,Z$, resp. such that $f(U)\subset W\supset g(V)$. Then $h_U\times_{h_W}h_V\to h_X\times_{h_Z}h_Y$ is an open subfunctor.
+	\end{lem}
+	Again easy to check. This gives us (from affine coverings of $X,Y,Z$) an open covering by $h_{\Spec A}\times_{h_{\Spec C}}h_{\Spec B}$.
+
+	From here we can use (among other things) that the restricted Yoneda $\Sch\to\PreSh(\Aff)$ is fully faithful.
+\end{prf}
+You can read all of today's lecture in Vakil chapter 9.
+\section{February 3, 2020}
+Today Adam is giving the lecture! The title is 
+
+\subsection{Category theory for algebraic geometry}
+This lecture is assuming that we know about categories, functors, and natural transformations.
+We will be focusing on limits and colimits.
+
+A motivating question: say we have an open cover $\cup U_i=X$. How can we relate the sheaves on $X$ to those on the $U_i$? Saw we have sheaves $\calF_i$ on $U_i$ along with 
+isomorphisms $\phi_{ij}:\calF_i|_{U_i\cap U_j}\to \calF_j|_{U_i\cap U_j}$ (along with a cocycle condition we'll discuss later). How can a sheave $\calF$ on $X$ 
+be related to these?
+
+Take an open $V\subseteq X$. Then for all $i,j,$ we have maps
+\begin{figure}[h]
+	\centering
+	\begin{tikzcd}
+		& \calF(V)\ar[dl]\ar[dr] &\\
+		\calF(V\cap U_i)\ar[d] & & \calF(V\cap U_j)\ar[d]\\
+		\calF_i(V\cap U_i)\ar[d] & & \calF_j(V\cap U_j)\ar[d]\\
+		\calF_i(V\cap U_i\cap U_j)\ar[rr,"\varphi_{ij}"] & & \calF_j(V\cap U_i\cap U_j)
+	\end{tikzcd}
+\end{figure}
+
+The gluing idea is to define $\calF(V)$ to be the limit of the bottom portion of the diagram. To do this in general,
+let $\calC$ be a category and $K:\calJ\to\calC$ for some other category $\calJ$. Define a cone over $K$ with summit $c\in \calC$ 
+to be the usual thing. Same for a cone under a functor. Then limits and colimits. Most of this is 
+basically the same as Emily Riehl.
+
+He uses the fact that $\operatorname{cone}(-,K):\calC\op\to\Set$ (this assumes $\calJ$ is small) is a functor,
+and furthermore that 
+\[\Hom_\calC(-,\lim K)\simeq \operatorname{cone}(-,K)\]
+which is essentially a restatement of the universal property of a limit.
+
+Some examples:
+\begin{itemize}
+	\item In $\Set$, the limit of $A\hookrightarrow X\hookleftarrow B$ is $A\cap B$.
+	\item Equalizers are limits!
+\end{itemize}
+
 \end{document}

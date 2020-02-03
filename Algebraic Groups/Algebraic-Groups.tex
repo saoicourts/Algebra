@@ -2223,5 +2223,133 @@ and one can check this. It has nothing to do with left invariance!
 	We can use that $G(k[\tau]/(\tau^2))=\Hom(A,k\oplus k\tau$ and then study the kernel.
 \end{prf}
 
+\section{January 31, 2020}
+Recall that we had $\Lie G$ as well as bijections between a couple different things.
+Today we are going to talk more about that. We scribbled out some easy computations for why (b) and (c) are equivalent.
+The idea here is that any map $A\to k\oplus k\tau$ can be written as $(\varphi,d)$ where $d$ is a $\varphi$ derivation.
+
+To show the equivalence of $(a)$ and $(b)$, you use the maps $D\mapsto \varepsilon D$ and the inverse $d\mapsto (\id\otimes d)\circ\Delta$. One needs to check that you get derivations and that the other thing 
+is left-invariant. To show that they are inverses, consider 
+\[\varepsilon(\id\bar\otimes d)\circ \Delta(x)=\sum\varepsilon(a')d(a'')=d(\sum \varepsilon(a')a'')=d(a).\]
+Leave the other direction as an exercise. 
+
+Let's check left invariance: we need to check (by the discussion the other day) that $\Delta\circ D=(d\otimes D)\circ\Delta.$ Checking this si doing a little diagram chase.
+Part of the diagram is associativity.
+
+\subsection{Lie structures}
+A natural question to ask: if we have this isomorphism in this last lemma, what are the brackets on the other two objects?
+
+For the first, let $d_1,d_2\in\Der_\varepsilon(A,k)$. Let $D_i=(\id\bar\otimes d_i)\circ\Delta$. Do some work and chase the diagrams for $[D_1,D_2]$!
+Then you find that 
+\[[d_1,d_2]=(d_1\bar\otimes d_2-d_2\bar\otimes d_1)\circ\Delta\]
+which really underlines that we need the group/Hopf structure on these things to really be able to do this! This is what makes these equivalences work!
+
+For the kernel $\ker p_\ast$, take two elements $g_1=(\varepsilon, d_1)\in k[\tau_1]$ and $g_2=(\varepsilon, d_2)\in k[\tau_2]$ where we 
+are using different nilpotents so that we have enough degrees of freedom. Consider $R=k[\tau_1,\tau_2]$ and consider the inclusion of $g_1$ and $g_2$ in $G(R)=\Hom(A,R)$.
+
+So we think of $g_1=\varepsilon+d_1\tau_1$ and $g_2=\varepsilon+d_2\tau_2$ and we compute the multiplication as:
+\[g_1g_2=\varepsilon+d_1\tau_1+d_2\tau_2+((d_1\bar\otimes d_2)\circ\Delta)\tau_1\tau_2\]
+and coompute $g_2g_1$ as well. Then we really don't have additive inverses in $G$, but we can compute 
+\[g_1g_2=(\varepsilon+[d_1,d_2]\tau_1\tau_2)g_2g_1.\]
+
+How do we use this in practice? Consider $\GL_n(S)$. The Lie algebra consists of the matrices $M\in\GL_n(k[\tau])$.
+Each such matrix can be written as $M_1+M_2\tau$. But we want the condition that the projection onto $\GL_n(k)$ is the identity,
+so really we have 
+\[\Lie\GL_n = \{I+M\tau\}\subset\GL_n(k[\tau])\]
+but any such matrix is invertible if $M$ is, so it is no further condition. This gets you your isomorphism with all of $\gl_n$.
+
+\section{February 3rd, 2020}
+Working from last time, we have some corollaries:
+\begin{cor}
+	Let $f:H\to G$ be a map. Then 
+	\begin{itemize}
+		\item $f$ induces a map $\Lie H\to \Lie G$ ($\Lie$ is functorial).
+		\item If $f$ is inclusion, then $\Lie H\hookrightarrow\Lie G$
+	\end{itemize}
+\end{cor}
+\begin{rmk}
+	This gives us the full equivalences 
+	\[\Lie G\simeq\Der_\varepsilon(k[G],k)\simeq (I/I^2)^\ast\simeq T_e G.\]
+\end{rmk}
+and from this we get 
+\begin{cor}
+	$G$ is smooth (or reduced) if and only if $\dim G=\dim_k \Lie G$.
+\end{cor}
+where the above is true since $\dim_k\Lie G=\rank \Omega_{k[G]}$.
+
+\subsection{Examples}
+We talked about $\GL_n$ last time. Also if we have $I+\tau_1M_1,I+\tau_2 M_2\in\Lie \GL_n=\gl_n$, the bracked can quickly be seen to be 
+\[I+\tau_1\tau_2[M_1,M_2]\]
+as one would hope.
+
+Now consider $\SL_n$. Then $\Lie\SL_n\subset\gl_n$. To analyze this, consider $\SL_n(k[\tau])$ 
+and we are looking for the ones with determinant one. But 
+\[\det(I+\tau M)=p(\tau)\]
+where $p$ is the characteristic polynomial for $I+\tau M$ over $k$. But the terms above the linear term die and the linear term is the trace (of $M$):
+\[\det(I+\tau M)=1+(\tr M)\tau=1\]
+so the condition is $\tr M=0$.
+
+\subsection{Positive characteristic}
+Recall that $\Ga$ is the group scheme represented by $k[t]$ where $t$ is primitive. $\Gm$ is 
+represented by $k[t,t^{-1}]$ where $t$ is grouplike.
+
+These are both one-dimensional smooth group schmemes, so the Lie algebras $\frakg_a=\Lie \Ga$ and $\frakg_m=\Lie\Gm$
+are both one-dimensional. If $\ch k=0$, then, there is only one Lie structure! But what if not?
+Assume for now $\ch k\ne 2$.
+
+Do the following problem! It's not hard.
+\begin{prob}
+	Let $\ch k=p$. Take a derivation $D\in \Der_k(A,A)$ and show that the $p^{th}$ power of $D$ is again a derivation.
+\end{prob}
+
+This give rise to a ``$p^{th}$ power map'' which gives rise to a \textbf{restricted Lie algebra}. See Weibel for a good 
+introduction (he had to really learn it well to write about it so it is very clear).
+
+Go back to the case of $\Ga$ and $\Gm$. $\frakg_a=\Der_\varepsilon(k[t],k)=\langle d_t=\frac{d}{dt}\rangle$
+such that $d_tt=1$.
+
+Then $D_t=(\id\bar\otimes d_t)\circ\Delta$ as the corresponding derivation on $k[G]$, and we can compute 
+\begin{align*}
+	D_t(t)&= (\id\bar\otimes d_t)\circ \Delta(t)\\
+	&= (\id\bar\otimes d_t)(1\otimes t+t\otimes 1)=1
+\end{align*}
+and so $D_t^2(t)=0$. Thus $D_t^p(t)=0$, so $\frakg_a$ is a trivial $p$ Lie algebra: $\frakg_a=\langle d_t\rangle$
+where $d_t^p=0$. 
+
+In the case of $\Gm$, we can compute 
+\[D_t(t)=t\]
+so then $D_t^p=D_t$, so we get $\frakg_m=\langle d_t\rangle$ with $d_t^p=d_t$. The punchline here is 
+that the two infinitessimal theories, at first glance, appear to coincide although they actually vary 
+in the right light. $\frakg_a\cong\frakg_m$ as Lie algebras, but not as \textit{restricted} Lie algebras.
+
+\subsection{Frobenius Kernels}
+For reference, this can be found in Jantzen part I section 7. Some of the proof will be omitted, but can be found there.
+
+\brk
+
+Let $\ch k=p>0$ and let $G$ be an algebraic group scheme over $k$. We assume here that $k=\bar k$, but it suffices that 
+$k$ is perfect. This fixes some problems that arise. Recall the Frobenius map $F:\A n\to \A n$
+that sends $(a_1,\dots,a_n)\mapsto(a_1^p,\dots,a_n^p)$. The \textbf{Frobenius twist} of $G$ is the image 
+$G^{(1)}$ of $G$ under the Frobenius twist.
+
+Then we can define the \textbf{Frobenius kernel}
+\[G_{(1)}\ker F\hookrightarrow G\xrightarrow{F} G^{(1)}\]
+which one can show is a connected ($k[G_{(1)}]$ is local) and finite ($k[G_{(1)}]$ is finite dimensional) and a group scheme.
+
+Is the Frobenius kernel smooth? Usually no! The finite dimensionality of $k[G_{(1)}]$ means the dimension of $G$ is zero,
+so $\Lie G$ is trivial. But this happens only if $G$ is trivial.
+
+\brk
+
+An example: $\Ga$. Consider the Frobenius map $F:\Ga\to \Ga$ via $r\mapsto r^p$. Then the kernel 
+is the collection of $p$-nilpotents, 
+\[{\Ga}_{(1)}(R)=\{r\in R|r^p=0\}\]
+and one can compute that 
+\[k[{\Ga}_{(1)}]\cong k[t]/t^p\]
+with $t$ being a primitive element. We call ${\Ga}_{(1)}=\alpha_p$.
+
+When we switch the picture to $\Gm$, we are now looking at $p^{th}$ roots of unity! The algebra is 
+$k[t,t^{-1}]/(t^p-1)=k[t]/(t^p-1)\simeq k[t-1]/(t-1)^p\simeq k[u]/u^p$. So the coordinate algebra is isomorphic 
+to that in the last case, but with a different coproduct.
 
 \end{document}
