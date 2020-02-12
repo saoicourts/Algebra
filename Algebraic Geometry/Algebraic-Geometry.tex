@@ -1480,4 +1480,206 @@ Some examples:
 	\item Equalizers are limits!
 \end{itemize}
 
+\section{February 5th, 2020}
+Today Adam is talking more about limits!
+
+Recall that Yoneda says that the natural transformations 
+\[\Hom(\Hom_\calC(-,\lim k),\operatorname{cone}(-,K))\simeq\operatorname{cone}(\lim K,K)\]
+
+\subsection{Equilizers}
+Some clarity here: an equilizer in $\Ab$ can be a couple things:
+\begin{itemize}
+	\item The limit of a pair of parallel functors.
+	\item It is the same as saying that the following is exact:
+	\[0\to A\to B\xrightarrow{f-g} C\]
+\end{itemize}
+
+\subsection{Base change}
+This is one of the most important (co)limits in this subject (and in number theory and representation theory).
+If $A$ is a $k$-algebra and there is an inclusion $k\hookrightarrow L$. How can we extend $A$ to an $L$-algebra? 
+
+Say that $B$ is an extension of $A$ that is also an $L$-algebra. Then if the universe loves us, we should get 
+\begin{figure}[h]
+	\centering
+	\begin{tikzcd}
+		k\ar[r]\ar[d] & A\ar[d]\\
+		L\ar[r] & B
+	\end{tikzcd}
+\end{figure}
+so if we want the ``best'' one, we need to find the colimit of $L\leftarrow k\to A$. To define this thing we just 
+trace through and show that the object with the usual axioms of the tensor product falls out. :)
+
+\begin{prop}
+	The following is a pullback (in schemes, locally ringed spaces, etc)
+	\begin{figure}[h]
+		\centering
+		\begin{tikzcd}
+			\Spec A\otimes_k L\ar[r]\ar[d] & \Spec L\ar[d]\\
+			\Spec A\ar[r] & \Spec k
+		\end{tikzcd}
+	\end{figure}
+\end{prop}
+\begin{rmk}
+	Why is it called a fiber product? Look at what happens in $\Set$. Look at the limit of the diagram 
+	$\ast\stackrel{y}{\hookrightarrow} Y \xleftarrow{f}X$. The pullback is literally the fiber over $y\in Y$.
+\end{rmk}
+Proving the following is a good excercise. Go try it! It's a fun categorical proof. You can do it by looking at cones. 
+\newpage
+\begin{lem}
+	If $\pi:X\to Y$ is a monomorphism, then in the pullback square 
+	\begin{figure}[h]
+		\centering
+		\begin{tikzcd}
+			X'\ar[r]\ar[d,"\pi'"] & X\ar[d,"\pi"]\\
+			Y'\ar[r] & Y
+		\end{tikzcd}
+	\end{figure}
+
+	\noindent $\pi'$ is also mono.
+\end{lem}
+As a corollary of this, if we have an open $U\subseteq X$ in a scheme and $\pi:Y\to X$ a morphism, then 
+$\pi^{-1}(U)$ is open in $Y$.
+
+\subsection{Gluing, baby}
+For the setup, remember that $X$ is a topological space and $X=\cup_i U_i$ open cover. We are given sheaves 
+$\calF_i$ on $U_i$ together with isomorphisms 
+\[b_{ij}:\calF_i|_{U_i\cap U_j}\to\calF_j|_{U_i\cap U_j}.\]
+
+We saw that the right way to glue to an $\calF$ on $X$ is to take 
+$\calF(V)$ to be a limit of the diagram we drew yesterday (just the bottom two rows).
+Then there are two questions we ask:
+\begin{itemize}
+	\item Is $\calF|_{U_i}=\calF_i$? This is answered by the \textit{cocycle condition}.
+	\item Is $\calF$ a sheaf? This is due to the fact that limits commute with limits.
+\end{itemize}
+
+\section{February 7th, 2020}
+Max's back. Time to talk about 
+\subsection{Separatedness and Properness}
+These are replacements for the Hausdorff and Compact conditions, neither of which we get in algebraic geometry. Let's get some definitions 
+\begin{defn}
+	A morphism $f:X\to Y$ is \textbf{separated} if the diagonal $\Delta:X\to X\times_Y X$ is a closed immersion. This 
+	replaces Hausdorff.
+\end{defn}
+Recall that a closed immersion is a homeomorphism onto a closed subspace such that the map of rings is surjective. 
+The prototype you should be thinking of is $\Spec k[x_1,\dots,x_m]/(f_1,\dots,f_n)$ as a closed subspace of $\A m$.
+\begin{defn}
+	A morphism $f:X\to Y$ is \textbf{closed} if the closed subsets of $X$ are sent to closed subsets of $Y$ (as topological spaces).
+
+	It is \textbf{universally closed} if for all $T\to Y$, the base change map $f_T:X\times_Y T\to T$ is closed.
+\end{defn}
+\begin{ex}
+	Consider $\A1_k\to\Spec k$. This is closed, but not universally closed! Consider the base change via $\A1\to\Spec k$:
+	$\A1\times\A1=\A2\to \A1$. In coordinates, we get the map of algebras $k[s]\hookrightarrow k[t,s]$. But the hyperbola 
+	cut out by $ts-1$ in $\A2$ projects onto $\A1\setminus 0$ under this map, which is super not closed.
+
+	Is $\A1\to \Spec k$ separated? Hell yes! Look at the ring map $A\times A\to A$ by multiplication. This is surjective.
+	And unravelling the definitions gets you the result: every morphism of affines is separated! So we don't really need to check 
+	that the inclusion is a topological embedding onto a closed set.
+\end{ex}
+
+I (well, Max) claim(s): If $f:X\to Y$ is separated and $\sigma:Y\to X$ is a section, then $\sigma$ is closed.
+In fact, check this out: \textbf{any section is a pullback of the diagonal} or even \textbf{``The diagonal is the universal section.''}
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzcd}
+		X\ar[r]\ar[d,bend right,"f",swap]\ar[rr,bend left,"\id"] & X\times_Y \tilde X\ar[r]\ar[d,swap,"f_X"] & \tilde X\ar[d,"f"]\\
+		Y\ar[u,"\sigma",swap] \ar[r,"\sigma"] & X\ar[u,bend right,swap,"\Delta"] \ar[r,"f"] & Y
+	\end{tikzcd}
+\end{figure}
+Check it out. Assuming everything is a pullback square (remember the neat two of three thing for pullbacks) we get that $\Delta$ is 
+a pullback through itself of the diagonal! This gives us another result: $\Delta$ is closed if and only if sections are universally closed.
+
+So sections are closed, but ot universally closed! For instance the line with two origins is not separated!
+
+\begin{defn}
+	A morphism $f:X\to Y$ is \textbf{proper} if it is of finite type, separated, and universally closed.
+\end{defn}
+Note: $f$ is separated if and only if ``sections of $f$'' are universally closed. An example, $\P n$ is proper over $\Spec\bbZ$.
+So of course it is proper over anything.
+
+\section{February 10th, 2020}
+Today Taffy is talking about base change!
+
+\subsection{Base change}
+Notice this cool thing that we see in topological spaces: let $f:U\hookrightarrow Y$ be an open embedding. Then consider the pullback
+\begin{figure}[h]
+	\centering
+	\begin{tikzcd}
+		X\times_Y U\ar[r]\ar[d,"g"] & U\ar[d,"f"]\\
+		X\ar[r] & Y
+	\end{tikzcd}
+\end{figure}
+where we see $X\times_Y U\cong f^{-1}(U)$ and $g:f^{-1}(U)\hookrightarrow X$ is the open embedding. Here we just did base change and we saw a property being preserved!
+
+In $\Sch$, we can do the same kind of thing: Let $\calX$ and $\calY$ be schemes over $k$. 
+
+I just listened to the rest. Good talk!
+
+\section{February 12th, 2020}
+Today we are going to talk more about seperatedness and properness and in particular the so-called 
+\subsection{Valuative Criteria}
+The idea here is that checking for separatedness or properness can be quite daunting sometimes. We will give a way to do this!
+\begin{defn}
+	A domain $R$ is a \textbf{valuation ring} if for every $x\in \kappa(R)^\times$, we have $x\in R$ or $x^{-1}\in R$.
+\end{defn}
+\begin{lem}
+	Consider loal rings contained in a field $k$ (with fraction field $k$). Say that $(S,\frakm_S)$ \textit{dominates} $(R,\frakm_R)$ if $R\subset S$ 
+	and furthermore $\frakm_S\cap R=\frakm_R$. This gives a partial ordering. 
+
+	Then the valuation rings in $k$ are precisely the maximal elements for this ordering.
+\end{lem}
+\begin{defn}
+	A morphism $f:X\to Y$ is \textbf{quasi-separated} if the diagonal $\Delta:X\to X\times_Y X$ is quasicompact.
+\end{defn}
+THis is always true if $X$ is locally Noetherian. This will be true in almost every case you see in real life, because it 
+is really necessary to make the entire theory work.
+
+\begin{defn}
+	A \textbf{test diagram} for a morphism $f:X\to Y$ is a diagram as in the figure below	
+	where $i:R\hookrightarrow k=\kappa(R)$ is a vaulation ring.
+	A \textbf{filling} for a test diagram is an arrow $\gamma:\Spec R\to X$ making this diagram commute.
+\end{defn}
+\begin{figure}[h]\label{fig:testdiagram}
+	\centering
+	\begin{tikzcd}
+		\Spec k\ar[r]\ar[d,"i^\ast"] & X\ar[d,"f"]\\
+		\Spec R\ar[r] & Y
+	\end{tikzcd}
+	\caption{A test diagram for $f$}
+\end{figure}
+\begin{thm}
+	\begin{enumerate}
+		\item A quasiseparated morphism $f:X\to Y$ is separated if and only if every test diagram has at most one filling.
+		\item A quasicompact morphism $f:X\to Y$ is universally closed if and only if every test diagram admits at least one filling.
+		\item A quasisemparated morphism of finite type $f:X\to Y$ is proper sif and only if every test digram admints precisely one filling.
+	\end{enumerate}
+\end{thm}
+\begin{lem}
+	The entire theorem above follows from (b).
+\end{lem}
+\begin{prf}
+	To get (a) from (b), $f$ is quasiseparated iff $\Delta:X\to X\times_YX$ is quasicompact. Note that $f$ is separated iff $\Delta$ is 
+	universally closed. Further, note that $\Delta$ is always an immersion. One can show that $\Delta$ is a closed immersion into an open subscheme (look in Hartshorne and use a cover by open affines).
+
+	But then the test diagram for $f$ with two fillings $\alpha,\beta$ gives us a test diagram for $\Delta$ with $(\alpha,\beta)$ along the bottom.
+	What does it mean for this new diagram to have a filling? If we ahve $t:\Spec R\to X$, we get that 
+	\[(\alpha,\beta)=\Delta\circ t=(t,t)\]
+	so we have a filling if and only if $\alpha=\beta$!
+
+	That (b) implies (c) follows from the definitions!
+\end{prf}
+\begin{defn}
+	Given a scheme $X$, a point $s\in X$ is a \textbf{specialization} of a point $t\in X$ (equivalently, $t$ 
+	is a generization of $s$) if $s\in\overline{\{t\}}$.
+\end{defn}
+This is a topological property, but we want to capture it algebraically. We need to pass to limiting algebraic object 
+to do it most efficiently. As a mater of notation, we write $t\rightsquigarrow s$.
+\begin{lem}
+	Suppose $t\rightsquigarrow s$ in $X$ and we are given $K\supset \kappa(t)$ (residue field). Then there exists a vaulation ring $R\subset K=\operatorname{Frac} R$ and 
+	morphism $\Spec R\to X$ such that $(0)\mapsto t$ and $\frakm_R\mapsto s$.
+\end{lem}
+A ``proof'' of this is to look at $\O_{\overline{\{t\}},s}\subset k$ and find $R$ using Zorn's lemma with respect to domination.
+
 \end{document}

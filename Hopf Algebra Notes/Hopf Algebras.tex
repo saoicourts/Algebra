@@ -6,44 +6,12 @@
 \usepackage[framed,thmmarks]{ntheorem}
 \usepackage[mathscr]{euscript}
 
-%set up theorem/definition/etc envs
-%Problems will be created using their own counter and style
-\theoremstyle{break}
-\theoreminframepreskip{0pt}
-\theoreminframepostskip{0pt}
-\newframedtheorem{prob}{Problem}[section]
 
-%solution template
-\theoremstyle{nonumberbreak}
-\theoremindent0.5cm
-\theorembodyfont{\upshape}
-\theoremseparator{:}
-\theoremsymbol{\ensuremath\spadesuit}
-\newtheorem{sol}{Solution}
-
-%Theorems
-\definecolor{thmcol}{RGB}{0,102,34}
-\theoremstyle{changebreak}
-\theoremseparator{}
-\theoremsymbol{}
-\theoremindent0.5cm
-\theoremheaderfont{\color{thmcol}\bfseries} 
-\newtheorem{thm}{Theorem}[subsection]
-
-%Lemmas and Corollaries
-\theoremheaderfont{\bfseries}
-\newtheorem{lem}[thm]{Lemma}
-\newtheorem{cor}[thm]{Corollary}
-
-%Create a new env that references a theorem and creates a 'primed' version
-%Note this can be used recursively to get double, triple, etc primes
-\newenvironment{thm-prime}[1]
-  {\renewcommand{\thethm}{\ref{#1}$'$}%
-   \addtocounter{thm}{-1}%
-   \begin{thm}}
-  {\end{thm}}
 
 \setlength\fboxsep{15pt}
+
+
+\input{../mydefs.tex}
 
 %Shade definitions
 \theoremindent0cm
@@ -51,38 +19,6 @@
 \def\theoremframecommand{\colorbox[rgb]{.85,1,.85}}
 \newshadedtheorem{defn}[thm]{Definition}
 
-%Example
-\theoremstyle{break}
-\def\theoremframecommand{\colorbox[rgb]{0.9,0.9,0.9}}
-\newshadedtheorem{ex}{Example}[section]
-
-%Man, that's really good! Let's use the same thing for definitons.
-\newenvironment{def-prime}[1]
-  {\renewcommand{\thethm}{\ref{#1}$'$}%
-   \addtocounter{thm}{-1}%
-   \begin{def}}
-  {\end{def}}
-
-%proofs
-\theoremstyle{nonumberbreak}
-\theoremindent0.5cm
-\theoremheaderfont{\sc}
-\theoremseparator{}
-\theoremsymbol{\ensuremath\spadesuit}
-\newtheorem{prf}{Proof}
-
-\theoremstyle{nonumberplain}
-\theoremseparator{:}
-\theoremsymbol{}
-\newtheorem{conj}{Conjecture}
-
-%remarks
-\theoremstyle{change}
-\theoremindent0.5cm
-\theoremheaderfont{\sc}
-\theoremseparator{:}
-\theoremsymbol{}
-\newtheorem{rmk}[thm]{Remark}
 
 %Replacement for the old geometry package
 \usepackage{fullpage}
@@ -90,6 +26,11 @@
 %Put page breaks before each part
 \let\oldpart\part%
 \renewcommand{\part}{\clearpage\oldpart}%
+
+
+\newcommand*{\Coalgk}{\mathbf{Coalg}_k}
+\newcommand*{\Coalg}{\mathbf{Coalg}}
+\newcommand*{\g}{\mathfrak{g}}
 
 %Center each figure by default
 \makeatletter
@@ -126,39 +67,11 @@
 \mathbb{Q}
 }
 
-%Section break
-\newcommand*{\brk}{
-\rule{2in}{.1pt}
-}
 
-\DeclareMathOperator{\Aut}{Aut}
-
-%raise that Chi!
-\DeclareRobustCommand{\Chi}{{\mathpalette\irchi\relax}}
-\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
 
 %Image
 \DeclareMathOperator{\im}{Im}
 
-\DeclareMathOperator{\Ext}{Ext}
-\DeclareMathOperator{\gldim}{gldim}
-\DeclareMathOperator{\projdim}{projdim}
-\DeclareMathOperator{\injdim}{injdim}
-\DeclareMathOperator{\findim}{findim}
-
-%Coker
-\DeclareMathOperator{\coker}{coker}
-
-%characteristic
-\DeclareMathOperator{\ch}{char}
-
-%rank
-\DeclareMathOperator{\rank}{rank}
-
-%Homological algebra stuff
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\End}{End}
-\newcommand*{\Hom}{\ensuremath\text{Hom}}
 
 %fix tilde
 \let\tilde\relax
@@ -169,8 +82,8 @@
 
 \begin{document}
 %make the title page
-\title{Homological Algebra\vspace{-1ex}}
-\author{A course by: Prof. Julia Pevtsova\\
+\title{Hopf Algebras\vspace{-1ex}}
+\author{A course by: Prof. James Zhang\\
 Notes by: Nico Courts}
 \date{Spring 2019}
 \maketitle
@@ -1447,7 +1360,7 @@ Then using this lemma, we can prove the theorem~\ref{thm-213}:
 
 Notice that if we change things up slightly we get a new theorem:
 \begin{thm-prime}{thm-213}
-	Let $V$ be aHopf algebra. Suppose that $S^2=\id$. Then 
+	Let $V$ be a Hopf algebra. Suppose that $S^2=\id$. Then 
 	\[\projdim_V M=\gldim V\]
 	for all $M\in {_VM}_{fd}$ such that $\dim M\ne 0$ in $k$.
 \end{thm-prime}
