@@ -1649,7 +1649,7 @@ is really necessary to make the entire theory work.
 	\end{tikzcd}
 	\caption{A test diagram for $f$}
 \end{figure}
-\begin{thm}
+\begin{thm}\label{thm:fillings}
 	\begin{enumerate}
 		\item A quasiseparated morphism $f:X\to Y$ is separated if and only if every test diagram has at most one filling.
 		\item A quasicompact morphism $f:X\to Y$ is universally closed if and only if every test diagram admits at least one filling.
@@ -1681,5 +1681,49 @@ to do it most efficiently. As a mater of notation, we write $t\rightsquigarrow s
 	morphism $\Spec R\to X$ such that $(0)\mapsto t$ and $\frakm_R\mapsto s$.
 \end{lem}
 A ``proof'' of this is to look at $\O_{\overline{\{t\}},s}\subset k$ and find $R$ using Zorn's lemma with respect to domination.
+
+\section{February 14th, 2020}
+Max recommends probelm 4.10 from Hartshorne. It is the proof of Chow's lemma. It is not an easy proof, 
+but it is a very important one.
+
+\subsection{More generization and specialization}
+
+\begin{lem}
+	Given a quasicompact morphism $f:X\to Y$, $f(X)$ is closed in $Y$ if and only if it is \textit{closed under specialization}.
+\end{lem}
+\begin{prf}
+	The conclistion is stable udner localiation on $U_i$, so we may assume $Y=\Spec A$. Then since $f$ is quasicompact, 
+	$X=\cup_1^n\Spec B_i$ where $\Spec B_i=V_i$. But then 
+	\[\Spec\prod B_i=\sqcup V_i\to X\to Y\]
+	has the same image. Therefore we can assume that $X=\Spec B$ is affine.
+
+	So we have a morphism $\Spec B\to \Spec A$, giving us a ring map $\varphi:A\to B$. So now if $I=\ker\varphi$,
+	we get that the map $X\to Y$ factors through $\Spec A/I\hookrightarrow Y$, which is closed. So we can assume that $\varphi$ is injective.
+	We want to show that $f(X)=Y$. \textit{Notice that we haven't checked that the assumption is closed under these reductions.}
+
+	Now take any $p\in \Spec A$ and take a minimal prime $p_0\subseteq p$ (which exists by the standard Zorn argument).
+	So now $p_0\rightsquigarrow p$. If $p_0\in f(X)$, then $p\in f(X),$ so $f(X)=Y$. Consider $A\hookrightarrow B$ and localize at $p_0$ (which preserves injectivity).
+	and since $A_{p_0}$ has a single prime, you get a map with $p_0$ in the image. Thus you get $p$ and surjectivity.
+\end{prf}
+
+Now we are going to prove:
+\begin{prf}[of thm.~\ref{thm:fillings}(b)]
+	Assume that $f:X\to Y$ is universally closed. We want to show that fillings exist for any test diagram. Notice that fillings for test diagrams are equivalent 
+	to finding sections (since we can assume $Y=\Spec R$):
+	\begin{figure}[h]
+		\centering
+		\begin{tikzcd}
+			\Spec k\ar[r,"\iota"]\ar[d] & X=X\times_{\Spec R}\Spec R\ar[d]\\
+			\Spec R\ar[r,"\id"] & \Spec R\ar[u,bend right,dashed]
+		\end{tikzcd}
+	\end{figure}
+	Let $x\in X$ be in the image of $\iota(\Spec k)$ and let $k$ be the resitude field of $x$. Let $z=\overline{\{x\}}\subseteq X$
+	Now $(0)\subseteq f(z)\subset\Spec R$ is closed, so there exists $z\in Z$ such that $f(z)=\frakm_R$. I got lost at the end, but there were some diagrams that 
+	boiled down to our ring being a valuation ring.
+
+	Now assume that we have our fillings. Using the lemma, we can show that the image is cloed under specialization (warning: implicit base change being hidden here. If 
+	we have $f:X\to Y$, $X_T\to T$).
+\end{prf}
+
 
 \end{document}
