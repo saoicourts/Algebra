@@ -2560,4 +2560,83 @@ We have a week off! So here's some homework:
 	via $n\mapsto \tilde\Psi_n:G\to M$ where $\tilde\Psi_n(g)=\Psi(g^{-1}n)$. Then show $\tilde\Psi_n$ is $H$-invariant, a $G$-map, and prove there are mutual inverses.
 \end{prob}
 
+\section{February 19th, 2020}
+Welcome back! Today we're taking about the proof for that last problem (Frob. Reciprocity)
+\begin{prf}
+	Recall we have the map $\varepsilon_M:\Ind_H^G M\to M$, where we think of 
+	\[\Ind_H^G M=(M\otimes k[G])^H=\{f:G\to M|h^{-1}f(-)=f(-\cdot h), gf(-)=f(g^{-1}\cdot -)\}\]
+	and $\varepsilon_M(f)=f(1)\in M$. Then the map giving us our Frobenius reciprocity is just composing with $\varepsilon_M$.
+
+	We will prove some of this. Let $\tilde\psi:N\to \Ind_H^G M$. Thus it corresponds, for each $n\in N$, to a map 
+	\[\tilde\psi_n:G\to M\]
+	and we need to define this map, check it is $H$-invariant, check that the resulting $\tilde\psi$ is $G$-invariant, and then check that this and $(\varepsilon_M\circ -)$ and this map are mutual inverses.
+
+	Then we busted out paper and wrote stuff down. I checked $G$ invariance.
+\end{prf}
+\begin{cor}
+	\begin{enumerate}
+		\item $\Ind$ is transitive.
+		\item $\Ind$ takes injectives to injectives.
+	\end{enumerate}
+\end{cor}
+The way to prove this is to notice that it is a right adjoint to an exact functor.
+
+\subsection{Projection formula}
+\begin{thm}[Tensor identity/Projection formula]
+	If $M\in\lmod H$ and $N\in\lmod G$,
+	\[\Ind_H^G(M\otimes N)\simeq (\Ind_H^GM)\otimes N\]
+\end{thm}
+\begin{rmk}
+	If $k$ is a ring instead of a field, we need to make an additional assumption: that $N$ is flat over $k$.
+\end{rmk}
+\begin{prf}
+	We'll write down the maps at least. Since 
+	\[L\eqdef \Ind_H^G(M\otimes N)=(M\otimes N\otimes k[G])^H\simeq\{f:G\to M\otimes N|f(gh)=(h^{-1}\otimes h^{-1})f(g)\}\]
+	on the right, we have 
+	\[R\eqdef\Ind_H^GM\otimes N=(M\otimes k[G])^H\otimes N\simeq\{f:G\to M\otimes N|f(xh)=(h^{-1}\otimes 1)f(x)\}\]
+
+	Now we can write down two maps 
+	\[\alpha,\beta:M\otimes N\otimes k[G]\to M\otimes N\otimes k[G]\]
+	(thinking of these as maps $G\to M\otimes N$) in the following way:
+	\[\alpha(f)(g)=(1\otimes g)f(g)\quad\text{and}\quad \beta(f)(g)(1\otimes g^{-1}f(g))\]
+	and we claim:
+	\begin{enumerate}
+		\item $\alpha$ and $\beta$ are mutual inverses;
+		\item $\alpha(L)=R$ and $\beta(R)=L$;
+		\item $\alpha,\beta$ are $G$-invariant.
+	\end{enumerate}
+\end{prf}
+\begin{rmk}
+	This is a bit tedious, but this whole induction business is spelled out in Jantzen.
+\end{rmk}
+
+\subsection{What do we gain from all this?}
+Well first, notice that $\Ind_e^G k=k[G]$, which implies taht $k[G]$ is injective. Then we have 
+\begin{cor}
+	Let $M\in \lmod k$ and notice 
+	\[\Ind_e^G M\simeq\Ind_e^G(k\otimes k M)\simeq k[G]\otimes M_\text{triv}\]
+	which is just a sum of copies of $k[G]$, which is again projective.
+\end{cor}
+\begin{cor}
+	Let $M\in \Rep G$. Then 
+	\[M\otimes k[G]\simeq M_\text{triv}\otimes k[G]\]
+\end{cor}
+\begin{prf}
+	$M_\text{triv}\times k[G]\simeq\Ind_e^G M=\Ind_e^G(k\otimes M)\simeq \Ind_e^Gk\otimes M\simeq k[G]\otimes M.$
+\end{prf}
+\begin{rmk}
+	The map between these things is nontrivial (we used some twisting in the tensor identity, for example). The map is 
+	\[m\otimes f\mapsto (1\otimes f)(1\otimes S)\Delta_M(m)\]
+	where $S$ is the coinverse.
+\end{rmk}
+
+\begin{thm}[``$\Rep G$ has enough injectives'']
+	\begin{enumerate}
+		\item $k[G]$ is injective.
+		\item $\forall M\in\Rep G$, there is an injective $I$ with $M\hookrightarrow I$.
+		\item Any injetive $I$ is a direct summand of $\bigoplus k[G]$.
+	\end{enumerate}
+\end{thm}
+Corollary 2 gets us our injectives containing $M$. This sets us up to do homological algebra, which we will do next time.
+
 \end{document}
