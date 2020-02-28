@@ -1736,4 +1736,87 @@ Today Christine is talking!
 	Further if $X=\cup_{i\in\scrI}\Spec A_i$ and the $\Spec A\hookrightarrow X$ have $\scrP$, then so does $X$.
 \end{lem}
 
+\section{February 21, 2020}
+Today we are going to talk about sheaves of modules. Let $(X,\O_X)$ be a ringed space. Then 
+\begin{defn}
+	An $\O_X$-module (``sheaf of $\O_X$ modules'') is a sheaf of abelian groups $\calF$ along with a morphism 
+	\[\O_X\to \iHom(\calF,\calF)\]
+	of sheaves of rings. Equivalently it is an action 
+	\[\O_X\times\calF\to \calF\]
+	or (locally) $\calF(U)$ is an $\O_X(U)$-module and the ``experience is functorial.''
+
+	A homomorphism of $\O_X$-modules is a morphism $\varphi:\calF\to\calG$ of abelian sheaves that is compatible with the $\O_X$-action.
+\end{defn}
+\begin{lem}
+	The category $\lmod{\O_X}$ of $\O_X$ modules is an abelian category.
+\end{lem}
+
+\section{February 24, 2020}
+We talked about the sheaf of sections of a vector bundle on a manifold. I didn't write it down but it is a good thought.
+Here are some 
+
+\subsection{Moar sheavz}
+Let $X=\Spec A$ and let $M\in \lmod A$. We create a sheaf of modules $\tilde M$ by saying $\tilde M(D(f))=M_f$. 
+The right thing to do is $B=\prod A_{f_i}$. Then max did a bunch of shit. The idea is that this is almost exactly the 
+same construction that you use to create the structure sheaf. There is some cochain stuff going on here that is quite cool. 
+
+So the functor $\tilde -:\lmod A\to \lmod{\O_X}$ is a functor and is exact, commutes with $\otimes,$ and satisfies $\Gamma(\Spec A,\tilde M)=M$ and 
+for all $p\in X$, $\tilde M_p=M_p$. It is also fully faithful but \textbf{not essentially surjective}.
+
+To show this last idea, consider the space with two points: $R= k[[t]]$ and let $U\subset\Spec R$ be the open point. THen define 
+a $\O_{K(R)}$ module on the localization $K(R)$ at $U$. Just let this sheaf be $\tilde K(R)$. But then consider the 
+\[\Gamma(\Spec R,\tilde K(R))=0\quad\text{and}\quad\Gamma(K(R),\tilde K(R))=K(R)\]
+which doesn't arise as the ``sheafification'' (DON'T read too much into this word although it may kinda be true) of an $R$-module.
+
+\subsection{(Quasi-)Coherent sheaves}
+Hey, don't read Hartshorne for coherent sheaves, apparently.
+
+\begin{defn}
+	Let $X$ be a scheme. Then an $\O_X$ modules $\scrF$ is \textbf{quasicoherent} if there exists an open affine cover $U_i=\Spec A_i$ and modules $M_i\in\lmod{A_i}$
+	such that for all $i$, $\scrF|_{U_i}=\tilde M_i$.
+\end{defn}
+Better:
+\begin{defn}
+	$\scrF$ is quasicoherent if and only if there exists an open (not necessarily affine!) cover $U_i\subseteq X$ such that there exists a presentation 
+	\[\O_{U_i}^{\oplus I}\to \O_{U_i}^{\oplus J}\to \scrF|_{U_i}\to 0\]
+	for all $i$ and for some index sets $I$ and $J$.
+\end{defn}
+
+The right thing to read is FAC by Serre where he does this whole thing (in French).
+
+\subsection{What does coherence mean?}
+Quasicoherence gives us $\calO^I\to\calO^J\to \scrF\to 0$ is exact. We can say that $\scrF$ is quasicoherent finitely genreated if $J$ can be taken 
+to be finite. It is quasicoherent finitely presented if both $I$ and $J$ can be taken to be finite.
+
+A sheaf is \textbf{coherent} if for ANY finite $J$ and surjection $\O^J\to \scrF$, $\ker(\pi)$ is finitely generated.
+In the Noetherian case, all of these coincide. 
+
+WARNING! Coherence is not stable under pullback. So what kind of perations can we do? IF we have $f:X\to Y$ is a map of ringed spaces, we get the pullback $f_\ast:\O_X$-mod$\to\O_Y$-mod and we want to have a left 
+adjoint $f^\ast$. Recal that we have $f^\sharp:\O_Y\to f_\ast\O_X$, where the codomain acts on $f_\ast\scrF$.
+
+How do we define the adjoint? $f^\sharp$. Wow I just stopped in the middle of a thought.
+
+\section{February 26th, 2020}
+We had a functorial experience. We showed that these adjoint maps $f_\ast,f^\ast$ exist on the level of (abelian)
+sheaves on $X$ and $Y$ and also they exist (THOUGH ARE DIFFERENT) when we're talking about $\O_X$ and $\O_Y$ modules. 
+These also restrict to maps on the quasicoherent sheaves (and finitely presented ones) but not, in general, to the coherent sheaves.
+
+\begin{thm}
+	The map $\tilde -:\lmod{A}\to \mathbf{QCoh}_{\Spec A}$ is an equivalence of categories.
+\end{thm}
+\begin{cor}
+	If $X$ is quasi-compact and quasi-separated, then for all $f\in \Gamma(X,\O)$ and $s\in \scrF(D(f))$, and $\scrF\in \mathbf{QCoh}_X$,
+	there exists a positive integer $n$ such that $f^ns$ extends to a global section $\sigma\in\Gamma(X,\scrF)$. In other words, 
+	all poles of $s$ have finite order.
+\end{cor}
+
+\subsection{Next time...}
+\begin{prop}
+	Let $f:X\to Y$ be a morphism of schemes. Then 
+	\begin{enumerate}
+		\item $f^\ast\mathbf{QCoh}_Y\subseteq\mathbf{QCoh}_X$ (we already showed this).
+		\item If $f$ is quasi-compact, then $f_\ast\mathbf{QCoh}_X\subseteq\mathbf{QCoh}_Y$.
+	\end{enumerate}
+\end{prop}
+
 \end{document}

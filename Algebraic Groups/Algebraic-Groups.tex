@@ -2639,4 +2639,288 @@ Well first, notice that $\Ind_e^G k=k[G]$, which implies taht $k[G]$ is injectiv
 \end{thm}
 Corollary 2 gets us our injectives containing $M$. This sets us up to do homological algebra, which we will do next time.
 
+\section{February 21st, 2020}
+We did a lot of work last time to show that $k[G]$ was injective and furthermore that every module injects into 
+an injective module. In general, finding projectives is much harder.
+
+\subsection{Projectives}
+\begin{lem}
+	Let $E$ be a simple $G$-module. Then there exists an injective hull $Q_E$ such that 
+	\[E\hookrightarrow Q_E\]
+	with $\operatorname{soc}Q_E=E$ and $Q_E$ is indecomposable.
+\end{lem}
+\begin{rmk}
+	Any injective in $\Rep G$ is a direct sum of indecomposables.
+\end{rmk}
+\begin{lem}
+	Let $P$ be a projective $G$-module. Then $P$ is injective.
+\end{lem}
+\begin{prf}
+	Let $P$ be a projective module. We claim that for any $G$-module $M$, $P\otimes_k M$ is again projective. This follows from tensor-hom adjointness.
+	So $\Hom(-,P)$ is exact. Let 
+	\[0\to M_1\to M\to M_2\to 0\]
+	be a short exact sequence of finite dimensional modules. Dualizing is exact, as is $-\otimes P$, so 
+	\[0\leftarrow M_1^\ast\otimes P\leftarrow M^\ast\otimes P\leftarrow M_2\otimes P\leftarrow 0\]
+	is exact. Thus $M\otimes P$ splits as $(M_1\otimes P)\oplus M'$.
+
+	But then notice that 
+	\[\Hom_G(M_1,P)\simeq(\Hom_k(M,P))^G\simeq(M_1^\ast\otimes P)^G\]
+	but then $(M^\ast\otimes P)^G$ splits as 
+	\[(M_1^\ast\otimes P)^G\oplus M'^G\]
+	and this proves surjectivity.
+\end{prf}
+\begin{rmk}
+	Notice that this alst proof could possibly be better. The finite dimensionality part could be able to be weakened/dropped by
+	avoiding the tensor product representation.
+\end{rmk}
+
+\subsection{Frobenius categories}
+The upshot to all of this is that 
+\begin{prop}
+	If there exists a projective module $P$ in $\Rep G$, then the collections of injectives and projectives are the same.
+\end{prop}
+\begin{prf}
+	Let $P$ be projective. Let $P_1\subseteq P$ be a finite-dimensional submodule. Then 
+	\[M\hookrightarrow M\otimes \End_k(P_1)\simeq M\otimes P_1^\ast\otimes P_1\hookrightarrow M\otimes P_1^\ast\otimes P\]
+	which we have seen is both injective and projective.
+
+	So take a simple $M$ with injective hull $Q_M$. Then we get maps $Q_M\to M\otimes P_1^\ast\otimes P$ and $M\otimes P_1^\ast\otimes P\to Q_M$ 
+	by leveraging injectivity and projectivity. Thus $Q_M$ is a direct summand of $M\otimes P_1^\ast\otimes P$, which is projective. 
+	A little clean up gets us the result.
+\end{prf}
+
+\begin{rmk}
+	When $P$ is injective iff projective, the category $\Rep G$ is a Frobenius category.
+\end{rmk}
+
+\begin{rmk}
+	FOr smooth algebraic groups $\Gm$, $\Ga$, and $\GL_n$, there are no projective modules.
+	If $G$ is finite (finite groups, Frob kernels ${\Ga}_{(r)}$, $\mu_p$, ${\GL_n}_{(r)}$) we have that the collections of projective and injectives are the same.
+\end{rmk}
+\begin{rmk}
+Domkin put together a complete list of affine group schemes with projective modules.
+\end{rmk}
+
+\subsection{Cohomology}
+We know now that $\Rep G$ has enough injectives, so if $\calF:\Rep G\to \Vectk$ is left exact we can take an 
+injective resolution $M\to I^\bullet$ and then 
+\[(\calR^n\calF)(M)\eqdef H^n(\calF(I^\bullet)).\]
+
+Recall the Grothendieck spectral sequence:  Let $\calF:\calC\to \calD$ and $\calF:\calD\to \calE$. Then say 
+we want to compute the derived functors of $\calF'\circ\calF$. Assume that $\calF'$ is left exact and that 
+$\calF$ takes injectives to $\calF'$ acyclic objects. Then we have a spectral sequence whose second page is 
+\[E_2^{m,n}=\calR^m\calF'\circ\calR^n\calF\Rightarrow \calF^{m+n}(\calF'\circ\calF)\]
+
+\begin{rmk}
+	Notice that in the Grothendieck spectral sequence if $\calF'$ is exact (so $\calR^n\calF=0$ when $n>0$),
+	you get 
+	\[\calF'\circ\calR^n\calF\xrightarrow{\sim}\calR^n(\calF'\circ\calF)\]
+
+	You can do the same thing with exactness of $\calF$.
+\end{rmk}
+
+\subsubsection{Notation}
+We will use the following notation:
+\begin{align*}
+	\Ext_G^n(M,-)=\calR^n(\Hom_G(M,-))\\
+	H^n(G,M)=\Ext_G^n(k,M)\\
+	H^n(G,k)=\Ext^n_G(k,k)\\
+	H^\ast(G,k)=\oplus_0^\infty\Ext_G^n(k,k)
+\end{align*}
+and this last object is called the cohomology ring of $G$.
+
+\subsubsection{Applications}
+\begin{prop}
+	We have the derived adjointness 
+	\[\Ext_G^n(M\otimes V,N)\simeq \Ext_G^n(M,\Hom(V,N))\]
+\end{prop}
+
+\section{February 24th, 2020}
+Today we are going to talk more about the Grothendieck spectral sequence.
+\subsection{Examples}
+Let's begin by proving 35.5.2
+\begin{prf}
+	Let $\calF(-)=M\otimes -$ and $\calF'(-)=\Hom_G(-,N)$. Then 
+	\[\calF'\circ\calF(V)=\Hom(M\otimes V,N)\]
+	and so $\scrR^n(\calF')\circ \calF(V)=\Ext^n(M\otimes V,N)$
+	but we know that this is isomorphic to $\scrR^n(\calF'\circ\calF)(V)$,
+	
+	I need to work this out once to understand the details. It involved using the regular tensor-hom identity and 
+	the convergence of the Grothendieck spectral sequence again.
+\end{prf}
+
+\begin{prop}
+	\[\Ext_G^n(M,\scrR^m\Ind_H^G N)\Rightarrow \Ext_H^{n+m}(m,N)\]
+\end{prop}
+\begin{prf}
+	Leverage Frobenius reciprocity and use the fact $\scrF=\Ind_H^G$ is left exact and takes injectives to injectives. Then if we let $\scrF'=\Hom_G(M,-)$,
+	we get $\scrF'\circ\scrF(N)=\Hom_H(M,N)$ and it pops out.
+\end{prf}
+
+\begin{defn}
+	We say a subgroup scheme $H\le G$ is \textbf{exact in $G$} if $\Ind_H^G$ is exact. Equivalently if 
+	$\scrR^{n>0}\Ind_H^G=0$.
+\end{defn}
+\begin{cor}
+	If $H$ is exact, we have an isomorphism 
+	\[\Ext_G^n(M,\Ind_H^G N)\xrightarrow{\sim}\Ext_H^n(M,N)\]
+\end{cor}
+This is, of course, a much easier thing to work with. But an interesting question is when $H$ is exact.
+\begin{prop}
+	Let $k$ be a field. Then $H$ is exact if and only if $k[G]$ is an injective $H$ module.
+\end{prop}
+\begin{rmk}
+	The direction ``$\Leftarrow$'' works when $k$ is a commutative ring.
+\end{rmk}
+\begin{rmk}
+	$k[G]=\Ind_1^G k=\Ind_H^G(\Ind_1^H k)=\Ind_H^G(k[H])$
+\end{rmk}
+\begin{prf}
+	Take a short exact sequence $0\to M_1\to M\to M_2\to 0$ of $H$-modules. Then we do the old argument:
+	take a splitting of $M\otimes k[G]$ and we get that $M_1\otimes k[G]$ is a summand of $M\otimes k[G]$.
+	Then applying invariants preserves this decomposition.
+
+	The rest of this (and all of these properties) live in Jantzen chapter 1 section 4.
+\end{prf}
+
+\begin{rmk}
+	If $H$ is a finite groups scheme, then $H$ is exact (of everything)! The motivation for this: say we have $H\le G$ 
+	any two affine group schemes.
+
+	In analogy, there is a statement about Hopf algebras (see my notes for that). If $A\hookrightarrow B$ is a map of two Hopf algebras (perhaps if $B$ is cosemisimple?)
+	This idea ports over here somehow. It can be proved via sheaf cohomology.
+\end{rmk}
+
+Next we're going to try to write down the ``generalized version'' of the tensor identity using the Grothendieck spectral sequence.
+\[(\scrR^n\Ind_H^G)\circ(-\otimes \Res^G_H N)\cong (\scrR^n\Ind_H^G(-))\otimes N\]
+
+\section{February 26th, 2020}
+This is all from Jantzen chapter I section 5. Apparently it is a bit hand-wavy.
+\subsection{Associated sheaves}
+Our goal is to describe $\scrR^n\Ind_H^G(M)$ as $H^n(G/H,\calL(M))$ where $\calL(M)$ is a sheaf on $G/H$.
+We are going to think of $\scrL:\Rep H\to \Sh G/H$ as a functor.
+
+\subsubsection{Quotients}
+The history of these quotients go back to Demazure and Gabriel. The idea is that we don't genreally have 
+quotients in $\Sch$, so we extend to the \textbf{sheaves in the fppf topology}. This is a Grothendieck topology that stands for ``
+finitely presented faithfully flat''. It's French, don't question it.
+
+When we have an algebraic group $G$ acting on a scheme $X$, we want to know when the quotient $X/G$ in this broader context 
+is actually a scheme. 
+
+Let us assume that $G$ acts freely (pointwise). We assume that $k$ is a field. We can drop this, but then we have 
+to carry around the assumption of flatness everywhere. Let $X$ be a scheme of finitel type (algebraic) over $k$ and $G$ an 
+affine group scheme (also of finite type). Then we have 
+\begin{prop}
+	If $G$ acts freely and $X/G$ is a scheme, then 
+	\[X(R)/G(R)\hookrightarrow (X/G)(R)\]
+\end{prop}
+\begin{prop}
+	($G$ always acting freely) If $X/G$ is a scheme, there exists an isomorphism 
+	\[X\times G\xrightarrow{\sim}X\times_{X/G}X\quad\text{via}\quad (x,g)\mapsto (x,xg)\]
+	where on the level of points, this is $\{(x,x')|x=x'g\}$ (we are using right actions obviously).
+\end{prop}
+From here on out, we are going to assume that $X/G$ is a scheme unless we say something to the contrary.
+\begin{ex}
+	$\P n(R)$ is, as a set, the set of free rank one direct summands of $R^{n+1}$. Work out how (and if!) this is true.
+	Then we can define 
+	\[\A{n+1}_\ast(R)=\{(a_0,\dots,a_n)\in R^{n+1}|\sum Ra_i=R\}\]
+	which is a subscheme of $\A{n+1}$. Now we claim that 
+	\[\A{n+1}_\ast/\Gm\xrightarrow{\sim}\P{n}\]
+	And we had some trouble making this precise. This is in Jantzen, however.
+\end{ex}
+You can do similar things with the Grassmann schemes $\operatorname{Gr}(k,n)$.
+\begin{thm}
+	Let $G$ be a finite group scheme and $X$ an affine scheme with a free $G$ action. Then $X/G$ is an affine scheme with 
+	coordinate ring $k[X]^G$.
+\end{thm}
+\begin{thm}
+	Let $H\le G$ be algebraic group schemes (sometimes requires that $H$ is closed, but this is automatic when we look at it from the functorial 
+	perspective and require that $H$ is an algebraic subgroup scheme). Then (with $H$ acting on the right of $G$) $G/H$ (or in the other case $H\setminus G$) is a scheme.
+	In particular, $G\times H\simeq G\times_{G/H}G$.
+\end{thm}
+
+\section{February 28th, 2020}
+\subsection{Associated Sheaves}
+The set up is the following: we have a scheme $X/k$, algebraic group scheme $G/k$ acting freely on $X$ such that $X/G$ a scheme.
+We are constructing a functor 
+\[\calL:\Rep G\to \Sh X/G\]
+and actually to $\O_{X/G}$ modules. Let $\pi:X\to X/G$ be affine, flat and algebraic.
+\begin{thm}
+	\begin{enumerate}
+		\item If $Y\subset X/G$ is affine (open), then $\pi^{-1}Y\subset X$ is affine (open). T
+		\item If $Y\subset Y/G$ is affine open, then we get the map $\pi:\pi^{-1}Y\to Y$ induces a $k[Y]$ structure on $k[\pi^{-1}Y]$ such that it is a faithfully flat, finitely presented $k[Y]$ module.
+	\end{enumerate}
+\end{thm}
+
+Now we construct things in the following way. Let $M$ be a $G$-modules. Then for any open $U\subset Y$, define 
+\[\calL(M)(U)=\left(M\otimes_k k[\pi^{-1}U]\right)^G\]
+where we put the diagonal action on the tensor product. Notice $\pi^{-1}(U)\subset X$.
+
+Why is this the right thing to do? Notice that 
+\[M\otimes k[\pi^{-1}U]=\operatorname{Mor}(\pi^{-1}U,M_a)=\{f:\pi^{-1}U\to M_a|f(xg)=g^{-1}f(x)\}.\]
+We claim that $\calL(M)$ is a sheaf, and specifically a sheaf of $\O_{X/G}$-modules. That is, the map $\pi:X\to X/G$ gives us 
+a $\O_{X/G}$ module structure on $\O_X$ via $\pi^{ast}:\pi^{-1}\O_{X/G}\to \O_X$. On any $U$ we have, for 
+$f_1\in \O_{X/G}(U)$ and $f\in\calL(M)(U)$, an element 
+\[f_1\cdot f\in\calL(M)(U).\]
+
+\begin{prop}
+	\begin{enumerate}
+		\item $\calL$ is a sheaf of $\O_{X/G}$ modules.
+		\item $\calL$ is exact.
+		\item $\calL(M)$ is quasi-coherent.
+		\item If $M$ is a finite dimensional $G$-module, $\calL(M)$ is coherent.
+	\end{enumerate}
+\end{prop}
+We may talk about a proof of this next time.
+\begin{ex}
+	Let $M=k$. Then 
+	\[\calL(k)(U)=k[\pi^{-1}U]^G=\{f:\pi^{-1}U\to k_a=\A1|f(xg)=f(x)\}\]
+	so we are just looking for invariant functions. The claim is that this is actually 
+	\[\calL(k)(U)=\{f:\pi^{-1}U/G\to \A1\}=\{f:U\to A1\}=k[U]=\O_{X/G}(U)\]
+\end{ex}
+We want to know what happens to injective modules. All of our injectives are going to look like $M\otimes k[G]$ or direct summands of this or will be 
+otherwise comparable to this. So if we have $\pi:X\to X/G$,
+\[\calL_{X/G}(M\otimes k[G])\simeq \pi_\ast\calL_{X/e}(M)\]
+This is requires some thought and computation.
+
+\begin{prop}
+	\begin{enumerate}
+		\item The functor sending 
+		\[M\mapsto H^0(X/G,\calL(M))=\Gamma(\calL(M))\]
+		is left exact (but not right exact!)
+		\item If $X$ is affine, then the derived functors are 
+		\[M\mapsto H^n(X/G,\calL(M))\]
+	\end{enumerate}
+\end{prop}
+\begin{prf}
+	The second part looks almost obvious from the Grothendieck spectral sequence. We need, however, 
+	that $\calL$ takes injective $G$-modules to acyclic sheaves. Why is that true? Take $M\otimes k[G]$ an 
+	injective $G$-module, then we saw that 
+	\[\calL(M\otimes k[G])\simeq \pi_\ast\calJ_{X/e}(M).\]
+	We need to check that 
+	\[H^n(X/G,\pi_\ast\calL_{X/e}(M))\]
+	vanishes for all $n\ge 1$. THere is a problem in Hartshorne that gives this to us for an affine morphism between separated (something else) schemes.
+\end{prf}
+\begin{prop}
+	Let $H\le G$. Then 
+	\begin{enumerate}
+		\item $\calR^n\Ind_H^G(M)\simeq H^n(G/H,\calL_{G/H}(M))$.
+		\item If $G/H$ is Noetherian, then $\scrR^n\Ind_H^G(M)=0$ for $n>\dim G/H$.
+		\item If $G/H$ is projective, then $\scrR^n\Ind_H^G(M)$ is finitely generated whenever $M$ is finite dimensional.
+		\item If $G/H$ is affine, $\Ind_H^G$ is exact.
+	\end{enumerate}
+\end{prop}
+\begin{prf}
+	For the first statement, We are just taking higher derived functors of 
+	\[H^0(GH,\calL(M))=\calL(M)(G/H)=(M\otimes k[G])^H=\Ind_H^G(M)\]
+	where the isomorphisms here are natural. So the derived functors are the same!
+\end{prf}
+\begin{cor}
+	If $H$ is a finite group scheme, then $\Ind_H^G$ is exact.
+\end{cor}
+\begin{prf}
+	When know that $G/H$ is affine and in fact is $\Spec k[G]^H$.
+\end{prf}
+
 \end{document}
