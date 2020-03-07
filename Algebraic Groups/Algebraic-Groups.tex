@@ -39,6 +39,7 @@
 
 % Document-Specific Macros
 \DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\Dist}{Dist}
 
 
 \begin{document}
@@ -2920,7 +2921,194 @@ This is requires some thought and computation.
 	If $H$ is a finite group scheme, then $\Ind_H^G$ is exact.
 \end{cor}
 \begin{prf}
-	When know that $G/H$ is affine and in fact is $\Spec k[G]^H$.
+	We know that $G/H$ is affine and in fact is $\Spec k[G]^H$.
 \end{prf}
+\section{March 2nd, 2020}
+Some reminders: we reinterpreted our induction functor in terms of sheaf cohomology. In our particular case, 
+we want to restrict to 
+\[\calL:\Rep H\to \O_{G/H}\text{-}\mathbf{mod}\]
+where $H\le G$ and we are sending $M\mapsto \calL(M)$ where now 
+\[\calR^n\Ind_H^G M\simeq H^n(G/H,\calL(M)).\]
+
+\subsection{A Preview}
+When we have a Borel subgroup $B\subseteq G$ (e.g. the upper triangulars in $\GL_n$), 
+then we get the functor 
+\[\Rep B\to \O_{G/B}\text{-}\mathbf{mod}\]
+where we send particular representations $\lambda$ to $H^0(G/B,\calL(k_\lambda))$.
+
+\subsection{Leftovers}
+\begin{prop}
+	$\calL$ is exact.
+\end{prop}
+\begin{prf}
+	It suffices to show that the association of $M$ to $\calL(M)(U)$, for $U$ an affine open, is exact. To 
+	prove this, consider $\tilde U=\pi^{-1}\subset X\to U\subset X/G$, which is faithfully flat---that is, the ring map 
+	$\pi_\ast:k[U]\to k[\tilde U]$ is. So it suffices to show that the map 
+	\[M\mapsto k[\tilde U]\otimes_{k[U]}\calL(M)(U)=k[\tilde U]\otimes_{k[U]}(k[\tilde U]\otimes M)^G\]
+	is exact. Recall that we have that $X\times G\simeq X\times_{X/G} X$ via the map $(g,x)\mapsto (g,gx).$
+	So via the same map, we get $\tilde U\times_U\tilde U\simeq \tilde U\times G$ where $G$ acts on the right factor.
+
+	This gives us an iso 
+	\[k[\tilde U]\otimes_{k[U]}k[\tilde U]\simeq k[\tilde U]\otimes k[G]\]
+	and so 
+	\[k[\tilde U]\otimes_{k[U]}(k[\tilde U]\otimes M)^G=(k[\tilde U]\otimes_{k[U]}k[\tilde U]\otimes M)^G\simeq (k[\tilde U]\otimes k[G]\otimes M)^G\]
+	where in both of the cases below $G$ acts diagonally on the last two tensor factors.
+
+	Then applying the tensor identity, we get that the above is
+	\[(k[U]\otimes k[G]\otimes M_{tr})^G\cong k[\tilde U]\otimes M\otimes (k[G])^G\simeq k[\tilde U]\otimes M\]
+	which is exact. 
+\end{prf}
+The next proposition helps us to show that $\calL$ takes injectives to acyclics so we can apply the Grothendieck spectral sequence.
+\begin{prop}
+	$\calL_{X/G}(M\otimes k[G])\simeq \pi_\ast \calL_{X/e}(M)$.
+\end{prop}
+\begin{prf}
+	It is enough to show that for all $U\subseteq X/G$ open and affine, the two sheaves have the same values. Recall that 
+	\[\calL_{X/G}(M\otimes k[G])(U)\cong\Mor(\pi^{-1}(U),M\otimes k[G])^G\cong\Mor(\pi^{-1}U\times G,M)^G\]
+	where in the last iso is induced from a kind of $\times$-hom adjunction.
+
+	Then one can define a map on the level of varieties $(x.g)\mapsto (xg,g)$ from $\pi^{-1}U\times G$ to itself where 
+	now $\pi^{-1}U$ has the trivial action.  Thus we get 
+	\[Mor(\pi^{-1}U_{tr},M)^G\simeq\Mor(\pi^{-1}U,M)=\pi_\ast\calL_{X/e}(M)\]
+\end{prf}
+\subsection{Special Case}
+Say we have $\pi:X\to X/G$ which is locally trivial: for every $U_i\subset X/G$, there is a local section $\sigma_i:U_i\to X$ with 
+the properties:
+\begin{itemize}
+	\item $\cup U_i=X/G$
+	\item $\pi\circ\sigma_i=\id_{U_i}$
+	\item $\pi^{-1}(U_i)=U_i\times G$
+\end{itemize}
+A thing we should discuss is the grassmannian. Let's work over a field $k$. Recall that $\operatorname{Gr}(r,n)$ (or similar notation) means the 
+$r$ dimensional subspaces in $\A n$. We have a natural action of $\GL_n$ on $\A n$ that induces an action on $\operatorname{Gr}(r,n)$. Then one can show that 
+$\GL_n/\operatorname{stab}_{\GL_n}(v)=\Im\pi\simeq\operatorname{Gr}(r,n).$ The stabilizer is a parabolic subgroup. We hope to see more of this 
+on Wednesday.
+
+\subsection{More stuff}
+\begin{thm}
+	If $G$ acts on $X$ and $M\in \Rep G$ is locally trivial (same assumptions everywhere), then if $\pi:X\to X/G$,
+	we get that $X\times^G M= X\times M/G\to X/G$ is locally trivial.
+\end{thm}
+\begin{rmk}
+	In particular, if $H\le G$ and if $M\in \Rep H$, the map $G\times^H M\to G/H$ is a vector bundle.
+\end{rmk}
+\begin{thm}
+	Let $H\le G$ and $M\in \Rep H$. Then $G\times ^H M\to G/H$ has the property that $\calL(M)$ is the sheaf of local sections of this vector bundle. That 
+	is, if $U\subset G/H$,
+	\[\Gamma(U,G\times^H M)\simeq \calL(M)(U)\]
+\end{thm}
+
+\section{March 4, 2020}
+Today we are talking about 
+\subsection{Distribution algebras for an algebraic group}
+The idea here is that we know something about representations of algebras and we want to relate
+the representations of an algebraic group to the reps of algebras.
+
+One idea is to notice that $\Rep G\simeq \lcomod{k[G]}$ and then dualize to get the modules of the dual of $k[G]$.
+This can blow up, of course, so we have to refine this idea.
+
+Let $X$ be an affine scheme and let $k[X]$ be its ring of functions. Let $x\in X(k)$ and let 
+\[I_x=\{f\in k[X]|f(x)=0\}\]
+Then we define 
+\begin{defn}
+	$\mu:k[X]\to k$ is a distribution of order $\le n$ supported at $x$ if $\mu(I_x^{n+1})=0$.
+	Then $\operatorname{Dist}_n(X,x)\cong \left(k[X]/I_x^{n+1}\right)^\times$ is the collection of all such $\mu$.
+
+	The subset of $\mu$ satisfying $\mu(1)=0$ is $\operatorname{Dist}_n^+(X,x)$ and we write $\operatorname{Dist}(X,x)$ and $\operatorname{Dist}^+(X,x)$
+	for the unions over all $n$.
+\end{defn}
+Notice that $\Dist^+_n(X,x)\cong \left(I_x/I_x^{n+1})\right)^\times$, so 
+\[\Dist_1^+(X,x)\simeq (I_x/I_x^2)^\times\simeq T_xX.\]
+
+Now $\Dist(X,x)$ is a $k[X]$-module via ($f,f_1\in k[X],\mu:k[X]\to k$)
+\[(f\mu)(f_1)=\mu(ff_1)\]
+\begin{rmk}
+	If $X$ is a (non-affine) scheme over $k$,
+	\[\Dist_n(X,x)\simeq \left(\O_{X,x}/\frakm_{X,x}^{n+1}\right)^\times\]
+\end{rmk}
+Let's go back to the affine case. This is functorial: if we have a map $\varphi:X\to Y$ and algebra map 
+$\varphi^\ast:k[Y]\to k[X]$ that satisfies $(\varphi^\ast)^{-1}(I_x)=I_{\varphi(x)}$. Thus we get a map 
+\[d\varphi_x:\Dist_n(X,x)\to \Dist_n(Y,\varphi(x))\]
+
+Also $\Dist(X,x)$ is a cocommutative coalgebra where the diagonal map $\Delta:X\to X\times X$ gives us a map 
+\[\Dist(X,x)\to \Dist(X,x)\otimes \Dist(X,x).\]
+
+\begin{ex}
+	Let $X=\A1$ and let $x=0$. Recall $k[\A1]\simeq k[T]$. Then $I=I_0=(T)$.
+	Therefore 
+	\[\Dist_n(\A1,0)\simeq (k[T]/T^{n+1})^\times\]
+	and 
+	\[\Dist(\A1,0)\simeq \oplus_{r\ge 0}k\gamma_r\]
+	where we let $\gamma_r:k[T]\to k$ via $\gamma_r(T^n)=\delta_{n,r}$.
+
+	Therefore $\gamma_1=\frac{\partial}{\partial T}$ and if the characteristic is zero, $\gamma_r=\frac{1}{r!}\frac{\partial}{\partial T^r}$.
+	Remember that we have a natural algebra structure from $\A1$ as a group scheme. The coalgebra structure comes from $\gamma_1$ 
+	being primitive and extending up to the rest.
+\end{ex}
+
+Now let $X=G$ be a (connected!) group scheme and $x=1$. Then $\Dist(G)\eqdef\Dist(G,1)$. 
+Then we can get an algebra structure in the following way: if $\mu,\nu:k[G]\to k$,
+\[\mu\nu=\mu\bar\otimes\nu\circ\Delta\]
+as we usually do with these things. 
+
+Now $\Dist G$ is a filtered algebra so that 
+\[\Dist_n(G)\Dist_m(G)\subseteq\Dist_{n+m}(G).\]
+\begin{rmk}
+	In $k[G]$ we have a comultiplication with a special form. This can be read in Jantzen section I.2.4. If $I$ is the 
+	augmentation ideal of $k[G]$, and $f\in I$,
+	\[\Delta(f)=f\otimes 1+1\otimes f+I\otimes I\]
+
+	Then multiplicativity of $\Delta$ gives us 
+	\[\Delta(f_1\cdots f_n)=\prod_1^n(f_i\otimes 1+1\otimes f_n)+\sum_1^{n-1}I^r\otimes I^{n-r}\]
+\end{rmk}
+
+If we have $\mu,\nu\in\Dist_n$, then $[\mu,\nu]=\mu\nu-\nu\mu\in\Dist_{n+m-1}(G)$.
+Thus we have a filtration $\Dist_n\subseteq \Dist_{n+1}$ and the associated graded ring 
+$\oplus \Dist_i/\Dist_{i-1}$ is commutative. This is reminiscent of the universal enveloping algebra of a Lie algebra!
+\begin{ex}
+	Let $G=\Ga$ again. THen $k[T]=k[\Ga]$ and think of $\gamma_r=\frac{1}{r!}\frac{\partial^r}{\partial T^r}$.
+	What is the multiplication? Ends up it is the divided power algebra structure:
+	\[\gamma_n\gamma_n=\binom{n+m}{n}\gamma_{n+m}.\]
+	How do we see this? Consider 
+	\[\Delta(T)=1\otimes T+T\otimes 1\quad\Rightarrow\quad \Delta(T^l)=\sum_0^l\binom{l}{i}T^i\otimes T^{l-i}\]
+	so then 
+	\[\gamma_n\gamma_m(T^l)=\sum\binom{l}{i}\gamma_n(T^i)\gamma_m(T^{l-i})\]
+	where the summands are all zero except when $l=n+m$ and $i=n$.
+
+	In characteristic zero, $\gamma_r$ is honestly $\frac{1}{r!}\gamma_1^r$ so it ends up that this is just isomorphic
+	to a polynomial algebra $k[\gamma_1]$. This is not true in positive characteristic, because $\gamma_1^p$ dies, so we get a new 
+	generator $\gamma_p$ and so on.
+\end{ex}
+Now let $\frakg=\Lie G$. Then since $\frakg\simeq\Dist^+_1(G)$ which maps into $\Dist(G)$, the universal property 
+of the universal enveloping algebra gets us us the map 
+\[\calU(\frakg)\to \Dist(G)\]
+\begin{prop}
+	In characteristic zero, this map is an isomorphism.
+\end{prop}
+In positive characteristic, this fails. However we still ahve an injective map 
+\[u(\frakg)\hookrightarrow\Dist(G)\]
+where $u(\frakg)$ is the usual restricted enveloping algebra.
+
+\section{March 6th, 2020}
+Let $M\in\Rep G$ and let $\mu\in \Dist G$. THen define an action of $\Dist G$ on $M$ by 
+\[\mu m=(\id\bar\otimes \mu)\circ\Delta_M\]
+and we get a map $\Rep G\to\Dist G$. WHen $G$ is an algebraic gorup scheme over $k$,
+then the map on homs is an isomorphism. Notice: $\Rep G$ lands in locally finite $\Dist G$ modules, 
+but not all locally finite $\Dist G$ algebras come from $G$-mod.
+
+We're going fast today because I asked about $\operatorname{PGL}_n$. Whoops. Gonna just listen.
+
+Check out Jantzen for the development of roots and weights and all. But here are some theorems!
+\begin{thm}
+	Let $\lambda$ be a dominant weight. Then $H^0(\lambda)\eqdef\Ind_B^G k_\lambda$ is finite dimensional and nonzero, but $H^i(\lambda)=0$ for all $i>0$.
+\end{thm}
+\begin{thm}
+	$H^0(\lambda)$ has a simple socle called $L(\lambda)$. It's obviously also finite dimensional.
+\end{thm}
+\begin{thm}
+	$\{L(\lambda)|\lambda\in X^+\}$ is a complete and irredundant set of representations for $G$.
+\end{thm}
+
+
 
 \end{document}
